@@ -1,0 +1,108 @@
+#!/usr/bin/env python3
+import sys
+import os
+import yaml
+import pprint
+import datetime
+from scapy.all import wrpcap
+from scapy.utils import PcapWriter
+
+from PCraft.Plugins import *
+
+def print_loading_plugins(plugin):
+    print("Loading Plugin: %s" % plugin)
+
+def exec_plugin(plugin, script):
+#    print("========\n%s\n========" % script)
+    ans = None
+    try:
+        ans = plugin.run(script)
+    except(KeyError):
+        # There is no input? Then there is no argument!
+        ans = plugin.run()
+
+    return ans
+
+loop_tracker = {} # We track our loops by name
+is_in_loop = None
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("Syntax: %s script.yaml output.pcap" % sys.argv[0])
+        sys.exit(1)
+
+    plugins_loader = Plugins(loadfunc=print_loading_plugins)
+    loaded_plugins = plugins_loader.get_loaded_plugins()
+    print("All plugins loaded!")
+    
+    print("Opening Script File %s" % sys.argv[1])
+    script_fp = open(sys.argv[1])
+    script = yaml.load(script_fp.read(), Loader=yaml.SafeLoader)
+    script_fp.close()
+
+    next_func = script[script["start"]]["_plugin"]
+    script[script["start"]]["__dir"] = os.path.dirname(sys.argv[1])
+    print("[%s] Executing: %s" % (datetime.datetime.now(), script["start"]))
+    next_func, ans = exec_plugin(loaded_plugins[next_func], script[script["start"]])
+#    print("next func:%s" % next_func)
+    while next_func:
+        print("[%s] Executing: %s" % (datetime.datetime.now(), next_func))
+        #        if is_in_loop:
+        if next_func == "done":
+            break # We stop
+        if next_func.startswith("loop-"):
+            counter = 0
+            try:
+                counter = loop_tracker[next_func]
+                loop_tracker[next_func] -= 1
+                try:
+                    sleep_interval = script[next_func]["sleep"]["interval"]
+                    time.sleep(sleep_interval)
+                except:
+                    pass                
+            except KeyError:
+                loop_tracker[next_func] = script[next_func]["count"]
+                counter = loop_tracker[next_func]
+                try:
+                    plugins_loader.get_plugins_data()._set("newip", script[next_func]["newip"])
+                except:
+                    pass # Nothing to do, as we do not get the key "newip"
+
+                try:
+                    sleep_before_start = script[next_func]["sleep"]["before-start"]
+                    time.sleep(sleep_before_start)
+                except:
+                    pass                
+
+            if counter <= 0:
+                plugins_loader.plugins_data._set("newip", 0)
+                next_func = script[next_func]["_next"]
+                try:
+                    sleep_once_finished = script[next_func]["sleep"]["once-finished"]
+                    time.sleep(sleep_once_finished)
+                except:
+                    pass                
+            else:
+                next_func = script[next_func]["_start"]
+                
+        if next_func == "done":
+            break # We stop
+
+#        print(script[next_func]["_plugin"])
+        script[next_func]["__dir"] = os.path.dirname(sys.argv[1])
+        next_func, ans = exec_plugin(loaded_plugins[script[next_func]["_plugin"]], script[next_func])
+            # print("next func:%s" % next_func)
+        # print(ans)
+
+
+    # pktdump = PcapWriter(sys.argv[2], append=True, sync=True)
+    
+    # for pkt in plugins_loader.get_plugins_data().pcap:
+    #     pktdump.write(pkt)
+        
+    #     if pkt.haslayer(IP):
+    #         ips = pkt.getlayer(IP)
+    #         print(ips.src)
+
+    wrpcap(sys.argv[2], plugins_loader.get_plugins_data().pcap)
+    
