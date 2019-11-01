@@ -28,3 +28,7 @@ of the plugin.
 The obvious question here is "But where IS my domain I do a DNS Connection to?", well, in this specific case, it has been
 passed as a paramater coming from the previous plugin, as the "domain" variable.
 
+The list of all availables variables to be used across different plugins is available in the [pcraft Taxonomy][taxonomy].
+
+[taxonomy]: taxonomy.md
+
