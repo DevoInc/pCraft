@@ -1,0 +1,13 @@
+start: buildvars
+
+buildvars:
+  _plugin: MakeVariables
+  domain: "www.example.com"
+  ip-dst: "1.1.1.1"
+  _next: dnsreq
+
+dnsreq:
+  _plugin: DNSConnection  
+  _next: done
+
+  
