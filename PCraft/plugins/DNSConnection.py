@@ -3,6 +3,35 @@ from . import _utils as utils
 
 class PCraftPlugin(object):
     name = "DNSConnection"
+
+    def help(self):
+        helpstr="""
+## DNSConnection
+
+Create a DNS Connection towards a domain that was either set in a previous plugin, or 
+being set in the local script scope.
+
+### Examples
+
+#### 1: Connect to a domain set previously from the plugin chain
+
+```
+dnsconnect:
+  _plugin: DNSConnection
+  _next: done
+```
+
+#### 2: Connect to a domain set in the local script scope
+
+```
+dnsconnect:
+  _plugin: DNSConnection
+  domain: "www.example.com"
+  _next: done
+```
+
+"""
+        return helpstr
     
     def __init__(self, plugins_data):
         self.plugins_data = plugins_data
@@ -25,8 +54,18 @@ class PCraftPlugin(object):
         dstip=self.random_server_ip.get()
         dns_resp_ip = "199.34.228.66"
         self.plugins_data._set("dstip", dns_resp_ip)
-        
-        query = Ether() / IP(src=self.plugins_data._get("srcip"),dst=dstip) / UDP(sport=4096,dport=53)/DNS(rd=1, qd=DNSQR(qname=self.plugins_data._get("domain")))
+
+
+        #
+        # Replace Global variables from Local ones
+        # 
+        if "domain" in script:
+            domain = script["domain"]
+        else:
+            domain = self.plugins_data._get("domain")
+
+            
+        query = Ether() / IP(src=self.plugins_data._get("srcip"),dst=dstip) / UDP(sport=4096,dport=53)/DNS(rd=1, qd=DNSQR(qname=domain))
         self.plugins_data.pcap.append(query)
         resp = Ether() / IP(dst=self.plugins_data._get("srcip"),src=dstip) / UDP(sport=53,dport=4096)/DNS(id=query[DNS].id, qr=1, qd=query[DNS].qd, an=DNSRR(rrname=query[DNS].qd.qname, rdata=dns_resp_ip))
         self.plugins_data.pcap.append(resp)
