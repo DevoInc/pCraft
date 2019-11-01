@@ -40,20 +40,20 @@ dnsconnect:
 
     def run(self, script=None):
         try:
-            srcip = self.plugins_data._get("srcip")
+            ipsrc = self.plugins_data._get("ip-src")
         except KeyError:
-            self.plugins_data._set("srcip",self.random_client_ip.get())
+            self.plugins_data._set("ip-src",self.random_client_ip.get())
 
         try:
             #if script["newip"]: # It must be configured from the loop, FIXME ASAP
             if self.plugins_data._get("newip"):
-                self.plugins_data._set("srcip", self.random_client_ip.get())
+                self.plugins_data._set("ip-src", self.random_client_ip.get())
         except:
             pass
             
-        dstip=self.random_server_ip.get()
+        ipdst=self.random_server_ip.get()
         dns_resp_ip = "199.34.228.66"
-        self.plugins_data._set("dstip", dns_resp_ip)
+        self.plugins_data._set("ip-dst", dns_resp_ip)
 
 
         #
@@ -65,9 +65,9 @@ dnsconnect:
             domain = self.plugins_data._get("domain")
 
             
-        query = Ether() / IP(src=self.plugins_data._get("srcip"),dst=dstip) / UDP(sport=4096,dport=53)/DNS(rd=1, qd=DNSQR(qname=domain))
+        query = Ether() / IP(src=self.plugins_data._get("ip-src"),dst=ipdst) / UDP(sport=4096,dport=53)/DNS(rd=1, qd=DNSQR(qname=domain))
         self.plugins_data.pcap.append(query)
-        resp = Ether() / IP(dst=self.plugins_data._get("srcip"),src=dstip) / UDP(sport=53,dport=4096)/DNS(id=query[DNS].id, qr=1, qd=query[DNS].qd, an=DNSRR(rrname=query[DNS].qd.qname, rdata=dns_resp_ip))
+        resp = Ether() / IP(dst=self.plugins_data._get("ip-src"),src=ipdst) / UDP(sport=53,dport=4096)/DNS(id=query[DNS].id, qr=1, qd=query[DNS].qd, an=DNSRR(rrname=query[DNS].qd.qname, rdata=dns_resp_ip))
         self.plugins_data.pcap.append(resp)
         
         return script["_next"], self.plugins_data

@@ -19,12 +19,13 @@ class PCraftPlugin(object):
             word2 = words[word2_idx][:-1].lower()
 
             domain = "%s-%s.com" % (word1, word2)
+            domain = domain.replace("'","")
             try:
                 answers = dns.resolver.query(domain, "A")
             except dns.resolver.NXDOMAIN:
                 new_domain_found = True
 
         fp.close()
-
+        
         self.plugins_data._set("domain", domain)
         return script["_next"], self.plugins_data

@@ -69,7 +69,7 @@ The Plugins documentation is generated from themselves: [Plugins Documentation][
 
 ### DNSConnection
 
-Requires 'srcip' and 'domain' to be set.
+Requires 'ip-src' and 'domain' to be set.
 Create a fake DNS connection of a given domain.
 
 ### GenerateNewDomain
@@ -78,12 +78,12 @@ Creates a new domain from two words that we know not to exist
 
 ### HTTPConnection
 
-Requires 'srcip' and 'dstip' to be set.
+Requires 'ip-src' and 'ip-dst' to be set.
 Create a fake HTTP connection, including handshake.
 
 ### HTTPPostConnection
 
-Requires 'srcip' and 'dstip' to be set.
+Requires 'ip-src' and 'ip-dst' to be set.
 Create a fake POST method from a random amount of data.
 
 ### PCAPImport
@@ -92,12 +92,12 @@ Import an existing PCAP and replace the IP addresses from the list of IPs set in
 
 ### Ping
 
-Requires 'srcip' and 'dstip' to be set.
+Requires 'ip-src' and 'ip-dst' to be set.
 Ping an IP or a range of IPs.
 
 ### TcpRst
 
-Requires 'srcip' and 'dstip' to be set.
+Requires 'ip-src' and 'ip-dst' to be set.
 Sends a TCP Reset flag.
 
 

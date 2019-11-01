@@ -13,7 +13,7 @@ class PCraftPlugin(object):
     def run(self, script=None):
         # pprint.pprint(script)
         port = script["dport"]
-        ip = script["dstip"]
+        ip = script["ip-dst"]
         all_ips = IP_y(ip)
 
         has_started = False
@@ -43,11 +43,11 @@ class PCraftPlugin(object):
                     has_started = True
             
             # SYN
-            syn = Ether() / IP(src=script["srcip"], dst=str(individual_ip)) / TCP(dport=port, flags="S")
+            syn = Ether() / IP(src=script["ip-src"], dst=str(individual_ip)) / TCP(dport=port, flags="S")
             self.plugins_data.pcap.append(syn)
             
             # RST-ACK
-            rst_ack = Ether() / IP(src=individual_ip, dst=script["srcip"]) / TCP(sport=port, dport=syn[TCP].sport, flags="R""A")
+            rst_ack = Ether() / IP(src=individual_ip, dst=script["ip-src"]) / TCP(sport=port, dport=syn[TCP].sport, flags="R""A")
             self.plugins_data.pcap.append(rst_ack)
             if str(individual_ip) == ipstop:
                 has_stoped= True

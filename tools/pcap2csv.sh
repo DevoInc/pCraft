@@ -21,7 +21,7 @@ function handle_dns()
 #    echo "$line"
     if [ ! -e dns.csv ]
     then
-	echo "ts, srcip, dstip, srcport, dstport, length, flags, transaction_id, query_type, query_name, answer_type, answer_addr" > dns.csv
+	echo "ts, ip-src, ip-dst, srcport, dstport, length, flags, transaction_id, query_type, query_name, answer_type, answer_addr" > dns.csv
     fi
 
     echo $line |grep "Standard query response"
@@ -39,7 +39,7 @@ function handle_http()
 #    echo "$line"
     if [ ! -e http.csv ]
     then
-	echo "ts, srcip, dstip, srcport, dstport, length, http_method, http_uri, http_ua" > http.csv
+	echo "ts, ip-src, ip-dst, srcport, dstport, length, http_method, http_uri, http_ua" > http.csv
     fi
 
     ua="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1)"

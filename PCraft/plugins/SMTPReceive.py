@@ -14,12 +14,12 @@ class PCraftPlugin(object):
 
     def run(self, script=None):
         try:
-            srcip = self.plugins_data._get("srcip")
+            ipsrc = self.plugins_data._get("ip-src")
         except KeyError:
-            self.plugins_data._set("srcip", self.random_client_ip.get())
-        # print("Create a HTTP connection from %s to %s" % (inobj["srcip"],inobj["domain"]))
+            self.plugins_data._set("ip-src", self.random_client_ip.get())
+        # print("Create a HTTP connection from %s to %s" % (inobj["ip-src"],inobj["domain"]))
 
-        self.plugins_data._set("dstip", self.random_server_ip.get())
+        self.plugins_data._set("ip-dst", self.random_server_ip.get())
 
         
         srcport = random.randint(4096,65534)
@@ -34,7 +34,7 @@ class PCraftPlugin(object):
 
 #        print(bufstring)
 
-        smtp_message = Ether() / IP(src=self.plugins_data._get("dstip"),dst=self.plugins_data._get("srcip")) / TCP(sport=srcport,dport=25, seq=last_ack[TCP].ack, ack=last_ack[TCP].seq, flags="P""A") / bufstring
+        smtp_message = Ether() / IP(src=self.plugins_data._get("ip-dst"),dst=self.plugins_data._get("ip-src")) / TCP(sport=srcport,dport=25, seq=last_ack[TCP].ack, ack=last_ack[TCP].seq, flags="P""A") / bufstring
         self.plugins_data.pcap.append(smtp_message)
         
         return script["_next"], self.plugins_data
