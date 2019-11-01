@@ -65,6 +65,8 @@ Please look at the documentation on this topic to understand more about the engi
 Available Plugins
 -----------------
 
+The Plugins documentation is generated from themselves: [Plugins Documentation][plugins]
+
 ### DNSConnection
 
 Requires 'srcip' and 'domain' to be set.
@@ -100,3 +102,4 @@ Sends a TCP Reset flag.
 
 
 [scenario]: doc/scenario.md
+[plugins]: doc/plugins.md

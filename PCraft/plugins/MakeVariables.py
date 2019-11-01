@@ -29,10 +29,13 @@ buildvars:
 
 [taxonomy]:taxonomy.md
 """
+        return helpstr
         
     def run(self, script=None):
-        for k, v in script.items():
-            if not k.startswith("_"):
-                self.plugins_data._set(k, v)
-
-        return script["_next"], self.plugins_data
+        if script:
+            for k, v in script.items():
+                if not k.startswith("_"):
+                    self.plugins_data._set(k, v)
+            return script["_next"], self.plugins_data
+        print("Error with MakeVariables, no script provided!")
+        
