@@ -56,6 +56,12 @@ $ tshark -r hello.pcap
    10   0.004350 10.117.63.91 → 192.168.140.220 DNS 118 Standard query response 0x0000 A masaryk-treasurer.com A 199.34.228.66
 ```
 
+Writing a Scenario
+------------------
+
+Please look at the documentation on this topic to understand more about the engine: "[Writing a Scenario][scenario]".
+
+
 Available Plugins
 -----------------
 
@@ -91,3 +97,6 @@ Ping an IP or a range of IPs.
 
 Requires 'srcip' and 'dstip' to be set.
 Sends a TCP Reset flag.
+
+
+[scenario]: doc/scenario.md
