@@ -3,11 +3,10 @@ from . import _utils as utils
 
 class PCraftPlugin(object):
     name = "DNSConnection"
-
+    required = ["domain"]
+    
     def help(self):
         helpstr="""
-## DNSConnection
-
 Create a DNS Connection towards a domain that was either set in a previous plugin, or 
 being set in the local script scope.
 
@@ -32,6 +31,9 @@ dnsconnect:
 
 """
         return helpstr
+
+    def get_required(self):
+        return self.required
     
     def __init__(self, plugins_data):
         self.plugins_data = plugins_data

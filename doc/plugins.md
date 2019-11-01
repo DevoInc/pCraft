@@ -1,4 +1,7 @@
-
+## HTTPConnection
+## HTTPPostConnection
+## TcpRst
+## GenerateNewDomain
 ## MakeVariables
 
 This Plugins creates variables from scractch based on the [pcraft Taxonomy][taxonomy].
@@ -20,8 +23,13 @@ buildvars:
 
 [taxonomy]:taxonomy.md
 
-
+## PcapImport
 ## DNSConnection
+### Required Variables
+
+| Variable | Description |
+|:--------:|-------------|
+| domain | A domain name |
 
 Create a DNS Connection towards a domain that was either set in a previous plugin, or 
 being set in the local script scope.
@@ -46,3 +54,5 @@ dnsconnect:
 ```
 
 
+## Ping
+## SMTPReceive

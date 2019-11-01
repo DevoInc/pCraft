@@ -6,8 +6,6 @@ class PCraftPlugin(object):
 
     def help(self):
         helpstr="""
-## MakeVariables
-
 This Plugins creates variables from scractch based on the [pcraft Taxonomy][taxonomy].
 
 ### Example
