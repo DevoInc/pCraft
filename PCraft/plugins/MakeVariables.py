@@ -6,13 +6,11 @@ class PCraftPlugin(object):
 
     def help(self):
         helpstr="""
-MakeVariables
-=============
+## MakeVariables
 
 This Plugins creates variables from scractch based on the [pcraft Taxonomy][taxonomy].
 
-Example
--------
+### Example
 
 To replace the two variables "ip-dst" and "domain" that any previous plugins may have
 built, the following can be written:
