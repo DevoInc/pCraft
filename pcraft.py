@@ -56,7 +56,7 @@ if __name__ == "__main__":
                 counter = loop_tracker[next_func]
                 loop_tracker[next_func] -= 1
                 try:
-                    sleep_interval = script[next_func]["sleep"]["interval"]
+                    sleep_interval = script[next_func]["_sleep"]["interval"]
                     time.sleep(sleep_interval)
                 except:
                     pass                
@@ -69,7 +69,7 @@ if __name__ == "__main__":
                     pass # Nothing to do, as we do not get the key "newip"
 
                 try:
-                    sleep_before_start = script[next_func]["sleep"]["before-start"]
+                    sleep_before_start = script[next_func]["_sleep"]["before-start"]
                     time.sleep(sleep_before_start)
                 except:
                     pass                
@@ -78,7 +78,7 @@ if __name__ == "__main__":
                 plugins_loader.plugins_data._set("newip", 0)
                 next_func = script[next_func]["_next"]
                 try:
-                    sleep_once_finished = script[next_func]["sleep"]["once-finished"]
+                    sleep_once_finished = script[next_func]["_sleep"]["once-finished"]
                     time.sleep(sleep_once_finished)
                 except:
                     pass                

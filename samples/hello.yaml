@@ -11,7 +11,7 @@ DNSConnection:
 loop-1:
   count: 3
   newip: 1 # We get a new IP address for each loop
-  sleep: {"before-start":3,"interval":0.2,"once-finished":0.3}
+  _sleep: {"before-start":3,"interval":0.2,"once-finished":0.3}
   _next: done
   _start: DNSConnection # Where our loop starts
 

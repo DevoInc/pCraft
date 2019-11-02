@@ -6,7 +6,7 @@ Generate_a_new_domain:
 
 DNSConnection:
   _plugin: DNSConnection
-  sleep: {"once-finished": 0.1}
+  _sleep: {"once-finished": 0.1}
   _next: HTTPConnection
 
 HTTPConnection:
@@ -22,7 +22,7 @@ HTTPConnection:
 loop-1:
   count: 10
   newip: 1 # We get a new IP address for each loop
-  sleep: {"before-start":1,"interval":0.2,"once-finished":0.3}
+  _sleep: {"before-start":1,"interval":0.2,"once-finished":0.3}
   _next: done
   _start: DNSConnection # Where our loop starts
 
