@@ -31,7 +31,7 @@ DNSConnection:
 loop-1:
   count: 3
   newip: 1 # We get a new IP address for each loop
-  sleep: {"before-start":3,"interval":0.2,"once-finished":0.3}
+  _sleep: {"before-start":3,"interval":0.2,"once-finished":0.3}
   _next: done
   _start: DNSConnection # Where our loop starts
 ```
@@ -66,39 +66,6 @@ Available Plugins
 -----------------
 
 The Plugins documentation is generated from themselves: [Plugins Documentation][plugins]
-
-### DNSConnection
-
-Requires 'ip-src' and 'domain' to be set.
-Create a fake DNS connection of a given domain.
-
-### GenerateNewDomain
-
-Creates a new domain from two words that we know not to exist
-
-### HTTPConnection
-
-Requires 'ip-src' and 'ip-dst' to be set.
-Create a fake HTTP connection, including handshake.
-
-### HTTPPostConnection
-
-Requires 'ip-src' and 'ip-dst' to be set.
-Create a fake POST method from a random amount of data.
-
-### PCAPImport
-
-Import an existing PCAP and replace the IP addresses from the list of IPs set in the script.
-
-### Ping
-
-Requires 'ip-src' and 'ip-dst' to be set.
-Ping an IP or a range of IPs.
-
-### TcpRst
-
-Requires 'ip-src' and 'ip-dst' to be set.
-Sends a TCP Reset flag.
 
 
 [scenario]: doc/scenario.md
