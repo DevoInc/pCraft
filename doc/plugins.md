@@ -1,6 +1,28 @@
 ## HTTPConnection
 ## HTTPPostConnection
 ## TcpRst
+### Required Variables
+
+| Variable | Description |
+|:--------:|-------------|
+| ip-src | Source IP |
+| ip-dst | Destination IP |
+| port-dst | Destination Port |
+
+Send a exchange of SYN followed by RST-ACK between two hosts.
+
+### Examples
+
+#### 1: Send a SYN and receive a RST-ACK
+```
+rstack:
+  _plugin: TcpRst
+  ip-src: "192.168.0.42"
+  ip-dst: "192.168.0.1"
+  port-dst: 9876
+  _next: done
+```
+
 ## GenerateNewDomain
 ## MakeVariables
 
@@ -24,6 +46,24 @@ buildvars:
 [taxonomy]:taxonomy.md
 
 ## PcapImport
+
+Import a PCAP in the current flow.
+
+### Examples
+
+#### Import a pcap 'phishing.pcap', and replace a bunch of IP addresses
+
+```
+importphishing:
+  _plugin: PcapImport
+  filename: phishing.pcap
+  replace: {"ip": {"192.168.0.42": "10.0.0.43",
+                   "172.16.32.45": "10.0.0.53",
+                   "192.168.0.12": "192.168.0.254",
+                  }}
+  _next: done
+```
+
 ## DNSConnection
 ### Required Variables
 

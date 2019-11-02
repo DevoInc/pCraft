@@ -9,7 +9,8 @@ def get_description_from_variable(var):
     var_desc = {"domain": "A domain name",
                 "ip-dst": "Destination IP",
                 "ip-src": "Source IP",
-                "port": "TCP/IP Port",
+                "port-dst": "Destination Port",
+                "port-src": "Source Port",
     }
     return var_desc[var]
 
@@ -24,9 +25,9 @@ for p in loaded_plugins:
         fp.write("## %s\n" % p)
         if required:
             fp.write("### Required Variables\n\n")
+            fp.write("| Variable | Description |\n")
+            fp.write("|:--------:|-------------|\n")
             for r in required:
-                fp.write("| Variable | Description |\n")
-                fp.write("|:--------:|-------------|\n")
                 fp.write("| %s | %s |\n" % (r, get_description_from_variable(r)))
                 
         fp.write(loaded_plugins[p].help())

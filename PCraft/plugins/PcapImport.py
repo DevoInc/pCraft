@@ -6,6 +6,29 @@ import pprint
 class PCraftPlugin(object):
     name = "PcapImport"
 
+    require = ["filename"]
+
+    def help(self):
+        helpstr="""
+Import a PCAP in the current flow.
+
+### Examples
+
+#### Import a pcap 'phishing.pcap', and replace a bunch of IP addresses
+
+```
+importphishing:
+  _plugin: PcapImport
+  filename: phishing.pcap
+  replace: {"ip": {"192.168.0.42": "10.0.0.43",
+                   "172.16.32.45": "10.0.0.53",
+                   "192.168.0.12": "192.168.0.254",
+                  }}
+  _next: done
+```
+"""
+        return helpstr
+        
     def __init__(self, plugins_data):
         self.plugins_data = plugins_data
         

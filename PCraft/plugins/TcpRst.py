@@ -6,13 +6,32 @@ import random
 
 class PCraftPlugin(object):
     name = "TcpRst"
+    required = ["ip-src", "ip-dst", "port-dst"]
 
+    def help(self):
+        helpstr="""
+Send a exchange of SYN followed by RST-ACK between two hosts.
+
+### Examples
+
+#### 1: Send a SYN and receive a RST-ACK
+```
+rstack:
+  _plugin: TcpRst
+  ip-src: "192.168.0.42"
+  ip-dst: "192.168.0.1"
+  port-dst: 9876
+  _next: done
+```
+"""
+        return helpstr
+    
     def __init__(self, plugins_data):
         self.plugins_data = plugins_data
         
     def run(self, script=None):
         # pprint.pprint(script)
-        port = script["dport"]
+        port = script["port-dst"]
         ip = script["ip-dst"]
         all_ips = IP_y(ip)
 
