@@ -1,5 +1,32 @@
 ## HTTPConnection
+
+Creates an http request and response with a random content of a length of 122.
+
+### Examples
+
+#### 1: A Simple HTTP Connection
+```
+httpconnect:
+  _plugin: HTTPConnection
+  method: "GET"
+  uri: "/index.php"
+  user-agent: "Mozilla/5.0"
+  _next: done
+```
+
 ## HTTPPostConnection
+
+Creates an http request and response with a random content of a length of 122.
+
+### Examples
+
+#### 1: A Simple HTTP POST Request
+```
+httpconnect:
+  _plugin: HTTPConnection
+  _next: done
+```
+
 ## TcpRst
 ### Required Variables
 
@@ -24,6 +51,19 @@ rstack:
 ```
 
 ## GenerateNewDomain
+
+Generate a valid non-existing domain name. It takes two words from the dictionary, seperates them with a dash and appends a '.com'.
+
+### Examples
+
+#### 1: Connect to a domain set previously from the plugin chain
+
+```
+generate:
+  _plugin: GenerateNewDomain
+  _next: dnsconnect
+```
+
 ## MakeVariables
 
 This Plugins creates variables from scractch based on the [pcraft Taxonomy][taxonomy].
@@ -95,4 +135,23 @@ dnsconnect:
 
 
 ## Ping
+### Required Variables
+
+| Variable | Description |
+|:--------:|-------------|
+| ip-src | Source IP |
+| ip-dst | Destination IP |
+
+Ping and get an ECHO REPLY between two hosts.
+
+### Examples
+
+#### 1: Ping a host
+
+```
+ping:
+  _plugin: Ping
+  _next: done
+```
+
 ## SMTPReceive

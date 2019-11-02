@@ -3,6 +3,22 @@ import random
 
 class PCraftPlugin(object):
     name = "GenerateNewDomain"
+
+    def help(self):
+        helpstr="""
+Generate a valid non-existing domain name. It takes two words from the dictionary, seperates them with a dash and appends a '.com'.
+
+### Examples
+
+#### 1: Connect to a domain set previously from the plugin chain
+
+```
+generate:
+  _plugin: GenerateNewDomain
+  _next: dnsconnect
+```
+"""
+        return helpstr
     
     def __init__(self, plugins_data):
         self.plugins_data = plugins_data

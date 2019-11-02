@@ -11,6 +11,10 @@ def get_description_from_variable(var):
                 "ip-src": "Source IP",
                 "port-dst": "Destination Port",
                 "port-src": "Source Port",
+                "url": "URL",
+                "uri": "URI",
+                "method": "HTTP Method",
+                "user-agent": "User Agent",
     }
     return var_desc[var]
 

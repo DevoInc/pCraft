@@ -32,9 +32,6 @@ dnsconnect:
 """
         return helpstr
 
-    def get_required(self):
-        return self.required
-    
     def __init__(self, plugins_data):
         self.plugins_data = plugins_data
         self.random_client_ip = utils.getRandomIP("192.168.0.0/16", ipfail="172.16.42.42")

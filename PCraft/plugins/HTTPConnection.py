@@ -6,6 +6,25 @@ import time
 
 class PCraftPlugin(object):
     name = "HTTPConnection"
+    requires = ["ip-src", "ip-dst", "domain", "uri", "method", "user-agent"]
+    
+    def help(self):
+        helpstr="""
+Creates an http request and response with a random content of a length of 122.
+
+### Examples
+
+#### 1: A Simple HTTP Connection
+```
+httpconnect:
+  _plugin: HTTPConnection
+  method: "GET"
+  uri: "/index.php"
+  user-agent: "Mozilla/5.0"
+  _next: done
+```
+"""
+        return helpstr
     
     def __init__(self, plugins_data):
         self.plugins_data = plugins_data

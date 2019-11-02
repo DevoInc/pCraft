@@ -6,6 +6,22 @@ import time
 
 class PCraftPlugin(object):
     name = "HTTPPostConnection"
+    requires = ["ip-src", "ip-dst", "domain"]
+    
+    def help(self):
+        helpstr="""
+Creates an http request and response with a random content of a length of 122.
+
+### Examples
+
+#### 1: A Simple HTTP POST Request
+```
+httpconnect:
+  _plugin: HTTPConnection
+  _next: done
+```
+"""
+        return helpstr
     
     def __init__(self, plugins_data):
         self.plugins_data = plugins_data

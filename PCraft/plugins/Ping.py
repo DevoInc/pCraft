@@ -5,6 +5,24 @@ from . import _utils as utils
 class PCraftPlugin(object):
     name = "Ping"
 
+    required = ["ip-src", "ip-dst"]
+    
+    def help(self):
+        helpstr="""
+Ping and get an ECHO REPLY between two hosts.
+
+### Examples
+
+#### 1: Ping a host
+
+```
+ping:
+  _plugin: Ping
+  _next: done
+```
+"""
+        return helpstr
+
     def __init__(self, plugins_data):
         self.plugins_data = plugins_data
         
