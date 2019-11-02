@@ -15,6 +15,7 @@ def get_description_from_variable(var):
                 "uri": "URI",
                 "method": "HTTP Method",
                 "user-agent": "User Agent",
+                "filename": "A File name"
     }
     return var_desc[var]
 

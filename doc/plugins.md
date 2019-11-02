@@ -1,4 +1,14 @@
 ## HTTPConnection
+### Required Variables
+
+| Variable | Description |
+|:--------:|-------------|
+| ip-src | Source IP |
+| ip-dst | Destination IP |
+| domain | A domain name |
+| uri | URI |
+| method | HTTP Method |
+| user-agent | User Agent |
 
 Creates an http request and response with a random content of a length of 122.
 
@@ -15,6 +25,13 @@ httpconnect:
 ```
 
 ## HTTPPostConnection
+### Required Variables
+
+| Variable | Description |
+|:--------:|-------------|
+| ip-src | Source IP |
+| ip-dst | Destination IP |
+| domain | A domain name |
 
 Creates an http request and response with a random content of a length of 122.
 
@@ -86,6 +103,11 @@ buildvars:
 [taxonomy]:taxonomy.md
 
 ## PcapImport
+### Required Variables
+
+| Variable | Description |
+|:--------:|-------------|
+| filename | A File name |
 
 Import a PCAP in the current flow.
 

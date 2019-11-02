@@ -5,8 +5,7 @@ import pprint
 
 class PCraftPlugin(object):
     name = "PcapImport"
-
-    require = ["filename"]
+    required = ["filename"]
 
     def help(self):
         helpstr="""

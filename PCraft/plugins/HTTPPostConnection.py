@@ -6,7 +6,7 @@ import time
 
 class PCraftPlugin(object):
     name = "HTTPPostConnection"
-    requires = ["ip-src", "ip-dst", "domain"]
+    required = ["ip-src", "ip-dst", "domain"]
     
     def help(self):
         helpstr="""
