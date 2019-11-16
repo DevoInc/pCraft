@@ -1,0 +1,7 @@
+start: FirstController
+
+FirstController:
+  _plugin: Controller
+  log_plugin: MyPlugin
+  kvdata: "foo"="bar" "yo"="man"
+  _next: done
