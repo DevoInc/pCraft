@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import os
+import re
 import yaml
 import pprint
 import datetime
@@ -12,16 +13,41 @@ from PCraft.Plugins import *
 def print_loading_plugins(plugin):
     print("Loading Plugin: %s" % plugin)
 
-def exec_plugin(plugin, script):
+variable_rex = re.compile(r"\$([a-zA-Z0-9]+)") # Find variables from scripts for replacement
+def substitute_variables(plugins_loader, script):
+    newscript = {}
+    
+    for key, value in script.items():
+        matches = variable_rex.findall(value)
+        if matches:
+            for m in matches:
+                try:
+                    sub = plugins_loader.get_plugins_data()._get(m)
+                except KeyError:
+                    print("ERROR: Variable '%s' cannot be substituted since it has not beed created before. Please fix your scenario." % m)
+                    sys.exit(1)
+                value = value.replace("$"+m, sub, 1)
+                newscript[key] = value
+        else:
+            newscript[key] = value
+#        print(m)
+
+    # print(newscript)
+    return newscript
+
+def exec_plugin(plugins_loader, plugin, script):
 #    print("========\n%s\n========" % script)
     ans = None
     try:
+        script = substitute_variables(plugins_loader, script)
         ans = plugin.run(script)
     except(KeyError):
         # There is no input? Then there is no argument!
         ans = plugin.run()
 
     return ans
+
+
 
 loop_tracker = {} # We track our loops by name
 is_in_loop = None
@@ -31,6 +57,7 @@ if __name__ == "__main__":
         print("Syntax: %s script.yaml output.pcap" % sys.argv[0])
         sys.exit(1)
 
+        
     plugins_loader = Plugins(loadfunc=print_loading_plugins)
     loaded_plugins = plugins_loader.get_loaded_plugins()
     print("All plugins loaded!")
@@ -43,7 +70,7 @@ if __name__ == "__main__":
     next_func = script[script["start"]]["_plugin"]
     script[script["start"]]["__dir"] = os.path.dirname(sys.argv[1])
     print("[%s] Executing: %s" % (datetime.datetime.now(), script["start"]))
-    next_func, ans = exec_plugin(loaded_plugins[next_func], script[script["start"]])
+    next_func, ans = exec_plugin(plugins_loader, loaded_plugins[next_func], script[script["start"]])
 #    print("next func:%s" % next_func)
     while next_func:
         print("[%s] Executing: %s" % (datetime.datetime.now(), next_func))
@@ -90,7 +117,8 @@ if __name__ == "__main__":
 
 #        print(script[next_func]["_plugin"])
         script[next_func]["__dir"] = os.path.dirname(sys.argv[1])
-        next_func, ans = exec_plugin(loaded_plugins[script[next_func]["_plugin"]], script[next_func])
+
+        next_func, ans = exec_plugin(plugins_loader, loaded_plugins[script[next_func]["_plugin"]], script[next_func])
             # print("next func:%s" % next_func)
         # print(ans)
 

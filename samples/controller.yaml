@@ -1,7 +1,11 @@
-start: FirstController
+start: Generate_a_new_domain
+
+Generate_a_new_domain:
+  _plugin: GenerateNewDomain
+  _next: FirstController
 
 FirstController:
   _plugin: Controller
   log_plugin: MyPlugin
-  kvdata: "foo"="bar" "yo"="man"
+  kvdata: foo=bar yo='$domain $domain'
   _next: done
