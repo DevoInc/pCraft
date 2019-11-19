@@ -35,7 +35,7 @@ def substitute_variables(plugins_loader, script):
     # print(newscript)
     return newscript
 
-functions_rex = re.compile(r"=@=(.*)=@=")
+functions_rex = re.compile(r"=@=(.*?)=@=")
 def substitute_function(loaded_functions, scenariofile, script):
     newscript = {}
 
