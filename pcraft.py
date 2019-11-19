@@ -88,7 +88,7 @@ if __name__ == "__main__":
                 except:
                     pass                
             except KeyError:
-                loop_tracker[next_func] = script[next_func]["count"]
+                loop_tracker[next_func] = script[next_func]["count"] - 1
                 counter = loop_tracker[next_func]
                 try:
                     plugins_loader.get_plugins_data()._set("newip", script[next_func]["newip"])
