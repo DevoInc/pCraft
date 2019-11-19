@@ -51,7 +51,7 @@ dnsconnect:
             pass
             
         ipdst=self.random_server_ip.get()
-        dns_resp_ip = "199.34.228.66"
+        dns_resp_ip = "1.1.1.1"
         self.plugins_data._set("ip-dst", dns_resp_ip)
 
 
