@@ -30,7 +30,6 @@ def substitute_variables(plugins_loader, script):
                 newscript[key] = value
         else:
             newscript[key] = value
-#        print(m)
 
     # print(newscript)
     return newscript
