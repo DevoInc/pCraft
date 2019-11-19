@@ -1,4 +1,3 @@
-from . import _utils as utils
 import struct
 import socket
 import sys
@@ -52,3 +51,28 @@ namefromip:
         self.plugins_data._set("hostname", outstr)
         
         return script["_next"], self.plugins_data
+
+
+if __name__ == "__main__":
+        ipaddr = sys.argv[1]
+
+        try:
+            iptoint=struct.unpack("!I", socket.inet_pton(socket.AF_INET, ipaddr))[0]
+        except OSError: # illegal IP address string passed to inet_pton
+            iptoint=struct.unpack("!IIII", socket.inet_pton(socket.AF_INET6, ipaddr))[0]
+    
+        ipstr = str(iptoint)
+        outstr = ""
+        pos = 0
+        for i in ipstr:
+            n = int(i)
+            if pos % 2:
+                outstr += vowels[n]
+            else:
+                outstr += consonants[n]
+
+            pos += 1
+
+
+        print(outstr)
+        

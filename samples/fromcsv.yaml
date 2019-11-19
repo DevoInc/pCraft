@@ -1,0 +1,6 @@
+start: DNSConnection
+
+DNSConnection:
+  _plugin: DNSConnection
+  domain: =@=fromcsv(sequential, "fromcsv.csv", header=true, col="domain")=@=
+  _next: done

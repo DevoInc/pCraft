@@ -9,6 +9,7 @@ from scapy.all import wrpcap
 from scapy.utils import PcapWriter
 
 from PCraft.Plugins import *
+from PCraft.Functions import *
 
 def print_loading_plugins(plugin):
     print("Loading Plugin: %s" % plugin)
@@ -34,11 +35,36 @@ def substitute_variables(plugins_loader, script):
     # print(newscript)
     return newscript
 
-def exec_plugin(plugins_loader, plugin, script):
+functions_rex = re.compile(r"=@=(.*)=@=")
+def substitute_function(loaded_functions, script):
+    newscript = {}
+
+    one_function_rex = re.compile(r"(\S+)\((.*)\)")
+    
+    for key, value in script.items():
+        matches = functions_rex.findall(value)
+        if matches:
+            for m in matches:
+#                print("Function: %s" % m)
+                single = one_function_rex.match(m)
+                if single:
+                    function_name = single.group(1)
+                    function_args = single.group(2)
+
+                    funcout = loaded_functions[function_name].run(function_args)
+                    value = value.replace("=@=" + m + "=@=", funcout, 1)
+                else:
+                    raise("No matching function, replacement impossible. Please fix: %s" % m)
+        newscript[key] = value
+
+    return newscript
+
+def exec_plugin(plugins_loader, loaded_functions, plugin, script):
 #    print("========\n%s\n========" % script)
     ans = None
     try:
         script = substitute_variables(plugins_loader, script)
+        script = substitute_function(loaded_functions, script)
         ans = plugin.run(script)
     except(KeyError):
         # There is no input? Then there is no argument!
@@ -60,6 +86,9 @@ if __name__ == "__main__":
     plugins_loader = Plugins(loadfunc=print_loading_plugins)
     loaded_plugins = plugins_loader.get_loaded_plugins()
     print("All plugins loaded!")
+    functions_loader = Functions()
+    loaded_functions = functions_loader.get_loaded_functions()
+    print("All functions loaded!")
     
     print("Opening Script File %s" % sys.argv[1])
     script_fp = open(sys.argv[1])
@@ -69,7 +98,7 @@ if __name__ == "__main__":
     next_func = script[script["start"]]["_plugin"]
     script[script["start"]]["__dir"] = os.path.dirname(sys.argv[1])
     print("[%s] Executing: %s" % (datetime.datetime.now(), script["start"]))
-    next_func, ans = exec_plugin(plugins_loader, loaded_plugins[next_func], script[script["start"]])
+    next_func, ans = exec_plugin(plugins_loader, loaded_functions, loaded_plugins[next_func], script[script["start"]])
 #    print("next func:%s" % next_func)
     while next_func:
         print("[%s] Executing: %s" % (datetime.datetime.now(), next_func))
@@ -117,7 +146,7 @@ if __name__ == "__main__":
 #        print(script[next_func]["_plugin"])
         script[next_func]["__dir"] = os.path.dirname(sys.argv[1])
 
-        next_func, ans = exec_plugin(plugins_loader, loaded_plugins[script[next_func]["_plugin"]], script[next_func])
+        next_func, ans = exec_plugin(plugins_loader, loaded_functions, loaded_plugins[script[next_func]["_plugin"]], script[next_func])
             # print("next func:%s" % next_func)
         # print(ans)
 
