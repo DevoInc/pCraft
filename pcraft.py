@@ -54,7 +54,7 @@ def substitute_function(loaded_functions, scenariofile, script):
                     funcout = loaded_functions[function_name].run(scenariofile, function_args)
                     value = value.replace("=@=" + m + "=@=", funcout, 1)
                 else:
-                    raise("No matching function, replacement impossible. Please fix: %s" % m)
+                    raise ValueError("No matching function, replacement impossible. Please fix: %s" % m)
         newscript[key] = value
 
     return newscript

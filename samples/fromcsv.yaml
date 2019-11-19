@@ -2,5 +2,11 @@ start: DNSConnection
 
 DNSConnection:
   _plugin: DNSConnection
-  domain: =@=fromcsv(sequential, "fromcsv.csv", header=true, col="domain")=@=
+  domain: =@=fromcsv(sequential, fromcsv.csv, header=false, col=domain)=@=
+  _next: loop-1
+
+loop-1:
+  count: 5
   _next: done
+  _start: DNSConnection
+  
