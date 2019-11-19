@@ -1,0 +1,11 @@
+start: Generate_a_hostname
+
+Generate_a_hostname:
+  _plugin: HostnameFromIP
+  ip: 127.0.0.1
+  _next: DNSConnection
+
+DNSConnection:
+  _plugin: DNSConnection
+  domain: $hostname
+  _next: done

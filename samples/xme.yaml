@@ -1,0 +1,18 @@
+start: GenerateNewDomain
+
+GenerateNewDomain:
+  _plugin: GenerateNewDomain
+  _next: DNSConnection
+
+DNSConnection:
+  _plugin: DNSConnection
+  _sleep: {"once-finished": 1}
+  _next: HTTPConnection
+
+HTTPConnection:
+  _plugin: HTTPConnection
+  method: GET
+  uri: "/shell?busybox"
+  user-agent: "Mozilla/5.0"
+  _next: done
+  
