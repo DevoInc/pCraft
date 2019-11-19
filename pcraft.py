@@ -36,7 +36,7 @@ def substitute_variables(plugins_loader, script):
     return newscript
 
 functions_rex = re.compile(r"=@=(.*)=@=")
-def substitute_function(loaded_functions, script):
+def substitute_function(loaded_functions, scenariofile, script):
     newscript = {}
 
     one_function_rex = re.compile(r"(\S+)\((.*)\)")
@@ -51,7 +51,7 @@ def substitute_function(loaded_functions, script):
                     function_name = single.group(1)
                     function_args = single.group(2)
 
-                    funcout = loaded_functions[function_name].run(function_args)
+                    funcout = loaded_functions[function_name].run(scenariofile, function_args)
                     value = value.replace("=@=" + m + "=@=", funcout, 1)
                 else:
                     raise("No matching function, replacement impossible. Please fix: %s" % m)
@@ -59,12 +59,12 @@ def substitute_function(loaded_functions, script):
 
     return newscript
 
-def exec_plugin(plugins_loader, loaded_functions, plugin, script):
+def exec_plugin(scenariofile, plugins_loader, loaded_functions, plugin, script):
 #    print("========\n%s\n========" % script)
     ans = None
     try:
         script = substitute_variables(plugins_loader, script)
-        script = substitute_function(loaded_functions, script)
+        script = substitute_function(loaded_functions, scenariofile, script)
         ans = plugin.run(script)
     except(KeyError):
         # There is no input? Then there is no argument!
@@ -91,14 +91,15 @@ if __name__ == "__main__":
     print("All functions loaded!")
     
     print("Opening Script File %s" % sys.argv[1])
-    script_fp = open(sys.argv[1])
+    scenario_file = sys.argv[1]
+    script_fp = open(scenario_file)
     script = yaml.load(script_fp.read(), Loader=yaml.SafeLoader)
     script_fp.close()
 
     next_func = script[script["start"]]["_plugin"]
     script[script["start"]]["__dir"] = os.path.dirname(sys.argv[1])
     print("[%s] Executing: %s" % (datetime.datetime.now(), script["start"]))
-    next_func, ans = exec_plugin(plugins_loader, loaded_functions, loaded_plugins[next_func], script[script["start"]])
+    next_func, ans = exec_plugin(scenario_file, plugins_loader, loaded_functions, loaded_plugins[next_func], script[script["start"]])
 #    print("next func:%s" % next_func)
     while next_func:
         print("[%s] Executing: %s" % (datetime.datetime.now(), next_func))
@@ -146,7 +147,7 @@ if __name__ == "__main__":
 #        print(script[next_func]["_plugin"])
         script[next_func]["__dir"] = os.path.dirname(sys.argv[1])
 
-        next_func, ans = exec_plugin(plugins_loader, loaded_functions, loaded_plugins[script[next_func]["_plugin"]], script[next_func])
+        next_func, ans = exec_plugin(scenario_file, plugins_loader, loaded_functions, loaded_plugins[script[next_func]["_plugin"]], script[next_func])
             # print("next func:%s" % next_func)
         # print(ans)
 

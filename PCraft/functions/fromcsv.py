@@ -23,7 +23,8 @@ DNSConnection:
     def __init__(self):
         pass
 
-    def run(self, arguments):
+    def run(self, scenariofile, arguments):
+        print("scenariofile:%s" % str(scenariofile))
         print("arguments:%s" % str(arguments))
 
         return "foobar"
