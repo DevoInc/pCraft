@@ -14,25 +14,50 @@ from PCraft.Functions import *
 def print_loading_plugins(plugin):
     print("Loading Plugin: %s" % plugin)
 
-variable_rex = re.compile(r"\$([a-zA-Z0-9]+)") # Find variables from scripts for replacement
+variable_rex = re.compile(r"\$([a-zA-Z0-9-_]+)") # Find variables from scripts for replacement
+def substitute_one_variable(plugins_loader, value):
+    matches = variable_rex.findall(value)
+    if matches: 
+        for m in matches:
+            try:
+                sub = plugins_loader.get_plugins_data()._get(m)
+            except KeyError:
+                print("ERROR: Variable '%s' cannot be substituted since it has not been created before. Please fix your scenario." % m)
+                sys.exit(1)
+            value = value.replace("$"+m, sub, 1)
+            return value
+    else:
+        return value
+
+def substitute_variables_from_dict(plugins_loader, mydict, newdict, upk):
+    for k, v in mydict.items():
+        if isinstance(v, dict):
+            substitute_variables_from_dict(plugins_loader, v, newdict, k)
+        else:
+            try:
+                newdict[upk][k] = substitute_one_variable(plugins_loader, v)
+            except KeyError:
+                newdict[upk] = {}
+                newdict[upk][k] = substitute_one_variable(plugins_loader, v)
+                
+    return newdict
+
 def substitute_variables(plugins_loader, script):
     newscript = {}
+
+    # print("OLD::%s" % script)
     
     for key, value in script.items():
-        matches = variable_rex.findall(value)
-        if matches:
-            for m in matches:
-                try:
-                    sub = plugins_loader.get_plugins_data()._get(m)
-                except KeyError:
-                    print("ERROR: Variable '%s' cannot be substituted since it has not beed created before. Please fix your scenario." % m)
-                    sys.exit(1)
-                value = value.replace("$"+m, sub, 1)
-                newscript[key] = value
+        if isinstance(value, dict):
+            # We have a dict from YAML, we recusively search for variables
+            newdict = {}
+            newdict = substitute_variables_from_dict(plugins_loader, value, newdict, None)
+            print("Adding the new dict to key:%s" % key)
+            newscript[key] = newdict
         else:
-            newscript[key] = value
+            newscript[key] = substitute_one_variable(plugins_loader, value)
 
-    # print(newscript)
+    # print("NS::" + str(newscript))
     return newscript
 
 functions_rex = re.compile(r"=@=(.*?)=@=")
@@ -42,19 +67,23 @@ def substitute_function(loaded_functions, scenariofile, script):
     one_function_rex = re.compile(r"(\S+)\((.*)\)")
     
     for key, value in script.items():
-        matches = functions_rex.findall(value)
-        if matches:
-            for m in matches:
+        if isinstance(value, dict):
+            print("dict not supported for function calls")
+            return script
+        else:
+            matches = functions_rex.findall(value)
+            if matches:
+                for m in matches:
 #                print("Function: %s" % m)
-                single = one_function_rex.match(m)
-                if single:
-                    function_name = single.group(1)
-                    function_args = single.group(2)
+                    single = one_function_rex.match(m)
+                    if single:
+                        function_name = single.group(1)
+                        function_args = single.group(2)
 
-                    funcout = loaded_functions[function_name].run(scenariofile, function_args)
-                    value = value.replace("=@=" + m + "=@=", funcout, 1)
-                else:
-                    raise ValueError("No matching function, replacement impossible. Please fix: %s" % m)
+                        funcout = loaded_functions[function_name].run(scenariofile, function_args)
+                        value = value.replace("=@=" + m + "=@=", funcout, 1)
+                    else:
+                        raise ValueError("No matching function, replacement impossible. Please fix: %s" % m)
         newscript[key] = value
 
     return newscript
