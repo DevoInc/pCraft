@@ -46,7 +46,7 @@ def substitute_variables_from_dict(plugins_loader, mydict, newdict, upk):
 
 def substitute_variables(plugins_loader, script):
     newscript = {}
-    
+
     for key, value in script.items():
         if isinstance(value, dict):
             # We have a dict from YAML, we recusively search for variables
@@ -55,6 +55,8 @@ def substitute_variables(plugins_loader, script):
             print("Adding the new dict to key:%s" % key)
             newscript[key] = newdict
         else:
+            if not key.startswith("_"): # We add the variables in that script to be used right after
+                plugins_loader.get_plugins_data()._set(key, value)
             newscript[key] = substitute_one_variable(plugins_loader, value)
 
 #    print("NS::" + str(newscript))
