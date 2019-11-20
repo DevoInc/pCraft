@@ -1,6 +1,7 @@
 import csv
 import os
 import random
+import sys
 
 class PCraftFunction(object):
     name = "fromcsv"
@@ -37,9 +38,13 @@ DNSConnection:
             raise ValueError("Running fromcsv function with invalid arguments number!")
 
         readtype = args[0]
-        typevalues = ["sequential","random"]
-        if readtype.lower() not in typevalues:
-            raise ValueError("fromcsv function argument not in accepted values: [%s]" % str(typevalues))
+        try:
+            readtype = int(readtype)
+        except ValueError:
+            typevalues = ["sequential","random"]
+            if readtype.lower() not in typevalues:
+                raise ValueError("fromcsv function argument not in accepted values: [%s]" % str(typevalues))
+            
         csvfile = os.path.join(scenariodir, args[1])
         header = [ True if args[2].split("=")[1].strip().lower() == "true" else False ]
         col = args[3].split("=")[1].strip()
@@ -58,6 +63,14 @@ DNSConnection:
             self.reader = csv.DictReader(self.csvfp)
             self.readerlist = list(self.reader)
             self.first = False
+
+        if isinstance(readtype, int):
+            try:
+                line = self.readerlist[readtype]
+            except IndexError:
+                print("Error: No such line %d from the csv %s" % (readtype, csvfile))
+                sys.exit(1)
+            return line[col]
             
         if readtype == "sequential":
             if self.sequence >= len(self.readerlist):

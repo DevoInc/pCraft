@@ -1,12 +1,16 @@
 start: DNSConnection
 
+printvars:
+  _plugin: PrintVariables
+  _next: DNSConnection
+
 DNSConnection:
   _plugin: DNSConnection
-  domain: =@=fromcsv(sequential, fromcsv.csv, header=false, col=domain)=@=-=@=fromcsv(random, fromcsv.csv, header=false, col=domain)=@=.com
+  domain: =@=fromcsv(2, fromcsv.csv, header=false, col=domain)=@=-=@=fromcsv(random, fromcsv.csv, header=false, col=domain)=@=.com
   _next: loop-1
 
 loop-1:
   count: 5
   _next: done
-  _start: DNSConnection
+  _start: printvars
   

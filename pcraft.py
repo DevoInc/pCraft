@@ -139,6 +139,8 @@ if __name__ == "__main__":
             counter = 0
             try:
                 counter = loop_tracker[next_func]
+                plugins_loader.plugins_data._set("_count", counter)
+                
                 loop_tracker[next_func] -= 1
                 try:
                     sleep_interval = script[next_func]["_sleep"]["interval"]
@@ -148,6 +150,8 @@ if __name__ == "__main__":
             except KeyError:
                 loop_tracker[next_func] = script[next_func]["count"] - 1
                 counter = loop_tracker[next_func]
+                plugins_loader.plugins_data._set("_count", counter + 1)
+                
                 try:
                     plugins_loader.get_plugins_data()._set("newip", script[next_func]["newip"])
                 except:
