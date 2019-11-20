@@ -8,4 +8,9 @@ Generate_a_hostname:
 DNSConnection:
   _plugin: DNSConnection
   domain: $hostname
+  _next: DNSFunctionConnection
+
+DNSFunctionConnection:
+  _plugin: DNSConnection
+  domain: =@=hostname(127.0.0.1)=@=
   _next: done
