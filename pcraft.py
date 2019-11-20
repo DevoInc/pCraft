@@ -117,7 +117,7 @@ if __name__ == "__main__":
     plugins_loader = Plugins(loadfunc=print_loading_plugins)
     loaded_plugins = plugins_loader.get_loaded_plugins()
     print("All plugins loaded!")
-    functions_loader = Functions()
+    functions_loader = Functions(plugins_loader.get_plugins_data())
     loaded_functions = functions_loader.get_loaded_functions()
     print("All functions loaded!")
     

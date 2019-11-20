@@ -25,7 +25,8 @@ DNSConnection:
 """
         return helpstr
     
-    def __init__(self):
+    def __init__(self, plugins_data):
+        self.plugins_data = plugins_data
         self.sequence = 0
         self.first = True
         self.csvfp = None
