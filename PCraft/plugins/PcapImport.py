@@ -32,7 +32,7 @@ importphishing:
         self.plugins_data = plugins_data
         
     def run(self, script=None):
-        pprint.pprint(script)
+        # pprint.pprint(script)
         pcap_in = os.path.join(script["__dir"], script["filename"])
         print("Importing PCAP: %s" % pcap_in)
 
