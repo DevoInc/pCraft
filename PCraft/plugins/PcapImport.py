@@ -127,8 +127,8 @@ importphishing:
                             if packet[IP].dst == ip_to_replace:
                                 packet[IP].dst = str(individual_ip)
                                 n_items_replaced += 1
-                        else:
-                            print("No IP Layer")
+                        # else:
+                        #     print("No IP Layer")
 
                         if str(individual_ip) == ipstop:
                             has_stoped = True

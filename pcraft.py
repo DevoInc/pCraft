@@ -16,6 +16,8 @@ def print_loading_plugins(plugin):
 
 variable_rex = re.compile(r"\$([a-zA-Z0-9-_]+)") # Find variables from scripts for replacement
 def substitute_one_variable(plugins_loader, value):
+    if not isinstance(value, str):
+        return value # We only replace strings!
     matches = variable_rex.findall(value)
     if matches: 
         for m in matches:
@@ -44,8 +46,6 @@ def substitute_variables_from_dict(plugins_loader, mydict, newdict, upk):
 
 def substitute_variables(plugins_loader, script):
     newscript = {}
-
-    # print("OLD::%s" % script)
     
     for key, value in script.items():
         if isinstance(value, dict):
@@ -57,7 +57,7 @@ def substitute_variables(plugins_loader, script):
         else:
             newscript[key] = substitute_one_variable(plugins_loader, value)
 
-    # print("NS::" + str(newscript))
+#    print("NS::" + str(newscript))
     return newscript
 
 functions_rex = re.compile(r"=@=(.*?)=@=")
