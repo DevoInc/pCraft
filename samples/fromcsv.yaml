@@ -7,8 +7,13 @@ printvars:
 DNSConnection:
   _plugin: DNSConnection
   domain: =@=fromcsv(2, fromcsv.csv, header=false, col=domain)=@=-=@=fromcsv(random, fromcsv.csv, header=false, col=domain)=@=.com
-  _next: loop-1
+  _next: DNSConnection2
 
+DNSConnection2:
+  _plugin: DNSConnection
+  domain: =@=fromcsv(firstmatch::domain::cezasaduzo, fromcsv.csv, header=false, col=domain)=@=
+  _next: loop-1
+  
 loop-1:
   count: 5
   _next: done

@@ -42,9 +42,10 @@ DNSConnection:
         try:
             readtype = int(readtype)
         except ValueError:
-            typevalues = ["sequential","random"]
-            if readtype.lower() not in typevalues:
-                raise ValueError("fromcsv function argument not in accepted values: [%s]" % str(typevalues))
+            if not readtype.startswith("firstmatch::"):
+                typevalues = ["sequential","random"]
+                if readtype.lower() not in typevalues:
+                    raise ValueError("fromcsv function argument not in accepted values: [%s]" % str(typevalues))
             
         csvfile = os.path.join(scenariodir, args[1])
         header = [ True if args[2].split("=")[1].strip().lower() == "true" else False ]
@@ -85,6 +86,12 @@ DNSConnection:
             number = random.randint(0, len(self.readerlist) - 1)
             line = self.readerlist[number]
             return line[col]            
+
+        if readtype.startswith("firstmatch::"):
+            firstmatch, field, value = readtype.split("::")
+            for line in self.readerlist:
+                if line[field] == value:
+                    return line[col]
         
         return retval
     
