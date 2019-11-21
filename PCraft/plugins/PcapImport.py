@@ -1,6 +1,7 @@
 from IPy import IP as IP_y
 from scapy.all import Ether, CookedLinux, IP, TCP, UDP, rdpcap
 from . import _utils as utils
+import time
 import pprint
 
 class PCraftPlugin(object):
@@ -53,6 +54,8 @@ importphishing:
         last_packet = None
         seq = 0
         for packet in packets:
+            packet.time = time.time()
+#            print(packet.time)
             if CookedLinux in packet:
                 packet = Ether() / packet.payload
                         
