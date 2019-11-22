@@ -146,14 +146,14 @@ if __name__ == "__main__":
             sleep_before_start = script[next_func]["_sleep"]["before-start"]
             time.sleep(sleep_before_start)
         except:
-            pass                
-        
+            pass        
         
         #
         # Loop Handler
         #
         if next_func.startswith("loop-"):
             counter = 0
+            
             try:
                 counter = loop_tracker[next_func]
                 plugins_loader.plugins_data._set("_count", counter)
@@ -178,6 +178,13 @@ if __name__ == "__main__":
                 # We are finished, we clear out newip field
                 plugins_loader.plugins_data._set("newip", 0)
                 
+                try: # We also keep the time feature within our loop
+                    sleep_once_finished = script[next_func]["_sleep"]["once-finished"]
+                    print("We are finished, we a required to sleep %s seconds" % sleep_once_finished)
+                    time.sleep(sleep_once_finished)
+                except:
+                    pass
+        
                 next_func = script[next_func]["_next"]
             else:
                 next_func = script[next_func]["_start"] 
