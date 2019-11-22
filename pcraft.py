@@ -4,6 +4,7 @@ import os
 import re
 import yaml
 import pprint
+import time
 import datetime
 from scapy.all import wrpcap
 from scapy.utils import PcapWriter
@@ -137,6 +138,20 @@ if __name__ == "__main__":
         #        if is_in_loop:
         if next_func == "done":
             break # We stop
+
+        #
+        # Time Handler: Before Start
+        #
+        try:
+            sleep_before_start = script[next_func]["_sleep"]["before-start"]
+            time.sleep(sleep_before_start)
+        except:
+            pass                
+        
+        
+        #
+        # Loop Handler
+        #
         if next_func.startswith("loop-"):
             counter = 0
             try:
@@ -159,22 +174,13 @@ if __name__ == "__main__":
                 except:
                     pass # Nothing to do, as we do not get the key "newip"
 
-                try:
-                    sleep_before_start = script[next_func]["_sleep"]["before-start"]
-                    time.sleep(sleep_before_start)
-                except:
-                    pass                
-
             if counter <= 0:
+                # We are finished, we clear out newip field
                 plugins_loader.plugins_data._set("newip", 0)
+                
                 next_func = script[next_func]["_next"]
-                try:
-                    sleep_once_finished = script[next_func]["_sleep"]["once-finished"]
-                    time.sleep(sleep_once_finished)
-                except:
-                    pass                
             else:
-                next_func = script[next_func]["_start"]
+                next_func = script[next_func]["_start"] 
                 
         if next_func == "done":
             break # We stop
@@ -182,6 +188,17 @@ if __name__ == "__main__":
 #        print(script[next_func]["_plugin"])
         script[next_func]["__dir"] = os.path.dirname(sys.argv[1])
 
+        #
+        # Time Handler: Once Finished
+        #
+        try:
+            sleep_once_finished = script[next_func]["_sleep"]["once-finished"]
+            print("We are finished, we a required to sleep %s seconds" % sleep_once_finished)
+            time.sleep(sleep_once_finished)
+        except:
+            pass
+        
+        
         next_func, ans = exec_plugin(scenario_file, plugins_loader, loaded_functions, loaded_plugins[script[next_func]["_plugin"]], script[next_func])
             # print("next func:%s" % next_func)
         # print(ans)
