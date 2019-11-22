@@ -102,6 +102,10 @@ def exec_plugin(scenariofile, plugins_loader, loaded_functions, plugin, script):
         # There is no input? Then there is no argument!
         ans = plugin.run()
 
+    if not ans:
+        print("Error, answer never gotten from plugin, which means there is an issue executing the script:")
+        pprint.pprint(script)
+        
     return ans
 
 
@@ -130,7 +134,8 @@ if __name__ == "__main__":
 
     next_func = script[script["start"]]["_plugin"]
     script[script["start"]]["__dir"] = os.path.dirname(sys.argv[1])
-    print("[%s] Executing: %s" % (datetime.datetime.now(), script["start"]))
+    print("[%s] Executing(1): %s" % (datetime.datetime.now(), script["start"]))
+#    pprint.pprint(script[script["start"]])
     next_func, ans = exec_plugin(scenario_file, plugins_loader, loaded_functions, loaded_plugins[next_func], script[script["start"]])
 #    print("next func:%s" % next_func)
     while next_func:

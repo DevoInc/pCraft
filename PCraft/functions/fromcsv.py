@@ -29,9 +29,7 @@ DNSConnection:
         self.plugins_data = plugins_data
         self.sequence = 0
         self.first = True
-        self.csvfp = None
-        self.reader = None
-        self.readerlist = None
+        self.all_csv_files = {}
         
     def _parse_arguments(self, scenariodir, arguments):
         args = [x.strip() for x in arguments.split(",")]
@@ -60,38 +58,53 @@ DNSConnection:
 
         readtype, csvfile, header, col = self._parse_arguments(scenariodir, arguments)
 
-        if self.first:
-            self.csvfp = open(csvfile, "r")
-            self.reader = csv.DictReader(self.csvfp)
-            self.readerlist = list(self.reader)
-            self.first = False
+        try:
+            csvfp = self.all_csv_files[csvfile]["fp"]
+            reader = self.all_csv_files[csvfile]["reader"]
+            readerlist = self.all_csv_files[csvfile]["readerlist"]
+        except KeyError:
+            self.all_csv_files[csvfile] = {}
+            self.all_csv_files[csvfile]["fp"] = open(csvfile, "r")
+            csvfp = self.all_csv_files[csvfile]["fp"]
+            self.all_csv_files[csvfile]["reader"] = csv.DictReader(csvfp)
+            reader = self.all_csv_files[csvfile]["reader"]
+            self.all_csv_files[csvfile]["readerlist"] = list(reader)
+            readerlist = self.all_csv_files[csvfile]["readerlist"]
 
         if isinstance(readtype, int):
             try:
-                line = self.readerlist[readtype]
+                line = readerlist[readtype]
             except IndexError:
                 print("Error: No such line %d from the csv %s" % (readtype, csvfile))
                 sys.exit(1)
             return line[col]
             
         if readtype == "sequential":
-            if self.sequence >= len(self.readerlist):
+            if self.sequence >= len(readerlist):
                 self.sequence = 0
 
-            line = self.readerlist[self.sequence]
+            line = readerlist[self.sequence]
             self.sequence += 1
             return line[col]
 
         if readtype == "random":
-            number = random.randint(0, len(self.readerlist) - 1)
-            line = self.readerlist[number]
+            number = random.randint(0, len(readerlist) - 1)
+            line = readerlist[number]
             return line[col]            
 
         if readtype.startswith("firstmatch::"):
             firstmatch, field, value = readtype.split("::")
-            for line in self.readerlist:
+            for line in readerlist:
                 if line[field] == value:
                     return line[col]
         
         return retval
+    
+
+if __name__ == "__main__":
+    pf = PCraftFunction(None)
+    scenariofile = "./"
+    arguments = "sequential, targets.csv, header=true, col=target"
+    out = pf.run(scenariofile, arguments)
+    print("OUT: " + str(out))
     
