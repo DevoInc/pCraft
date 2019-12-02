@@ -12,6 +12,7 @@ from scapy.utils import PcapWriter
 from pcraft.Plugins import *
 from pcraft.Functions import *
 
+
 def print_loading_plugins(plugin):
     print("Loading Plugin: %s" % plugin)
 

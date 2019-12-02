@@ -5,6 +5,7 @@ import os
 
 import pcraft.plugins
 from pcraft.PluginsData import *
+from pcraft.Sessionizer import *
 
 class Plugins:
     def __init__(self, pluginsdir="pcraft/plugins/", arguments_dealer=None, loadfunc=None):
@@ -18,12 +19,13 @@ class Plugins:
         print(self.plugins)
 
         self.plugins_data = PluginsData()
+        self.session = Session()
         
         for modfile in self.plugins:
             plugin_name = os.path.basename(modfile)[:-3] # We remove the extension
             import_plugin = self._modularize_string_path(modfile)
             module = importlib.import_module(import_plugin)
-            dp = module.PCraftPlugin(self.plugins_data)
+            dp = module.PCraftPlugin(self.session, self.plugins_data)
             self.loaded_plugins[plugin_name] = dp
             #            dp.run()
             #self.loaded_plugins[plugin_name] = dp
