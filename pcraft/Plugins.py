@@ -3,11 +3,11 @@ import importlib
 import importlib.util
 import os
 
-import PCraft.plugins
-from PCraft.PluginsData import *
+import pcraft.plugins
+from pcraft.PluginsData import *
 
 class Plugins:
-    def __init__(self, pluginsdir="PCraft/plugins/", arguments_dealer=None, loadfunc=None):
+    def __init__(self, pluginsdir="pcraft/plugins/", arguments_dealer=None, loadfunc=None):
         self.loaded_plugins = {}
         self.arguments_dealer = arguments_dealer
         self.plugins = glob.glob(pluginsdir + "*.py")

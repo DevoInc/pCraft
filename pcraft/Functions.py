@@ -3,10 +3,10 @@ import importlib
 import importlib.util
 import os
 
-import PCraft.functions
+import pcraft.functions
 
 class Functions:
-    def __init__(self, plugins_data, functionsdir="PCraft/functions/"):
+    def __init__(self, plugins_data, functionsdir="pcraft/functions/"):
         self.loaded_functions = {}
         self.functions = glob.glob(functionsdir + "*.py")
         self.functions = [x for x in self.functions if not x.endswith("__init__.py")] # I do not want to include the __init__.py file

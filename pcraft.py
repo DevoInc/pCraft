@@ -9,8 +9,8 @@ import datetime
 from scapy.all import wrpcap
 from scapy.utils import PcapWriter
 
-from PCraft.Plugins import *
-from PCraft.Functions import *
+from pcraft.Plugins import *
+from pcraft.Functions import *
 
 def print_loading_plugins(plugin):
     print("Loading Plugin: %s" % plugin)

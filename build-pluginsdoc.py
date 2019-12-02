@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-from PCraft.Plugins import *
+from pcraft.plugins import *
 
 plugins_loader = Plugins()
 loaded_plugins = plugins_loader.get_loaded_plugins()
