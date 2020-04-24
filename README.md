@@ -38,7 +38,7 @@ loop-1:
 
 Now execute the pcraft program:
 ```
-./pcraft.py hello.yaml hello.pcap
+pcrafter hello.yaml hello.pcap
 ```
 
 Let's read the result pcap using tshark:
