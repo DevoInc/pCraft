@@ -33,4 +33,4 @@ setup(name="pcraft",
           "dnspython",
       ],
       scripts=["pcrafter"],
-      packages=["pcraft"])
+      packages=["pcraft","pcraft.plugins","pcraft.functions"])
