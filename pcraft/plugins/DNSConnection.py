@@ -50,7 +50,7 @@ dnsconnect:
 
         try:
             #if script["newip"]: # It must be configured from the loop, FIXME ASAP
-            if self.newip:
+            if self.getvar("newip"):
                 self.setvar("ip-src", self.random_client_ip.get())
         except:
             pass
