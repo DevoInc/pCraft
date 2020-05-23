@@ -1,3 +1,5 @@
+#from scapy.all import Ether, IP, TCP
+
 class Session:
     is_new = False
     is_established = False
@@ -8,7 +10,7 @@ class Session:
 
     def get_seqnum(self, packet):
         seqnum = self.tcp_seqnum
-
+        
         self.tcp_seqnum += len(packet['TCP'].payload)
         if self.tcp_seqnum > 2147483647: # 2^32 - 1
             self.tcp_seqnum = 0

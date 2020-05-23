@@ -3,6 +3,8 @@ from scapy.all import Ether, CookedLinux, IP, TCP, UDP, rdpcap
 from . import _utils as utils
 import time
 import pprint
+import os
+
 
 class PCraftPlugin(object):
     name = "PcapImport"
