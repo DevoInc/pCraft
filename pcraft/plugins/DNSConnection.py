@@ -1,6 +1,6 @@
 from scapy.all import Ether, IP, UDP, DNS, DNSQR, DNSRR
-from . import _utils as utils
 from pcraft.PluginsContext import PluginsContext
+from . import _utils as utils
 
 class PCraftPlugin(PluginsContext):
     name = "DNSConnection"
