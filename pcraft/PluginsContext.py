@@ -3,6 +3,12 @@ class PluginsContext(object):
         self.session = session
         self.plugins_data = plugins_data
 
+    def getvar(self, var):
+        return self.plugins_data._get(var)
+
+    def setvar(self, var, value):
+        self.plugins_data._set(var, value)
+    
     def set_value_or_default(self, script, key, default):
         if key in script:
             value = script[key]

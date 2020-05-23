@@ -50,15 +50,15 @@ dnsconnect:
 
         try:
             #if script["newip"]: # It must be configured from the loop, FIXME ASAP
-            if self.plugins_data._get("newip"):
-                self.plugins_data._set("ip-src", self.random_client_ip.get())
+            if self.newip:
+                self.setvar("ip-src", self.random_client_ip.get())
         except:
             pass
 
             
-        query = Ether() / IP(src=self.plugins_data._get("ip-src"),dst=self.plugins_data._get("resolver")) / UDP(sport=4096,dport=53)/DNS(rd=1, qd=DNSQR(qname=self.plugins_data._get("domain")))
+        query = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("resolver")) / UDP(sport=4096,dport=53)/DNS(rd=1, qd=DNSQR(qname=self.getvar("domain")))
         self.plugins_data.pcap.append(query)
-        resp = Ether() / IP(dst=self.plugins_data._get("ip-src"),src=self.plugins_data._get("resolver")) / UDP(sport=53,dport=4096)/DNS(id=query[DNS].id, qr=1, qd=query[DNS].qd, an=DNSRR(rrname=query[DNS].qd.qname, rdata=self.plugins_data._get("ip-dst")))
+        resp = Ether() / IP(dst=self.getvar("ip-src"),src=self.getvar("resolver")) / UDP(sport=53,dport=4096)/DNS(id=query[DNS].id, qr=1, qd=query[DNS].qd, an=DNSRR(rrname=query[DNS].qd.qname, rdata=self.getvar("ip-dst")))
         self.plugins_data.pcap.append(resp)
         
         return script["_next"], self.plugins_data
