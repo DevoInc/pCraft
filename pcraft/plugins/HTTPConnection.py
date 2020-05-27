@@ -41,6 +41,7 @@ httpconnect:
         self.set_value_or_default(script, "port-src", random.randint(4096,65534))
         self.set_value_or_default(script, "domain", "example.com") # Default is never applied since it is a requirement
         self.set_value_or_default(script, "method", "GET") 
+        self.set_value_or_default(script, "user", "") 
         self.set_value_or_default(script, "user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Pcraft/0.0.7") 
         self.set_value_or_default(script, "uri", "/")
         self.set_value_or_default(script, "resp-httpver", "HTTP/1.1")
@@ -51,11 +52,16 @@ httpconnect:
         
         last_ack = utils.append_tcp_three_way_handshake(self.plugins_data, self.getvar("port-src"))
 
-        httpreq_string = "{method} {uri} HTTP/1.1\r\nAccept: */*\r\nUser-Agent: {useragent}\r\nHost:{host}\r\nConnection: Keep-Alive\r\n\r\n".format(
+        user = self.getvar("user")
+        if user != "":
+            user = "\r\nUser: %s" % user
+            
+        httpreq_string = "{method} {uri} HTTP/1.1\r\nAccept: */*\r\nUser-Agent: {useragent}\r\nHost:{host}{user}\r\nConnection: Keep-Alive\r\n\r\n".format(
             method=self.getvar("method"),
             uri=self.getvar("uri"),
             useragent=self.getvar("user-agent"),
-            host=self.getvar("domain"))
+            host=self.getvar("domain"),
+            user=user)
 
         datestr = time.strftime("%a, %d %b %Y %H:%M:%S %Z",time.gmtime())
         httpresp_string = "{httpver} {code}\r\nServer: {server}\r\nDate: {date}\r\nContent-Type: {contenttype}\r\nContent-Length: {contentlen}\r\nConnection: keep-alive\r\nX-Powered-By: PHP/5.3.11-1~dotde b0\r\n\r\n{content}".format(
