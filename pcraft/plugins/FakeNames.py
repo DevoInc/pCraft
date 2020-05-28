@@ -25,9 +25,9 @@ newfake:
         
     def run(self, script=None):
         name = self.faker.name()
-        first, last = name.split(" ")
-        self.setvar("firstname", first)
-        self.setvar("lastname", last)
-        self.setvar("name", last)
+        nametable = name.split(" ") # Sometimes there are spaces in last names, we cut short and only grab the first one
+        self.setvar("firstname", nametable[0])
+        self.setvar("lastname", nametable[1])
+        self.setvar("name", name)
 
         return script["_next"], self.plugins_data

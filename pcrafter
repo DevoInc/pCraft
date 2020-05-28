@@ -20,18 +20,16 @@ variable_rex = re.compile(r"\$([a-zA-Z0-9-_]+)") # Find variables from scripts f
 def substitute_one_variable(plugins_loader, value):
     if not isinstance(value, str):
         return value # We only replace strings!
-    matches = variable_rex.findall(value)
-    if matches: 
-        for m in matches:
-            try:
-                sub = plugins_loader.get_plugins_data()._get(m)
-            except KeyError:
-                print("ERROR: Variable '%s' cannot be substituted since it has not been created before. Please fix your scenario." % m)
-                sys.exit(1)
-            value = value.replace("$"+m, sub, 1)
-            return value
-    else:
-        return value
+    for match in variable_rex.finditer(value):
+        m = match.group(1)
+        try:
+            sub = plugins_loader.get_plugins_data()._get(m)
+        except KeyError:
+            print("ERROR: Variable '%s' cannot be substituted since it has not been created before. Please fix your scenario." % m)
+            sys.exit(1)
+        value = value.replace("$"+m, sub, 1)
+        
+    return value
 
 def substitute_variables_from_dict(plugins_loader, mydict, newdict, upk):
     for k, v in mydict.items():
