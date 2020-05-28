@@ -2,4 +2,5 @@ scapy==2.4.*
 IPy>=0.83
 PyYAML>=3.10
 dnspython>=1.16
+Faker
 
