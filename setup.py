@@ -31,6 +31,7 @@ setup(name="pcraft",
           "IPy",
           "PyYAML",
           "dnspython",
+          "Faker",
       ],
       scripts=["pcrafter"],
       packages=["pcraft","pcraft.plugins","pcraft.functions"])

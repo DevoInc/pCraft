@@ -30,4 +30,8 @@ newfake:
         self.setvar("lastname", nametable[1])
         self.setvar("name", name)
 
+        self.set_value_or_default(script, "orgdomain", "yoda.com")
+        email = "%s.%s@%s" % (nametable[0], nametable[1], self.getvar("orgdomain"))
+        self.setvar("email", email)
+
         return script["_next"], self.plugins_data
