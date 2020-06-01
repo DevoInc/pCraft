@@ -35,8 +35,15 @@ httpconnect:
         
     def run(self, script=None):
         self.check_required(script, self.required)
-        
-        self.set_value_or_default(script, "ip-src", self.random_client_ip.get())
+
+        try:
+            if self.getvar("newip"):
+                self.setvar("ip-src", self.random_client_ip.get())
+            else:
+                self.set_value_or_default(script, "ip-src", self.random_client_ip.get())
+        except:
+                self.set_value_or_default(script, "ip-src", self.random_client_ip.get())
+            
         self.set_value_or_default(script, "ip-dst", "0.0.0.0") # Default is never applied since it is a requirement
         self.set_value_or_default(script, "port-src", random.randint(4096,65534))
         self.set_value_or_default(script, "domain", "example.com") # Default is never applied since it is a requirement
@@ -50,7 +57,7 @@ httpconnect:
         self.set_value_or_default(script, "resp-content-type", "text/html")
         self.set_value_or_default(script, "resp-content", "<html><body>Hello, you!</body></html>")
         
-        last_ack = utils.append_tcp_three_way_handshake(self.plugins_data, self.getvar("port-src"))
+        utils.append_tcp_three_way_handshake(self.session, self.plugins_data, self.getvar("port-src"))
 
         user = self.getvar("user")
         if user != "":
@@ -74,15 +81,31 @@ httpconnect:
             content=self.getvar("resp-content")) 
         
         # httpget_string = "POST /g.php HTTP/1.1\r\nAccept: */*\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1)\r\nHost:" + self.plugins_data._get("domain") + "\r\nContent-Length:122\r\nConnection: Keep-Alive\r\nCache-Control: no-cache\r\n\r\n" + str(os.urandom(122))
-        httpreq1 = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("ip-dst")) / TCP(sport=self.getvar("port-src"),dport=80, seq=last_ack[TCP].ack, ack=last_ack[TCP].seq, flags="P""A") / httpreq_string
+        httpreq1 = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("ip-dst")) / TCP(sport=self.getvar("port-src"),dport=80, flags="P""A") / httpreq_string
+
+        self.session.append_to_session(httpreq1)
+        httpreq1 = self.session.fix_seq_ack(httpreq1)    
+
         self.plugins_data.pcap.append(httpreq1)
 
-        ack = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("ip-dst")) / TCP(sport=80, seq=httpreq1[TCP].ack, ack=httpreq1[TCP].seq+len(httpreq1[TCP])-20, dport=self.getvar("port-src"), flags="A")
+        # self.session.append_to_session(httpreq1)
+        
+        ack = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("ip-dst")) / TCP(sport=80, dport=self.getvar("port-src"), flags="A")
+
+        self.session.append_to_session(ack)
+        ack = self.session.fix_seq_ack(ack)
         self.plugins_data.pcap.append(ack)
         
-        httpreq2 = Ether() / IP(src=self.getvar("ip-dst"),dst=self.getvar("ip-src")) / TCP(sport=80,dport=self.getvar("port-src"), seq=httpreq1[TCP].ack, ack=ack[TCP].ack, flags="P""A") / httpresp_string
+        httpreq2 = Ether() / IP(src=self.getvar("ip-dst"),dst=self.getvar("ip-src")) / TCP(sport=80,dport=self.getvar("port-src"), flags="P""A") / httpresp_string
+
+        self.session.append_to_session(httpreq2)
+        httpreq2 = self.session.fix_seq_ack(httpreq2)
+
         self.plugins_data.pcap.append(httpreq2)
-        
+
+        # self.session.append_to_session(httpreq2)
+
+        # self.session.debug_session()
         
         return script["_next"], self.plugins_data
 
