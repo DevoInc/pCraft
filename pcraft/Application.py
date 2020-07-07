@@ -15,7 +15,7 @@ class Application:
         self.functions_rex = re.compile(r"=@=(.*?)=@=")
         
     def load_plugins(self):
-        plugins_loader = Plugins(app=None, loadfunc=self.print_loading_plugins)
+        plugins_loader = Plugins(app=self, loadfunc=self.print_loading_plugins)
         loaded_plugins = plugins_loader.get_loaded_plugins()
         print("All plugins loaded!")
         return plugins_loader, loaded_plugins
@@ -81,6 +81,9 @@ class Application:
     def substitute_variables(self, script):
         newscript = {}
 
+        if script == None:
+            return script
+        
         for key, value in script.items():
             if isinstance(value, dict):
                 # We have a dict from YAML, we recusively search for variables
@@ -101,6 +104,9 @@ class Application:
     def substitute_function(self, script):
         newscript = {}
 
+        if script == None:
+            return script
+        
         one_function_rex = re.compile(r"(\S+)\((.*)\)")
     
         for key, value in script.items():

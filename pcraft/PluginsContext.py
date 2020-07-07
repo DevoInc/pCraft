@@ -5,15 +5,22 @@ class PluginsContext(object):
         self.plugins_data = plugins_data
 
     def getvar(self, var):
-        return self.plugins_data._get(var)
+        try:
+            var = self.plugins_data._get(var)
+            return var
+        except KeyError:
+            return None
 
     def setvar(self, var, value):
         self.plugins_data._set(var, value)
     
     def set_value_or_default(self, script, key, default):
-        if key in script:
-            value = script[key]
-        else:
+        value = None
+        if script:
+            if key in script:
+                value = script[key]
+
+        if value == None:
             try:
                 value = self.plugins_data._get(key)
             except KeyError:
@@ -25,8 +32,9 @@ class PluginsContext(object):
         found_in_script=False
         found_in_plugins_data=False
         for k in required_keys:
-            if k in script:
-                found_in_script=True
+            if script:
+                if k in script:
+                    found_in_script=True
             try:
                 d = self.plugins_data._get(k)
                 found_in_plugins_data=True

@@ -106,6 +106,8 @@ httpconnect:
         # self.session.append_to_session(httpreq2)
 
         # self.session.debug_session()
-        
-        return script["_next"], self.plugins_data
 
+        if script:
+            return script["_next"], self.plugins_data
+        else:
+            return None, self.plugins_data
