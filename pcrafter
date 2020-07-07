@@ -11,101 +11,7 @@ from scapy.utils import PcapWriter
 
 from pcraft.Plugins import *
 from pcraft.Functions import *
-
-
-def print_loading_plugins(plugin):
-    print("Loading Plugin: %s" % plugin)
-
-variable_rex = re.compile(r"\$([a-zA-Z0-9-_]+)") # Find variables from scripts for replacement
-def substitute_one_variable(plugins_loader, value):
-    if not isinstance(value, str):
-        return value # We only replace strings!
-    for match in variable_rex.finditer(value):
-        m = match.group(1)
-        try:
-            sub = plugins_loader.get_plugins_data()._get(m)
-        except KeyError:
-            print("ERROR: Variable '%s' cannot be substituted since it has not been created before. Please fix your scenario." % m)
-            sys.exit(1)
-        value = value.replace("$"+m, sub, 1)
-        
-    return value
-
-def substitute_variables_from_dict(plugins_loader, mydict, newdict, upk):
-    for k, v in mydict.items():
-        if isinstance(v, dict):
-            substitute_variables_from_dict(plugins_loader, v, newdict, k)
-        else:
-            try:
-                newdict[upk][k] = substitute_one_variable(plugins_loader, v)
-            except KeyError:
-                newdict[upk] = {}
-                newdict[upk][k] = substitute_one_variable(plugins_loader, v)
-                
-    return newdict
-
-def substitute_variables(plugins_loader, script):
-    newscript = {}
-
-    for key, value in script.items():
-        if isinstance(value, dict):
-            # We have a dict from YAML, we recusively search for variables
-            newdict = {}
-            newdict = substitute_variables_from_dict(plugins_loader, value, newdict, None)
-            print("Adding the new dict to key:%s" % key)
-            newscript[key] = newdict
-        else:
-            if not key.startswith("_"): # We add the variables in that script to be used right after
-                plugins_loader.get_plugins_data()._set(key, value)
-            newscript[key] = substitute_one_variable(plugins_loader, value)
-
-#    print("NS::" + str(newscript))
-    return newscript
-
-functions_rex = re.compile(r"=@=(.*?)=@=")
-def substitute_function(loaded_functions, scenariofile, script):
-    newscript = {}
-
-    one_function_rex = re.compile(r"(\S+)\((.*)\)")
-    
-    for key, value in script.items():
-        if isinstance(value, dict):
-            print("dict not supported for function calls")
-            return script
-        else:
-            matches = functions_rex.findall(value)
-            if matches:
-                for m in matches:
-#                print("Function: %s" % m)
-                    single = one_function_rex.match(m)
-                    if single:
-                        function_name = single.group(1)
-                        function_args = single.group(2)
-
-                        funcout = loaded_functions[function_name].run(scenariofile, function_args)
-                        value = value.replace("=@=" + m + "=@=", funcout, 1)
-                    else:
-                        raise ValueError("No matching function, replacement impossible. Please fix: %s" % m)
-        newscript[key] = value
-
-    return newscript
-
-def exec_plugin(scenariofile, plugins_loader, loaded_functions, plugin, script):
-#    print("========\n%s\n========" % script)
-    ans = None
-    try:
-        script = substitute_variables(plugins_loader, script)
-        script = substitute_function(loaded_functions, scenariofile, script)
-        ans = plugin.run(script)
-    except(KeyError):
-        # There is no input? Then there is no argument!
-        ans = plugin.run()
-
-    if not ans:
-        print("Error, answer never gotten from plugin, which means there is an issue executing the script:")
-        pprint.pprint(script)
-        
-    return ans
+from pcraft.Application import *
 
 
 
@@ -117,25 +23,20 @@ if __name__ == "__main__":
         print("Syntax: %s script.yaml output.pcap" % sys.argv[0])
         sys.exit(1)
 
-        
-    plugins_loader = Plugins(loadfunc=print_loading_plugins)
-    loaded_plugins = plugins_loader.get_loaded_plugins()
-    print("All plugins loaded!")
-    functions_loader = Functions(plugins_loader.get_plugins_data())
-    loaded_functions = functions_loader.get_loaded_functions()
-    print("All functions loaded!")
+    app = Application(scenariofile=sys.argv[1])
+    plugins_loader = app.plugins_loader
+    loaded_plugins = app.loaded_plugins
+    loaded_functions = app.loaded_functions
     
     print("Opening Script File %s" % sys.argv[1])
-    scenario_file = sys.argv[1]
-    script_fp = open(scenario_file)
-    script = yaml.load(script_fp.read(), Loader=yaml.SafeLoader)
-    script_fp.close()
-
+    scenario_file = app.scenariofile
+    script = app.script
+    
     next_func = script[script["start"]]["_plugin"]
     script[script["start"]]["__dir"] = os.path.dirname(sys.argv[1])
     print("[%s] Executing(1): %s" % (datetime.datetime.now(), script["start"]))
 #    pprint.pprint(script[script["start"]])
-    next_func, ans = exec_plugin(scenario_file, plugins_loader, loaded_functions, loaded_plugins[next_func], script[script["start"]])
+    next_func, ans = app.exec_plugin(loaded_plugins[next_func], script[script["start"]])
 #    print("next func:%s" % next_func)
     while next_func:
         print("[%s] Executing: %s" % (datetime.datetime.now(), next_func))
@@ -210,7 +111,7 @@ if __name__ == "__main__":
             pass
         
         
-        next_func, ans = exec_plugin(scenario_file, plugins_loader, loaded_functions, loaded_plugins[script[next_func]["_plugin"]], script[next_func])
+        next_func, ans = app.exec_plugin(loaded_plugins[script[next_func]["_plugin"]], script[next_func])
             # print("next func:%s" % next_func)
         # print(ans)
 
