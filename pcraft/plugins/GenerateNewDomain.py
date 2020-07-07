@@ -1,7 +1,8 @@
+from pcraft.PluginsContext import PluginsContext
 import dns.resolver
 import random
 
-class PCraftPlugin(object):
+class PCraftPlugin(PluginsContext):
     name = "GenerateNewDomain"
 
     def help(self):
@@ -20,8 +21,8 @@ generate:
 """
         return helpstr
     
-    def __init__(self,  session, plugins_data):
-        self.plugins_data = plugins_data
+    def __init__(self, app, session, plugins_data):
+        super().__init__(app, session, plugins_data)
 
     def run(self, script=None):
         new_domain_found = False

@@ -2,10 +2,12 @@ import struct
 import socket
 import sys
 
+from pcraft.PluginsContext import PluginsContext
+
 vowels = ['a','e','i','o','u','y','a','e','i','o']
 consonants = ['p','b','c','z','m','f','d','s','t','r']
 
-class PCraftPlugin(object):
+class PCraftPlugin(PluginsContext):
     name = "HostnameFromIP"
     
     def help(self):
@@ -25,8 +27,8 @@ namefromip:
 """
         return helpstr
 
-    def __init__(self, session, plugins_data):
-        self.plugins_data = plugins_data
+    def __init__(self, app, session, plugins_data):
+        super().__init__(app, session, plugins_data)
 
     def run(self, script=None):
         ipaddr = script["ip"]

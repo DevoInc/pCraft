@@ -9,10 +9,7 @@ import datetime
 from scapy.all import wrpcap
 from scapy.utils import PcapWriter
 
-from pcraft.Plugins import *
-from pcraft.Functions import *
 from pcraft.Application import *
-
 
 
 loop_tracker = {} # We track our loops by name

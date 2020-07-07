@@ -5,7 +5,9 @@ import random
 import os
 import time
 
-class PCraftPlugin(object):
+from pcraft.PluginsContext import PluginsContext
+
+class PCraftPlugin(PluginsContext):
     name = "Controller"
     
     def help(self):
@@ -19,8 +21,8 @@ If you do not know what this it, do not use it.
 """
         return helpstr
     
-    def __init__(self, session, plugins_data):
-        self.plugins_data = plugins_data        
+    def __init__(self, app, session, plugins_data):
+        super().__init__(app, session, plugins_data)
         
     def run(self, script=None):
         try:

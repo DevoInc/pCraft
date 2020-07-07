@@ -5,8 +5,10 @@ import time
 import pprint
 import os
 
+from pcraft.PluginsContext import PluginsContext
 
-class PCraftPlugin(object):
+
+class PCraftPlugin(PluginsContext):
     name = "PcapImport"
     required = ["filename"]
 
@@ -31,8 +33,8 @@ importphishing:
 """
         return helpstr
         
-    def __init__(self, session, plugins_data):
-        self.plugins_data = plugins_data
+    def __init__(self, app, session, plugins_data):
+        super().__init__(app, session, plugins_data)
         
     def run(self, script=None):
         # pprint.pprint(script)

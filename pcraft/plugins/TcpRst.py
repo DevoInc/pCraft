@@ -4,7 +4,10 @@ from . import _utils as utils
 import pprint
 import random
 
-class PCraftPlugin(object):
+from pcraft.PluginsContext import PluginsContext
+
+
+class PCraftPlugin(PluginsContext):
     name = "TcpRst"
     required = ["ip-src", "ip-dst", "port-dst"]
 
@@ -26,8 +29,8 @@ rstack:
 """
         return helpstr
     
-    def __init__(self, session, plugins_data):
-        self.plugins_data = plugins_data
+    def __init__(self, app, session, plugins_data):
+        super().__init__(app, session, plugins_data)
         
     def run(self, script=None):
         # pprint.pprint(script)

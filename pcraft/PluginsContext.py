@@ -1,5 +1,6 @@
 class PluginsContext(object):
-    def __init__(self, session, plugins_data):
+    def __init__(self, app, session, plugins_data):
+        self.app = app
         self.session = session
         self.plugins_data = plugins_data
 

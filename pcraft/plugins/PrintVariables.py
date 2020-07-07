@@ -1,8 +1,10 @@
-class PCraftPlugin(object):
+from pcraft.PluginsContext import PluginsContext
+
+class PCraftPlugin(PluginsContext):
     name = "PrintVariables"
     
-    def __init__(self, session, plugins_data):
-        self.plugins_data = plugins_data
+    def __init__(self, app, session, plugins_data):
+        super().__init__(app, session, plugins_data)
 
     def help(self):
         helpstr="""

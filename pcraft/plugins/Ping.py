@@ -2,7 +2,9 @@ from IPy import IP as IP_y
 from scapy.all import *
 from . import _utils as utils
 
-class PCraftPlugin(object):
+from pcraft.PluginsContext import PluginsContext
+
+class PCraftPlugin(PluginsContext):
     name = "Ping"
 
     required = ["ip-src", "ip-dst"]
@@ -23,8 +25,8 @@ ping:
 """
         return helpstr
 
-    def __init__(self, session, plugins_data):
-        self.plugins_data = plugins_data
+    def __init__(self, app, session, plugins_data):
+        super().__init__(app, session, plugins_data)
         
     def run(self, script=None):
         # pprint.pprint(script)

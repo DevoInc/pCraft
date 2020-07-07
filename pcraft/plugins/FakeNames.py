@@ -19,8 +19,8 @@ newfake:
 ```
 """
 
-    def __init__(self, session, plugins_data):
-        super().__init__(session, plugins_data)
+    def __init__(self, app, session, plugins_data):
+        super().__init__(app, session, plugins_data)
         self.faker = Faker(['it_IT', 'en_US', 'es_ES', 'fr_FR', 'de_DE', 'en_GB'])
         self.fakenames = {}
         

@@ -15,7 +15,7 @@ class Application:
         self.functions_rex = re.compile(r"=@=(.*?)=@=")
         
     def load_plugins(self):
-        plugins_loader = Plugins(loadfunc=self.print_loading_plugins)
+        plugins_loader = Plugins(app=None, loadfunc=self.print_loading_plugins)
         loaded_plugins = plugins_loader.get_loaded_plugins()
         print("All plugins loaded!")
         return plugins_loader, loaded_plugins
