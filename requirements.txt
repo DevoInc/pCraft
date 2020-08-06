@@ -4,3 +4,5 @@ PyYAML>=3.10
 dnspython>=1.16
 Faker
 communityid
+parsuricata
+

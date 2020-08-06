@@ -1,5 +1,7 @@
 from parsuricata import parse_rules
+from parsuricata.rules import Variable
 from pcraft.PluginsContext import PluginsContext
+import pprint
 
 class PCraftPlugin(PluginsContext):
     name = "Suricata"
@@ -13,33 +15,35 @@ Create pcap traffic based on a suricata rule
     def __init__(self, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
 
-        self.homenet_ip = "192.168.0.42"
-        self.not_homenet_ip = "172.16.42.6"
+    def _replace_suricata_env_var(self, var):
+        if not isinstance(var, Variable):
+            return var
+
+        v = self.getvar(var.identifier)
+        if v:
+            return v
+        raise ValueError("Variable %s is not set" % var.identifier)
         
     def run(self, script=None):
         rules = parse_rules(self.getvar("rule"))
         rule = rules[0]
 
-        self.setvar("ip-src", self.homenet_ip)
-        self.setvar("ip-dst", self.not_homenet_ip)
-        self.setvar("domain", self.not_homenet_ip)
-        if rule.src == "$HOME_NET":
-            self.setvar("ip-src", self.homenet_ip)
-        if rule.dst == "$HOME_NET":
-            self.setvar("ip-dst", self.homenet_ip)
 
-        if rule.src == "!$HOME_NET":
-            self.setvar("ip-src", self.not_homenet_ip)
-        if rule.dst == "!$HOME_NET":
-            self.setvar("ip-dst", self.not_homenet_ip)
+        rule.src = self._replace_suricata_env_var(rule.src)
+        rule.dst = self._replace_suricata_env_var(rule.dst)
+        rule.src_port = self._replace_suricata_env_var(rule.src_port)
+        rule.dst_port = self._replace_suricata_env_var(rule.src_port)
+        
 
+        self.setvar("ip-src", rule.src)
+        self.setvar("ip-dst", rule.dst)
+        self.setvar("domain", rule.dst)
         if rule.src_port != "any":
             self.setvar("port-src", rule.src_port)
-
         if rule.dst_port != "any":
             self.setvar("port-dst", rule.dst_port)
         
-#        print(rule.protocol)
+
         counter = 0
         for option in rule.options:
             if option.keyword == "content":
