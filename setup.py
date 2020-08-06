@@ -32,6 +32,8 @@ setup(name="pcraft",
           "PyYAML",
           "dnspython",
           "Faker",
+          "communityid",
+          "parsuricata",
       ],
       scripts=["pcrafter"],
       packages=["pcraft","pcraft.plugins","pcraft.functions"])
