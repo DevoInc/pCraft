@@ -13,7 +13,12 @@ class PluginsContext(object):
 
     def setvar(self, var, value):
         self.plugins_data._set(var, value)
-    
+
+    def setvar_if_not_exists(self, var, value):
+        a = self.getvar(var)
+        if a:
+            self.setvar(var, value)
+        
     def set_value_or_default(self, script, key, default):
         value = None
         if script:

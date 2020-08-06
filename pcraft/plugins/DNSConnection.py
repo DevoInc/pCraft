@@ -59,5 +59,9 @@ dnsconnect:
         self.plugins_data.pcap.append(query)
         resp = Ether() / IP(dst=self.getvar("ip-src"),src=self.getvar("resolver")) / UDP(sport=53,dport=4096)/DNS(id=query[DNS].id, qr=1, qd=query[DNS].qd, an=DNSRR(rrname=query[DNS].qd.qname, rdata=self.getvar("ip-dst")))
         self.plugins_data.pcap.append(resp)
+
+        if script:
+            return script["_next"], self.plugins_data
+        else:
+            return None, self.plugins_data
         
-        return script["_next"], self.plugins_data
