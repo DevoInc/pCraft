@@ -31,6 +31,7 @@ rstack:
     
     def __init__(self, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
+        self.session = session
         
     def run(self, script=None):
         # pprint.pprint(script)
