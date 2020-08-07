@@ -25,6 +25,7 @@ newfake:
         self.fakenames = {}
         
     def run(self, script=None):
+        self.update_vars_from_script(script)
         no_infinite_loop = 0
         # We have see some duplicate names. We try 10 times to avoid spending too much time
         while no_infinite_loop < 10:

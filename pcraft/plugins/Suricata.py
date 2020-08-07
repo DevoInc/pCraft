@@ -25,6 +25,7 @@ Create pcap traffic based on a suricata rule
         raise ValueError("Variable %s is not set" % var.identifier)
         
     def run(self, script=None):
+        self.update_vars_from_script(script)
         rules = parse_rules(self.getvar("rule"))
         rule = rules[0]
 

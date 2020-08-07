@@ -35,6 +35,7 @@ httpconnect:
         
     def run(self, script=None):
         self.check_required(script, self.required)
+        self.update_vars_from_script(script)
 
         try:
             if self.getvar("newip"):

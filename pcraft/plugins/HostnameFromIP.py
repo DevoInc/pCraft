@@ -31,6 +31,7 @@ namefromip:
         super().__init__(app, session, plugins_data)
 
     def run(self, script=None):
+        self.update_vars_from_script(script)
         ipaddr = script["ip"]
 
         try:

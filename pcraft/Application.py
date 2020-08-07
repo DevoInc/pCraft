@@ -1,5 +1,6 @@
 import yaml
 import re
+import pprint
 
 from pcraft.Plugins import *
 from pcraft.Functions import *
@@ -75,7 +76,6 @@ class Application:
                 except KeyError:
                     newdict[upk] = {}
                     newdict[upk][k] = self.substitute_one_variable(v)
-                
         return newdict
 
     def substitute_variables(self, script):
@@ -98,7 +98,8 @@ class Application:
                     newscript[key] = self.substitute_one_variable(value)
                 else:
                     print("info: key '%s' is considered literal. No variable replacement." % key)
-                
+
+
         return newscript
 
     def substitute_function(self, script):

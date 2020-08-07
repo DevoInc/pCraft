@@ -41,6 +41,7 @@ dnsconnect:
 
     def run(self, script=None):
         self.check_required(script, self.required)
+        self.update_vars_from_script(script)
 
         self.set_value_or_default(script, "ip-src", self.random_client_ip.get())
         self.set_value_or_default(script, "ip-dst", self.random_server_ip.get())

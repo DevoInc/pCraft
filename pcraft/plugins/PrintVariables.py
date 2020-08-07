@@ -24,5 +24,6 @@ printvars:
         return helpstr
         
     def run(self, script=None):
+        self.update_vars_from_script(script)
         print("PrintVariables: " + str(self.plugins_data))
         return script["_next"], self.plugins_data

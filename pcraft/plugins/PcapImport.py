@@ -37,6 +37,7 @@ importphishing:
         super().__init__(app, session, plugins_data)
         
     def run(self, script=None):
+        self.update_vars_from_script(script)
         # pprint.pprint(script)
         pcap_in = os.path.join(script["__dir"], script["filename"])
         print("Importing PCAP: %s" % pcap_in)

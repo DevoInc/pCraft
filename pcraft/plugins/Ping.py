@@ -29,6 +29,7 @@ ping:
         super().__init__(app, session, plugins_data)
         
     def run(self, script=None):
+        self.update_vars_from_script(script)
         # pprint.pprint(script)
         ip = script["ip-dst"]
         all_ips = IP_y(ip)

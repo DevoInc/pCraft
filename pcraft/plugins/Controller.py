@@ -25,6 +25,7 @@ If you do not know what this it, do not use it.
         super().__init__(app, session, plugins_data)
         
     def run(self, script=None):
+        self.update_vars_from_script(script)
         try:
             seq = self.plugins_data._get("seq")
         except KeyError:

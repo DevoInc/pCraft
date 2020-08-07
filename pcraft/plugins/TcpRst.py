@@ -34,6 +34,7 @@ rstack:
         self.session = session
         
     def run(self, script=None):
+        self.update_vars_from_script(script)
         # pprint.pprint(script)
         port = script["port-dst"]
         ip = script["ip-dst"]

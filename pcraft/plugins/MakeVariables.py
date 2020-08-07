@@ -30,6 +30,7 @@ buildvars:
         return helpstr
         
     def run(self, script=None):
+        self.update_vars_from_script(script)
         if script:
             for k, v in script.items():
                 if not k.startswith("_"):
