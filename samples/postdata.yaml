@@ -1,0 +1,10 @@
+start: postdata
+
+postdata:
+  _plugin: HTTPConnection
+  method: POST
+  ip-dst: 172.16.0.42
+  domain: example.com
+  content-type: application/x-www-form-urlencoded
+  content: field1=value1&field2=value2
+  _next: done

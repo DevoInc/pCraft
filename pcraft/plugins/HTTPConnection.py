@@ -70,6 +70,18 @@ httpconnect:
             host=self.getvar("domain"),
             user=user)
 
+        if self.getvar("method").upper() == "POST":
+            httpreq_string = "{method} {uri} HTTP/1.1\r\nAccept: */*\r\nUser-Agent: {useragent}\r\nHost:{host}{user}\r\nContent-Type:{contenttype}\r\nContent-Length:{contentlen}\r\n\r\n{content}".format(
+                method=self.getvar("method"),
+                uri=self.getvar("uri"),
+                useragent=self.getvar("user-agent"),
+                host=self.getvar("domain"),
+                user=user,
+                contenttype=self.getvar("content-type"),
+                contentlen=len(self.getvar("content")),
+                content=self.getvar("content"))
+            
+        
         datestr = time.strftime("%a, %d %b %Y %H:%M:%S %Z",time.gmtime())
         httpresp_string = "{httpver} {code}\r\nServer: {server}\r\nDate: {date}\r\nContent-Type: {contenttype}\r\nContent-Length: {contentlen}\r\nConnection: keep-alive\r\nX-Powered-By: PHP/5.3.11-1~dotde b0\r\n\r\n{content}".format(
             httpver=self.getvar("resp-httpver"),
