@@ -52,6 +52,8 @@ class PluginsContext(object):
         return True
         
     def update_vars_from_script(self, script):
+        if not script:
+            return
         for k, v in script.items():
             if not k.startswith("_"):
                 self.setvar(k, v)
