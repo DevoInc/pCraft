@@ -1,6 +1,8 @@
 pCraft
 ======
 
+<p align="center"><img src="doc/pcraft-logo.png" size="30%"/></p>
+
 pCraft is a PCAP Crafter, which creates a PCAP from a YAML scenario.
 
 When generating data for testing, it is rather hard to do forthe following reasons:
