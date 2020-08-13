@@ -115,7 +115,7 @@ class Application:
                 print("dict not supported for function calls")
                 return script
             else:
-                matches = self.functions_rex.findall(value)
+                matches = self.functions_rex.findall(str(value))
                 if matches:
                     for m in matches:
                         #                print("Function: %s" % m)

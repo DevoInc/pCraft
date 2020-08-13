@@ -8,21 +8,25 @@ DNSConnection:
   _plugin: DNSConnection
   _sleep: {"once-finished": 0.1}
   _next: HTTPConnection
-
+  
 HTTPConnection:
   _plugin: HTTPConnection
-  _next: loop-1
+  _next: sleep
   method: "POST"
   uri: |
     print("/g.php")
   user-agent: "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1)"
   content: {"random":122}
 
+sleep:
+  _plugin: Sleep
+  sleep: 0.2
+  _next: loop-1
   
 loop-1:
   count: 10
   newip: 1 # We get a new IP address for each loop
-  _sleep: {"before-start":1,"interval":0.2,"once-finished":0.3}
+  _sleep: {"before-start":1, "once-finished":0.3}
   _next: done
   _start: DNSConnection # Where our loop starts
 
