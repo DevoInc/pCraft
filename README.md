@@ -1,7 +1,10 @@
+<p align="center">
+<img src="doc/pcraft-logo.png" width=200/>
+</p>
+
 pCraft
 ======
 
-<p align="center"><img src="doc/pcraft-logo.png" size="30%"/></p>
 
 pCraft is a PCAP Crafter, which creates a PCAP from a YAML scenario.
 
