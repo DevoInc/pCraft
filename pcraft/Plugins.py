@@ -33,8 +33,12 @@ class Plugins:
             import_plugin = self._modularize_string_path(modfile)
             import_plugin = "pcraft" + import_plugin[len(self.instdir):]
             module = importlib.import_module(import_plugin)
-            dp = module.PCraftPlugin(self.app, self.session, self.plugins_data)
-            self.loaded_plugins[plugin_name] = dp
+            try:
+                dp = module.PCraftPlugin(self.app, self.session, self.plugins_data)
+                self.loaded_plugins[plugin_name] = dp
+            except:
+                print("Could not load plugin:%s" % plugin_name)
+
             #            dp.run()
             #self.loaded_plugins[plugin_name] = dp
             
