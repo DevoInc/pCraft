@@ -43,5 +43,7 @@ typedef struct _ami_flow_kvec_t ami_flow_kvec_t;
 
 ami_flow_t *ami_flow_new();
 void ami_flow_close(ami_flow_t *flow);
+char *ami_flow_type_as_string(ami_flow_t *flow);
+void ami_flow_debug(ami_flow_t *flow);
 
 #endif // _FLOW_H_
