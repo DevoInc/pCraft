@@ -55,6 +55,7 @@ struct _ami_ast_t {
   int repeat; // Everytime we capture an action it is a repeat action of at least 1 :)
   /* ami_actions_kvec_t repeat_actions; */
   ami_flow_kvec_t repeat_flow;
+  ami_flow_t *current_flow;
 };
 typedef struct _ami_ast_t ami_ast_t;
 

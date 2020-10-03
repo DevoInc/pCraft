@@ -68,6 +68,8 @@ char *ami_csvread_get_field_at_line(char *file, int index, char *field, int has_
     return NULL;
   }
 
+  printf("We read the csv file '%s' at index %d for the field '%s' and the header is set to %d\n", file, index, field, has_header);
+  
   phelp = (parse_helper_t *)malloc(sizeof(parse_helper_t));
   if (!phelp) {
     fprintf(stderr, "Error, cannot allocate parse_helper_t\n");
@@ -105,6 +107,6 @@ char *ami_csvread_get_field_at_line(char *file, int index, char *field, int has_
   fclose(fp);
   csv_fini(&p, NULL, NULL, NULL);
   csv_free(&p);
-  
+
   return retfield;
 }

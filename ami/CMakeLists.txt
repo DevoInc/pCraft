@@ -28,5 +28,7 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	set(AMI_LIBRARY "${ami-project_BINARY_DIR}/lib/libami.dylib")
 endif()
 
+add_definitions(-ggdb)
+
 add_subdirectory(lib)
 add_subdirectory(bin)

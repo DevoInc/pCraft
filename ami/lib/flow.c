@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -17,6 +18,8 @@ ami_flow_t *ami_flow_new()
 
   flow->type = AMI_FT_NONE;
   flow->func_name = NULL;
+  flow->found_col_to_replace = 0;
+  flow->col_to_replace = 0; // If we have found the column to replace, $index -> 1 then 2 etc.
   kv_init(flow->func_arguments);
   flow->var_name = NULL;
   flow->var_value = NULL;
@@ -67,13 +70,42 @@ void ami_flow_debug(ami_flow_t *flow)
     if (args_array > 0) {
       for (size_t i = 0; i < args_array; i++) {
 	char *arg = kv_A(flow->func_arguments, i);
-	printf("arg %d: %s\n", i, arg);       
+	printf("\t\targ %d: %s\n", i, arg);       
       }      
     }
     break;
   case AMI_FT_REPLACE:
     printf("\treplace_field:%s\n", flow->replace_field);
     break;
+  }
+}
+
+void ami_flow_function_replace_argument_for_repeat_as(ami_flow_t *flow, char *repeat_index_as, size_t current_index)
+{
+  char *arg;
+  
+  if (flow->type != AMI_FT_RUNFUNC) return;
+
+  if (!flow->found_col_to_replace) {
+    size_t args_array = kv_size(flow->func_arguments);
+    if (args_array > 0) {
+      for (size_t i = 0; i < args_array; i++) {
+	arg = kv_A(flow->func_arguments, i);
+	if (!strcmp(arg, repeat_index_as)) {
+	  flow->col_to_replace = i;
+	  asprintf(&arg, "%d", current_index);
+	  free(kv_A(flow->func_arguments, i));
+	  kv_A(flow->func_arguments, i) = strdup(arg);
+	  free(arg);
+	}
+      }
+    }
+    flow->found_col_to_replace = 1;
+  } else { // if (!flow->found_col_to_replace)
+    free(kv_A(flow->func_arguments, flow->col_to_replace));
+    asprintf(&arg, "%d", current_index);
+    kv_A(flow->func_arguments, flow->col_to_replace) = strdup(arg);
+    free(arg);    
   }
 }
 

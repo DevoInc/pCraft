@@ -30,6 +30,7 @@ ami_ast_t *ami_ast_new(void)
   kv_init(ast->func_arguments);
   ast->repeat_index_as = NULL;
   kv_init(ast->repeat_flow);
+  ast->current_flow = NULL;
   
   return ast;
 }

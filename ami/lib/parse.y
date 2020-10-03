@@ -10,6 +10,7 @@ typedef void *yyscan_t;
 #include <ami/kvec.h>
 #include <ami/ami.h>
 #include <ami/flow.h>
+#include <ami/csvread.h>
  
 #include <unistd.h>
  
@@ -187,12 +188,24 @@ variable: VARIABLE EQUAL varset {
     }
     free(ami->_ast->current_variable_value);
   } else {
+    #if 0
     retval = ami_set_local_variable(ami, $1, ami->_ast->current_variable_value);
     if (retval) {
       fprintf(stderr, "Error setting a local variable!\n");
       YYERROR;
     }
-    free(ami->_ast->current_variable_value);    
+    free(ami->_ast->current_variable_value);
+    if (ami->_ast->repeat_block_id == ami->_ast->opened_sections) {
+      printf("We set a variable in a repeat block\n");
+      /* ami->_ast->current_flow = ami_flow_new(); */
+      ami_flow_t *flow = ami_flow_new();
+      flow->type = AMI_FT_SETVAR;
+      flow->var_name = strdup($1);
+      flow->var_value = strdup(ami->_ast->current_variable_value);
+      kv_push(ami_flow_kvec_t *, ami->_ast->repeat_flow, flow);
+    }
+    #endif
+    
   }
   
   /* free($1); */
@@ -292,37 +305,57 @@ closesection: CLOSESECTION {
   }
   if (ami->_ast->repeat_block_id == ami->_ast->opened_sections) {
     if (ami->debug) {
-      printf("[parse.y] Closing repeat section\n");
+      printf("[parse.y] Closing repeat section. We now repeat %d times\n", ami->_ast->repeat);
     }
-
-    printf("We we now repeat %d times\n", ami->_ast->repeat);
     
     size_t n_array = kv_size(ami->_ast->repeat_flow);
     size_t index = 1;
+    char *retval;
     while (index <= ami->_ast->repeat) {
-      printf("index:%d, n_array:%d\n", index, n_array);
+      /* printf("index:%d, n_array:%d\n", index, n_array); */
       if (n_array > 0) {
 	for (size_t i = 0; i < n_array; i++) {
 	  if (ami->debug) {
 	    ami_flow_t *flow = kv_A(ami->_ast->repeat_flow, i);
-	    printf("flow type:%d\n", flow->type);
-	    printf("flow name:%s\n", flow->func_name);
-	    size_t args_array = kv_size(flow->func_arguments);
-	    if (args_array > 0) {
-	      for (size_t i = 0; i < args_array; i++) {
-		if (ami->debug) {
-		  char *arg = kv_A(flow->func_arguments, i);
-		  if (!strcmp(arg, ami->_ast->repeat_index_as)) {
-		    asprintf(&arg, "%d", index);
-		  }
-		  printf("arg %d: %s\n", i, arg);
-		}
-	      /* if (ami->debug) { */
-	      /*   printf("\targ %d: %s\n", i, kv_A(ami->_ast->func_arguments, i)); */
-	      /* } */      
-	      /* kv_pop(ami->_ast->func_arguments); */
+	    // Calling function here and set to ami->_ast->current_variable_value
+	    if (flow->type == AMI_FT_RUNFUNC) {
+	      ami_flow_function_replace_argument_for_repeat_as(flow, ami->_ast->repeat_index_as, index);
+	      if (ami->debug) {
+		ami_flow_debug(flow);
 	      }
-	    }
+	      if (!strcmp(flow->func_name, "csv")) {
+
+		if (kv_size(flow->func_arguments) != 4) {
+		  fprintf(stderr, "Not enough arguments for the CSV function. Expected 4, for %d\n", kv_size(flow->func_arguments));
+		  YYERROR;
+		}
+		int line_in_csv = (int)strtod(kv_A(flow->func_arguments, 1), NULL);
+		int header = 0;
+		if (!strcmp(kv_A(flow->func_arguments, 3), "true")) {
+		  header = 1;
+		}
+	      
+		retval = ami_csvread_get_field_at_line(kv_A(flow->func_arguments, 0), // filename
+							     line_in_csv,                   // line to get
+							     kv_A(flow->func_arguments, 2), // field name
+							     header);                       // this CSV has a header (mandatory for now)
+		printf("retval:%s\n", retval);
+		/* printf("++++++++++++ csv WAS RUN: %s\n", retval); */
+		
+#if 0
+		if (!ami->_ast->current_variable_value) {
+		  fprintf(stderr, "The CSV function could not be run!\n");
+		  YYERROR;
+		}
+	      
+		fprintf("**************** This is the result of our CSV call:%s\n", ami->_ast->current_variable_value);
+#endif	      
+	      }
+	    } // if (flow->type == AMI_FT_RUNFUNC)
+
+	      /* kv_pop(ami->_ast->func_arguments); */
+	  /* } */
+	    /* } */
 	    /* ami_flow_close(flow); */
 	  } // ami->debug()
 	  
@@ -363,6 +396,8 @@ action: ACTION WORD OPENSECTION {
   }
   ami->_ast->opened_sections++;
   ami->_ast->action_block_id = ami->_ast->opened_sections;
+
+  free($2);
 }
 ;
 
@@ -388,7 +423,7 @@ exec: EXEC WORD {
     fprintf(stderr, "Error: exec outside of an action block. Not permitted.\n");
     YYERROR;
   }
-
+  free($2);
 }
 ;
 
@@ -422,6 +457,7 @@ function: WORD OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
    
   /* ami->_ast->current_variable_value = // Output of that function */
   ami->_ast->parsing_function = 0;
+  free($1);
 }
 ;
 
@@ -516,6 +552,9 @@ function_argument_word_eq_string: WORD EQUAL STRING {
     printf("[parse.y](function_argument_word_eq_string: WORD EQUAL STRING): %s = %s\n", $1, $3);
   }
   ami->_ast->parsing_function = 1;
+
+  free($1);
+  free($3);
 }
 ;
 
