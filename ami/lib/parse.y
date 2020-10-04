@@ -222,7 +222,7 @@ varset:   variable_string
 
 variable_string: STRING {
   if (ami->debug) {
-    printf("[parse.y](variable_string: STRING): %s\n", $1);
+    printf("[parse.y] variable_string: STRING(%s)\n", $1);
   }
   if (ami->_ast->opened_sections == 0) { // We are in the global scope
     nast_set_current_variable_value(ami->_ast, $1);
@@ -248,14 +248,14 @@ variable_function: function
 
 variable_variable: VARIABLE {
     if (ami->debug) {
-      printf("[parse.y](variable_variable: VARIABLE): Set FROM this variable %s: ", $1);
+      printf("[parse.y] variable_variable: VARIABLE(%s)\n", $1);
     }
 }
 ;
 
 include: INCLUDE STRING {
   if (ami->debug) {
-    printf("[parse.y](include: INCLUDE STRING): include from %s\n", $2);
+    printf("[parse.y](include: INCLUDE STRING(%s)\n", $2);
   }
 }
 ;
@@ -274,7 +274,7 @@ sleep: SLEEP INTEGER {
 
 repeat: REPEAT INTEGER AS VARIABLE OPENSECTION {
   if (ami->debug) {
-    printf("[parse.y](repeat: REPEAT INTEGER AS VARIABLE OPENSECTION) We repeat %d times and set var to %s\n", $2, $4);
+    printf("[parse.y] repeat: REPEAT INTEGER(%d) AS VARIABLE(%s) OPENSECTION)\n", $2, $4);
   }
   ami->_ast->repeat = $2;
   ami->_ast->repeat_index_as = strdup($4);  
@@ -296,7 +296,7 @@ repeat: REPEAT INTEGER AS VARIABLE OPENSECTION {
 
 closesection: CLOSESECTION {
   if (ami->debug) {
-    printf("[parse.y](closesection: CLOSESECTION)\n");
+    printf("[parse.y] closesection: CLOSESECTION\n");
   }
   if (ami->_ast->action_block_id == ami->_ast->opened_sections) {
     // add action
@@ -391,7 +391,7 @@ closesection: CLOSESECTION {
 
 action: ACTION WORD OPENSECTION {
   if (ami->debug) {
-    printf("[parse.y](action: ACTION WORD OPENSECTION): Running action %s\n", $2);
+    printf("[parse.y] action: ACTION WORD(%s) OPENSECTION\n", $2);
   }
   ami->_ast->opened_sections++;
   ami->_ast->action_block_id = ami->_ast->opened_sections;
@@ -402,21 +402,21 @@ action: ACTION WORD OPENSECTION {
 
 field_function_inline: FIELD OPENBRACKET STRING CLOSEBRACKET DOT function {
   if (ami->debug) {
-   printf("[parse.y](field_function_inline: FIELD OPENBRACKET STRING CLOSEBRACKET DOT function): Field %s\n", $3);
+   printf("[parse.y] field_function_inline: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET DOT function\n", $3);
   }
 }
 ;
 
 field_assigned_to_variable: FIELD OPENBRACKET STRING CLOSEBRACKET EQUAL varset {
   if (ami->debug) {
-    printf("[parse.y](field_assigned_to_variable: FIELD OPENBRACKET STRING CLOSEBRACKET EQUAL varset): Field %s assigned to variable\n", $3);
+    printf("[parse.y] field_assigned_to_variable: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET EQUAL varset\n", $3);
   }
 }
 ;
 
 exec: EXEC WORD {
   if (ami->debug) {
-    printf("[parse.y](exec: EXEC WORD): We execute: %s\n", $2);
+    printf("[parse.y] exec: EXEC WORD(%s)\n", $2);
   }
   if (ami->_ast->action_block_id != ami->_ast->opened_sections) {
     fprintf(stderr, "Error: exec outside of an action block. Not permitted.\n");
@@ -428,9 +428,7 @@ exec: EXEC WORD {
 
 function: WORD OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
   if (ami->debug) {
-    printf("[parse.y](function: WORD OPENPARENTHESIS function_arguments CLOSEPARENTHESIS): Calling function %s\n", $1);
-
-    printf("Arguments to use:\n");
+    printf("[parse.y] function: WORD(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
   }
 
   ami_flow_t *flow = ami_flow_new();
@@ -476,7 +474,7 @@ function_argument:   variable
 
 function_argument_assign: STRING ASSIGN varset {
   if (ami->debug) {
-    printf("[parse.y](function_argument_assign: STRING ASSIGN varset) WE ASSIGN TO THIS STRING:%s\n", $1);
+    printf("[parse.y] function_argument_assign: STRING(%s) ASSIGN varset\n", $1);
   }
   ami->_ast->parsing_function = 1;
 }
@@ -484,7 +482,7 @@ function_argument_assign: STRING ASSIGN varset {
 
 function_argument_string: STRING {
   if (ami->debug) {
-    printf("[parse.y](function_argument_string: STRING): This is function argument string:%s\n", $1);
+    printf("[parse.y] function_argument_string: STRING(%s)\n", $1);
   }
   ami->_ast->parsing_function = 1;
 
@@ -496,7 +494,7 @@ function_argument_string: STRING {
 
 function_argument_int: INTEGER {
   if (ami->debug) {
-    printf("[parse.y](function_argument_int: INTEGER): This is function argument int:%d\n", $1);
+    printf("[parse.y] function_argument_int: INTEGER(%d)\n", $1);
   }
   ami->_ast->parsing_function = 1;
 
@@ -508,7 +506,7 @@ function_argument_int: INTEGER {
 
 function_argument_variable: VARIABLE {
   if (ami->debug) {
-    printf("[parse.y](function_argument_variable: VARIABLE): This is the FUNCTION ARGUMENT VARIABLE:%s\n", $1);
+    printf("[parse.y] function_argument_variable: VARIABLE(%s)\n", $1);
   }
   ami->_ast->parsing_function = 1;
 
@@ -534,7 +532,7 @@ function_argument_variable: VARIABLE {
 
 function_argument_word_eq_word: WORD EQUAL WORD {
   if (ami->debug) {
-    printf("[parse.y](function_argument_word_eq_word: WORD EQUAL WORD): %s = %s\n", $1, $3);
+    printf("[parse.y] function_argument_word_eq_word: WORD(%s) EQUAL WORD(%s)\n", $1, $3);
   }
   ami->_ast->parsing_function = 1;
 
@@ -548,7 +546,7 @@ function_argument_word_eq_word: WORD EQUAL WORD {
 
 function_argument_word_eq_string: WORD EQUAL STRING {
   if (ami->debug) {
-    printf("[parse.y](function_argument_word_eq_string: WORD EQUAL STRING): %s = %s\n", $1, $3);
+    printf("[parse.y] function_argument_word_eq_string: WORD(%s) EQUAL STRING(%s)\n", $1, $3);
   }
   ami->_ast->parsing_function = 1;
 
