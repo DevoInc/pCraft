@@ -10,6 +10,7 @@ set(AMI_SOURCES
   ami.c
   csvread.c
   flow.c
+  nast.c
 )
 
 message("Bison output: ${BISON_parse_OUTPUTS}")

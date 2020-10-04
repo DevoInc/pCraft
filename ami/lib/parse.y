@@ -11,6 +11,7 @@ typedef void *yyscan_t;
 #include <ami/ami.h>
 #include <ami/flow.h>
 #include <ami/csvread.h>
+#include <ami/nast.h>
  
 #include <unistd.h>
  
@@ -181,12 +182,13 @@ variable: VARIABLE EQUAL varset {
   }
 
   if (ami->_ast->opened_sections == 0) { // We are in the global scope
-    retval = ami_set_global_variable(ami, $1, ami->_ast->current_variable_value);
+    char *val = nast_get_current_variable_value(ami->_ast);
+    retval = ami_set_global_variable(ami, $1, val);
     if (retval) {
       fprintf(stderr, "Error setting a global variable!\n");
       YYERROR;
     }
-    free(ami->_ast->current_variable_value);
+    /* free(ami->_ast->current_variable_value); */
   } else {
     #if 0
     retval = ami_set_local_variable(ami, $1, ami->_ast->current_variable_value);
@@ -223,7 +225,7 @@ variable_string: STRING {
     printf("[parse.y](variable_string: STRING): %s\n", $1);
   }
   if (ami->_ast->opened_sections == 0) { // We are in the global scope
-    ami->_ast->current_variable_value = strdup($1);
+    nast_set_current_variable_value(ami->_ast, $1);
   }
   if (ami->_ast->parsing_function) {
     char *arg = strdup($1);
@@ -339,17 +341,14 @@ closesection: CLOSESECTION {
 							     line_in_csv,                   // line to get
 							     kv_A(flow->func_arguments, 2), // field name
 							     header);                       // this CSV has a header (mandatory for now)
-		printf("retval:%s\n", retval);
-		/* printf("++++++++++++ csv WAS RUN: %s\n", retval); */
-		
-#if 0
-		if (!ami->_ast->current_variable_value) {
+		/* printf("retval:%s\n", retval); */
+		/* printf("++++++++++++ csv WAS RUN: %s\n", retval); */		
+		if (!retval) {
 		  fprintf(stderr, "The CSV function could not be run!\n");
 		  YYERROR;
 		}
-	      
-		fprintf("**************** This is the result of our CSV call:%s\n", ami->_ast->current_variable_value);
-#endif	      
+
+		nast_set_current_variable_value(ami->_ast, retval);
 	      }
 	    } // if (flow->type == AMI_FT_RUNFUNC)
 
@@ -360,13 +359,13 @@ closesection: CLOSESECTION {
 	  } // ami->debug()
 	  
 	  /* printf("\targ %d: %s\n", i, ); */
-	}      
 	/* kv_pop(ami->_ast->func_arguments); */
+	}
       }
       index++;
     } // while (index <= n_array)
     ami->_ast->repeat = 0;
-
+    
     ami_nast_repeat_flow_reset(ami);
     /* kv_destroy(ami->_ast->repeat_flow); */
     /* size_t len_array = kv_size(ami->_ast->repeat_flow); */
