@@ -27,6 +27,7 @@ ami_flow_t *ami_flow_new()
   flow->fields_to_replace = kh_init(flowhash);
   flow->exec = NULL;
   flow->replace_field = NULL;
+  flow->var_for_repeat = 0;
   
   return flow;
 }

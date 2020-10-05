@@ -45,11 +45,14 @@ typedef void (*print_message_cb)(char *message);
 typedef void (*sleep_cb)(int msec);
 
 struct _ami_ast_t {
+  int var_value_from_function;
+  int static_var;
   int parsing_function;
   int action_block_id;
   int repeat_block_id;
   int opened_sections;
   char *current_variable_value;
+  char *current_field_value;
   ami_kvec_t func_arguments;
   char *repeat_index_as;
   int repeat; // Everytime we capture an action it is a repeat action of at least 1 :)

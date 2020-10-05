@@ -27,11 +27,13 @@ ami_ast_t *ami_ast_new(void)
   ast->opened_sections = 0;
   ast->repeat = 0;
   ast->current_variable_value = NULL;
+  ast->current_field_value = NULL;
   kv_init(ast->func_arguments);
   ast->repeat_index_as = NULL;
   kv_init(ast->repeat_flow);
   ast->current_flow = NULL;
-  
+  ast->static_var = 0;
+  ast->var_value_from_function = 0;
   return ast;
 }
 

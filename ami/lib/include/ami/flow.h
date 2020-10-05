@@ -30,6 +30,7 @@ struct _ami_flow_t {
   char *replace_field;
   char *var_name;
   char *var_value;
+  int var_for_repeat;
   khash_t(flowhash) *variables;
   khash_t(flowhash) *fields_to_replace;
   char *exec;

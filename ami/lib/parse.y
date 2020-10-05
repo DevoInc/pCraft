@@ -178,9 +178,9 @@ variable: VARIABLE EQUAL varset {
   int retval;
 
   if (ami->debug) {
-    printf("[parse.y](variable: VARIABLE EQUAL varset): %s\n", $1);
+    printf("[parse.y] variable: VARIABLE(%s) EQUAL varset\n", $1);
   }
-
+  
   if (ami->_ast->opened_sections == 0) { // We are in the global scope
     char *val = nast_get_current_variable_value(ami->_ast);
     retval = ami_set_global_variable(ami, $1, val);
@@ -190,23 +190,40 @@ variable: VARIABLE EQUAL varset {
     }
     /* free(ami->_ast->current_variable_value); */
   } else {
-    #if 0
-    retval = ami_set_local_variable(ami, $1, ami->_ast->current_variable_value);
-    if (retval) {
-      fprintf(stderr, "Error setting a local variable!\n");
-      YYERROR;
+    ami_flow_t *flow = ami_flow_new();
+    flow->type = AMI_FT_SETVAR;
+    flow->var_name = strdup($1);
+    
+    if (ami->_ast->var_value_from_function) {
+      // If this variable is from a function, it is dynamic and must not be set here.
+      flow->var_for_repeat = 1;
+    } else {
+      flow->var_value = strdup(nast_get_current_variable_value(ami->_ast));
+      flow->var_for_repeat = 0;
     }
-    free(ami->_ast->current_variable_value);
-    if (ami->_ast->repeat_block_id == ami->_ast->opened_sections) {
-      printf("We set a variable in a repeat block\n");
-      /* ami->_ast->current_flow = ami_flow_new(); */
-      ami_flow_t *flow = ami_flow_new();
-      flow->type = AMI_FT_SETVAR;
-      flow->var_name = strdup($1);
-      flow->var_value = strdup(ami->_ast->current_variable_value);
-      kv_push(ami_flow_kvec_t *, ami->_ast->repeat_flow, flow);
-    }
-    #endif
+    kv_push(ami_flow_kvec_t *, ami->_ast->repeat_flow, flow);
+    
+    /* #if 0 */
+    /* retval = ami_set_local_variable(ami, $1, ami->_ast->current_variable_value); */
+    /* if (retval) { */
+    /*   fprintf(stderr, "Error setting a local variable!\n"); */
+    /*   YYERROR; */
+    /* } */
+    /* free(ami->_ast->current_variable_value); */
+    /* if (ami->_ast->repeat_block_id == ami->_ast->opened_sections) { */
+    /*   printf("We set a variable in a repeat block\n"); */
+    /*   /\* ami->_ast->current_flow = ami_flow_new(); *\/ */
+    /*   ami_flow_t *flow = ami_flow_new(); */
+    /*   flow->type = AMI_FT_SETVAR; */
+    /*   /\* if (ami->_ast->static_var) { *\/ */
+    /*   if (!flow->var_for_repeat) { */
+    /* 	flow->var_value = strdup(ami->_ast->current_variable_value); */
+    /*   } */
+    /*   /\* } *\/ */
+    /*   kv_push(ami_flow_kvec_t *, ami->_ast->repeat_flow, flow); */
+
+    /* } */
+    /* #endif */
     
   }
   
@@ -224,12 +241,18 @@ variable_string: STRING {
   if (ami->debug) {
     printf("[parse.y] variable_string: STRING(%s)\n", $1);
   }
+  ami->_ast->var_value_from_function = 0;
+
   if (ami->_ast->opened_sections == 0) { // We are in the global scope
     nast_set_current_variable_value(ami->_ast, $1);
   }
   if (ami->_ast->parsing_function) {
+    /* printf("I am in parsing function\n"); */
     char *arg = strdup($1);
     kv_push(char *, ami->_ast->func_arguments, arg);
+  } else {
+    ami->_ast->static_var = 1;
+    nast_set_current_variable_value(ami->_ast, $1);
   }
  
   free($1);
@@ -238,12 +261,15 @@ variable_string: STRING {
 
 variable_int: INTEGER {
   if (ami->debug) {
-    printf("[parse.y](variable_int: INTEGER): Set this integer:%d to our variable\n", $1);
+    printf("[parse.y] variable_int: INTEGER(%d)\n", $1);
   }
 }
 ;
 
-variable_function: function
+variable_function: function {
+  printf("[parse.y] variable_function: function\n");
+  ami->_ast->var_value_from_function = 1;
+ }
 ;
 
 variable_variable: VARIABLE {
@@ -255,14 +281,14 @@ variable_variable: VARIABLE {
 
 include: INCLUDE STRING {
   if (ami->debug) {
-    printf("[parse.y](include: INCLUDE STRING(%s)\n", $2);
+    printf("[parse.y] include: INCLUDE STRING(%s)\n", $2);
   }
 }
 ;
 
 sleep: SLEEP INTEGER {
   if (ami->debug) {
-    printf("[parse.y](sleep: SLEEP INTEGER) Sleeping for %d microseconds\n", $2);
+    printf("[parse.y] sleep: SLEEP INTEGER(%d)\n", $2);
   }
   if (ami->sleepcb) {
     ami->sleepcb($2);
@@ -317,16 +343,14 @@ closesection: CLOSESECTION {
       /* printf("index:%d, n_array:%d\n", index, n_array); */
       if (n_array > 0) {
 	for (size_t i = 0; i < n_array; i++) {
-	  if (ami->debug) {
 	    ami_flow_t *flow = kv_A(ami->_ast->repeat_flow, i);
-	    // Calling function here and set to ami->_ast->current_variable_value
-	    if (flow->type == AMI_FT_RUNFUNC) {
+	    switch(flow->type) {
+	    case AMI_FT_RUNFUNC:
 	      ami_flow_function_replace_argument_for_repeat_as(flow, ami->_ast->repeat_index_as, index);
 	      if (ami->debug) {
 		ami_flow_debug(flow);
 	      }
-	      if (!strcmp(flow->func_name, "csv")) {
-
+	      if (!strcmp(flow->func_name, "csv")) {		
 		if (kv_size(flow->func_arguments) != 4) {
 		  fprintf(stderr, "Not enough arguments for the CSV function. Expected 4, for %d\n", kv_size(flow->func_arguments));
 		  YYERROR;
@@ -336,28 +360,48 @@ closesection: CLOSESECTION {
 		if (!strcmp(kv_A(flow->func_arguments, 3), "true")) {
 		  header = 1;
 		}
-	      
+		
 		retval = ami_csvread_get_field_at_line(kv_A(flow->func_arguments, 0), // filename
-							     line_in_csv,                   // line to get
-							     kv_A(flow->func_arguments, 2), // field name
-							     header);                       // this CSV has a header (mandatory for now)
-		/* printf("retval:%s\n", retval); */
-		/* printf("++++++++++++ csv WAS RUN: %s\n", retval); */		
+						       line_in_csv,                   // line to get
+						       kv_A(flow->func_arguments, 2), // field name
+						       header);                       // this CSV has a header (mandatory for now)
 		if (!retval) {
 		  fprintf(stderr, "The CSV function could not be run!\n");
 		  YYERROR;
 		}
-
+		printf("We set our value from our CSV:%s\n", retval);
 		nast_set_current_variable_value(ami->_ast, retval);
 	      }
-	    } // if (flow->type == AMI_FT_RUNFUNC)
-
+	      break; // AMI_FT_RUNFUNC
+	    case AMI_FT_SETVAR:
+	      printf("case AMI_FT_SETVAR\n");
+	      if (flow->var_for_repeat) {
+	      	flow->var_value = strdup(nast_get_current_variable_value(ami->_ast));
+	      }
+	      if (ami->debug) {
+		ami_flow_debug(flow);
+	      }
+	      ami_flow_close(flow);
+	      break;
+	    case AMI_FT_ACTION:
+	      printf("This is an action flow\n");
+	      break;
+	    case AMI_FT_REPLACE:
+	      flow->replace_field = nast_get_current_field_value(ami->_ast);
+	      if (ami->debug) {
+		ami_flow_debug(flow);
+	      }
+	      /* printf("This is a replace flow\n"); */
+	      break;
+	    default:
+	      printf("Unknown handled flow\n");
+	      break;
+	    }
+	    
 	      /* kv_pop(ami->_ast->func_arguments); */
 	  /* } */
 	    /* } */
 	    /* ami_flow_close(flow); */
-	  } // ami->debug()
-	  
 	  /* printf("\targ %d: %s\n", i, ); */
 	/* kv_pop(ami->_ast->func_arguments); */
 	}
@@ -404,6 +448,7 @@ field_function_inline: FIELD OPENBRACKET STRING CLOSEBRACKET DOT function {
   if (ami->debug) {
    printf("[parse.y] field_function_inline: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET DOT function\n", $3);
   }
+  nast_set_current_field_value(ami->_ast, $3);
 }
 ;
 
@@ -430,11 +475,12 @@ function: WORD OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
   if (ami->debug) {
     printf("[parse.y] function: WORD(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
   }
-
+  
   ami_flow_t *flow = ami_flow_new();
   if (!strcmp("replace", $1)) {
     flow->type = AMI_FT_REPLACE;
-    flow->func_name = strdup("replace");    
+    flow->func_name = strdup("replace");
+    kv_push(ami_flow_kvec_t *, ami->_ast->repeat_flow, flow);    
   } else {
     flow->type = AMI_FT_RUNFUNC;
     flow->func_name = strdup($1);
