@@ -16,6 +16,7 @@ enum _ami_flow_type_t {
        AMI_FT_NONE,
        AMI_FT_SETVAR,
        AMI_FT_ACTION,
+       AMI_FT_CLOSEACTION,
        AMI_FT_RUNFUNC,
        AMI_FT_REPLACE,
 };
@@ -34,6 +35,7 @@ struct _ami_flow_t {
   khash_t(flowhash) *variables;
   khash_t(flowhash) *fields_to_replace;
   char *exec;
+  char *action_name;
 };
 typedef struct _ami_flow_t ami_flow_t;
 

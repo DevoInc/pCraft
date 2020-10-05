@@ -9,6 +9,7 @@ typedef void *yyscan_t;
 
 #include <ami/kvec.h>
 #include <ami/ami.h>
+#include <ami/action.h> 
 #include <ami/flow.h>
 #include <ami/csvread.h>
 #include <ami/nast.h>
@@ -72,6 +73,7 @@ typedef void *yyscan_t;
 %token COMMA
 %token DEBUGON
 %token DEBUGOFF
+%token EXIT
 
 %%
 
@@ -96,6 +98,7 @@ input:
        | input keywords_as_argname
        | input debugon
        | input debugoff
+       | input exit
        ;
 
 
@@ -190,6 +193,20 @@ variable: VARIABLE EQUAL varset {
     }
     /* free(ami->_ast->current_variable_value); */
   } else {
+    // FIXME: for now it is set to global but shall be restained
+    char *val = nast_get_current_variable_value(ami->_ast);
+    retval = ami_set_global_variable(ami, $1, val);
+    if (retval) {
+      fprintf(stderr, "Error setting a global variable!\n");
+      YYERROR;
+    }
+      /* printf("Setting a local variable for %s\n", $1); */
+      /* retval = ami_set_local_variable(ami, $1, ami->_ast->current_variable_value); */
+      /* if (retval) { */
+      /* 	fprintf(stderr, "Error setting a local variable!\n"); */
+      /* 	YYERROR; */
+      /* } */
+    
     ami_flow_t *flow = ami_flow_new();
     flow->type = AMI_FT_SETVAR;
     flow->var_name = strdup($1);
@@ -276,6 +293,10 @@ variable_variable: VARIABLE {
     if (ami->debug) {
       printf("[parse.y] variable_variable: VARIABLE(%s)\n", $1);
     }
+    /* flow->replace_with = $1; */
+    char *arg = strdup($1);
+    kv_push(char *, ami->_ast->replace_val, arg);
+    free($1);
 }
 ;
 
@@ -352,7 +373,7 @@ closesection: CLOSESECTION {
 	      }
 	      if (!strcmp(flow->func_name, "csv")) {		
 		if (kv_size(flow->func_arguments) != 4) {
-		  fprintf(stderr, "Not enough arguments for the CSV function. Expected 4, for %d\n", kv_size(flow->func_arguments));
+		  fprintf(stderr, "Not enough arguments for the CSV function. Expected 4, got %d\n", kv_size(flow->func_arguments));
 		  YYERROR;
 		}
 		int line_in_csv = (int)strtod(kv_A(flow->func_arguments, 1), NULL);
@@ -369,28 +390,81 @@ closesection: CLOSESECTION {
 		  fprintf(stderr, "The CSV function could not be run!\n");
 		  YYERROR;
 		}
-		printf("We set our value from our CSV:%s\n", retval);
+		if (ami->debug) {
+		  printf("We set our value from our CSV:%s\n", retval);
+		}
 		nast_set_current_variable_value(ami->_ast, retval);
 	      }
 	      break; // AMI_FT_RUNFUNC
 	    case AMI_FT_SETVAR:
-	      printf("case AMI_FT_SETVAR\n");
+	      if (ami->debug) {
+		printf("case AMI_FT_SETVAR\n");
+	      }
+	      retval = ami_set_global_variable(ami, flow->var_name, nast_get_current_variable_value(ami->_ast));
+	      if (retval) {
+		fprintf(stderr, "Error setting a local variable!\n");
+		YYERROR;
+	      }
 	      if (flow->var_for_repeat) {
 	      	flow->var_value = strdup(nast_get_current_variable_value(ami->_ast));
+		/* printf("******** VARNAME:%s\n", flow->var_name); */
+		/* retval = ami_set_global_variable(ami, flow->var_name, flow->var_value);		 */
 	      }
+	      ami_set_local_variable(ami, flow->var_name, flow->var_value);
 	      if (ami->debug) {
 		ami_flow_debug(flow);
 	      }
 	      ami_flow_close(flow);
 	      break;
-	    case AMI_FT_ACTION:
-	      printf("This is an action flow\n");
+	    case AMI_FT_ACTION: // we start an action
+	      /* printf("This is an action flow\n"); */
+	      if (ami->debug) {
+		ami_flow_debug(flow);
+	      }
+	      break;
+	    case AMI_FT_CLOSEACTION:
+	      if (ami->debug) {
+		printf("Action to execute:%s\n", ami->_ast->action_exec);
+		ami_flow_debug(flow);
+	      }
+	      ami_action_t *action = ami_action_new();
+	      action->name = ami->_ast->action_name;
+	      action->exec = ami->_ast->action_exec;
+	      ami_action_copy_variables(ami, action);
+	      ami_action_copy_replacements(ami, action);
+	      // run the callback
+	      if (ami->action_cb) {
+		ami->action_cb(action);
+	      } else {
+		fprintf(stderr, "*** WARNING: No action callback set!\n");
+	      }
+	      if (ami->debug) {
+		ami_action_debug(ami, action);
+	      }  
+	      ami_action_close(action);
 	      break;
 	    case AMI_FT_REPLACE:
 	      flow->replace_field = nast_get_current_field_value(ami->_ast);
 	      if (ami->debug) {
 		ami_flow_debug(flow);
 	      }
+	      size_t n_array = kv_size(ami->_ast->replace_key);
+	      if (n_array > 0) {
+		for (size_t i = 0; i< n_array; i++) {
+		  char *key = kv_A(ami->_ast->replace_key, i);
+		  char *value = kv_A(ami->_ast->replace_val, i);
+
+		  if (strlen(value) > 0) {
+		    if (value[0] == '$') {
+		      value = ami_get_global_variable(ami, value);
+		    }		    
+		  }
+		  if (ami->debug) {
+		    printf("** replace %s with %s\n", key, value);
+		  }
+		}
+	      }
+
 	      /* printf("This is a replace flow\n"); */
 	      break;
 	    default:
@@ -421,15 +495,20 @@ closesection: CLOSESECTION {
     
     ami->_ast->repeat_block_id = 0;
   }
+
+  ami->_ast->in_action = 0;
+  ami_flow_t *flow = ami_flow_new();
+  flow->type = AMI_FT_CLOSEACTION;
+  kv_push(ami_flow_kvec_t *, ami->_ast->repeat_flow, flow);
   
   if (ami->_ast->opened_sections <= 0) {
     fprintf(stderr, "Closing section you did not opened!\n");
     YYERROR;
   }
   ami->_ast->opened_sections--;
-  if (ami->_ast->opened_sections == 0) {
-    ami_erase_local_variables(ami);
-  }
+  /* if (ami->_ast->opened_sections == 0) { */
+  /*   ami_erase_local_variables(ami); */
+  /* } */
 }
 ;
 
@@ -439,6 +518,13 @@ action: ACTION WORD OPENSECTION {
   }
   ami->_ast->opened_sections++;
   ami->_ast->action_block_id = ami->_ast->opened_sections;
+  ami->_ast->in_action = 1;
+
+  ami_flow_t *flow = ami_flow_new();
+  flow->type = AMI_FT_ACTION;
+  flow->action_name = strdup($2);
+  ami->_ast->action_name = strdup($2);
+  kv_push(ami_flow_kvec_t *, ami->_ast->repeat_flow, flow);
 
   free($2);
 }
@@ -467,6 +553,9 @@ exec: EXEC WORD {
     fprintf(stderr, "Error: exec outside of an action block. Not permitted.\n");
     YYERROR;
   }
+
+  ami->_ast->action_exec = strdup($2);
+  
   free($2);
 }
 ;
@@ -523,6 +612,10 @@ function_argument_assign: STRING ASSIGN varset {
     printf("[parse.y] function_argument_assign: STRING(%s) ASSIGN varset\n", $1);
   }
   ami->_ast->parsing_function = 1;
+
+  char *arg = strdup($1);
+  kv_push(char *, ami->_ast->replace_key, arg);
+  free($1);
 }
 ;
 
@@ -618,6 +711,11 @@ debugon: DEBUGON {
 
 debugoff: DEBUGOFF {
   ami->debug = 0;
+}
+;
+
+exit: EXIT {
+  exit(1);
 }
 ;
 

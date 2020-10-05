@@ -43,11 +43,13 @@ typedef struct _ami_replace_t ami_replace_t;
 
 typedef void (*print_message_cb)(char *message);
 typedef void (*sleep_cb)(int msec);
+typedef void (*ami_action_cb)(ami_action_t *action);
 
 struct _ami_ast_t {
   int var_value_from_function;
   int static_var;
   int parsing_function;
+  int in_action;
   int action_block_id;
   int repeat_block_id;
   int opened_sections;
@@ -59,6 +61,10 @@ struct _ami_ast_t {
   /* ami_actions_kvec_t repeat_actions; */
   ami_flow_kvec_t repeat_flow;
   ami_flow_t *current_flow;
+  ami_kvec_t replace_key;
+  ami_kvec_t replace_val;
+  char *action_name;
+  char *action_exec;
 };
 typedef struct _ami_ast_t ami_ast_t;
 
@@ -77,6 +83,7 @@ struct _ami_t {
   ami_actions_kvec_t actions;
   sleep_cb sleepcb;
   print_message_cb printmessagecb;
+  ami_action_cb action_cb;
 };
 typedef struct _ami_t ami_t;
 
@@ -97,5 +104,6 @@ int ami_set_local_variable(ami_t *ami, char *key, char *val);
 const char *ami_get_local_variable(ami_t *ami, char *key);
 void ami_erase_local_variables(ami_t *ami);
 int ami_nast_repeat_flow_reset(ami_t *ami);
+void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb);
 
 #endif // _AMI_H_

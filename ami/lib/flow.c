@@ -28,6 +28,7 @@ ami_flow_t *ami_flow_new()
   flow->exec = NULL;
   flow->replace_field = NULL;
   flow->var_for_repeat = 0;
+  flow->action_name = NULL;
   
   return flow;
 }
@@ -41,6 +42,8 @@ char *ami_flow_type_as_string(ami_flow_t *flow)
     return "AMI_FT_SETVAR";
   case AMI_FT_ACTION:
     return "AMI_FT_ACTION";
+  case AMI_FT_CLOSEACTION:
+    return "AMI_FT_CLOSEACTION";
   case AMI_FT_RUNFUNC:
     return "AMI_FT_RUNFUNC";
   case AMI_FT_REPLACE:
@@ -63,6 +66,10 @@ void ami_flow_debug(ami_flow_t *flow)
     printf("\tvar_value:%s\n", flow->var_value);
     break;
   case AMI_FT_ACTION:
+    printf("\taction_name:%s\n", flow->action_name);
+    break;
+  case AMI_FT_CLOSEACTION:
+    printf("\taction_name:%s\n", flow->action_name);
     printf("\texec:%s\n", flow->exec);
     break;
   case AMI_FT_RUNFUNC:

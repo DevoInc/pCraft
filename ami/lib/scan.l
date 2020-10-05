@@ -62,6 +62,7 @@ FIELD field
 EXEC exec
 DEBUGON debugon
 DEBUGOFF debugoff
+EXIT exit
 
 %%
 
@@ -93,6 +94,7 @@ DEBUGOFF debugoff
 {FIELD} { return TOK_FIELD; }
 {DEBUGON} { return TOK_DEBUGON; }
 {DEBUGOFF} { return TOK_DEBUGOFF; }
+{EXIT} { return TOK_EXIT; }
 
 {VARIABLE} {
               yylval->TOK_VARIABLE = strdup(yytext);

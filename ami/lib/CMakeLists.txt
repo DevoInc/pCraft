@@ -7,6 +7,7 @@ include_directories(AFTER ${FLEX_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/inclu
 add_definitions(-g)
 
 set(AMI_SOURCES
+  action.c
   ami.c
   csvread.c
   flow.c

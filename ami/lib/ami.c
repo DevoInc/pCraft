@@ -26,6 +26,7 @@ ami_ast_t *ami_ast_new(void)
   ast->repeat_block_id = 0;
   ast->opened_sections = 0;
   ast->repeat = 0;
+  ast->in_action = 0;
   ast->current_variable_value = NULL;
   ast->current_field_value = NULL;
   kv_init(ast->func_arguments);
@@ -34,6 +35,12 @@ ami_ast_t *ami_ast_new(void)
   ast->current_flow = NULL;
   ast->static_var = 0;
   ast->var_value_from_function = 0;
+
+  kv_init(ast->replace_key);
+  kv_init(ast->replace_val);
+
+  ast->action_exec = NULL;
+  
   return ast;
 }
 
@@ -60,7 +67,8 @@ ami_t *ami_new(void)
 
   ami->printmessagecb = NULL;
   ami->sleepcb = NULL;
-
+  ami->action_cb = NULL;
+  
   kv_init(ami->references);
   
   ami->_ast = ami_ast_new();
@@ -287,4 +295,9 @@ void ami_set_sleep_callback(ami_t *ami, sleep_cb sleep_cb)
 int ami_loop(ami_t *ami, foreach_action_cb action_cb, void *user_data)
 {
 
+}
+
+void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb)
+{
+  ami->action_cb = action_cb;
 }
