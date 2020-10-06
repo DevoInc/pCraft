@@ -1,3 +1,4 @@
+import ctypes
 from .functions import *
 
 def default_print_cb(msg):
@@ -5,18 +6,16 @@ def default_print_cb(msg):
 
 class Action(object):
     pass
-    
+
 class Ami(object):
     """
     Ami Python Library 
     """
     def __init__(self):
         self.ctx = ami_new()
-        self.set_message_cb(default_print_cb)
-
-    def printhi(self):
-        print("hi")
+        #        self.set_message_cb(default_print_cb)
         
+
     def __del__(self):
         ami_close(self.ctx)
 

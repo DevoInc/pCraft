@@ -360,6 +360,7 @@ closesection: CLOSESECTION {
     size_t n_array = kv_size(ami->_ast->repeat_flow);
     size_t index = 1;
     char *retval;
+    int retint;
     while (index <= ami->_ast->repeat) {
       /* printf("index:%d, n_array:%d\n", index, n_array); */
       if (n_array > 0) {
@@ -400,8 +401,8 @@ closesection: CLOSESECTION {
 	      if (ami->debug) {
 		printf("case AMI_FT_SETVAR\n");
 	      }
-	      retval = ami_set_global_variable(ami, flow->var_name, nast_get_current_variable_value(ami->_ast));
-	      if (retval) {
+	      retint = ami_set_global_variable(ami, flow->var_name, nast_get_current_variable_value(ami->_ast));
+	      if (retint) {
 		fprintf(stderr, "Error setting a local variable!\n");
 		YYERROR;
 	      }
@@ -428,8 +429,8 @@ closesection: CLOSESECTION {
 		ami_flow_debug(flow);
 	      }
 	      ami_action_t *action = ami_action_new();
-	      action->name = ami->_ast->action_name;
-	      action->exec = ami->_ast->action_exec;
+	      action->name = strdup(ami->_ast->action_name);
+	      action->exec = strdup(ami->_ast->action_exec);
 	      ami_action_copy_variables(ami, action);
 	      ami_action_copy_replacements(ami, action);
 	      // run the callback

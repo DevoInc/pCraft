@@ -61,7 +61,7 @@ void ami_action_copy_variables(ami_t *ami, ami_action_t *action)
       if (kh_exist(ami->global_variables, k)) {
 	char *key = (char *)kh_key(ami->global_variables, k);
 	char *val = (char *)kh_value(ami->global_variables, k);
-	k2 = kh_put(strhash, action->action_variables, key, &absent);
+	k2 = kh_put(actionhash, action->action_variables, key, &absent);
 	if (absent) {
 	  kh_key(action->action_variables, k2) = strdup(key);	  
 	  kh_value(action->action_variables, k2) = strdup(val);
@@ -78,7 +78,7 @@ void ami_action_copy_variables(ami_t *ami, ami_action_t *action)
       if (kh_exist(ami->local_variables, k)) {
 	char *key = (char *)kh_key(ami->local_variables, k);
 	char *val = (char *)kh_value(ami->local_variables, k);
-	k2 = kh_put(strhash, action->action_variables, key, &absent);
+	k2 = kh_put(actionhash, action->action_variables, key, &absent);
 	if (absent) {
 	  kh_key(action->action_variables, k2) = strdup(key);	  
 	  kh_value(action->action_variables, k2) = strdup(val);
@@ -97,6 +97,13 @@ void ami_action_debug(ami_t *ami, ami_action_t *action)
 {
   khint_t k;
 
+  printf("In action debug\n");
+
+  if (!action) {
+    fprintf(stderr, "action is NULL, nothing to debug!\n");
+    return;
+  }
+  
   printf("action->name:%s\n", action->name);
   printf("action->exec:%s\n", action->exec);
   
@@ -121,6 +128,19 @@ void ami_action_debug(ami_t *ami, ami_action_t *action)
       printf("action replace %s with %s\n", key, value);
     }
   }
+}
+
+int ami_action_get_variables_len(ami_action_t *action)
+{
+  khint_t k;
+  int len = 0;
+  
+  if (action->action_variables) {
+    for (k = 0; k < kh_end(action->action_variables); ++k) {
+      len++;
+    }
+  }
+  return len;
 }
 
 void ami_action_copy_replacements(ami_t *ami, ami_action_t *action)

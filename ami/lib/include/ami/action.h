@@ -30,5 +30,7 @@ void ami_action_copy_variables(ami_t *ami, ami_action_t *action);
 void ami_action_debug(ami_t *ami, ami_action_t *action);
 char *ami_action_get_name(ami_action_t *action);
 char *ami_action_get_exec(ami_action_t *action);
+void ami_action_copy_replacements(ami_t *ami, ami_action_t *action);
+int ami_action_get_variables_len(ami_action_t *action);
 
 #endif // _ACTION_H_

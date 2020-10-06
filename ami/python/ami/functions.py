@@ -19,3 +19,4 @@ ami_set_action_callback = bind("ami_set_action_callback", None, c_void_p, action
 ami_action_debug = bind("ami_action_debug", None, c_void_p)
 ami_action_get_name = bind("ami_action_get_name", c_char_p, c_void_p)
 ami_action_get_exec = bind("ami_action_get_exec", c_char_p, c_void_p)
+ami_action_get_variables_len = bind("ami_action_get_variables_len", c_int, c_void_p)
