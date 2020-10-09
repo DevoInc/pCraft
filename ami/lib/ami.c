@@ -40,6 +40,7 @@ ami_ast_t *ami_ast_new(void)
   kv_init(ast->replace_val);
 
   ast->action_exec = NULL;
+  ast->action_replace_field = NULL;
   
   return ast;
 }
@@ -156,6 +157,11 @@ void ami_debug(ami_t *ami)
 {
   khint_t k;
 
+  if (!ami) {
+    fprintf(stderr, "Ami is null. Cannot debug!\n");
+    return;
+  }
+  
   printf("version:%d\n", ami->version);
   printf("revision:%d\n", ami->revision);  
   if (ami->author) {
@@ -297,7 +303,8 @@ int ami_loop(ami_t *ami, foreach_action_cb action_cb, void *user_data)
 
 }
 
-void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb)
+void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata)
 {
   ami->action_cb = action_cb;
+  ami->action_cb_userdata = userdata;
 }

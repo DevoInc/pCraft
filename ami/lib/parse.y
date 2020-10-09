@@ -431,11 +431,17 @@ closesection: CLOSESECTION {
 	      ami_action_t *action = ami_action_new();
 	      action->name = strdup(ami->_ast->action_name);
 	      action->exec = strdup(ami->_ast->action_exec);
+	      action->replace_field = strdup(ami->_ast->action_replace_field);
+	      /* free(ami->_ast->action_replace_field); */
 	      ami_action_copy_variables(ami, action);
 	      ami_action_copy_replacements(ami, action);
 	      // run the callback
+	      if (!ami) {
+		fprintf(stderr, "No AMI object!\n");
+		YYERROR;
+	      }
 	      if (ami->action_cb) {
-		ami->action_cb(action);
+		ami->action_cb(action, ami->action_cb_userdata);
 	      } else {
 		fprintf(stderr, "*** WARNING: No action callback set!\n");
 	      }
@@ -536,6 +542,8 @@ field_function_inline: FIELD OPENBRACKET STRING CLOSEBRACKET DOT function {
    printf("[parse.y] field_function_inline: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET DOT function\n", $3);
   }
   nast_set_current_field_value(ami->_ast, $3);
+  ami->_ast->action_replace_field = strdup($3);
+  free($3);
 }
 ;
 

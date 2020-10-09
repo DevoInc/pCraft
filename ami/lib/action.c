@@ -38,6 +38,10 @@ char *ami_action_get_exec(ami_action_t *action)
 void ami_action_close(ami_action_t *action)
 {
   khint_t k;
+
+  /* if (action->replace_field) { */
+  /*   free(action->replace_field); */
+  /* } */
   
   for (k = 0; k < kh_end(action->action_variables); ++k) {
     if (kh_exist(action->action_variables, k)) {
@@ -143,9 +147,68 @@ int ami_action_get_variables_len(ami_action_t *action)
   return len;
 }
 
+char *ami_action_get_variables_key_at_pos(ami_action_t *action, int pos)
+{
+  khint_t k;
+  int len = 0;
+  
+  if (action->action_variables) {
+    for (k = 0; k < kh_end(action->action_variables); ++k) {
+      if (kh_exist(action->action_variables, k)) {
+	if (k == pos) {
+	  return (char *)kh_key(action->action_variables, k);
+	}
+      }
+    }
+  }
+  return NULL;
+}
+
 void ami_action_copy_replacements(ami_t *ami, ami_action_t *action)
 {
     kv_copy(char *,action->replace_key, ami->_ast->replace_key);
     kv_copy(char *,action->replace_val, ami->_ast->replace_val);
 }
 
+const char *ami_action_get_variable(ami_action_t *action, char *key)
+{
+  khint_t k;
+  
+  k = kh_get(actionhash, action->action_variables, key);
+  int is_missing = (k == kh_end(action->action_variables));
+  if (is_missing) return NULL;
+  const char *val = kh_value(action->action_variables, k);
+  return val;
+}
+
+int ami_action_get_replacement_len(ami_action_t *action)
+{
+  return kv_size(action->replace_key);
+}
+
+char *ami_action_get_replacement_field(ami_action_t *action)
+{
+  return action->replace_field;
+}
+
+char *ami_action_get_replacement_key_at_pos(ami_action_t *action, int pos)
+{
+  return (char *)kv_A(action->replace_key, pos);
+}
+
+char *ami_action_get_replacement_value_at_pos_with_ami(ami_t *ami, ami_action_t *action, int pos)
+{
+  char *value = kv_A(action->replace_val, pos);
+  if (strlen(value) > 0) {
+    if (value[0] == '$') {
+      value = ami_get_global_variable(ami, value);
+    }
+  }
+  
+  return value;
+}
+
+char *ami_action_get_replacement_value_at_pos(ami_action_t *action, int pos)
+{
+  return (char *)kv_A(action->replace_val, pos);
+}

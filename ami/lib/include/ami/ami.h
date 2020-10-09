@@ -10,6 +10,12 @@
 #include "khash.h"
 #include "kvec.h"
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 #define MAX_VARIABLES 1
 
 KHASH_MAP_INIT_STR(strhash, char *)
@@ -43,7 +49,7 @@ typedef struct _ami_replace_t ami_replace_t;
 
 typedef void (*print_message_cb)(char *message);
 typedef void (*sleep_cb)(int msec);
-typedef void (*ami_action_cb)(ami_action_t *action);
+typedef void (*ami_action_cb)(ami_action_t *action, void *userdata);
 
 struct _ami_ast_t {
   int var_value_from_function;
@@ -65,6 +71,7 @@ struct _ami_ast_t {
   ami_kvec_t replace_val;
   char *action_name;
   char *action_exec;
+  char *action_replace_field;
 };
 typedef struct _ami_ast_t ami_ast_t;
 
@@ -84,6 +91,7 @@ struct _ami_t {
   sleep_cb sleepcb;
   print_message_cb printmessagecb;
   ami_action_cb action_cb;
+  void *action_cb_userdata;
 };
 typedef struct _ami_t ami_t;
 
@@ -104,6 +112,10 @@ int ami_set_local_variable(ami_t *ami, char *key, char *val);
 const char *ami_get_local_variable(ami_t *ami, char *key);
 void ami_erase_local_variables(ami_t *ami);
 int ami_nast_repeat_flow_reset(ami_t *ami);
-void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb);
+void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _AMI_H_
