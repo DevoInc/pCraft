@@ -45,6 +45,7 @@ typedef void *yyscan_t;
 %token <char *>STRING
 %token <char *>EVERYTHING
 %token <char *>VARIABLE
+%token <char *>LABEL
 %token <int>INTEGER
 %token AMIVERSION
 %token REVISION
@@ -71,9 +72,11 @@ typedef void *yyscan_t;
 %token CLOSEPARENTHESIS
 %token DOT
 %token COMMA
+%token COLON
 %token DEBUGON
 %token DEBUGOFF
 %token EXIT
+%token GOTO
 
 %%
 
@@ -99,6 +102,8 @@ input:
        | input debugon
        | input debugoff
        | input exit
+       | input _goto
+       | input label
        ;
 
 
@@ -742,6 +747,22 @@ debugoff: DEBUGOFF {
 
 exit: EXIT {
   exit(1);
+}
+;
+
+_goto: GOTO LABEL {
+  if (ami->debug) {
+    printf("[parse.y] GOTO LABEL(%s)\n", $2);
+  }
+  free($2);
+}
+;
+
+label: LABEL COLON {
+  if (ami->debug) {
+    printf("[parse.y] LABEL(%s) COLON\n", $1);
+  }
+  free($1);
 }
 ;
 

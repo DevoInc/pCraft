@@ -44,6 +44,7 @@ COMMENT2 \/\*(.*\n)*.*\*\/
 STRING (\"|\')([^\\(\"|\')]|\\.)*(\"|\')
 NUMBER [0-9]+
 VARIABLE $[a-zA-Z0-9\-_]+
+LABEL [a-zA-Z0-9\-_]+
 
 AMIVERSION ami_version
 REVISION revision
@@ -63,6 +64,7 @@ EXEC exec
 DEBUGON debugon
 DEBUGOFF debugoff
 EXIT exit
+GOTO goto
 
 %%
 
@@ -76,6 +78,7 @@ EXIT exit
 ")" return TOK_CLOSEPARENTHESIS;
 "." return TOK_DOT;
 "," return TOK_COMMA;
+":" return TOK_COLON;
 
 {AMIVERSION} { return TOK_AMIVERSION; }
 {REVISION} { return TOK_REVISION; }
@@ -95,10 +98,16 @@ EXIT exit
 {DEBUGON} { return TOK_DEBUGON; }
 {DEBUGOFF} { return TOK_DEBUGOFF; }
 {EXIT} { return TOK_EXIT; }
+{GOTO} { return TOK_GOTO; }
 
 {VARIABLE} {
               yylval->TOK_VARIABLE = strdup(yytext);
               return TOK_VARIABLE;
+           }
+
+{LABEL} {
+              yylval->TOK_LABEL = strdup(yytext);
+              return TOK_LABEL;
            }
 
 
