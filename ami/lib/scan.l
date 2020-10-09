@@ -44,7 +44,7 @@ COMMENT2 \/\*(.*\n)*.*\*\/
 STRING (\"|\')([^\\(\"|\')]|\\.)*(\"|\')
 NUMBER [0-9]+
 VARIABLE $[a-zA-Z0-9\-_]+
-LABEL [a-zA-Z0-9\-_]+
+LABEL ^[a-zA-Z0-9\-_]+:
 
 AMIVERSION ami_version
 REVISION revision
