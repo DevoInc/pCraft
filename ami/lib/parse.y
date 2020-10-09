@@ -284,7 +284,9 @@ variable_int: INTEGER {
 ;
 
 variable_function: function {
-  printf("[parse.y] variable_function: function\n");
+  if (ami->debug) {
+    printf("[parse.y] variable_function: function\n");
+  }
   ami->_ast->var_value_from_function = 1;
  }
 ;
@@ -449,15 +451,30 @@ closesection: CLOSESECTION {
 		ami_action_debug(ami, action);
 	      }  
 	      ami_action_close(action);
+
+	      if (n_array == ami->_ast->repeat) {
+	      	fprintf(stderr, "*****We are DONE repeating!\n");
+	      }
+
+	      if (index == ami->_ast->repeat) {
+		if (ami->debug) {
+		  printf("We are done repeating those actions!\n");
+		}
+		/* ami_flow_close(ami->_ast->repeat_flow); */
+	      }
+	      /* printf("N_ARRAY:%d\n", n_array); */
+	      /* kv_push(ami_flow_kvec_t *, ami->_ast->repeat_flow, flow); */
+	      /* ami->_ast->repeat_index_as) */
+	      
 	      break;
 	    case AMI_FT_REPLACE:
 	      flow->replace_field = nast_get_current_field_value(ami->_ast);
 	      if (ami->debug) {
 		ami_flow_debug(flow);
 	      }
-	      size_t n_array = kv_size(ami->_ast->replace_key);
-	      if (n_array > 0) {
-		for (size_t i = 0; i< n_array; i++) {
+	      size_t repl_array = kv_size(ami->_ast->replace_key);
+	      if (repl_array > 0) {
+		for (size_t i = 0; i< repl_array; i++) {
 		  char *key = kv_A(ami->_ast->replace_key, i);
 		  char *value = kv_A(ami->_ast->replace_val, i);
 
@@ -490,7 +507,7 @@ closesection: CLOSESECTION {
       index++;
     } // while (index <= n_array)
     ami->_ast->repeat = 0;
-    
+
     ami_nast_repeat_flow_reset(ami);
     /* kv_destroy(ami->_ast->repeat_flow); */
     /* size_t len_array = kv_size(ami->_ast->repeat_flow); */
