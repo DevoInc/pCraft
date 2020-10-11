@@ -1,6 +1,7 @@
 %option nodefault noinput nounput noyywrap nounistd
 %option reentrant bison-bridge
 %option prefix="ami_yy"
+%option yylineno
 
 %{
 #define YYSTYPE AMI_YYSTYPE
@@ -36,7 +37,7 @@ char *escape_string(char *str) {
     memcpy(s, &str[1], str_len - 2);
     return s;
 }
-    
+
 %}
 
 COMMENT1 #.*\n
@@ -128,7 +129,7 @@ GOTO goto
 {COMMENT1} {}
 {COMMENT2} {}
 
-[\n] {}
+[\n] {  }
 
 [ \t\r]+ ;
 

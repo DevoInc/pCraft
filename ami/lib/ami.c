@@ -58,7 +58,8 @@ ami_t *ami_new(void)
     fprintf(stderr, "Cannot allocate ami_t!\n");
     return NULL;
   }
-  
+
+  ami->current_line = 1;
   ami->debug = 0;
   ami->version = 0;
   ami->revision = 0;

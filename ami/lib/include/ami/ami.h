@@ -92,6 +92,7 @@ struct _ami_t {
   print_message_cb printmessagecb;
   ami_action_cb action_cb;
   void *action_cb_userdata;
+  size_t current_line;
 };
 typedef struct _ami_t ami_t;
 

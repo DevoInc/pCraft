@@ -15,7 +15,7 @@ typedef void *yyscan_t;
 #include <ami/nast.h>
  
 #include <unistd.h>
- 
+
 }
 
 %code provides
@@ -113,7 +113,6 @@ amiversion: AMIVERSION INTEGER
       printf("[parse.y] Version:%d\n", $2);
     }
     ami->version = $2;
-    
   }
   ;
 
@@ -217,7 +216,7 @@ variable_function: function {
   if (ami->debug) {
     printf("[parse.y] variable_function: function\n");
   }
-  ami->_ast->var_value_from_function = 1;
+
  }
 ;
 
@@ -382,7 +381,7 @@ keywords_as_argname: keyword_field
 
 keyword_field: FIELD EQUAL varset {
   if (ami->debug) {
-    printf("[parse.y](keyword_field: FIELD EQUAL varset): This would be a keyword, but it is not used as a keyword. Simply as an argument. (field)\n");
+    printf("[parse.y] keyword_field: FIELD EQUAL varset: This would be a keyword, but it is not used as a keyword. Simply as an argument. (field)\n");
   }
 }
 ;
