@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <ami/ami.h>
 
+void foreach_action(ami_action_t *action, void *userdata)
+{
+  printf("Running %s\n", action->name);
+}
+
 int main(int argc, char **argv)
 {
   ami_t *ami;
@@ -19,6 +24,7 @@ int main(int argc, char **argv)
     goto close;
   }
 
+  ami_set_action_callback(ami, foreach_action, NULL);  
   ami->debug = 1;
   
   ret = ami_parse_file(ami, argv[1]);
@@ -28,8 +34,13 @@ int main(int argc, char **argv)
       goto close;
     }
   }  
-  ami_debug(ami);
 
+  ami_node_debug(ami->root_node);
+  /* ami_ast_tree_debug(ami); */
+
+  ami_ast_walk_actions(ami);
+  ami_debug(ami);
+  
  close:
   ami_close(ami);  
   return 0;

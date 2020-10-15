@@ -9,9 +9,11 @@ add_definitions(-g)
 set(AMI_SOURCES
   action.c
   ami.c
+  ast.c
   csvread.c
   flow.c
   nast.c
+  tree.c  
 )
 
 message("Bison output: ${BISON_parse_OUTPUTS}")

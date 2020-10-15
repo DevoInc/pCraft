@@ -6,6 +6,7 @@
 
 #include "action.h"
 #include "flow.h"
+#include "tree.h"
 
 #include "khash.h"
 #include "kvec.h"
@@ -93,6 +94,11 @@ struct _ami_t {
   ami_action_cb action_cb;
   void *action_cb_userdata;
   size_t current_line;
+  ami_tree_t *tree;
+  ami_tree_t *current_tree;
+  ami_tree_node_t *current_leaves;
+  ami_node_t *root_node; // root
+  ami_node_t *current_node;
 };
 typedef struct _ami_t ami_t;
 
@@ -114,6 +120,8 @@ const char *ami_get_local_variable(ami_t *ami, char *key);
 void ami_erase_local_variables(ami_t *ami);
 int ami_nast_repeat_flow_reset(ami_t *ami);
 void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata);
+void ami_ast_tree_debug(ami_t *ami);
+void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval);
 
 #ifdef __cplusplus
 }

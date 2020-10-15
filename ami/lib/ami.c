@@ -8,6 +8,7 @@
 
 #include <ami/ami.h>
 #include <ami/csvread.h>
+#include <ami/tree.h>
 
 #include <ami/kvec.h>
 #include <ami/khash.h>
@@ -59,6 +60,9 @@ ami_t *ami_new(void)
     return NULL;
   }
 
+  ami->tree = ami_tree_new();
+  ami->current_tree = NULL;
+  ami->current_leaves = NULL;
   ami->current_line = 1;
   ami->debug = 0;
   ami->version = 0;
@@ -80,7 +84,15 @@ ami_t *ami_new(void)
   ami->local_variables = kh_init(strhash);
   kv_init(ami->actions);
 
+  ami->root_node = NULL;
+  ami->current_node = NULL;
+  
   return ami;
+}
+
+void ami_ast_tree_debug(ami_t *ami)
+{
+  ami_tree_debug(ami->tree);
 }
 
 int ami_nast_repeat_flow_reset(ami_t *ami) {
@@ -209,6 +221,7 @@ void ami_erase_local_variables(ami_t *ami)
 
 void ami_close(ami_t *ami)
 {
+  ami_node_t *n;
   khint_t k;
 
   if (!ami) return;
@@ -222,6 +235,21 @@ void ami_close(ami_t *ami)
     }
   }
 
+  for (n = ami->root_node; n; n = n->next) {
+    if (n->strval) {
+      free(n->strval);
+    }
+    if (n->right) {
+      for (ami_node_t *r = n->right; r; r = r->right) {
+	if (r->strval) {
+	  free(r->strval);
+	}
+	free(r);
+      }
+    }
+    free(n);
+  }  
+  
   free(ami);
 }
 
@@ -308,4 +336,27 @@ void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata
 {
   ami->action_cb = action_cb;
   ami->action_cb_userdata = userdata;
+}
+
+void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval)
+{
+  /* GOOGLE DRIVE: repeat block_id:0; action block id:1; opened_sections:1 */
+  /* if (strval) { */
+  /*   if (!strcmp("GoogleDriveDownload", strval)) { */
+  /*     printf("GOOGLE DRIVE: repeat block_id:%d; action block id:%d; opened_sections:%d\n", ami->_ast->repeat_block_id, ami->_ast->action_block_id, ami->_ast->opened_sections); */
+  /*   } */
+  /* } */
+  
+  if (ami->_ast->repeat_block_id > 0) {
+    // All the stuff we repeat come one after another
+    ami_node_create_right(&ami->root_node, type, strval, intval);
+  } else {
+    /* if ((ami->_ast->action_block_id > 0) && (ami->_ast->repeat_block_id <= 0)) { */
+    /*   if (ami->_ast->action_block_id == ami->_ast->opened_sections) { */
+    /* 	ami_node_create_right(&ami->root_node, type, strval, intval); */
+    /* 	return; */
+    /*   } */
+    /* } */
+    ami_node_create(&ami->root_node, type, strval, intval);
+  }
 }

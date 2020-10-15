@@ -113,6 +113,9 @@ amiversion: AMIVERSION INTEGER
       printf("[parse.y] Version:%d\n", $2);
     }
     ami->version = $2;
+
+    /* ami_tree_append_int_no_leaves(ami->tree, AMI_NT_VERSION, $2); */
+
   }
   ;
 
@@ -122,6 +125,7 @@ revision: REVISION INTEGER
       printf("[parse.y] Revision:%d\n", $2);
     }
     ami->revision = $2;
+    /* ami_tree_append_int_no_leaves(ami->tree, AMI_NT_REVISION, $2); */
   }
   ;
 
@@ -151,7 +155,8 @@ reference: REFERENCE STRING {
   if (ami->debug) {
     printf("[parse.y](reference: REFERENCE STRING):%s\n", $2);
   }  
-  kv_push(char *, ami->references, ref);
+  /* kv_push(char *, ami->references, ref); */
+  ami_node_create(&ami->root_node, AMI_NT_REFERENCE, $2, 0);
   
   free($2);
 }
@@ -161,12 +166,14 @@ tag: TAG WORD {
   if (ami->debug) {
     printf("[parse.y](tag: TAG WORD):%s\n", $2);
   }
-  ami->tag = strdup($2);
-  free($2);
+   ami_node_create(&ami->root_node, AMI_NT_TAG, $2, 0);
 }
 ;
 
 message: MESSAGE STRING {
+
+   ami_append_item(ami, AMI_NT_MESSAGE, $2, 0);
+
   /* if (ami->debug) { */
   /*   printf("[parse.y](message: MESSAGE STRING): %s\n", $2); */
   /* } */
@@ -185,6 +192,9 @@ variable: VARIABLE EQUAL varset {
   if (ami->debug) {
     printf("[parse.y] variable: VARIABLE(%s) EQUAL varset\n", $1);
   }
+
+   /* ami_node_create(&ami->root_node, AMI_NT_VARNAME, $1, 0); */
+  ami_append_item(ami, AMI_NT_VARNAME, $1, 0);
   
   free($1);
 }
@@ -199,8 +209,10 @@ varset:   variable_string
 variable_string: STRING {
   if (ami->debug) {
     printf("[parse.y] variable_string: STRING(%s)\n", $1);
-  }
- 
+  }  
+
+  ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0);
+  
   free($1);
 }
 ;
@@ -209,6 +221,9 @@ variable_int: INTEGER {
   if (ami->debug) {
     printf("[parse.y] variable_int: INTEGER(%d)\n", $1);
   }
+
+  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1);
+  
 }
 ;
 
@@ -217,13 +232,19 @@ variable_function: function {
     printf("[parse.y] variable_function: function\n");
   }
 
- }
+  /* ami_append_item(ami, AMI_NT_FUNCTION, NULL, 0); */
+
+}
 ;
 
 variable_variable: VARIABLE {
     if (ami->debug) {
       printf("[parse.y] variable_variable: VARIABLE(%s)\n", $1);
     }
+
+    
+    ami_append_item(ami, AMI_NT_VARVAR, $1, 0);
+
     free($1);
 }
 ;
@@ -232,6 +253,7 @@ include: INCLUDE STRING {
   if (ami->debug) {
     printf("[parse.y] include: INCLUDE STRING(%s)\n", $2);
   }
+
   free($2);
 }
 ;
@@ -240,6 +262,8 @@ sleep: SLEEP INTEGER {
   if (ami->debug) {
     printf("[parse.y] sleep: SLEEP INTEGER(%d)\n", $2);
   }
+
+  ami_append_item(ami, AMI_NT_SLEEP, NULL, $2);
 }
 ;
 
@@ -247,6 +271,11 @@ repeat: REPEAT INTEGER AS VARIABLE OPENSECTION {
   if (ami->debug) {
     printf("[parse.y] repeat: REPEAT INTEGER(%d) AS VARIABLE(%s) OPENSECTION)\n", $2, $4);
   }
+
+  ami->_ast->opened_sections++;
+  ami->_ast->repeat_block_id = ami->_ast->opened_sections;
+  
+  ami_node_create(&ami->root_node, AMI_NT_REPEAT, $4, $2);
   
   free($4);
 }
@@ -264,6 +293,24 @@ closesection: CLOSESECTION {
   if (ami->debug) {
     printf("[parse.y] closesection: CLOSESECTION\n");
   }
+
+  if (ami->_ast->action_block_id == ami->_ast->opened_sections) {
+    if (ami->debug) {
+      printf("[parse.y] Closing Action Block\n");
+    }
+    ami_append_item(ami, AMI_NT_ACTIONCLOSE, NULL, 0);
+  }
+
+  if (ami->_ast->repeat_block_id == ami->_ast->opened_sections) {
+    if (ami->debug) {
+      printf("[parse.y] Closing Repeat Block\n");
+      ami->_ast->repeat_block_id = 0;
+    }    
+  }
+  
+  ami->_ast->opened_sections--;
+
+  
 }
 ;
 
@@ -272,6 +319,12 @@ action: ACTION WORD OPENSECTION {
     printf("[parse.y] action: ACTION WORD(%s) OPENSECTION\n", $2);
   }
 
+  ami->_ast->opened_sections++;
+  ami->_ast->action_block_id = ami->_ast->opened_sections;
+
+  ami_append_item(ami, AMI_NT_ACTION, $2, 0);
+  /* ami_node_create(&ami->root_node, AMI_NT_ACTION, $2, 0); */
+  
   free($2);
 }
 ;
@@ -281,6 +334,8 @@ field_function_inline: FIELD OPENBRACKET STRING CLOSEBRACKET DOT function {
    printf("[parse.y] field_function_inline: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET DOT function\n", $3);
   }
 
+  ami_append_item(ami, AMI_NT_FIELDFUNC, $3, 0);
+  
   free($3);
 }
 ;
@@ -289,13 +344,18 @@ field_assigned_to_variable: FIELD OPENBRACKET STRING CLOSEBRACKET EQUAL varset {
   if (ami->debug) {
     printf("[parse.y] field_assigned_to_variable: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET EQUAL varset\n", $3);
   }
-}
+
+  ami_node_create(&ami->root_node, AMI_NT_FIELDVAR, $3, 0);
+
+ }
 ;
 
 exec: EXEC WORD {
   if (ami->debug) {
     printf("[parse.y] exec: EXEC WORD(%s)\n", $2);
   }
+
+  ami_append_item(ami, AMI_NT_EXEC, $2, 0);
   
   free($2);
 }
@@ -305,6 +365,8 @@ function: WORD OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
   if (ami->debug) {
     printf("[parse.y] function: WORD(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
   }
+
+  ami_append_item(ami, AMI_NT_FUNCTION, $1, 0);
   
   free($1);
 }
@@ -319,7 +381,7 @@ function_argument:   variable
                    | function_argument_string
                    | function_argument_int
                    | function_argument_word_eq_string
-                   | function_argument_word_eq_word
+                   | function_argument_word_eq_int
                    | function_argument_assign
                    | keywords_as_argname
                    ;
@@ -328,6 +390,10 @@ function_argument_assign: STRING ASSIGN varset {
   if (ami->debug) {
     printf("[parse.y] function_argument_assign: STRING(%s) ASSIGN varset\n", $1);
   }
+
+  
+  ami_append_item(ami, AMI_NT_REPLACE, $1, 0);
+  
   free($1);
 }
 ;
@@ -336,6 +402,9 @@ function_argument_string: STRING {
   if (ami->debug) {
     printf("[parse.y] function_argument_string: STRING(%s)\n", $1);
   }
+
+  ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0);
+
   free($1);
 }
 ;
@@ -344,6 +413,8 @@ function_argument_int: INTEGER {
   if (ami->debug) {
     printf("[parse.y] function_argument_int: INTEGER(%d)\n", $1);
   }
+
+  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1);
 }
 ;
 
@@ -351,18 +422,10 @@ function_argument_variable: VARIABLE {
   if (ami->debug) {
     printf("[parse.y] function_argument_variable: VARIABLE(%s)\n", $1);
   }
+
+  ami_append_item(ami, AMI_NT_VARVAR, $1, 0);
+  
   free($1);
-
-}
-;
-
-function_argument_word_eq_word: WORD EQUAL WORD {
-  if (ami->debug) {
-    printf("[parse.y] function_argument_word_eq_word: WORD(%s) EQUAL WORD(%s)\n", $1, $3);
-  }
-
-  free($1);
-  free($3);
 }
 ;
 
@@ -371,8 +434,21 @@ function_argument_word_eq_string: WORD EQUAL STRING {
     printf("[parse.y] function_argument_word_eq_string: WORD(%s) EQUAL STRING(%s)\n", $1, $3);
   }
 
+  ami_append_item(ami, AMI_NT_VARVALSTR, $3, 0);
+  
   free($1);
   free($3);
+}
+;
+
+function_argument_word_eq_int: WORD EQUAL INTEGER {
+  if (ami->debug) {
+    printf("[parse.y] function_argument_word_eq_int: WORD(%s) EQUAL INTEGER(%d)\n", $1, $3);
+  }
+
+  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $3);
+  
+  free($1);
 }
 ;
 
@@ -382,7 +458,8 @@ keywords_as_argname: keyword_field
 keyword_field: FIELD EQUAL varset {
   if (ami->debug) {
     printf("[parse.y] keyword_field: FIELD EQUAL varset: This would be a keyword, but it is not used as a keyword. Simply as an argument. (field)\n");
-  }
+  }  
+  
 }
 ;
 

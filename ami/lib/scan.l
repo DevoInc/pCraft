@@ -66,6 +66,8 @@ DEBUGON debugon
 DEBUGOFF debugoff
 EXIT exit
 GOTO goto
+TRUE true
+FALSE false
 
 %%
 
@@ -100,6 +102,8 @@ GOTO goto
 {DEBUGOFF} { return TOK_DEBUGOFF; }
 {EXIT} { return TOK_EXIT; }
 {GOTO} { return TOK_GOTO; }
+{TRUE} { yylval->TOK_INTEGER = 1; return TOK_INTEGER; }
+{FALSE} { yylval->TOK_INTEGER = 0; return TOK_INTEGER;}
 
 {VARIABLE} {
               yylval->TOK_VARIABLE = strdup(yytext);
