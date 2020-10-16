@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ami/ami.h>
+#include <ami/ast.h>
 
 void foreach_action(ami_action_t *action, void *userdata)
 {
@@ -35,11 +36,10 @@ int main(int argc, char **argv)
     }
   }  
 
-  ami_node_debug(ami->root_node);
-  /* ami_ast_tree_debug(ami); */
+  /* ami_node_debug(ami->root_node); */
 
   ami_ast_walk_actions(ami);
-  ami_debug(ami);
+  /* ami_debug(ami); */
   
  close:
   ami_close(ami);  

@@ -56,6 +56,7 @@ struct _ami_ast_t {
   int var_value_from_function;
   int static_var;
   int parsing_function;
+  int in_repeat;
   int in_action;
   int action_block_id;
   int repeat_block_id;
@@ -87,6 +88,7 @@ struct _ami_t {
   char *tag;
   ami_kvec_t references;
   khash_t(strhash) *global_variables;
+  khash_t(strhash) *repeat_variables;
   khash_t(strhash) *local_variables;
   ami_actions_kvec_t actions;
   sleep_cb sleepcb;
@@ -99,6 +101,9 @@ struct _ami_t {
   ami_tree_node_t *current_leaves;
   ami_node_t *root_node; // root
   ami_node_t *current_node;
+  int in_repeat;
+  int in_action;
+  ami_kvec_t values_stack;
 };
 typedef struct _ami_t ami_t;
 
@@ -111,17 +116,21 @@ void ami_set_sleep_callback(ami_t *ami, sleep_cb sleep_cb);
 int ami_loop(ami_t *ami, foreach_action_cb action_cb, void *user_data);
 void ami_close(ami_t *ami);
 char *ami_error_to_string(ami_t *ami);
+void ami_debug(ami_t *ami);
 int ami_set_global_variable(ami_t *ami, char *key, char *val);
 const char *ami_get_global_variable(ami_t *ami, char *key);
-void ami_debug(ami_t *ami);
-
 int ami_set_local_variable(ami_t *ami, char *key, char *val);
 const char *ami_get_local_variable(ami_t *ami, char *key);
+int ami_set_repeat_variable(ami_t *ami, char *key, char *val);
+const char *ami_get_repeat_variable(ami_t *ami, char *key);
+void ami_erase_global_variables(ami_t *ami);
 void ami_erase_local_variables(ami_t *ami);
+void ami_erase_repeat_variables(ami_t *ami);
 int ami_nast_repeat_flow_reset(ami_t *ami);
 void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata);
 void ami_ast_tree_debug(ami_t *ami);
 void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval);
+char *ami_get_variable(ami_t *ami, char *key);
 
 #ifdef __cplusplus
 }
