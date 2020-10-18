@@ -104,6 +104,7 @@ struct _ami_t {
   int in_repeat;
   int in_action;
   ami_kvec_t values_stack;
+  int replace_count;
 };
 typedef struct _ami_t ami_t;
 
@@ -131,6 +132,7 @@ void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata
 void ami_ast_tree_debug(ami_t *ami);
 void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval);
 char *ami_get_variable(ami_t *ami, char *key);
+void ami_print_all_variables(ami_t *ami);
 
 #ifdef __cplusplus
 }

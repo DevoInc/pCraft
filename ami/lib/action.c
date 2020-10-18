@@ -21,7 +21,8 @@ ami_action_t *ami_action_new()
   kv_init(action->replace_key);
   kv_init(action->replace_val);
   action->action_variables = kh_init(actionhash);
-
+  action->field_actions = NULL;
+  
   return action;
 }
 
@@ -54,7 +55,7 @@ void ami_action_close(ami_action_t *action)
   free(action);
 }
 
-void ami_action_copy_variables(ami_t *ami, ami_action_t *action)
+ami_action_t *ami_action_copy_variables(ami_t *ami, ami_action_t *action)
 {
   khint_t k, k2;
   int absent;
@@ -77,6 +78,23 @@ void ami_action_copy_variables(ami_t *ami, ami_action_t *action)
 	/* free(val); */
       }
   }
+  if (ami->repeat_variables) {
+    for (k = 0; k < kh_end(ami->repeat_variables); ++k)
+      if (kh_exist(ami->repeat_variables, k)) {
+	char *key = (char *)kh_key(ami->repeat_variables, k);
+	char *val = (char *)kh_value(ami->repeat_variables, k);
+	k2 = kh_put(actionhash, action->action_variables, key, &absent);
+	if (absent) {
+	  kh_key(action->action_variables, k2) = strdup(key);	  
+	  kh_value(action->action_variables, k2) = strdup(val);
+	} else {
+	  free(kh_value(action->action_variables, k2));
+	  kh_value(action->action_variables, k2) = strdup(val);
+	}
+	/* free(key); */
+	/* free(val); */
+      }
+  }  
   if (ami->local_variables) {
     for (k = 0; k < kh_end(ami->local_variables); ++k)
       if (kh_exist(ami->local_variables, k)) {
@@ -94,7 +112,8 @@ void ami_action_copy_variables(ami_t *ami, ami_action_t *action)
 	/* free(val); */
       }
   }
-  
+
+  return action;
 }
 
 void ami_action_debug(ami_t *ami, ami_action_t *action)
@@ -212,3 +231,54 @@ char *ami_action_get_replacement_value_at_pos(ami_action_t *action, int pos)
 {
   return (char *)kv_A(action->replace_val, pos);
 }
+
+ami_field_action_t *ami_field_action_new(void)
+{
+  ami_field_action_t *field_action;
+
+  field_action = (ami_field_action_t *)malloc(sizeof(ami_field_action_t));
+  if (!field_action) {
+    fprintf(stderr, "Cannot allocate ami_field_action_t!\n");
+    return NULL;
+  }
+  
+  field_action->field  = NULL;
+  field_action->action = NULL;
+  field_action->left   = NULL;
+  field_action->right  = NULL;
+  field_action->next   = NULL;
+  
+  return field_action;
+}
+
+ami_field_action_t *ami_field_action_append(ami_field_action_t *dst, ami_field_action_t *src)
+{
+  ami_field_action_t *field_action = dst;
+  if (!dst) {
+    dst = src;
+    return dst;
+  }
+
+  while (field_action->next) {
+    field_action = field_action->next;
+  }
+  field_action->next = src;
+
+  return dst;  
+}
+
+void ami_field_action_debug(ami_action_t *action)
+{
+  ami_field_action_t *a;
+  for (a=action->field_actions;a;a=a->next) {
+    printf("<FieldAction>\n");
+    printf("field:%s\n", a->field);
+    printf("action:%s\n", a->action);
+    if(a->left) {
+      printf("left:%s\n", a->left);
+    }
+    printf("right:%s\n", a->right);
+    printf("</FieldAction>\n");
+  }
+}
+

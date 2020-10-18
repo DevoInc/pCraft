@@ -90,6 +90,8 @@ ami_t *ami_new(void)
   ami->current_node = NULL;
 
   kv_init(ami->values_stack);  
+
+  ami->replace_count = 0;
   
   return ami;
 }
@@ -443,4 +445,31 @@ char *ami_get_variable(ami_t *ami, char *key)
   if (retval) return retval;
 
   return ami_get_global_variable(ami, key);  
+}
+
+void ami_print_all_variables(ami_t *ami)
+{
+  khint_t k;
+
+  if (ami->global_variables) {
+    printf("Global Variables:\n");
+    for (k = 0; k < kh_end(ami->global_variables); ++k)
+      if (kh_exist(ami->global_variables, k)) {
+	printf("\t%s => %s\n", (char *)kh_key(ami->global_variables, k), (char *)kh_value(ami->global_variables, k));
+      }
+  }
+  if (ami->repeat_variables) {
+    printf("Repeat Variables:\n");
+    for (k = 0; k < kh_end(ami->repeat_variables); ++k)
+      if (kh_exist(ami->repeat_variables, k)) {
+	printf("\t%s => %s\n", (char *)kh_key(ami->repeat_variables, k), (char *)kh_value(ami->repeat_variables, k));
+      }
+  }
+  if (ami->local_variables) {
+    printf("Local Variables:\n");
+    for (k = 0; k < kh_end(ami->local_variables); ++k)
+      if (kh_exist(ami->local_variables, k)) {
+	printf("\t%s => %s\n", (char *)kh_key(ami->local_variables, k), (char *)kh_value(ami->local_variables, k));
+      }
+  }
 }
