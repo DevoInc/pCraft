@@ -119,6 +119,8 @@ int ami_set_global_variable(ami_t *ami, char *key, char *val) {
   if (!ami) return 1;
   if (!ami->global_variables) return 1;  
 
+  /* printf("%s: %s -> %s\n", __FUNCTION__, key, val); */
+  
   k = kh_put(strhash, ami->global_variables, key, &absent);
   if (absent) {
     kh_key(ami->global_variables, k) = strdup(key);
@@ -351,6 +353,8 @@ int ami_parse_file(ami_t *ami, char *file)
 	int state;
 	FILE *fpin;
 
+	/* printf("Parsing file: %s\n", file); */
+	
 	if (!ami) {
 	  fprintf(stderr, "Cannot parse file %s as library initialization failed.\n", file);
 	  return 1;

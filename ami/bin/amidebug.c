@@ -5,10 +5,10 @@
 
 void foreach_action(ami_action_t *action, void *userdata)
 {
-  /* ami_t *ami = (ami_t *)userdata; */
+  ami_t *ami = (ami_t *)userdata;
   /* printf("===== Running action =====\n"); */
-  /* ami_action_debug(ami, action); */
-  printf("Running %s\n", action->name);
+  ami_action_debug(ami, action);
+  /* printf("Running %s\n", action->name); */
 }
 
 int main(int argc, char **argv)

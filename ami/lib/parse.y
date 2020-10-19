@@ -474,6 +474,7 @@ debugoff: DEBUGOFF {
 ;
 
 exit: EXIT {
+  fprintf(stderr, "Exiting. As it was requested from the script!\n");
   exit(1);
 }
 ;

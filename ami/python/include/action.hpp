@@ -15,8 +15,9 @@ public:
   char *get_exec(void) { return exec;};
   std::map<std::string, std::string> get_variables(void) { return variables; };
   std::map<std::string, std::string> variables;
-  std::map<std::string, std::map<std::string, std::string>> get_replacements(void) { return replacements; }
-  std::map<std::string, std::map<std::string, std::string>> replacements;
+
+  std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> field_actions;
+  std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> get_field_actions(void) { return field_actions; };
 private:
   ami_action_t *_action;
   char *name;

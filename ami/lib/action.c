@@ -258,7 +258,7 @@ ami_field_action_t *ami_field_action_append(ami_field_action_t *dst, ami_field_a
     dst = src;
     return dst;
   }
-
+    
   while (field_action->next) {
     field_action = field_action->next;
   }

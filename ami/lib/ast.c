@@ -39,7 +39,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     case AMI_NT_ACTIONCLOSE:
       ami->in_action = 0;
 
-      ami_field_action_debug(action);
+      /* ami_field_action_debug(action); */
       
       action = ami_action_copy_variables(ami, action);
       if (ami->action_cb) {
@@ -48,7 +48,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	fprintf(stderr,"*** Warning: No Action Callback Set!\n");
       }
       ami_action_close(action);
-      ami_erase_local_variables(ami);
+      /* ami_erase_local_variables(ami); */
       break;
     case AMI_NT_REPEAT:
       ami->in_repeat = 1;

@@ -18,6 +18,7 @@ public:
   Ami(void);
   ~Ami(void);
   int Parse(std::string file);
+  void Debug(void);
   std::vector<Action*> actions;
   std::vector<Action*> GetActions(void);
 private:
