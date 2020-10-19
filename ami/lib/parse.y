@@ -304,8 +304,8 @@ closesection: CLOSESECTION {
   if (ami->_ast->repeat_block_id == ami->_ast->opened_sections) {
     if (ami->debug) {
       printf("[parse.y] Closing Repeat Block\n");
+    }
       ami->_ast->repeat_block_id = 0;
-    }    
   }
   
   ami->_ast->opened_sections--;

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+
 #include <ami/ami.h>
 #include <ami/action.h>
 #include <ami/ast.h>
@@ -19,7 +21,7 @@ int main(int argc, char **argv)
   printf("Starting AMI Debugger!\n");
 
   if (argc < 2) {
-    fprintf(stderr, "Syntax: %s file.ami\n", argv[0]);
+    fprintf(stderr, "Syntax: %s file.ami [--node|--ami]\n", argv[0]);
     return 1;
   }
 
@@ -40,11 +42,18 @@ int main(int argc, char **argv)
     }
   }  
 
-  /* ami_node_debug(ami->root_node); */
-
+  if (argc > 2) {
+    if (!strcmp("--node", argv[2])) {
+      ami_node_debug(ami->root_node);
+    }
+  }
   ami_ast_walk_actions(ami);
 
-  /* ami_debug(ami); */
+  if (argc > 2) {
+    if (!strcmp("--ami", argv[2])) {
+      ami_debug(ami);
+    }
+  }
   
  close:
   ami_close(ami);  
