@@ -67,7 +67,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       printf("%s\n", n->strval);
       break;
     case AMI_NT_VARVALSTR:
-      kv_push(char *, ami->values_stack, strdup(n->strval));      
+      kv_push(char *, ami->values_stack, strdup(n->strval));
       break;
     case AMI_NT_VARVALINT:
       asprintf(&tmp_str, "%d", n->intval);
@@ -79,17 +79,18 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       kv_push(char *, ami->values_stack, strdup(n->strval));            
       break;
     case AMI_NT_VARNAME:
+      tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
       if (ami->in_repeat || ami->in_action) {
 	if (!ami->in_action) {
 	  /* printf("%s is a local repeat variable with value:%s\n", n->strval, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
-	  ami_set_repeat_variable(ami, n->strval, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	  ami_set_repeat_variable(ami, n->strval, tmp_str);
 	} else {
 	  /* printf("%s is a local action variable with value:%s\n", n->strval, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
-	  ami_set_local_variable(ami, n->strval, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	  ami_set_local_variable(ami, n->strval, tmp_str);
 	}
       } else {
 	/* printf("%s is a global variable with value:%s\n", n->strval, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
-	  ami_set_global_variable(ami, n->strval, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	  ami_set_global_variable(ami, n->strval, tmp_str);
       }
       break;
     case AMI_NT_FIELDFUNC:

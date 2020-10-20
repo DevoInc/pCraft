@@ -24,7 +24,7 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
   action->set_name(ami_action_get_name(amiaction));
   action->set_exec(ami_action_get_exec(amiaction));
 
-  ami_action_debug(pami->_ami, amiaction);
+  // ami_action_debug(pami->_ami, amiaction);
   
   if (pami->_ami->global_variables) {
     for (k = 0; k < kh_end(pami->_ami->global_variables); ++k)
