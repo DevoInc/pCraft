@@ -53,7 +53,11 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
   }
 
   for (field_action=amiaction->field_actions; field_action; field_action=field_action->next) {
-    action->field_actions[field_action->field][field_action->action][field_action->right] = field_action->left;
+    if (field_action->left) {
+      action->field_actions[field_action->field][field_action->action][field_action->right] = field_action->left;
+    } else {
+      action->field_actions[field_action->field][field_action->action][field_action->right] = "";
+    }
   }
   
   pami->actions.push_back(action);  
