@@ -81,7 +81,6 @@ FALSE false
     verbatim_buf[vbindex] = '\0';
     yylval->TOK_STRING = strdup(verbatim_buf);
     return TOK_STRING;
-    ;; printf("done verbatim:%s\n", verbatim_buf);
 }
 
 <VERBASTRING>(.|\n) {
