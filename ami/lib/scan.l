@@ -7,6 +7,9 @@
 #define YYSTYPE AMI_YYSTYPE
 #include <parse.h>
 
+char verbatim_buf[8192];
+int vbindex;
+
 int consume_multiline_comments(char *str) {
 // The reason for this is to increase the line count for each line return
 // so we can give the proper error line.
@@ -43,6 +46,7 @@ char *escape_string(char *str) {
 COMMENT1 #.*\n
 COMMENT2 \/\*(.*\n)*.*\*\/
 STRING (\"|\')([^\\(\"|\')]|\\.)*(\"|\')
+%x VERBASTRING 
 NUMBER [0-9]+
 VARIABLE $[a-zA-Z0-9\-_]+
 LABEL ^[a-zA-Z0-9\-_]+:
@@ -70,6 +74,23 @@ TRUE true
 FALSE false
 
 %%
+
+"\"\"\"" { vbindex = 0; BEGIN(VERBASTRING); }
+<VERBASTRING>"\"\"\"" {
+    BEGIN(INITIAL);
+    verbatim_buf[vbindex] = '\0';
+    yylval->TOK_STRING = strdup(verbatim_buf);
+    return TOK_STRING;
+    ;; printf("done verbatim:%s\n", verbatim_buf);
+}
+
+<VERBASTRING>(.|\n) {
+     if (vbindex > 8191) {
+         ami_yyerror(yyscanner, NULL, "Verbatim string too long! (max 8192)\n");
+     }
+     verbatim_buf[vbindex] = yytext[0];
+     vbindex++;
+}
 
 "=" return TOK_EQUAL;
 "=>" return TOK_ASSIGN;
