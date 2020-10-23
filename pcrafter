@@ -2,12 +2,12 @@
 import sys
 import os
 import re
-import yaml
 import pprint
 import time
 import datetime
 from scapy.all import wrpcap
 from scapy.utils import PcapWriter
+import pyami
 
 from pcraft.Application import *
 
@@ -17,110 +17,126 @@ is_in_loop = None
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Syntax: %s script.yaml output.pcap" % sys.argv[0])
+        print("Syntax: %s script.ami output.pcap" % sys.argv[0])
         sys.exit(1)
 
     app = Application(scenariofile=sys.argv[1])
     plugins_loader = app.plugins_loader
     loaded_plugins = app.loaded_plugins
-    loaded_functions = app.loaded_functions
     
     print("Opening Script File %s" % sys.argv[1])
     scenario_file = app.scenariofile
-    script = app.script
-    
-    next_func = script[script["start"]]["_plugin"]
-    script[script["start"]]["__dir"] = os.path.dirname(sys.argv[1])
-    print("[%s] Executing(1): %s" % (datetime.datetime.now(), script["start"]))
-#    pprint.pprint(script[script["start"]])
-    next_func, ans = app.exec_plugin(loaded_plugins[next_func], script[script["start"]])
-#    print("next func:%s" % next_func)
-    while next_func:
-        print("[%s] Executing: %s" % (datetime.datetime.now(), next_func))
-        #        if is_in_loop:
-        if next_func == "done":
-            break # We stop
 
-        #
-        # Time Handler: Before Start
-        #
-        try:
-            sleep_before_start = script[next_func]["_sleep"]["before-start"]
-            time.sleep(sleep_before_start)
-        except:
-            pass        
+    for action in app.actions:
+        print("Executing action %s\n" % action.Name())
+        # print(action.Variables())
+        for k, v in action.Variables().items():
+            plugins_loader.plugins_data._set(k[1:], v) # we trim the $ sign for the key name
+        loaded_plugins[action.Exec()].run(app.ami, action)
         
-        #
-        # Loop Handler
-        #
-        if next_func.startswith("loop-"):
-            counter = 0
+    # print(one.Name())
+    # print(one.Exec())
+    # print(one.Variables())
+    # print(one.FieldActions())
+        
+#        print(str(action))
+        
+#    plugins_loader.plugins_data._set("_count", counter)
+
+#     script = app.script
+    
+#     next_func = script[script["start"]]["_plugin"]
+#     script[script["start"]]["__dir"] = os.path.dirname(sys.argv[1])
+#     print("[%s] Executing(1): %s" % (datetime.datetime.now(), script["start"]))
+# #    pprint.pprint(script[script["start"]])
+#     next_func, ans = app.exec_plugin(loaded_plugins[next_func], script[script["start"]])
+# #    print("next func:%s" % next_func)
+#     while next_func:
+#         print("[%s] Executing: %s" % (datetime.datetime.now(), next_func))
+#         #        if is_in_loop:
+#         if next_func == "done":
+#             break # We stop
+
+#         #
+#         # Time Handler: Before Start
+#         #
+#         try:
+#             sleep_before_start = script[next_func]["_sleep"]["before-start"]
+#             time.sleep(sleep_before_start)
+#         except:
+#             pass        
+        
+#         #
+#         # Loop Handler
+#         #
+#         if next_func.startswith("loop-"):
+#             counter = 0
             
-            try:
-                counter = loop_tracker[next_func]
-                plugins_loader.plugins_data._set("_count", counter)
+#             try:
+#                 counter = loop_tracker[next_func]
+#                 plugins_loader.plugins_data._set("_count", counter)
                 
-                loop_tracker[next_func] -= 1
-                try:
-                    sleep_interval = script[next_func]["_sleep"]["interval"]
-                    time.sleep(sleep_interval)
-                except:
-                    pass                
-            except KeyError:
-                loop_tracker[next_func] = script[next_func]["count"] - 1
-                counter = loop_tracker[next_func]
-                plugins_loader.plugins_data._set("_count", counter + 1)
+#                 loop_tracker[next_func] -= 1
+#                 try:
+#                     sleep_interval = script[next_func]["_sleep"]["interval"]
+#                     time.sleep(sleep_interval)
+#                 except:
+#                     pass                
+#             except KeyError:
+#                 loop_tracker[next_func] = script[next_func]["count"] - 1
+#                 counter = loop_tracker[next_func]
+#                 plugins_loader.plugins_data._set("_count", counter + 1)
                 
-                try:
-                    plugins_loader.get_plugins_data()._set("newip", script[next_func]["newip"])
-                except:
-                    pass # Nothing to do, as we do not get the key "newip"
+#                 try:
+#                     plugins_loader.get_plugins_data()._set("newip", script[next_func]["newip"])
+#                 except:
+#                     pass # Nothing to do, as we do not get the key "newip"
 
-            if counter <= 0:
-                # We are finished, we clear out newip field
-                plugins_loader.plugins_data._set("newip", 0)
+#             if counter <= 0:
+#                 # We are finished, we clear out newip field
+#                 plugins_loader.plugins_data._set("newip", 0)
                 
-                try: # We also keep the time feature within our loop
-                    sleep_once_finished = script[next_func]["_sleep"]["once-finished"]
-                    print("We are finished, we a required to sleep %s seconds" % sleep_once_finished)
-                    time.sleep(sleep_once_finished)
-                except:
-                    pass
+#                 try: # We also keep the time feature within our loop
+#                     sleep_once_finished = script[next_func]["_sleep"]["once-finished"]
+#                     print("We are finished, we a required to sleep %s seconds" % sleep_once_finished)
+#                     time.sleep(sleep_once_finished)
+#                 except:
+#                     pass
         
-                next_func = script[next_func]["_next"]
-            else:
-                next_func = script[next_func]["_start"] 
+#                 next_func = script[next_func]["_next"]
+#             else:
+#                 next_func = script[next_func]["_start"] 
                 
-        if next_func == "done":
-            break # We stop
+#         if next_func == "done":
+#             break # We stop
 
-#        print(script[next_func]["_plugin"])
-        script[next_func]["__dir"] = os.path.dirname(sys.argv[1])
+# #        print(script[next_func]["_plugin"])
+#         script[next_func]["__dir"] = os.path.dirname(sys.argv[1])
 
-        #
-        # Time Handler: Once Finished
-        #
-        try:
-            sleep_once_finished = script[next_func]["_sleep"]["once-finished"]
-            print("We are finished, we a required to sleep %s seconds" % sleep_once_finished)
-            time.sleep(sleep_once_finished)
-        except:
-            pass
+#         #
+#         # Time Handler: Once Finished
+#         #
+#         try:
+#             sleep_once_finished = script[next_func]["_sleep"]["once-finished"]
+#             print("We are finished, we a required to sleep %s seconds" % sleep_once_finished)
+#             time.sleep(sleep_once_finished)
+#         except:
+#             pass
         
         
-        next_func, ans = app.exec_plugin(loaded_plugins[script[next_func]["_plugin"]], script[next_func])
-            # print("next func:%s" % next_func)
-        # print(ans)
+#         next_func, ans = app.exec_plugin(loaded_plugins[script[next_func]["_plugin"]], script[next_func])
+#             # print("next func:%s" % next_func)
+#         # print(ans)
 
 
-    # pktdump = PcapWriter(sys.argv[2], append=True, sync=True)
+#     # pktdump = PcapWriter(sys.argv[2], append=True, sync=True)
     
-    # for pkt in plugins_loader.get_plugins_data().pcap:
-    #     pktdump.write(pkt)
+#     # for pkt in plugins_loader.get_plugins_data().pcap:
+#     #     pktdump.write(pkt)
         
-    #     if pkt.haslayer(IP):
-    #         ips = pkt.getlayer(IP)
-    #         print(ips.src)
+#     #     if pkt.haslayer(IP):
+#     #         ips = pkt.getlayer(IP)
+#     #         print(ips.src)
 
     wrpcap(sys.argv[2], plugins_loader.get_plugins_data().pcap)
     

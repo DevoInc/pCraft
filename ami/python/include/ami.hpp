@@ -21,6 +21,8 @@ public:
   void Debug(void);
   std::vector<Action*> actions;
   std::vector<Action*> GetActions(void);
+  std::string GetFilePath(void) { return file_path; };
+  std::string file_path;
 private:
   ami_t *_ami;
   static void foreach_action(ami_action_t *action, void *userdata);  

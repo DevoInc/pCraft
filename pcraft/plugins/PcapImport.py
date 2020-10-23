@@ -36,22 +36,20 @@ importphishing:
     def __init__(self, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
         
-    def run(self, script=None):
-        self.update_vars_from_script(script)
-        # pprint.pprint(script)
-        pcap_in = os.path.join(script["__dir"], script["filename"])
+    def run(self, ami, action):
+        amifile = ami.GetFilePath()
+        amipath = os.path.dirname(os.path.realpath(amifile))
+        pcap_in = os.path.join(amipath, action.Variables()["$filename"])
         print("Importing PCAP: %s" % pcap_in)
 
+        to_replace = action.FieldActions()
+        
         n_items_replaced = 0
         packets_injected = 0
         
-        replace = None
         ip_list = None
-        payload_list = None
         try:
-            replace = script["replace"]
-            ip_list = replace["ip"]            
-            payload_list = replace["payload"]
+            ip_list = to_replace["ip"]["replace"]
         except:
             pass # That means we have no definition to replace, we won't replace then
 
@@ -60,7 +58,6 @@ importphishing:
         seq = 0
         for packet in packets:
             packet.time = time.time()
-#            print(packet.time)
             if CookedLinux in packet:
                 packet = Ether() / packet.payload
                         
@@ -71,75 +68,19 @@ importphishing:
             except IndexError:
                 pass
 
-            # if packet.haslayer(TCP):
-            #     packet[TCP].seq = seq
-            #     if packet[TCP].flags == 18: # S|A
-            #         print("we have SYN ACK")
-            #         packet[TCP].ack = last_packet.seq
-
-            # if payload_list:
-            #     payload_sizediff = 0
-            #     for k, v in payload_list.items():
-            #         if packet.haslayer(TCP):
-            #             payload_before = len(packet[TCP].payload)
-            #             packet[TCP].payload = str(packet[TCP].payload).replace(k, v)
-            #             payload_sizediff += len(packet[TCP].payload) - payload_before
-            #             print("Replaced %s by %s in TCP" % (k,v))
-            #         if packet.haslayer(UDP):
-            #             payload_before = len(packet[UDP].payload)
-            #             packet[UDP].payload = str(packet[UDP].payload).replace(k, v)
-            #             payload_sizediff += len(packet[UDP].payload) - payload_before
-            #             print("Replaced %s by %s in UDP" % (k,v))
-
-
-            #     packet[IP].len = packet[IP].len + payload_sizediff
-                    
             if ip_list:
                 ip_to_replace = None
                 for k, v in ip_list.items():
                     ip_to_replace = k
-                    ip = IP_y(v)
+                    ip_replacement = IP_y(v)
 
-                    has_started = False
-                    ipstart = ""
-                    ipstop = ""
-                    try:
-                        ipstart = script["ipstart"]
-                    except:
-                        has_started = True
-                    try:
-                        ipstop = script["ipstop"]
-                    except:
-                        pass
-
-                    has_stoped = False
-                
-                    for individual_ip in ip:
-#                        print("We replace %s with %s" % (ip_to_replace, individual_ip))
-                        if has_stoped:
-                            break
-                    
-                        if str(individual_ip).endswith(".0") or str(individual_ip).endswith(".255"):
-                            continue
-                        if not has_started:
-                            if str(individual_ip) != ipstart:
-                                continue
-                            else:
-                                has_started = True
-                        
-
-                        if packet.haslayer(IP):
-                            if packet[IP].src == ip_to_replace:
-                                packet[IP].src = str(individual_ip)
-                                n_items_replaced += 1
-                            if packet[IP].dst == ip_to_replace:
-                                packet[IP].dst = str(individual_ip)
-                                n_items_replaced += 1
-                        # else:
-                        #     print("No IP Layer")
-
-                        if str(individual_ip) == ipstop:
-                            has_stoped = True
+                    if packet.haslayer(IP):
+                        if packet[IP].src == ip_to_replace:
+                            packet[IP].src = str(ip_replacement)
+                            n_items_replaced += 1
+                        if packet[IP].dst == ip_to_replace:
+                            packet[IP].dst = str(ip_replacement)
+                            n_items_replaced += 1
                             
                 self.plugins_data.pcap.append(packet)
                 packets_injected += 1
@@ -154,4 +95,4 @@ importphishing:
         print("%s replaced %d items" % ( self.name, n_items_replaced) )
         print("Imported %d packets" % (packets_injected) )
             
-        return script["_next"], self.plugins_data
+        return self.plugins_data
