@@ -4,6 +4,7 @@ from . import _utils as utils
 import random
 import os
 import time
+import sys
 
 class PCraftPlugin(PluginsContext):
     name = "HTTPConnection"
@@ -33,33 +34,30 @@ httpconnect:
         self.random_client_ip = utils.getRandomIP("192.168.0.0/16", ipfail="172.16.42.42")
         self.session = session
         
-    def run(self, script=None):
-        self.check_required(script, self.required)
-        self.update_vars_from_script(script)
+    def run(self, ami, action):
+        self.set_value_or_default(action, "ip-src", self.random_client_ip.get())
+        self.set_value_or_default(action, "ip-dst", "0.0.0.0")
+        self.set_value_or_default(action, "domain", "www.example.com")
+        self.set_value_or_default(action, "port-src", random.randint(4096,65534))
+        self.set_value_or_default(action, "method", "GET") 
+        self.set_value_or_default(action, "user", "") 
+        self.set_value_or_default(action, "user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Pcraft/0.0.7") 
+        self.set_value_or_default(action, "uri", "/")
+        self.set_value_or_default(action, "resp-httpver", "HTTP/1.1")
+        self.set_value_or_default(action, "resp-code", "200 OK")
+        self.set_value_or_default(action, "resp-server", "nginx")
+        self.set_value_or_default(action, "resp-content-type", "text/html")
+        self.set_value_or_default(action, "resp-content", "<html><body>Hello, you!</body></html>")
+        self.set_value_or_default(action, "client-headers", "") 
+        self.set_value_or_default(action, "client-content", "") 
 
-        try:
-            if self.getvar("newip"):
-                self.setvar("ip-src", self.random_client_ip.get())
-            else:
-                self.set_value_or_default(script, "ip-src", self.random_client_ip.get())
-        except:
-                self.set_value_or_default(script, "ip-src", self.random_client_ip.get())
-            
-        self.set_value_or_default(script, "ip-dst", "0.0.0.0") # Default is never applied since it is a requirement
-        self.set_value_or_default(script, "port-src", random.randint(4096,65534))
-        self.set_value_or_default(script, "domain", "example.com") # Default is never applied since it is a requirement
-        self.set_value_or_default(script, "method", "GET") 
-        self.set_value_or_default(script, "user", "") 
-        self.set_value_or_default(script, "user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Pcraft/0.0.7") 
-        self.set_value_or_default(script, "uri", "/")
-        self.set_value_or_default(script, "resp-httpver", "HTTP/1.1")
-        self.set_value_or_default(script, "resp-code", "200 OK")
-        self.set_value_or_default(script, "resp-server", "nginx")
-        self.set_value_or_default(script, "resp-content-type", "text/html")
-        self.set_value_or_default(script, "resp-content", "<html><body>Hello, you!</body></html>")
         
+        # print("port src:%s" % self.getvar("port-src"))
         utils.append_tcp_three_way_handshake(self.session, self.plugins_data, self.getvar("port-src"))
 
+        # print(action.Variables())
+        print("HTTP Method:%s" % self.getvar("method"))
+        
         user = self.getvar("user")
         if user != "":
             user = "\r\nUser: %s" % user
@@ -79,10 +77,29 @@ httpconnect:
                 host=self.getvar("domain"),
                 user=user,
                 contenttype=self.getvar("content-type"),
-                contentlen=len(self.getvar("content")),
-                content=self.getvar("content"))
-            
-        
+                contentlen=len(self.getvar("client-content")),
+                content=self.getvar("client-content"))
+
+            if self.getvar("client-headers") != "":
+                content = self.getvar("client-content")
+                contentlen = 0
+                if content != "":
+                    contentlen = len(content)
+                else:
+                    raise ValueError("We have client-headers without client-content in a POST method!")
+                headers_with_r_n = self.getvar("client-headers").replace("\n","\r\n")
+                
+                if headers_with_r_n[-1] == "\n":
+                    headers_with_r_n += "Content-Length: %d\r\n\r\n" % contentlen
+                else:
+                    headers_with_r_n += "\r\nContent-Length: %d\r\n\r\n" % contentlen
+                headers_with_r_n += content
+                
+                httpreq_string = "{method} {uri} HTTP/1.1\r\n{headers}".format(
+                    method=self.getvar("method"),
+                    uri=self.getvar("uri"),
+                    headers=headers_with_r_n)
+                                    
         datestr = time.strftime("%a, %d %b %Y %H:%M:%S %Z",time.gmtime())
         httpresp_string = "{httpver} {code}\r\nServer: {server}\r\nDate: {date}\r\nContent-Type: {contenttype}\r\nContent-Length: {contentlen}\r\nConnection: keep-alive\r\nX-Powered-By: PHP/5.3.11-1~dotde b0\r\n\r\n{content}".format(
             httpver=self.getvar("resp-httpver"),
@@ -120,7 +137,4 @@ httpconnect:
 
         # self.session.debug_session()
 
-        if script:
-            return script["_next"], self.plugins_data
-        else:
-            return None, self.plugins_data
+        return self.plugins_data

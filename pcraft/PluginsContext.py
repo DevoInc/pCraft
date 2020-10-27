@@ -19,17 +19,16 @@ class PluginsContext(object):
         if a:
             self.setvar(var, value)
         
-    def set_value_or_default(self, script, key, default):
+    def set_value_or_default(self, action, key, default):
         value = None
-        if script:
-            if key in script:
-                value = script[key]
-
-        if value == None:
-            try:
-                value = self.plugins_data._get(key)
-            except KeyError:
-                value = default
+        actions_variables = action.Variables()        
+        try:
+            varstr = "$" + key
+            value = actions_variables[varstr]
+            while value[0] == "$":
+                value = actions_variables[value]
+        except:
+            value = default
                 
         self.plugins_data._set(key, value)
 

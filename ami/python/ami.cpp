@@ -54,7 +54,7 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
 
   for (field_action=amiaction->field_actions; field_action; field_action=field_action->next) {
     if (field_action->left) {
-      action->field_actions[field_action->field][field_action->action][field_action->right] = field_action->left;
+      action->field_actions[field_action->field][field_action->action][field_action->left] = field_action->right;
     } else {
       action->field_actions[field_action->field][field_action->action][field_action->right] = "";
     }
@@ -77,6 +77,8 @@ std::vector<Action*> Ami::GetActions(void) {
 
 int Ami::Parse(std::string file) {
   int ret;
+
+  file_path = file;
   
   ami_set_action_callback(_ami, foreach_action, this);
 
@@ -104,6 +106,7 @@ PYBIND11_MODULE(pyami, m) {
       .def(py::init<>())
       .def("GetActions", &Ami::GetActions)
       .def("Parse", &Ami::Parse)
+      .def("GetFilePath", &Ami::GetFilePath)
       .def("Debug", &Ami::Debug);
     py::class_<Action>(m, "Action")
       .def(py::init<>())
