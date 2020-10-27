@@ -33,7 +33,7 @@ rstack:
         super().__init__(app, session, plugins_data)
         self.session = session
         
-    def run(self, script=None):
+    def run(self, ami, action):
         self.update_vars_from_script(script)
         # pprint.pprint(script)
         port = script["port-dst"]
@@ -77,4 +77,4 @@ rstack:
                 has_stoped= True
             
             
-        return script["_next"], self.plugins_data
+        return self.plugins_data

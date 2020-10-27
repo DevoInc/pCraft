@@ -22,7 +22,7 @@ class Plugins:
         self.plugins = [x for x in self.plugins if not x.endswith("_utils.py")]
         if not self.plugins:
             raise Exception("No Plugins found from %s; The engine is useless!" % pluginsdir)
-        print(self.plugins)
+#        print(self.plugins)
 
         self.plugins_data = PluginsData()
         self.session = Session()
@@ -32,10 +32,12 @@ class Plugins:
             plugin_name = os.path.basename(modfile)[:-3] # We remove the extension
             import_plugin = self._modularize_string_path(modfile)
             import_plugin = "pcraft" + import_plugin[len(self.instdir):]
+#            print("importing plugin %s" % import_plugin)
             module = importlib.import_module(import_plugin)
             try:
                 dp = module.PCraftPlugin(self.app, self.session, self.plugins_data)
                 self.loaded_plugins[plugin_name] = dp
+#                print("Loaded plugin:%s\n" % plugin_name)
             except:
                 print("Could not load plugin:%s" % plugin_name)
 

@@ -24,7 +24,7 @@ generate:
     def __init__(self, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
 
-    def run(self, script=None):
+    def run(self, ami, action):
         self.update_vars_from_script(script)
         new_domain_found = False
 
@@ -46,4 +46,4 @@ generate:
         fp.close()
         
         self.plugins_data._set("domain", domain)
-        return script["_next"], self.plugins_data
+        return self.plugins_data

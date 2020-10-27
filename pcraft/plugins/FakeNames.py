@@ -24,7 +24,7 @@ newfake:
         self.faker = Faker(['it_IT', 'en_US', 'es_ES', 'fr_FR', 'de_DE', 'en_GB'])
         self.fakenames = {}
         
-    def run(self, script=None):
+    def run(self, ami, action):
         self.update_vars_from_script(script)
         no_infinite_loop = 0
         # We have see some duplicate names. We try 10 times to avoid spending too much time
@@ -48,4 +48,4 @@ newfake:
         email = "%s.%s@%s" % (nametable[0], nametable[1], self.getvar("orgdomain"))
         self.setvar("email", email)
 
-        return script["_next"], self.plugins_data
+        return self.plugins_data
