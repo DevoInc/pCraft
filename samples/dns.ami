@@ -1,0 +1,7 @@
+ami_version 1
+
+action DnsRequest {
+       $domain = "grayhat.co"
+       $resolver = "8.8.8.8"
+       exec DNSConnection
+}
