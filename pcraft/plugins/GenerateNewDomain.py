@@ -25,7 +25,7 @@ generate:
         super().__init__(app, session, plugins_data)
 
     def run(self, ami, action):
-        self.update_vars_from_script(script)
+        # self.update_vars_from_script(script)
         new_domain_found = False
 
         fp = open("/usr/share/dict/words")
@@ -45,5 +45,5 @@ generate:
 
         fp.close()
         
-        self.plugins_data._set("domain", domain)
+        self.setvar("domain", domain)
         return self.plugins_data
