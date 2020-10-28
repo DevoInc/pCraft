@@ -22,3 +22,7 @@ class Application:
     def print_loading_plugins(self, plugin):
        print("Loading Plugin: %s" % plugin)
 
+    def exec_plugin(self, plugin, ami, action):
+        return plugin.run(ami, action)
+        
+        

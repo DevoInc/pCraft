@@ -76,7 +76,7 @@ httpconnect:
                 useragent=self.getvar("user-agent"),
                 host=self.getvar("domain"),
                 user=user,
-                contenttype=self.getvar("content-type"),
+                contenttype=self.getvar("client-content-type"),
                 contentlen=len(self.getvar("client-content")),
                 content=self.getvar("client-content"))
 

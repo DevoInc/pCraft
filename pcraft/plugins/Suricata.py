@@ -25,7 +25,6 @@ Create pcap traffic based on a suricata rule
         raise ValueError("Variable %s is not set" % var.identifier)
         
     def run(self, ami, action):
-        self.update_vars_from_script(script)
         rules = parse_rules(self.getvar("rule"))
         rule = rules[0]
 
@@ -71,9 +70,9 @@ Create pcap traffic based on a suricata rule
                     protocol = "dns"
 
                 if protocol == "http":
-                    self.app.exec_plugin(self.app.loaded_plugins["HTTPConnection"], None)                    
+                    self.app.exec_plugin(self.app.loaded_plugins["HTTPConnection"], ami, action)                    
                 if protocol == "dns":
-                    self.app.exec_plugin(self.app.loaded_plugins["DNSConnection"], None)
+                    self.app.exec_plugin(self.app.loaded_plugins["DNSConnection"], ami, action)
                     
             counter += 1
 
