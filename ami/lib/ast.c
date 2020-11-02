@@ -40,7 +40,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       ami->in_action = 0;
 
       /* ami_field_action_debug(action); */
-      
+      action->sleep_cursor = ami->sleep_cursor;
       action = ami_action_copy_variables(ami, action);
       if (ami->action_cb) {
 	ami->action_cb(action, ami->action_cb_userdata);
@@ -176,6 +176,10 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       }
       varpos = 0;
       break;
+    case AMI_NT_SLEEP:
+      ami->sleep_cursor += n->intval;
+      ami->sleep_cursor += n->fval;
+      break;
     }
   }
 }
@@ -197,3 +201,4 @@ int ami_ast_walk_actions(ami_t *ami)
 
   return 0;
 }
+

@@ -92,6 +92,7 @@ ami_t *ami_new(void)
   kv_init(ami->values_stack);  
 
   ami->replace_count = 0;
+  ami->sleep_cursor = 0;
   
   return ami;
 }
@@ -463,4 +464,9 @@ void ami_print_all_variables(ami_t *ami)
 	printf("\t%s => %s\n", (char *)kh_key(ami->local_variables, k), (char *)kh_value(ami->local_variables, k));
       }
   }
+}
+
+float ami_get_sleep_cursor(ami_t *ami)
+{
+  return ami->sleep_cursor;
 }

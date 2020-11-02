@@ -105,6 +105,7 @@ struct _ami_t {
   int in_action;
   ami_kvec_t values_stack;
   int replace_count;
+  float sleep_cursor; // How much sleep we need to add to our action. Starts at 0, then adds every sleep we need.
 };
 typedef struct _ami_t ami_t;
 
@@ -133,6 +134,7 @@ void ami_ast_tree_debug(ami_t *ami);
 void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval);
 char *ami_get_variable(ami_t *ami, char *key);
 void ami_print_all_variables(ami_t *ami);
+float ami_get_sleep_cursor(ami_t *ami);
 
 #ifdef __cplusplus
 }

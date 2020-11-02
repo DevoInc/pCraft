@@ -37,6 +37,7 @@ struct _ami_action_t {
   action_kvec_t replace_key;
   action_kvec_t replace_val;
   char *exec;
+  float sleep_cursor;
 };
 typedef struct _ami_action_t ami_action_t;
 

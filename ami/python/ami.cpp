@@ -23,7 +23,8 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
   Action *action = new Action();
   action->set_name(ami_action_get_name(amiaction));
   action->set_exec(ami_action_get_exec(amiaction));
-
+  action->sleep_cursor = amiaction->sleep_cursor;
+  
   // ami_action_debug(pami->_ami, amiaction);
   
   if (pami->_ami->global_variables) {
@@ -113,6 +114,7 @@ PYBIND11_MODULE(pyami, m) {
       .def("Variables", &Action::get_variables)
       .def("FieldActions", &Action::get_field_actions)
       .def("Name", &Action::get_name)
-      .def("Exec", &Action::get_exec);
+      .def("Exec", &Action::get_exec)
+      .def("GetSleepCursor", &Action::GetSleepCursor);
 
 }
