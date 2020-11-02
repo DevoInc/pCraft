@@ -407,26 +407,13 @@ void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata
   ami->action_cb_userdata = userdata;
 }
 
-void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval)
+void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval)
 {
-  /* GOOGLE DRIVE: repeat block_id:0; action block id:1; opened_sections:1 */
-  /* if (strval) { */
-  /*   if (!strcmp("GoogleDriveDownload", strval)) { */
-  /*     printf("GOOGLE DRIVE: repeat block_id:%d; action block id:%d; opened_sections:%d\n", ami->_ast->repeat_block_id, ami->_ast->action_block_id, ami->_ast->opened_sections); */
-  /*   } */
-  /* } */
-  
   if (ami->_ast->repeat_block_id > 0) {
     // All the stuff we repeat come one after another
-    ami_node_create_right(&ami->root_node, type, strval, intval);
+    ami_node_create_right(&ami->root_node, type, strval, intval, fval);
   } else {
-    /* if ((ami->_ast->action_block_id > 0) && (ami->_ast->repeat_block_id <= 0)) { */
-    /*   if (ami->_ast->action_block_id == ami->_ast->opened_sections) { */
-    /* 	ami_node_create_right(&ami->root_node, type, strval, intval); */
-    /* 	return; */
-    /*   } */
-    /* } */
-    ami_node_create(&ami->root_node, type, strval, intval);
+    ami_node_create(&ami->root_node, type, strval, intval, fval);
   }
 }
 

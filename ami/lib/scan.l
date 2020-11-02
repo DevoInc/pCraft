@@ -47,7 +47,8 @@ COMMENT1 #.*\n
 COMMENT2 \/\*(.*\n)*.*\*\/
 STRING (\"|\')([^\\(\"|\')]|\\.)*(\"|\')
 %x VERBASTRING 
-NUMBER [0-9]+
+FLOAT [0-9\.]+
+INTEGER [0-9]+
 VARIABLE $[a-zA-Z0-9\-_]+
 LABEL ^[a-zA-Z0-9\-_]+:
 
@@ -136,8 +137,12 @@ FALSE false
            }
 
 
-{NUMBER} { yylval->TOK_INTEGER = (int)strtol(yytext, NULL, 10);
+{INTEGER} { yylval->TOK_INTEGER = (int)strtol(yytext, NULL, 10);
            return TOK_INTEGER;
+}
+
+{FLOAT} { yylval->TOK_FLOAT = (float)strtof(yytext, NULL);
+           return TOK_FLOAT;
 }
 
 {STRING} {
