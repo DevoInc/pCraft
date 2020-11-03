@@ -1,0 +1,9 @@
+debugon
+ami_version 1
+
+action FieldAssignment {
+       field["CommandLine"] = "foo"
+       exec Test
+}
+
+
