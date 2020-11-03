@@ -1,0 +1,13 @@
+ami_version 1
+
+sleep 0.1
+
+action Foo {
+       exec _dump
+}
+
+sleep 5
+
+action Foo2 {
+       exec Nada
+}
