@@ -23,5 +23,5 @@ add_library(ami SHARED ${FLEX_scan_OUTPUTS} ${BISON_parse_OUTPUTS} ${AMI_SOURCES
 set_target_properties(ami PROPERTIES SOVERSION 1)
 target_link_libraries(ami ${CMAKE_DL_LIBS} "-L/usr/local/opt/bison/lib" ${LIBCSV_LIBRARY})
 
-add_subdirectory(tests)
+#add_subdirectory(tests)
 

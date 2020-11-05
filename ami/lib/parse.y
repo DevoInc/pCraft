@@ -355,7 +355,7 @@ field_assigned_to_variable: FIELD OPENBRACKET STRING CLOSEBRACKET EQUAL varset {
     printf("[parse.y] field_assigned_to_variable: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET EQUAL varset\n", $3);
   }
 
-  ami_node_create(&ami->root_node, AMI_NT_FIELDVAR, $3, 0, 0);
+  ami_append_item(ami, AMI_NT_FIELDVAR, $3, 0, 0);
 
  }
 ;

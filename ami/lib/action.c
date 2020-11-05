@@ -259,7 +259,11 @@ ami_field_action_t *ami_field_action_append(ami_field_action_t *dst, ami_field_a
     dst = src;
     return dst;
   }
-    
+
+  if (!field_action) {
+    fprintf(stderr, "No destination!\n");
+    return NULL;
+  }
   while (field_action->next) {
     field_action = field_action->next;
   }
