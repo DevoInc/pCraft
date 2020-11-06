@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <ami/rc4.h>
+
 void ami_rc4_init(ami_rc4_t *rc4, unsigned char *key, size_t key_len)
 {
   int j = 0;
