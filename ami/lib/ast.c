@@ -11,6 +11,7 @@
 #include <ami/ast.h>
 #include <ami/csvread.h>
 #include <ami/base64.h>
+#include <ami/rc4.h>
 
 static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 {
@@ -156,6 +157,15 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("rc4", n->strval)) {
+	ami_rc4_t rc4;
+	char *value = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	char *key = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+
+	unsigned char *res = ami_rc4_do(&rc4, (unsigned char*)key, strlen(key), (unsigned char *)value, strlen(value));
+	char *rc4hex = ami_rc4_to_hex(res, strlen(res));
+	kv_push(char *, ami->values_stack, rc4hex);
+	free(res);		    
       } else if (!strcmp("random.int", n->strval)) {
 	time_t t;
 	char *randstr;
@@ -194,7 +204,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	kv_push(char *, ami->values_stack, strdup("replace"));// So we know we have a replace to perform
 	/* printf("We are going to REPLACE!\n"); */
       } else {
-      	fprintf(stderr, "Unhandled function:%s\n", n->strval);
+      	fprintf(stderr, "Unhandled function:[%s]\n", n->strval);
 	kv_push(char *, ami->values_stack, strdup(n->strval));
       }
       varpos = 0;

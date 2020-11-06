@@ -14,6 +14,7 @@ set(AMI_SOURCES
   csvread.c
   flow.c
   nast.c
+  rc4.c
   tree.c  
 )
 
