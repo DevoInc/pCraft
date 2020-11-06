@@ -34,47 +34,14 @@ rstack:
         self.session = session
         
     def run(self, ami, action):
-        self.update_vars_from_script(script)
-        # pprint.pprint(script)
-        port = script["port-dst"]
-        ip = script["ip-dst"]
-        all_ips = IP_y(ip)
-
-        has_started = False
-        ipstart = ""
-        ipstop = ""
-        try:
-            ipstart = script["ipstart"]
-        except:
-            has_started = True
-        try:
-            ipstop = script["ipstop"]
-        except:
-            pass
-        has_stoped = False
-
+        port = int(self.getvar("port-dst"))
         
-        for individual_ip in all_ips:
-            if has_stoped:
-                break
-
-            if str(individual_ip).endswith(".0") or str(individual_ip).endswith(".255"):
-                continue
-            if not has_started:
-                if str(individual_ip) != ipstart:
-                    continue
-                else:
-                    has_started = True
+        # SYN
+        syn = Ether() / IP(src=self.getvar("ip-src"), dst=self.getvar("ip-dst")) / TCP(dport=port, flags="S")
+        self.plugins_data.pcap.append(syn)
             
-            # SYN
-            syn = Ether() / IP(src=script["ip-src"], dst=str(individual_ip)) / TCP(dport=port, flags="S")
-            self.plugins_data.pcap.append(syn)
-            
-            # RST-ACK
-            rst_ack = Ether() / IP(src=individual_ip, dst=script["ip-src"]) / TCP(sport=port, dport=syn[TCP].sport, flags="R""A")
-            self.plugins_data.pcap.append(rst_ack)
-            if str(individual_ip) == ipstop:
-                has_stoped= True
-            
+        # RST-ACK
+        rst_ack = Ether() / IP(src=self.getvar("ip-dst"), dst=self.getvar("ip-src")) / TCP(sport=port, dport=syn[TCP].sport, flags="R""A")
+        self.plugins_data.pcap.append(rst_ack)
             
         return self.plugins_data
