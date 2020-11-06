@@ -9,6 +9,7 @@
 #include <ami/tree.h>
 #include <ami/ast.h>
 #include <ami/csvread.h>
+#include <ami/base64.h>
 
 static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 {
@@ -18,7 +19,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   char *stack_str = NULL; // Keeping the last value
   int stack_int = 0;
   char *tmp_str;
-  static char *csv_args[4] = { NULL, NULL, NULL, NULL }; // For now, we only have the CSV function
+  /* static char *csv_args[4] = { NULL, NULL, NULL, NULL }; // For now, we only have the CSV function */
   kvec_t(char *) values_stack;
   static int varpos = 0;  
   ami_field_action_t *field_action;
@@ -31,6 +32,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     case AMI_NT_ACTION:
       ami->in_action = 1;
       action = ami_action_new();
+      if (!action) {
+	fprintf(stderr, "Error creating the action!\n");
+      }
       action->name = n->strval;
       break;
     case AMI_NT_EXEC:
@@ -130,8 +134,12 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       field_action->action = "set";
       char *value = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
       field_action->right = value;
-	
-      action->field_actions = ami_field_action_append(action->field_actions, field_action);
+
+      if (!action) {
+	fprintf(stderr, "No Action created!\n");
+      } else {
+	action->field_actions = ami_field_action_append(action->field_actions, field_action);
+      }
       break;
     case AMI_NT_REPLACE:
       {
@@ -143,7 +151,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       }
       break;
     case AMI_NT_FUNCTION:
-      if (!strcmp("csv", n->strval)) {
+      if (!strcmp("base64.encode", n->strval)) {
+	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	char *b64 = base64_enc_malloc(data, strlen(data));
+	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("csv", n->strval)) {
 	/* size_t stacklen = kv_size(ami->values_stack); */
 	/* for (size_t i = 0; i < stacklen; i++) { */
 	/*   printf("i:%d;val:%s\n", i, kv_A(ami->values_stack, i)); */

@@ -8,6 +8,7 @@ add_definitions(-g)
 
 set(AMI_SOURCES
   action.c
+  base64.c
   ami.c
   ast.c
   csvread.c
