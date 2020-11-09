@@ -42,6 +42,7 @@ typedef void *yyscan_t;
 %define parse.error verbose
 
 %token <char *>WORD
+%token <char *>FUNCTIONNAME
 %token <char *>STRING
 %token <char *>EVERYTHING
 %token <char *>VARIABLE
@@ -371,7 +372,16 @@ exec: EXEC WORD {
 }
 ;
 
-function: WORD OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
+function: FUNCTIONNAME OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
+  if (ami->debug) {
+    printf("[parse.y] function: FUNCTIONNAME(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
+  }
+
+  ami_append_item(ami, AMI_NT_FUNCTION, $1, 0, 0);
+  
+  free($1);
+}
+| WORD OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
   if (ami->debug) {
     printf("[parse.y] function: WORD(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
   }
