@@ -1,0 +1,46 @@
+ami_version 1
+
+$globalvar = "my global variable"
+
+action FieldAssignment {
+       field["CommandLine"] = "foo"
+       exec FieldAssignement
+}
+
+repeat 3 as $myvar {
+       action FieldReplacement {
+       	      field["ip"].replace("127.0.0.1" => "192.168.0.32", "172.16.0.32" => "192.168.0.55")
+	      exec FieldReplacement
+       }
+
+       action FieldAssignment {
+       	      field["CommandLine"] = "foo"
+	      exec FieldAssignement
+       }
+}
+
+sleep 0.42
+
+action GlobalVar {      
+       exec GlobalVar
+}
+
+sleep 10
+
+action LocalVar {
+       $localvar = "mylocalvar"
+       $localfromglobal = $globalvar
+       $fromanotherlocal = $localvar
+       exec LocalVar
+}
+
+repeat 2 as $counter {
+       action RunFunctions {
+       	      $fromcsv = csv("test.csv", $counter, "second", header=1)
+	      $rc4 = rc4("my key", "my data string")
+	      $b64e = base64.encode("Please encode this string")
+#	      $uuid = uuid.v4($variable)
+	      exec RunFunctions
+       }
+}
+
