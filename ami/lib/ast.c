@@ -3,8 +3,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include <ami/kvec.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
+#include <ami/kvec.h>
 #include <ami/ami.h>
 #include <ami/action.h>
 #include <ami/tree.h>
@@ -158,6 +160,29 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("file.readall", n->strval)) {
+	const char *filename = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	struct stat st;
+	FILE *fp;
+	off_t filesize;
+
+	fp = fopen(filename, "rb");
+	if (!fp) {
+	  fprintf(stderr, "file.readall: Could not read file %s\n", filename);
+	  return;
+	}
+	
+	if (stat(filename, &st) == 0) {
+	  filesize = st.st_size;
+	} else {
+	  fprintf(stderr, "file.readall: Error reading file %s\n", filename);
+	  return;
+	}
+	unsigned char *file_content = malloc(filesize + 1);       
+	fread(file_content, 1, filesize, fp);
+	file_content[filesize] = '\0';
+	fclose(fp);
+	kv_push(char *, ami->values_stack, file_content);	       
       } else if (!strcmp("uuid.v4", n->strval)) { // random
 	uuid_t uuid;
 	char retstr[37];
