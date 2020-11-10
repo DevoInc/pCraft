@@ -44,7 +44,6 @@ unsigned char *ami_rc4_do(ami_rc4_t *rc4, unsigned char *key, size_t key_len, un
   
   int cursor;
   while(cursor < data_len) {
-
     i = (i+1) % 256;
     j = (j+rc4->s[i]) % 256;
     tmpval = rc4->s[j];
@@ -54,7 +53,7 @@ unsigned char *ami_rc4_do(ami_rc4_t *rc4, unsigned char *key, size_t key_len, un
     outbuf[cursor] = data[cursor] ^ tmpval;
     cursor++;
   }
-
+  
   return outbuf;
 }
 
@@ -79,7 +78,7 @@ char *ami_rc4_to_hex(unsigned char *data, size_t data_len)
     buffer_cursor++;
   }
   buffer[buffer_cursor] = '\0';
-  
+
   return buffer;
 }
 

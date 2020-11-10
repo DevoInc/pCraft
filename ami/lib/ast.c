@@ -12,6 +12,7 @@
 #include <ami/csvread.h>
 #include <ami/base64.h>
 #include <ami/rc4.h>
+#include <uuid/uuid.h>
 
 static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 {
@@ -157,13 +158,34 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("uuid.v4", n->strval)) { // random
+	uuid_t uuid;
+	char retstr[37];
+	uuid_generate_random(uuid);
+	uuid_unparse_lower(uuid, retstr);
+	kv_push(char *, ami->values_stack, strdup((char *)retstr));
+      } else if (!strcmp("uuid.v5", n->strval)) { // form string
+	uuid_t uuid;
+	uuid_t *uuid_template;
+	const char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	size_t data_len = strlen(data);
+	char retstr[37];
+	uuid_template = uuid_get_template("dns");
+	uuid_generate_sha1(uuid, *uuid_template, (const char *)data, data_len);
+	uuid_unparse_lower(uuid, retstr);
+	kv_push(char *, ami->values_stack, strdup((char *)retstr));
       } else if (!strcmp("rc4", n->strval)) {
 	ami_rc4_t rc4;
 	char *value = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	size_t value_len = strlen(value);
 	char *key = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
 
-	unsigned char *res = ami_rc4_do(&rc4, (unsigned char*)key, strlen(key), (unsigned char *)value, strlen(value));
-	char *rc4hex = ami_rc4_to_hex(res, strlen(res));
+	unsigned char *res = ami_rc4_do(&rc4, (unsigned char*)key, strlen(key), (unsigned char *)value, value_len);
+	/* for (int count = 0; count < value_len; count++) { */
+	/*   printf("res[]:%c\n", res[count]); */
+	/* } */
+	char *rc4hex = ami_rc4_to_hex(res, value_len);
+	
 	kv_push(char *, ami->values_stack, rc4hex);
 	free(res);		    
       } else if (!strcmp("random.int", n->strval)) {
