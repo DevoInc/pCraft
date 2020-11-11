@@ -15,6 +15,7 @@ set(AMI_SOURCES
   flow.c
   nast.c
   rc4.c
+  strutil.c
   tree.c  
 )
 
