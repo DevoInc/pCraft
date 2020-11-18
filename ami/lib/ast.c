@@ -165,6 +165,44 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("string.upper", n->strval)) {
+	const char *str_origin = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	char *s = (char *)str_origin;
+	char c;
+	int i = 0;
+	char *out;
+
+	out = malloc(strlen(str_origin)+1);
+	while (c = *s++) {
+	  if ((c >= 'a') && (c <= 'z')) {
+	    out[i] = c-32;
+	  } else {
+	    out[i] = c;
+	  }
+	  i++;
+	}
+	out[i] = '\0';
+
+	kv_push(char *, ami->values_stack, out);
+      } else if (!strcmp("string.lower", n->strval)) {
+	const char *str_origin = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	char *s = (char *)str_origin;
+	char c;
+	int i = 0;
+	char *out;
+
+	out = malloc(strlen(str_origin)+1);
+	while (c = *s++) {
+	  if ((c >= 'A') && (c <= 'Z')) {
+	    out[i] = c+32;
+	  } else {
+	    out[i] = c;
+	  }
+	  i++;
+	}
+	out[i] = '\0';
+
+	kv_push(char *, ami->values_stack, out);
       } else if (!strcmp("hostname_generator", n->strval)) {
 	const char *ipaddr = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char vowels[] = {'a','e','i','o','u','y','a','e','i','o'};
@@ -230,7 +268,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	uuid_generate_sha1(uuid, *uuid_template, (const char *)data, data_len);
 	uuid_unparse_lower(uuid, retstr);
 	kv_push(char *, ami->values_stack, strdup((char *)retstr));
-      } else if (!strcmp("rc4", n->strval)) {
+      } else if (!strcmp("crypto.rc4", n->strval)) {
 	ami_rc4_t rc4;
 	char *value = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	size_t value_len = strlen(value);

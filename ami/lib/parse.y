@@ -404,6 +404,7 @@ function_argument:   variable
                    | function_argument_word_eq_int
                    | function_argument_assign
                    | keywords_as_argname
+                   | function
                    ;
 
 function_argument_assign: STRING ASSIGN varset {
