@@ -70,13 +70,13 @@ ami_t *ami_new(void)
   ami->revision = 0;
   ami->author = NULL;
   ami->shortdesc = NULL;
-  ami->tag = NULL;  
 
   ami->printmessagecb = NULL;
   ami->sleepcb = NULL;
   ami->action_cb = NULL;
   
   kv_init(ami->references);
+  kv_init(ami->tags);
   
   ami->_ast = ami_ast_new();
   if (!ami->_ast) return NULL;  
@@ -222,11 +222,13 @@ void ami_debug(ami_t *ami)
   if (ami->shortdesc) {
     printf("shortdesc:%s\n", ami->shortdesc);
   }
-  if (ami->tag) {
-    printf("tag:%s\n", ami->tag);
+  size_t n_array = kv_size(ami->tags);
+  if (n_array > 0) {
+    for (size_t i = 0; i < n_array; i++) {
+      printf("\ttag %d: %s\n", i, kv_A(ami->tags, i));
+    }
   }
-
-  size_t n_array = kv_size(ami->references);
+  n_array = kv_size(ami->references);
   if (n_array > 0) {
     for (size_t i = 0; i < n_array; i++) {
       printf("\tref %d: %s\n", i, kv_A(ami->references, i));

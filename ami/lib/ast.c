@@ -39,6 +39,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     case AMI_NT_REFERENCE:
       kv_push(char *, ami->references, n->strval);      
       break;
+    case AMI_NT_TAG:
+      kv_push(char *, ami->tags, n->strval);      
+      break;
     case AMI_NT_ACTION:
       ami->in_action = 1;
       action = ami_action_new();
