@@ -2,9 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
+
+#include <sys/socket.h> 
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include <ami/kvec.h>
 #include <ami/ami.h>
@@ -160,6 +165,32 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("hostname_generator", n->strval)) {
+	const char *ipaddr = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	char vowels[] = {'a','e','i','o','u','y','a','e','i','o'};
+	char consonants[] = {'p','b','c','z','m','f','d','s','t','r'};
+	in_addr_t ipint;
+	char *ia;
+	size_t ia_len;
+	size_t i;
+	char retstr[11]; // size of max int len + 1
+	
+	ipint = inet_addr(ipaddr);
+	asprintf(&ia, "%d", ipint);
+	ia_len = strlen(ia);
+
+	for (i = 0; i < ia_len; i++) {
+	  char pos = ia[i] - '0';
+	  if (i%2) {
+	    retstr[i] = vowels[pos];
+	  } else {
+	    retstr[i] = consonants[pos];
+	  }
+	}
+	retstr[i] = '\0';
+	free(ia);
+	kv_push(char *, ami->values_stack, retstr); 	
+	
       } else if (!strcmp("file.readall", n->strval)) {
 	const char *filename = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	struct stat st;
