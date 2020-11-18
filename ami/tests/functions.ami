@@ -1,0 +1,19 @@
+ami_version 1
+
+action Foo {
+       $b64var = base64.encode("foobar")
+       $randintvar = random.int(10, 20)
+       $rc4var = crypto.rc4("my key", "data I want to encrypt with the key given before")
+       $uuidv4 = uuid.v4("")       
+       $uuidv5 = uuid.v5("my string")
+       $all = file.readall("base64.ami")
+       $hostname = string.upper(hostname_generator("192.168.0.32"))
+       $lowerstr = string.lower("THIS, a lower 1234 STRING!")
+       $upperstr = string.upper("this is an UPPER 1234, string!")
+
+       $md5 = crypto.md5("Hello, world!")
+       $sha1 = crypto.sha1("Hello, world!")
+       $sha256 = crypto.sha256("Hello, world!")       
+
+       exec yo
+}
