@@ -2,7 +2,7 @@ BISON_TARGET(parse parse.y ${CMAKE_CURRENT_BINARY_DIR}/parse.c)
 FLEX_TARGET(scan scan.l  ${CMAKE_CURRENT_BINARY_DIR}/scan.c)
 ADD_FLEX_BISON_DEPENDENCY(scan parse)
 
-include_directories(AFTER ${CMAKE_CURRENT_SOURCE_DIR}/include/ ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/lib/include ${LIBCSV_INCLUDE_DIR} ${LibUUID_INCLUDE_DIRS})
+include_directories(AFTER ${CMAKE_CURRENT_SOURCE_DIR}/crypto/ ${CMAKE_CURRENT_SOURCE_DIR}/include/ ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR}/lib/include ${LIBCSV_INCLUDE_DIR} ${LibUUID_INCLUDE_DIRS})
 
 add_definitions(-g)
 
@@ -17,6 +17,11 @@ set(AMI_SOURCES
   rc4.c
   strutil.c
   tree.c  
+
+  crypto/md5.c
+  crypto/rot-13.c
+  crypto/sha1.c
+  crypto/sha256.c
 )
 
 message("Bison output: ${BISON_parse_OUTPUTS}")

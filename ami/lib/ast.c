@@ -21,6 +21,10 @@
 #include <ami/rc4.h>
 #include <uuid/uuid.h>
 
+#include <md5.h>
+#include <sha1.h>
+#include <sha256.h>
+
 static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 {
   ami_node_t *n;
@@ -168,6 +172,39 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("crypto.md5", n->strval)) {
+	const char *strbuf = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	MD5_CTX ctx;
+	unsigned char buf[16];
+	
+	md5_init(&ctx);
+	md5_update(&ctx, strbuf, strlen(strbuf));
+	md5_final(&ctx, buf);
+
+	char *hex = ami_rc4_to_hex(buf, 16);	
+	kv_push(char *, ami->values_stack, hex);
+      } else if (!strcmp("crypto.sha1", n->strval)) {
+	const char *strbuf = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	SHA1_CTX ctx;
+	unsigned char buf[SHA1_BLOCK_SIZE];
+	
+	sha1_init(&ctx);
+	sha1_update(&ctx, strbuf, strlen(strbuf));
+	sha1_final(&ctx, buf);
+
+	char *hex = ami_rc4_to_hex(buf, SHA1_BLOCK_SIZE);	
+	kv_push(char *, ami->values_stack, hex);
+      } else if (!strcmp("crypto.sha256", n->strval)) {
+	const char *strbuf = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	SHA256_CTX ctx;
+	unsigned char buf[SHA256_BLOCK_SIZE];
+	
+	sha256_init(&ctx);
+	sha256_update(&ctx, strbuf, strlen(strbuf));
+	sha256_final(&ctx, buf);
+
+	char *hex = ami_rc4_to_hex(buf, SHA256_BLOCK_SIZE);	
+	kv_push(char *, ami->values_stack, hex);
       } else if (!strcmp("string.upper", n->strval)) {
 	const char *str_origin = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *s = (char *)str_origin;
