@@ -101,6 +101,35 @@ void Ami::Debug(void) {
   ami_debug(_ami);
 }
 
+std::vector<std::string> Ami::GetReferences(void) {
+  std::vector<std::string> references;
+  ami_t *ami = _ami;
+  
+  size_t n_array = kv_size(ami->references);
+  
+  if (n_array > 0) {
+    for (size_t i = 0; i < n_array; i++) {
+      references.push_back(kv_A(ami->references, i));
+    }
+  }
+  
+  return references;
+}
+
+std::vector<std::string> Ami::GetTags(void) {
+  std::vector<std::string> tags;
+  ami_t *ami = _ami;
+  size_t n_array = kv_size(ami->tags);
+  
+  if (n_array > 0) {
+    for (size_t i = 0; i < n_array; i++) {
+      tags.push_back(kv_A(ami->tags, i));
+    }
+  }
+  
+  return tags;
+}
+
 PYBIND11_MODULE(pyami, m) {
     m.doc() = "AMI Language for Python";
     py::class_<Ami>(m, "Ami")
@@ -108,6 +137,8 @@ PYBIND11_MODULE(pyami, m) {
       .def("GetActions", &Ami::GetActions)
       .def("Parse", &Ami::Parse)
       .def("GetFilePath", &Ami::GetFilePath)
+      .def("GetReferences", &Ami::GetReferences)
+      .def("GetTags", &Ami::GetTags)
       .def("Debug", &Ami::Debug);
     py::class_<Action>(m, "Action")
       .def(py::init<>())

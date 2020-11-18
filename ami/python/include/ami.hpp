@@ -23,6 +23,8 @@ public:
   std::vector<Action*> GetActions(void);
   std::string GetFilePath(void) { return file_path; };
   std::string file_path;
+  std::vector<std::string> GetReferences(void);
+  std::vector<std::string> GetTags(void);
 private:
   ami_t *_ami;
   static void foreach_action(ami_action_t *action, void *userdata);  
