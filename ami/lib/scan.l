@@ -150,7 +150,7 @@ FALSE false
            return TOK_STRING;
          }
 
-[a-zA-Z0-9_:<>@]+ {
+[a-zA-Z0-9_\-:<>@=\.]+ {
         yylval->TOK_WORD = strdup(yytext);
 	return TOK_WORD;
 }
