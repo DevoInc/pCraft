@@ -165,11 +165,13 @@ reference: REFERENCE STRING {
 }
 ;
 
-tag: TAG WORD {
+tag: TAG STRING {
   if (ami->debug) {
-    printf("[parse.y](tag: TAG WORD):%s\n", $2);
+    printf("[parse.y](tag: TAG STRING):%s\n", $2);
   }
   ami_node_create(&ami->root_node, AMI_NT_TAG, $2, 0, 0);
+
+  free($2);
 }
 ;
 
