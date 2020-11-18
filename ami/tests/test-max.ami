@@ -37,7 +37,7 @@ action LocalVar {
 repeat 2 as $counter {
        action RunFunctions {
        	      $fromcsv = csv("test.csv", $counter, "second", header=1)
-	      $rc4var = rc4("my key", "my data string")
+	      $rc4var = crypto.rc4("my key", "my data string")
 	      $b64e = base64.encode("Please encode this string")
 	      $uuidv4 = uuid.v4("")
 	      $uuidv5 = uuid.v5("Same String")
