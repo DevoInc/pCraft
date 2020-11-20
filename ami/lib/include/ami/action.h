@@ -1,6 +1,8 @@
 #ifndef _ACTION_H_
 #define _ACTION_H_
 
+#include <stdio.h>
+
 #include "khash.h"
 #include "kvec.h"
 
@@ -38,6 +40,7 @@ struct _ami_action_t {
   action_kvec_t replace_val;
   char *exec;
   float sleep_cursor;
+  size_t repeat_index;
 };
 typedef struct _ami_action_t ami_action_t;
 

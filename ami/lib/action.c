@@ -23,6 +23,7 @@ ami_action_t *ami_action_new()
   action->action_variables = kh_init(actionhash);
   action->field_actions = NULL;
   action->sleep_cursor = 0;
+  action->repeat_index = 0;
   
   return action;
 }

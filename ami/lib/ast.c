@@ -61,6 +61,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       ami->in_action = 0;
 
       /* ami_field_action_debug(action); */
+      if (right) {
+	action->repeat_index = repeat_index;
+      }
       action->sleep_cursor = ami->sleep_cursor;
       action = ami_action_copy_variables(ami, action);
       if (ami->action_cb) {
