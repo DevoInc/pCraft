@@ -1,6 +1,9 @@
 ami_version 1
 
 $globalvar = "my global variable"
+$verstring = """In a verbatim
+string I can put whatever $the H3!! I 
+action want"""
 
 action FieldAssignment {
        field["CommandLine"] = "foo"
@@ -36,12 +39,9 @@ action LocalVar {
 
 repeat 2 as $counter {
        action RunFunctions {
-       	      $fromcsv = csv("test.csv", $counter, "second", header=1)
 	      $rc4var = crypto.rc4("my key", "my data string")
 	      $b64e = base64.encode("Please encode this string")
-	      $uuidv4 = uuid.v4("")
 	      $uuidv5 = uuid.v5("Same String")
-	      $randint = random.int(5,42)
 	      exec RunFunctions
        }
 }
