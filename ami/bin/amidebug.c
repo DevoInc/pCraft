@@ -20,10 +20,20 @@ void foreach_action(ami_action_t *action, void *userdata)
 
 void simple_foreach_action(ami_action_t *action, void *userdata)
 {
+  ami_field_action_t *field_action;
+
   ami_t *ami = (ami_t *)userdata;
-  printf("action name(%s) exec(%s)\n", action->name, action->exec);
+  printf("------------------------\n");
+  printf("* Action name(%s) exec(%s)\n", action->name, action->exec);
   simple_print_repeat_variables(ami);
   simple_print_local_variables(ami);
+
+  printf("* Field Actions:\n");
+  for (field_action=action->field_actions; field_action; field_action=field_action->next) {
+
+    printf("    field:%s;action:%s;left:%s;right:%s\n", field_action->field, field_action->action, field_action->left?field_action->left:"", field_action->right);
+  }
+
 }
 
 void simple_print_global_variables(ami_t *ami)
@@ -31,7 +41,7 @@ void simple_print_global_variables(ami_t *ami)
   khint_t k;
   int count = 0;
 
-  printf("Global Variables:\n");
+  printf("* Global Variables:\n");
   if (ami->global_variables) {
     for (k = 0; k < kh_end(ami->global_variables); ++k)
       if (kh_exist(ami->global_variables, k)) {
@@ -48,7 +58,7 @@ void simple_print_repeat_variables(ami_t *ami)
   khint_t k;
   int count = 0;
 
-  printf("Repeat Variables:\n");
+  printf("* Repeat Variables:\n");
   if (ami->repeat_variables) {
     for (k = 0; k < kh_end(ami->repeat_variables); ++k)
       if (kh_exist(ami->repeat_variables, k)) {
@@ -65,7 +75,7 @@ void simple_print_local_variables(ami_t *ami)
   khint_t k;
   int count = 0;
 
-  printf("Local Variables:\n");
+  printf("* Local Variables:\n");
   if (ami->local_variables) {
     for (k = 0; k < kh_end(ami->local_variables); ++k)
       if (kh_exist(ami->local_variables, k)) {
@@ -85,8 +95,9 @@ int simple_debug(const char *amifile)
   ami_parse_file(ami, amifile);
   printf("ami_version %d\n", ami->version);
   ami_ast_walk_actions(ami);
+  printf("+++++++\n");
   simple_print_global_variables(ami);
-    
+  printf("\n");
   ami_close(ami);
   return 0;
 }
