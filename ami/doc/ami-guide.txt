@@ -78,4 +78,120 @@ tag "tlp:white"
 tag "pcraft:annotation"
 ```
 
+Functions
+=========
+
+Variables can be assigned from a function. AMI provides a bunch of functions.
+
+base64.encode
+-------------
+
+Encode the "string" to base64:
+```
+base64.encode("string")
+```
+
+crypto.md5
+----------
+
+Hash using md5 the "string":
+```
+crypto.md5("string")
+```
+
+crypto.sha1
+-----------
+
+Hash using sha1 the "string":
+```
+crypto.sha1("string")
+```
+
+crypto.sha256
+-------------
+
+Hash using sha256 the "string":
+```
+crypto.sha256("string")
+```
+
+file.readall
+------------
+
+Read all content of the file "filename":
+```
+file.readall("filename")
+```
+
+uuid.v4
+-------
+
+Create a random UUID v4
+```
+uuid.v4("")
+```
+
+uuid.v5
+-------
+
+Create a UUID with "base string" that will always generate the same UUID.
+```
+uuid.v5("base string")
+```
+
+crypto.rc4
+----------
+
+Encrypt/Decrypt the "string" using the "key"
+```
+crypto.rc4("key", "string")
+```
+
+random.int
+----------
+
+Generate a random value between 10 and 42
+```
+random.int(10, 42)
+```
+
+csv
+---
+
+Read a "field" from the csv "file.csv" at line 5 with a header
+```
+csv("file.csv", 5, "field", has_header=true)
+```
+
+string.upper
+------------
+
+Convert the "string" to uppercase:
+```
+string.upper("string")
+```
+
+string.lower
+------------
+
+Convert the "string" to lowercase:
+```
+string.lower("string")
+```
+
+hostname_generator
+------------------
+
+Generate a consistent hostname from an ip address, such as "127.0.0.1":
+```
+hostname_generator("127.0.0.1")
+```
+
+Field operations
+================
+
+
+Sleep operation
+===============
+
 
