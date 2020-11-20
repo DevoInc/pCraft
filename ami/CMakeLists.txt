@@ -16,6 +16,7 @@ Remove the CMakeCache.txt file and try again from another folder, e.g.:
 endif()
 
 include(GNUInstallDirs)
+enable_testing()
 
 if (APPLE)
       set(CMAKE_MACOSX_RPATH ON)
@@ -48,3 +49,4 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb")
 add_subdirectory(lib)
 add_subdirectory(bin)
 add_subdirectory(python)
+add_subdirectory(tests)
