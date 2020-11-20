@@ -1,6 +1,6 @@
 ami_version 1
 ------------------------
-* Action name(Foo) exec(yo)
+* Action name(Foo) exec(yo) sleep_cursor(0.000000) repeat_index(0)
 * Repeat Variables:
 * Local Variables:
     lv:[0] $upperstr = THIS IS AN UPPER 1234, STRING!

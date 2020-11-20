@@ -24,7 +24,7 @@ void simple_foreach_action(ami_action_t *action, void *userdata)
 
   ami_t *ami = (ami_t *)userdata;
   printf("------------------------\n");
-  printf("* Action name(%s) exec(%s)\n", action->name, action->exec);
+  printf("* Action name(%s) exec(%s) sleep_cursor(%f) repeat_index(%d)\n", action->name, action->exec, action->sleep_cursor, action->repeat_index);
   simple_print_repeat_variables(ami);
   simple_print_local_variables(ami);
 
