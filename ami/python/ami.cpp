@@ -32,7 +32,7 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
       if (kh_exist(pami->_ami->global_variables, k)) {
 	char *key = (char *)kh_key(pami->_ami->global_variables, k);
 	char *value = (char *)kh_value(pami->_ami->global_variables, k);
-	action->variables[key] = value;
+	action->variables[key] = ami_get_variable(pami->_ami, value);
       }
   }
   
@@ -41,7 +41,7 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
       if (kh_exist(pami->_ami->repeat_variables, k)) {
 	char *key = (char *)kh_key(pami->_ami->repeat_variables, k);
 	char *value = (char *)kh_value(pami->_ami->repeat_variables, k);
-	action->variables[key] = value;
+	action->variables[key] = ami_get_variable(pami->_ami, value);
       }
   }
   if (pami->_ami->local_variables) {
@@ -49,7 +49,7 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
       if (kh_exist(pami->_ami->local_variables, k)) {
 	char *key = (char *)kh_key(pami->_ami->local_variables, k);
 	char *value = (char *)kh_value(pami->_ami->local_variables, k);
-	action->variables[key] = value;
+	action->variables[key] = ami_get_variable(pami->_ami, value);
       }
   }
 
