@@ -526,7 +526,7 @@ ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...)
 {
   (void) scanner;
 
-  fprintf(stderr, "ami_yyerror: ");
+  fprintf(stderr, "AMI Syntax error with line %d or just above: ", ami_yyget_lineno());
   
   va_list args;
   va_start(args, msg);
