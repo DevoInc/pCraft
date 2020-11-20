@@ -60,12 +60,33 @@ char *ami_strutil_replace_all_substrings(const char *haystack, const char *needl
   return retstr;
 }
 
+char *ami_strutil_make_replacevar(const char *var)
+{
+  size_t var_len;
+  char *outbuf = NULL;
+
+  var_len = strlen(var);
+  
+  outbuf = (char *)malloc(var_len + 3);
+  if (!outbuf) return NULL;
+  memset(outbuf, 0, var_len+3);
+  outbuf[0] = '$';
+  outbuf[1] = '{';
+  memcpy(outbuf+2, var+1, var_len-1);
+  outbuf[var_len+1] = '}';
+  
+  return outbuf;
+}
+
 /* int main(int argc, char **argv) */
 /* { */
-/*   char *out; */
+/*   char *out = NULL; */
 
-/*   out = replace_all_substrings("This$varFoo$var", "$var", "a"); */
-/*   printf("out:%s\n", out); */
+/*   out = ami_strutil_make_replacevar("$hello"); */
+/* /\*   out = replace_all_substrings("This$varFoo$var", "$var", "a"); *\/ */
+/*   if (out) { */
+/*     printf("out:%s\n", out); */
+/*   } */
 /*   free(out); */
   
 /*   return 0; */
