@@ -112,7 +112,7 @@ typedef struct _ami_t ami_t;
 typedef int (*foreach_action_cb)(ami_t *ami, ami_action_t *action, void *user_data);
 
 ami_t *ami_new(void);
-int ami_parse_file(ami_t *ami, char *file);
+int ami_parse_file(ami_t *ami, const char *file);
 void ami_set_message_callback(ami_t *ami, print_message_cb message_cb);
 void ami_set_sleep_callback(ami_t *ami, sleep_cb sleep_cb);
 int ami_loop(ami_t *ami, foreach_action_cb action_cb, void *user_data);

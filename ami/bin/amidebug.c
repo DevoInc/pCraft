@@ -4,6 +4,11 @@
 #include <ami/ami.h>
 #include <ami/action.h>
 #include <ami/ast.h>
+#include <ami/khash.h>
+
+void simple_print_global_variables(ami_t *ami);
+void simple_print_repeat_variables(ami_t *ami);
+void simple_print_local_variables(ami_t *ami);
 
 void foreach_action(ami_action_t *action, void *userdata)
 {
@@ -13,17 +18,96 @@ void foreach_action(ami_action_t *action, void *userdata)
   /* printf("Running %s\n", action->name); */
 }
 
+void simple_foreach_action(ami_action_t *action, void *userdata)
+{
+  ami_t *ami = (ami_t *)userdata;
+  printf("action name(%s) exec(%s)\n", action->name, action->exec);
+  simple_print_repeat_variables(ami);
+  simple_print_local_variables(ami);
+}
+
+void simple_print_global_variables(ami_t *ami)
+{
+  khint_t k;
+  int count = 0;
+
+  printf("Global Variables:\n");
+  if (ami->global_variables) {
+    for (k = 0; k < kh_end(ami->global_variables); ++k)
+      if (kh_exist(ami->global_variables, k)) {
+  	char *key = (char *)kh_key(ami->global_variables, k);
+  	char *value = (char *)kh_value(ami->global_variables, k);
+	printf("    gv:[%d] %s = %s\n", count, key, value);
+	count++;
+      }
+  }
+}
+
+void simple_print_repeat_variables(ami_t *ami)
+{
+  khint_t k;
+  int count = 0;
+
+  printf("Repeat Variables:\n");
+  if (ami->repeat_variables) {
+    for (k = 0; k < kh_end(ami->repeat_variables); ++k)
+      if (kh_exist(ami->repeat_variables, k)) {
+  	char *key = (char *)kh_key(ami->repeat_variables, k);
+  	char *value = (char *)kh_value(ami->repeat_variables, k);
+	printf("    rv:[%d] %s = %s\n", count, key, value);
+	count++;
+      }
+  }
+}
+
+void simple_print_local_variables(ami_t *ami)
+{
+  khint_t k;
+  int count = 0;
+
+  printf("Local Variables:\n");
+  if (ami->local_variables) {
+    for (k = 0; k < kh_end(ami->local_variables); ++k)
+      if (kh_exist(ami->local_variables, k)) {
+  	char *key = (char *)kh_key(ami->local_variables, k);
+  	char *value = (char *)kh_value(ami->local_variables, k);
+	printf("    lv:[%d] %s = %s\n", count, key, value);
+	count++;
+      }
+  }
+}
+
+int simple_debug(const char *amifile)
+{
+  ami_t *ami;
+  ami = ami_new();  
+  ami_set_action_callback(ami, simple_foreach_action, ami);
+  ami_parse_file(ami, amifile);
+  printf("ami_version %d\n", ami->version);
+  ami_ast_walk_actions(ami);
+  simple_print_global_variables(ami);
+    
+  ami_close(ami);
+  return 0;
+}
+
 int main(int argc, char **argv)
 {
   ami_t *ami;
   int ret;
   
-  printf("Starting AMI Debugger!\n");
-
   if (argc < 2) {
-    fprintf(stderr, "Syntax: %s file.ami [--node|--ami]\n", argv[0]);
+    fprintf(stderr, "Syntax: %s file.ami [--node|--ami|--simple]\n", argv[0]);
     return 1;
   }
+
+  if (argc > 2) {
+    if (!strcmp("--simple", argv[2])) {
+      return simple_debug(argv[1]);
+    }
+  }
+
+  printf("Starting AMI Debugger!\n");
 
   ami = ami_new();
   if (!ami) {
@@ -31,6 +115,7 @@ int main(int argc, char **argv)
     goto close;
   }
 
+  
   ami_set_action_callback(ami, foreach_action, ami);  
   ami->debug = 1;
   

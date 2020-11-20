@@ -349,7 +349,7 @@ char *ami_error_to_string(ami_t *ami) {
 }
 
 
-int ami_parse_file(ami_t *ami, char *file)
+int ami_parse_file(ami_t *ami, const char *file)
 {
 	char *string = "This is a bunch of words";
 	yyscan_t scanner;
