@@ -37,7 +37,7 @@ void simple_print_global_variables(ami_t *ami)
       if (kh_exist(ami->global_variables, k)) {
   	char *key = (char *)kh_key(ami->global_variables, k);
   	char *value = (char *)kh_value(ami->global_variables, k);
-	printf("    gv:[%d] %s = %s\n", count, key, value);
+	printf("    gv:[%d] %s = %s\n", count, key, ami_get_variable(ami, value));
 	count++;
       }
   }
@@ -54,7 +54,7 @@ void simple_print_repeat_variables(ami_t *ami)
       if (kh_exist(ami->repeat_variables, k)) {
   	char *key = (char *)kh_key(ami->repeat_variables, k);
   	char *value = (char *)kh_value(ami->repeat_variables, k);
-	printf("    rv:[%d] %s = %s\n", count, key, value);
+	printf("    rv:[%d] %s = %s\n", count, key, ami_get_variable(ami, value));
 	count++;
       }
   }
@@ -71,7 +71,7 @@ void simple_print_local_variables(ami_t *ami)
       if (kh_exist(ami->local_variables, k)) {
   	char *key = (char *)kh_key(ami->local_variables, k);
   	char *value = (char *)kh_value(ami->local_variables, k);
-	printf("    lv:[%d] %s = %s\n", count, key, value);
+	printf("    lv:[%d] %s = %s\n", count, key, ami_get_variable(ami, value));
 	count++;
       }
   }
