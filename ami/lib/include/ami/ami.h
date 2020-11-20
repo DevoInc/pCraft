@@ -85,6 +85,7 @@ struct _ami_t {
   int revision;
   char *author;
   char *shortdesc;
+  char *description;
   ami_kvec_t references;
   ami_kvec_t tags;
   khash_t(strhash) *global_variables;

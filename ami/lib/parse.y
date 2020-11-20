@@ -87,6 +87,7 @@ input:
        | input revision
        | input author
        | input shortdesc
+       | input description
        | input reference
        | input tag
        | input message
@@ -152,6 +153,17 @@ shortdesc: SHORTDESC STRING {
   free($2);
 }
 ;
+
+description: DESCRIPTION STRING {
+  if (ami->debug) {
+    printf("[parse.y] Description:%s\n", $2);  
+  }
+  ami->description = strdup($2);
+
+  free($2);
+}
+;
+
 
 reference: REFERENCE STRING {
   char *ref = strdup($2);

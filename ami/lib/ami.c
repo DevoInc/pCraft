@@ -70,6 +70,7 @@ ami_t *ami_new(void)
   ami->revision = 0;
   ami->author = NULL;
   ami->shortdesc = NULL;
+  ami->description = NULL;
 
   ami->printmessagecb = NULL;
   ami->sleepcb = NULL;
