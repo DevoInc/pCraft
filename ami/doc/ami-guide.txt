@@ -1,0 +1,42 @@
+Programming with AMI
+--------------------
+
+AMI is a language designed to describe actions calling handlers with a set of functions
+and variables.
+
+Actions handlers can consume or create variables to be used by others after them.
+
+Let's dive in the syntax now:
+
+```
+ami_version 1
+
+action HelloWorld {
+       $var = "Hello, world!"
+       exec MyHandler
+}
+```
+
+This example starts setting the mandatory ami_version, which must be 1 for now. Then
+provides an action called "HelloWorld" which should execute a handler "MyHandler" with
+the famous "Hello, world!" set to the $var variable.
+
+Since Actions can be repeated, this example shows an action repeated 5 times:
+
+```
+ami_version 1
+
+repeat 5 as $index {
+       action HelloWorld {
+       	      $var = "Hello, world!"
+	      exec MyHandler
+       }
+}
+```
+
+The repeat keyword is self-explainatory, followed by the number of times it should
+repeat, and defining a variable $index to hold the repeat iteration counter. It
+can be used later to read a CSV sequentially etc.
+
+
+
