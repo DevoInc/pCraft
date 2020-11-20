@@ -6,6 +6,10 @@ and variables.
 
 Actions handlers can consume or create variables to be used by others after them.
 
+
+2 minutes dive into AMI
+=======================
+
 Let's dive in the syntax now:
 
 ```
@@ -38,5 +42,40 @@ The repeat keyword is self-explainatory, followed by the number of times it shou
 repeat, and defining a variable $index to hold the repeat iteration counter. It
 can be used later to read a CSV sequentially etc.
 
+
+Annotations
+===========
+
+In AMI, there are a few available annotations: revision, author, shortdesc, description, reference and tag.
+
+ * revision: a simple number you manually increment and start with 1 when you first create a file. This
+             is meant for understanding how many times someone worked on a given file.
+
+ * author: the file author, to know who to ping when one has a question.
+
+ * shortdesc: a short description about the AMI, usually a one-liner.
+
+ * description: a longer description about the AMI, usually multi-lines.
+
+ * reference: a link to what helped the author to build this AMI file. Can have as many references as needed.
+
+ * tag: a tag which can help classify that particular file. Can have as many tags as needed.
+
+
+Here's an example on how to use annotations:
+
+```
+ami_version 1
+revision 1
+author "Seb Tricaud <myemail@example.com>"
+
+shortdesc "This is an example showing annotations"
+
+reference "http://www.example.com"
+reference "http://github.com/devoinc/pcraft"
+
+tag "tlp:white"
+tag "pcraft:annotation"
+```
 
 
