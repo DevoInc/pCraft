@@ -264,6 +264,10 @@ void ami_close(ami_t *ami)
     }
     free(n);
   }  
+
+  kh_destroy(strhash, ami->global_variables);
+  kh_destroy(strhash, ami->repeat_variables);
+  kh_destroy(strhash, ami->local_variables);
   
   free(ami);
 }
