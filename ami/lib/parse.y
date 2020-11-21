@@ -13,8 +13,6 @@ typedef void *yyscan_t;
 #include <ami/flow.h>
 #include <ami/csvread.h>
 #include <ami/nast.h>
- 
-#include <unistd.h>
 
 }
 
@@ -31,6 +29,8 @@ typedef void *yyscan_t;
 {
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+#include <unistd.h>
 }
 
 
@@ -227,7 +227,7 @@ variable_string: STRING {
   if (ami->debug) {
     printf("[parse.y] variable_string: STRING(%s)\n", $1);
   }  
-
+    
   ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0, 0);
   
   free($1);

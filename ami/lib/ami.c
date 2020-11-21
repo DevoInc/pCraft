@@ -9,6 +9,7 @@
 #include <ami/ami.h>
 #include <ami/csvread.h>
 #include <ami/tree.h>
+#include <ami/strutil.h>
 
 #include <ami/kvec.h>
 #include <ami/khash.h>
@@ -413,12 +414,86 @@ void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata
 
 void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval)
 {
-  if (ami->_ast->repeat_block_id > 0) {
-    // All the stuff we repeat come one after another
-    ami_node_create_right(&ami->root_node, type, strval, intval, fval);
-  } else {
-    ami_node_create(&ami->root_node, type, strval, intval, fval);
-  }
+  /* char *replaced_buf = NULL; */
+  
+  /* if (strval) {   */
+  /*   /\* We check for all the variables we need to replace first *\/ */
+
+  /*   /\* printf("string value:%s\n", strval); *\/ */
+    
+  /*   char *found; */
+  /*   replaced_buf = strdup(strval); */
+    
+  /*   khint_t k;     */
+  /*   if (ami->local_variables) { */
+  /*     printf("++++ WE HAVE LOCAL VARS\n"); */
+  /*     for (k = 0; k < kh_end(ami->local_variables); ++k) */
+  /* 	printf("local var\n"); */
+  /* 	if (kh_exist(ami->local_variables, k)) { */
+  /* 	  char *key = (char *)kh_key(ami->local_variables, k); */
+  /* 	  char *value = (char *)kh_value(ami->local_variables, k); */
+  /* 	  char *replacevar = ami_strutil_make_replacevar(key); */
+  /* 	  printf("++++ search %s in %s\n", key, strval); */
+  /* 	  found = strstr(strval, key); */
+  /* 	  if (found) { */
+  /* 	    printf("in the string >%s< replace >%s< with value >%s<\n", replaced_buf, replacevar, value); */
+  /* 	    char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, value); */
+  /* 	    free(replaced_buf); */
+  /* 	    replaced_buf = new_replaced_buf; */
+  /* 	  } */
+  /* 	  free(replacevar); */
+  /* 	} */
+  /*   } */
+  /*   if (ami->repeat_variables) { */
+  /*     for (k = 0; k < kh_end(ami->repeat_variables); ++k) */
+  /* 	if (kh_exist(ami->repeat_variables, k)) { */
+  /* 	  char *key = (char *)kh_key(ami->repeat_variables, k); */
+  /* 	  char *value = (char *)kh_value(ami->repeat_variables, k); */
+  /* 	  char *replacevar = ami_strutil_make_replacevar(key); */
+  /* 	  found = strstr(strval, key); */
+  /* 	  if (found) { */
+  /* 	    char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, value); */
+  /* 	    free(replaced_buf); */
+  /* 	    replaced_buf = new_replaced_buf; */
+  /* 	  } */
+  /* 	  free(replacevar); */
+  /* 	} */
+  /*   } */
+  /*   if (ami->global_variables) { */
+  /*     for (k = 0; k < kh_end(ami->global_variables); ++k) */
+  /* 	if (kh_exist(ami->global_variables, k)) { */
+  /* 	  char *key = (char *)kh_key(ami->global_variables, k); */
+  /* 	  char *value = (char *)kh_value(ami->global_variables, k); */
+  /* 	  char *replacevar = ami_strutil_make_replacevar(key); */
+  /* 	  found = strstr(strval, key); */
+  /* 	  if (found) { */
+  /* 	    char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, value); */
+  /* 	    free(replaced_buf); */
+  /* 	    replaced_buf = new_replaced_buf; */
+  /* 	  } */
+  /* 	  free(replacevar); */
+  /* 	} */
+  /*   }   */
+  /* } */
+
+  /* if (replaced_buf) { */
+  /*   printf("replaced buf :%s\n", replaced_buf); */
+  /*   if (ami->_ast->repeat_block_id > 0) { */
+  /*     // All the stuff we repeat come one after another */
+  /*     ami_node_create_right(&ami->root_node, type, replaced_buf, intval, fval); */
+  /*     free(replaced_buf); */
+  /*   } else { */
+  /*     ami_node_create(&ami->root_node, type, replaced_buf, intval, fval); */
+  /*     free(replaced_buf); */
+  /*   } */
+  /* } else { */
+    if (ami->_ast->repeat_block_id > 0) {
+      // All the stuff we repeat come one after another
+      ami_node_create_right(&ami->root_node, type, strval, intval, fval);
+    } else {
+      ami_node_create(&ami->root_node, type, strval, intval, fval);
+    }
+  /* } */
 }
 
 char *ami_get_variable(ami_t *ami, char *key)
