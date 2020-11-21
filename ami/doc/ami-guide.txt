@@ -187,11 +187,44 @@ Generate a consistent hostname from an ip address, such as "127.0.0.1":
 hostname_generator("127.0.0.1")
 ```
 
+Note that you can create an uppercase hostname by providing this function as an argument for string.upper, such as:
+```
+$uphost = string.upper(hostname_generator("127.0.0.1"))
+```
+
 Field operations
 ================
 
+A field operation is to handle a specific field in a given action. None of the field actions are carried outside of the
+actions themselves. This is a big difference with the variables.
+
+As of now, there are two operations for a field: replacement and set.
+
+Replacement
+-----------
+
+Replacement means we replace one value with another, on the wanted field. In this case, the "ip" field. This example shows how to replace two values on this specific field:
+```
+field["ip"].replace("127.0.0.1" => "192.168.0.32", "172.16.0.32" => "192.168.0.55")
+```
+
+Set
+---
+
+Set is only an assignment, however instead of being a variable that goes to the other actions, it is kept only in the context of the actual action.
+
+```
+field["ip"] = "127.0.0.1"
+```
 
 Sleep operation
 ===============
+
+Sleep is an operation that can be done from anywhere, in second, whose value is a float.
+
+For example, to sleep 1.5 seconds, one would write this:
+```
+sleep 1.5
+```
 
 
