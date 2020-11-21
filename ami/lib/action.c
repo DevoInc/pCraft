@@ -185,12 +185,6 @@ char *ami_action_get_variables_key_at_pos(ami_action_t *action, int pos)
   return NULL;
 }
 
-void ami_action_copy_replacements(ami_t *ami, ami_action_t *action)
-{
-    kv_copy(char *,action->replace_key, ami->_ast->replace_key);
-    kv_copy(char *,action->replace_val, ami->_ast->replace_val);
-}
-
 const char *ami_action_get_variable(ami_action_t *action, char *key)
 {
   khint_t k;

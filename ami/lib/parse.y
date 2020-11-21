@@ -295,8 +295,8 @@ repeat: REPEAT INTEGER AS VARIABLE OPENSECTION {
     printf("[parse.y] repeat: REPEAT INTEGER(%d) AS VARIABLE(%s) OPENSECTION)\n", $2, $4);
   }
 
-  ami->_ast->opened_sections++;
-  ami->_ast->repeat_block_id = ami->_ast->opened_sections;
+  ami->_opened_sections++;
+  ami->_repeat_block_id = ami->_opened_sections;
   
   ami_node_create(&ami->root_node, AMI_NT_REPEAT, $4, $2, 0);
   
@@ -304,34 +304,26 @@ repeat: REPEAT INTEGER AS VARIABLE OPENSECTION {
 }
 ;
 
-/* opensection: OPENSECTION { */
-/*   if (ami->debug) { */
-/*     printf("[parse.y](opensection: OPENSECTION)\n"); */
-/*   } */
-/*   ami->_ast->opened_sections++; */
-/* } */
-/* ; */
-
 closesection: CLOSESECTION {
   if (ami->debug) {
     printf("[parse.y] closesection: CLOSESECTION\n");
   }
 
-  if (ami->_ast->action_block_id == ami->_ast->opened_sections) {
+  if (ami->_action_block_id == ami->_opened_sections) {
     if (ami->debug) {
       printf("[parse.y] Closing Action Block\n");
     }
     ami_append_item(ami, AMI_NT_ACTIONCLOSE, NULL, 0, 0);
   }
 
-  if (ami->_ast->repeat_block_id == ami->_ast->opened_sections) {
+  if (ami->_repeat_block_id == ami->_opened_sections) {
     if (ami->debug) {
       printf("[parse.y] Closing Repeat Block\n");
     }
-      ami->_ast->repeat_block_id = 0;
+      ami->_repeat_block_id = 0;
   }
   
-  ami->_ast->opened_sections--;
+  ami->_opened_sections--;
 
   
 }
@@ -342,8 +334,8 @@ action: ACTION WORD OPENSECTION {
     printf("[parse.y] action: ACTION WORD(%s) OPENSECTION\n", $2);
   }
 
-  ami->_ast->opened_sections++;
-  ami->_ast->action_block_id = ami->_ast->opened_sections;
+  ami->_opened_sections++;
+  ami->_action_block_id = ami->_opened_sections;
 
   ami_append_item(ami, AMI_NT_ACTION, $2, 0, 0);
   /* ami_node_create(&ami->root_node, AMI_NT_ACTION, $2, 0); */

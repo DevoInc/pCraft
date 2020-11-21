@@ -1,7 +1,9 @@
 #ifndef _AMI_H_
 #define _AMI_H_
 
-#define _GNU_SOURCE
+#ifndef _GNU_SOURCE
+  #define _GNU_SOURCE
+#endif
 #include <search.h>
 
 #include "action.h"
@@ -44,31 +46,11 @@ typedef void (*print_message_cb)(char *message);
 typedef void (*sleep_cb)(int msec);
 typedef void (*ami_action_cb)(ami_action_t *action, void *userdata);
 
-struct _ami_ast_t {
-  int var_value_from_function;
-  int static_var;
-  int parsing_function;
-  int in_repeat;
-  int in_action;
-  int action_block_id;
-  int repeat_block_id;
-  int opened_sections;
-  char *current_variable_value;
-  char *current_field_value;
-  ami_kvec_t func_arguments;
-  char *repeat_index_as;
-  int repeat; // Everytime we capture an action it is a repeat action of at least 1 :)
-  ami_kvec_t replace_key;
-  ami_kvec_t replace_val;
-  char *action_name;
-  char *action_exec;
-  char *action_replace_field;
-};
-typedef struct _ami_ast_t ami_ast_t;
-
 struct _ami_t {
-  ami_ast_t *_ast;
   ami_error_t error;
+  int _action_block_id;
+  int _repeat_block_id;
+  int _opened_sections;
   int debug;
   int version;
   int revision;

@@ -14,46 +14,11 @@
 #include <ami/kvec.h>
 #include <ami/khash.h>
 
-ami_ast_t *ami_ast_new(void)
-{
-  ami_ast_t *ast;
-  ast = (ami_ast_t *)malloc(sizeof(ami_ast_t));
-  if (!ast) {
-    fprintf(stderr, "Cannot allocate ami_ast_t!\n");
-    return NULL;
-  }
-
-  ast->parsing_function = 0;
-  ast->action_block_id = 0;
-  ast->repeat_block_id = 0;
-  ast->opened_sections = 0;
-  ast->repeat = 0;
-  ast->in_action = 0;
-  ast->in_repeat = 0;
-  ast->current_variable_value = NULL;
-  ast->current_field_value = NULL;
-  kv_init(ast->func_arguments);
-  ast->repeat_index_as = NULL;
-  ast->static_var = 0;
-  ast->var_value_from_function = 0;
-
-  kv_init(ast->replace_key);
-  kv_init(ast->replace_val);
-
-  ast->action_exec = NULL;
-  ast->action_replace_field = NULL;
-
-  return ast;
-}
-
 ami_t *ami_new(void)
 {
   ami_t *ami;
   int retval;
 
-  /* char *field;   */
-  /* field = ami_csvread_get_field_at_line("targets.csv", 3, "target", 1); */
-  
   ami = (ami_t *)malloc(sizeof(ami_t));
   if (!ami) {
     fprintf(stderr, "Cannot allocate ami_t!\n");
@@ -61,6 +26,9 @@ ami_t *ami_new(void)
   }
 
   ami->tree = ami_tree_new();
+  ami->_action_block_id = 0;
+  ami->_repeat_block_id = 0;
+  ami->_opened_sections = 0;
   ami->current_tree = NULL;
   ami->current_leaves = NULL;
   ami->current_line = 1;
@@ -78,9 +46,6 @@ ami_t *ami_new(void)
   kv_init(ami->references);
   kv_init(ami->tags);
   
-  ami->_ast = ami_ast_new();
-  if (!ami->_ast) return NULL;  
-
   ami->global_variables = kh_init(strhash);
   ami->repeat_variables = kh_init(strhash);
   ami->local_variables = kh_init(strhash);
@@ -473,7 +438,7 @@ void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval,
   /*     free(replaced_buf); */
   /*   } */
   /* } else { */
-    if (ami->_ast->repeat_block_id > 0) {
+    if (ami->_repeat_block_id > 0) {
       // All the stuff we repeat come one after another
       ami_node_create_right(&ami->root_node, type, strval, intval, fval);
     } else {
