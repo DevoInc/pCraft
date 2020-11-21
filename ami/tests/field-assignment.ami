@@ -1,4 +1,3 @@
-debugon
 ami_version 1
 
 action FieldAssignment {

@@ -1,0 +1,10 @@
+ami_version 1
+------------------------
+* Action name(FieldAssignment) exec(Test) sleep_cursor(0.000000) repeat_index(0)
+* Repeat Variables:
+* Local Variables:
+* Field Actions:
+    field:CommandLine;action:set;left:;right:foo
++++++++
+* Global Variables:
+
