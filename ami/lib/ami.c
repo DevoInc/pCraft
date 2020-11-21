@@ -84,7 +84,6 @@ ami_t *ami_new(void)
   ami->global_variables = kh_init(strhash);
   ami->repeat_variables = kh_init(strhash);
   ami->local_variables = kh_init(strhash);
-  kv_init(ami->actions);
 
   ami->root_node = NULL;
   ami->current_node = NULL;

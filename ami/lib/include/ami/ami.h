@@ -27,13 +27,6 @@ struct _ami_kvec_t {
 };
 typedef struct _ami_kvec_t ami_kvec_t;
 
-struct _ami_actions_kvec_t {
-  size_t n;
-  size_t m;
-  ami_action_t **a;
-};
-typedef struct _ami_actions_kvec_t ami_actions_kvec_t;
-
 enum _ami_error_t {
 	NO_ERROR,
         NO_VERSION,
@@ -87,7 +80,6 @@ struct _ami_t {
   khash_t(strhash) *global_variables;
   khash_t(strhash) *repeat_variables;
   khash_t(strhash) *local_variables;
-  ami_actions_kvec_t actions;
   sleep_cb sleepcb;
   print_message_cb printmessagecb;
   ami_action_cb action_cb;
