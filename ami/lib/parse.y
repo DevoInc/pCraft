@@ -11,7 +11,6 @@ typedef void *yyscan_t;
 #include <ami/ami.h>
 #include <ami/action.h> 
 #include <ami/csvread.h>
-#include <ami/nast.h>
 
 }
 

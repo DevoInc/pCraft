@@ -12,7 +12,6 @@ set(AMI_SOURCES
   ami.c
   ast.c
   csvread.c
-  nast.c
   rc4.c
   strutil.c
   tree.c  
