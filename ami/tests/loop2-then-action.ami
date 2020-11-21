@@ -1,25 +1,21 @@
-debugoff
 ami_version 1
 
-message "Starting..."
-
-$RU_attacker = "russian_ip"
-$CH_attacker = "chinese_ip"
+$attacker1 = "192.168.0.32"
+$attacker2 = "172.16.32.42"
 $compromized_target = "10.52.60.69"
 
 repeat 2 as $index {
-	$current_target = "foo"
+       $current_target = "127.0.0.1"
 
        action MailPhishing {
-       	      message "Time for MAIL Phishing execution"
        	      $filename = "mail-phishing.pcap"
-	      field["ip"].replace("192.168.204.151" => $current_target, "109.232.105.106" => $RU_attacker, "94.23.64.3" => $CH_attacker)
+	      field["ip"].replace("192.168.204.151" => $current_target, "109.232.105.106" => $attacker1, "94.23.64.3" => $attacker2)
 	      exec PcapImport
        }
 }
 
-action GoogleDriveDownload {
-       $filename = "gdrive-perso.pcap"
+action GDriveDownload {
+       $filename = "gdrive.pcap"
        field["ip"].replace("10.0.0.208" => $compromized_target)
        exec PcapImport
 }
