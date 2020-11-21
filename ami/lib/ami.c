@@ -25,12 +25,9 @@ ami_t *ami_new(void)
     return NULL;
   }
 
-  ami->tree = ami_tree_new();
   ami->_action_block_id = 0;
   ami->_repeat_block_id = 0;
   ami->_opened_sections = 0;
-  ami->current_tree = NULL;
-  ami->current_leaves = NULL;
   ami->current_line = 1;
   ami->debug = 0;
   ami->version = 0;
@@ -59,11 +56,6 @@ ami_t *ami_new(void)
   ami->sleep_cursor = 0;
   
   return ami;
-}
-
-void ami_ast_tree_debug(ami_t *ami)
-{
-  ami_tree_debug(ami->tree);
 }
 
 int ami_set_global_variable(ami_t *ami, char *key, char *val) {

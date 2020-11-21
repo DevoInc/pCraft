@@ -67,9 +67,6 @@ struct _ami_t {
   ami_action_cb action_cb;
   void *action_cb_userdata;
   size_t current_line;
-  ami_tree_t *tree;
-  ami_tree_t *current_tree;
-  ami_tree_node_t *current_leaves;
   ami_node_t *root_node; // root
   ami_node_t *current_node;
   int in_repeat;
