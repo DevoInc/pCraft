@@ -34,8 +34,6 @@ ami_ast_t *ami_ast_new(void)
   ast->current_field_value = NULL;
   kv_init(ast->func_arguments);
   ast->repeat_index_as = NULL;
-  kv_init(ast->repeat_flow);
-  ast->current_flow = NULL;
   ast->static_var = 0;
   ast->var_value_from_function = 0;
 
@@ -102,17 +100,6 @@ ami_t *ami_new(void)
 void ami_ast_tree_debug(ami_t *ami)
 {
   ami_tree_debug(ami->tree);
-}
-
-int ami_nast_repeat_flow_reset(ami_t *ami) {
-  size_t n_array = kv_size(ami->_ast->repeat_flow);
-  if (n_array > 0) {
-    for (size_t i = 0; i < n_array; i++) {
-      ami_flow_t *flow = kv_A(ami->_ast->repeat_flow, i);
-      ami_flow_close(flow);
-      	kv_pop(ami->_ast->repeat_flow);
-    }
-  }
 }
 
 int ami_set_global_variable(ami_t *ami, char *key, char *val) {
