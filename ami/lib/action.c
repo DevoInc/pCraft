@@ -53,6 +53,7 @@ void ami_action_close(ami_action_t *action)
       kh_del(actionhash, action->action_variables, k);
     }
   }
+  kh_destroy(actionhash, action->action_variables);
   
   free(action);
 }
