@@ -12,3 +12,7 @@ add_test(Max ${AMITEST} test-max.ami)
 add_executable(aminewclose ami-new-close.c)
 target_link_libraries(aminewclose ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
 add_test(AmiNewClose aminewclose)
+
+add_executable(actionnewclose action-new-close.c)
+target_link_libraries(actionnewclose ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
+add_test(ActionNewClose actionnewclose)
