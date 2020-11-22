@@ -233,6 +233,24 @@ void ami_erase_repeat_variables(ami_t *ami)
   
 }
 
+void ami_node_close(ami_node_t *node, int right)
+{
+  ami_node_t *next;
+  ami_node_t *node_right;
+  if (right) {
+    next = node->right;
+  } else {
+    next = node->next;
+  }
+  node_right = node->right;
+  if (node->strval) {
+    free(node->strval);
+  }
+  free(node);
+  if (next) {
+    ami_node_close(next, node_right?1:0);
+  }  
+}
 
 void ami_close(ami_t *ami)
 {
@@ -251,22 +269,9 @@ void ami_close(ami_t *ami)
   }
 
   if (ami->root_node) {
-    for (n = ami->root_node; n; n = n->next) {
-      if (n->strval) {
-	free(n->strval);
-      }
-      if (n->right) {
-	for (ami_node_t *r = n->right; r; r = r->right) {
-	  if (r->strval) {
-	    free(r->strval);
-	  }
-	  free(r);
-	}
-      }
-    }
-    free(n);
+    ami_node_close(ami->root_node, 0);
   }
-
+  
   kh_destroy(strhash, ami->global_variables);
   kh_destroy(strhash, ami->repeat_variables);
   kh_destroy(strhash, ami->local_variables);
