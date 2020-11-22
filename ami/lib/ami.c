@@ -56,6 +56,9 @@ ami_t *ami_new(void)
 
   ami->replace_count = 0;
   ami->sleep_cursor = 0;
+
+  ami->in_repeat = 0;
+  ami->in_action = 0;
   
   return ami;
 }
