@@ -80,8 +80,8 @@ FALSE false
 <VERBASTRING>"\"\"\"" {
     BEGIN(INITIAL);
     verbatim_buf[vbindex] = '\0';
-    yylval->TOK_STRING = strdup(verbatim_buf);
-    return TOK_STRING;
+    yylval->TOK_VERBATIM = strdup(verbatim_buf);
+    return TOK_VERBATIM;
 }
 
 <VERBASTRING>(.|\n) {

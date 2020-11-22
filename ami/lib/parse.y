@@ -42,6 +42,7 @@ typedef void *yyscan_t;
 %token <char *>WORD
 %token <char *>FUNCTIONNAME
 %token <char *>STRING
+%token <char *>VERBATIM
 %token <char *>EVERYTHING
 %token <char *>VARIABLE
 %token <char *>LABEL
@@ -78,6 +79,8 @@ typedef void *yyscan_t;
 %token EXIT
 %token GOTO
 
+%type <char *> string
+
 %%
 
 input:
@@ -106,6 +109,7 @@ input:
        | input exit
        | input _goto
        | input label
+       | input string
        ;
 
 
@@ -131,7 +135,7 @@ revision: REVISION INTEGER
   }
   ;
 
-author: AUTHOR STRING {
+author: AUTHOR string {
   if (ami->debug) {
     printf("[parse.y] Author:%s\n", $2);
   }
@@ -142,7 +146,7 @@ author: AUTHOR STRING {
 }
 ;
 
-shortdesc: SHORTDESC STRING {
+shortdesc: SHORTDESC string {
   if (ami->debug) {
     printf("[parse.y] Short Desc:%s\n", $2);  
   }
@@ -152,7 +156,7 @@ shortdesc: SHORTDESC STRING {
 }
 ;
 
-description: DESCRIPTION STRING {
+description: DESCRIPTION string {
   if (ami->debug) {
     printf("[parse.y] Description:%s\n", $2);  
   }
@@ -163,7 +167,7 @@ description: DESCRIPTION STRING {
 ;
 
 
-reference: REFERENCE STRING {
+reference: REFERENCE string {
   char *ref = strdup($2);
   if (ami->debug) {
     printf("[parse.y](reference: REFERENCE STRING):%s\n", $2);
@@ -175,7 +179,7 @@ reference: REFERENCE STRING {
 }
 ;
 
-tag: TAG STRING {
+tag: TAG string {
   if (ami->debug) {
     printf("[parse.y](tag: TAG STRING):%s\n", $2);
   }
@@ -185,7 +189,7 @@ tag: TAG STRING {
 }
 ;
 
-message: MESSAGE STRING {
+message: MESSAGE string {
 
   ami_append_item(ami, AMI_NT_MESSAGE, $2, 0, 0);
 
@@ -221,7 +225,7 @@ varset:   variable_string
         | variable_variable
         ;
 
-variable_string: STRING {
+variable_string: string {
   if (ami->debug) {
     printf("[parse.y] variable_string: STRING(%s)\n", $1);
   }  
@@ -344,7 +348,7 @@ action: ACTION WORD OPENSECTION {
 }
 ;
 
-field_function_inline: FIELD OPENBRACKET STRING CLOSEBRACKET DOT function {
+field_function_inline: FIELD OPENBRACKET string CLOSEBRACKET DOT function {
   if (ami->debug) {
    printf("[parse.y] field_function_inline: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET DOT function\n", $3);
   }
@@ -355,7 +359,7 @@ field_function_inline: FIELD OPENBRACKET STRING CLOSEBRACKET DOT function {
 }
 ;
 
-field_assigned_to_variable: FIELD OPENBRACKET STRING CLOSEBRACKET EQUAL varset {
+field_assigned_to_variable: FIELD OPENBRACKET string CLOSEBRACKET EQUAL varset {
   if (ami->debug) {
     printf("[parse.y] field_assigned_to_variable: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET EQUAL varset\n", $3);
   }
@@ -411,7 +415,7 @@ function_argument:   variable
                    | function
                    ;
 
-function_argument_assign: STRING ASSIGN varset {
+function_argument_assign: string ASSIGN varset {
   if (ami->debug) {
     printf("[parse.y] function_argument_assign: STRING(%s) ASSIGN varset\n", $1);
   }
@@ -423,7 +427,7 @@ function_argument_assign: STRING ASSIGN varset {
 }
 ;
 
-function_argument_string: STRING {
+function_argument_string: string {
   if (ami->debug) {
     printf("[parse.y] function_argument_string: STRING(%s)\n", $1);
   }
@@ -454,7 +458,7 @@ function_argument_variable: VARIABLE {
 }
 ;
 
-function_argument_word_eq_string: WORD EQUAL STRING {
+function_argument_word_eq_string: WORD EQUAL string {
   if (ami->debug) {
     printf("[parse.y] function_argument_word_eq_string: WORD(%s) EQUAL STRING(%s)\n", $1, $3);
   }
@@ -519,6 +523,15 @@ label: LABEL {
   free($1);
 }
 ;
+
+string: STRING {
+  $$ = $1;
+ }
+| VERBATIM {
+  $$ = $1;
+ }
+ ;
+ 
 
 %%
 
