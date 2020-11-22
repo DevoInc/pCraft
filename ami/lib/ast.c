@@ -91,7 +91,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       printf("%s\n", n->strval);
       break;
     case AMI_NT_VARVALSTR:
-      kv_push(char *, ami->values_stack, strdup(n->strval));
+      kv_push(char *, ami->values_stack, n->strval);
       break;
     case AMI_NT_VARVALINT:
       asprintf(&tmp_str, "%d", n->intval);

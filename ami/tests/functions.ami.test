@@ -6,7 +6,7 @@ ami_version 1
     lv:[0] $upperstr = THIS IS AN UPPER 1234, STRING!
     lv:[1] $lowerstr = this, a lower 1234 string!
     lv:[2] $hostname = FODOBUBEC
-    lv:[3] $rc4var = 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    lv:[3] $rc4var = 64ba58a2b1fd550e61ebdc4faf37c395637e6b5499722c1a3e71c033322f4c8ba5d7ed1a304edf513bd18c09c12229b0
     lv:[4] $sha1 = 943a702d06f34599aee1f8da8ef9f7296031d699
     lv:[5] $md5 = 6cd3556deb0da54bca060b4c39479839
     lv:[6] $b64var = Zm9vYmFy

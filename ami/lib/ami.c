@@ -265,18 +265,37 @@ void ami_close(ami_t *ami)
   if (!ami) return;
   
   kv_destroy(ami->references);
-  
-  for (k = 0; k < kh_end(ami->global_variables); ++k) {
-    if (kh_exist(ami->global_variables, k)) {
-      free((char *)kh_key(ami->global_variables, k));
-      free((char *)kh_value(ami->global_variables, k));
+  kv_destroy(ami->values_stack);
+
+  if (ami->global_variables) {
+    for (k = 0; k < kh_end(ami->global_variables); ++k) {
+      if (kh_exist(ami->global_variables, k)) {
+	free((char *)kh_key(ami->global_variables, k));
+	free((char *)kh_value(ami->global_variables, k));
+      }
+    }
+  }
+  if (ami->repeat_variables) {
+    for (k = 0; k < kh_end(ami->repeat_variables); ++k) {
+      if (kh_exist(ami->repeat_variables, k)) {
+	free((char *)kh_key(ami->repeat_variables, k));
+	free((char *)kh_value(ami->repeat_variables, k));
+      }
+    }
+  }
+  if (ami->local_variables) {
+    for (k = 0; k < kh_end(ami->local_variables); ++k) {
+      if (kh_exist(ami->local_variables, k)) {
+	free((char *)kh_key(ami->local_variables, k));
+	free((char *)kh_value(ami->local_variables, k));
+      }
     }
   }
 
   if (ami->root_node) {
     ami_node_close(ami->root_node, 0);
   }
-  
+
   kh_destroy(strhash, ami->global_variables);
   kh_destroy(strhash, ami->repeat_variables);
   kh_destroy(strhash, ami->local_variables);
