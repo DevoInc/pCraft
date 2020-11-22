@@ -19,11 +19,74 @@
 #include <ami/csvread.h>
 #include <ami/base64.h>
 #include <ami/rc4.h>
+#include <ami/strutil.h>
+
 #include <uuid/uuid.h>
 
 #include <md5.h>
 #include <sha1.h>
 #include <sha256.h>
+
+static char *_replace_strval_from_variables(ami_t *ami, char *strval) {
+  char *replaced_buf = NULL;
+  char *found;
+  khint_t k;
+
+  replaced_buf = strdup(strval);
+  
+  if (ami->local_variables) {
+    for (k = 0; k < kh_end(ami->local_variables); ++k) {
+      if (kh_exist(ami->local_variables, k)) {
+	char *key = (char *)kh_key(ami->local_variables, k);
+	char *value = (char *)kh_value(ami->local_variables, k);
+	char *replacevar = ami_strutil_make_replacevar(key);
+	found = strstr(replaced_buf, replacevar);
+	if (found) {
+	  char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, value);
+	  free(replaced_buf);
+	  replaced_buf = new_replaced_buf;
+	}
+	free(replacevar);
+      }
+    }
+  }
+
+  if (ami->repeat_variables) {
+    for (k = 0; k < kh_end(ami->repeat_variables); ++k) {
+      if (kh_exist(ami->repeat_variables, k)) {
+	char *key = (char *)kh_key(ami->repeat_variables, k);
+	char *value = (char *)kh_value(ami->repeat_variables, k);
+	char *replacevar = ami_strutil_make_replacevar(key);
+	found = strstr(replaced_buf, replacevar);
+	if (found) {
+	  char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, value);
+	  free(replaced_buf);
+	  replaced_buf = new_replaced_buf;
+	}
+	free(replacevar);
+      }
+    }
+  }
+
+  if (ami->global_variables) {
+    for (k = 0; k < kh_end(ami->global_variables); ++k) {
+      if (kh_exist(ami->global_variables, k)) {
+	char *key = (char *)kh_key(ami->global_variables, k);
+	char *value = (char *)kh_value(ami->global_variables, k);
+	char *replacevar = ami_strutil_make_replacevar(key);
+	found = strstr(replaced_buf, replacevar);
+	if (found) {
+	  char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, value);
+	  free(replaced_buf);
+	  replaced_buf = new_replaced_buf;
+	}
+	free(replacevar);
+      }
+    }
+  }
+
+  return replaced_buf;
+}
 
 static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 {
@@ -37,8 +100,16 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   kvec_t(char *) values_stack;
   static int varpos = 0;  
   ami_field_action_t *field_action;
+  char *replaced_var = NULL;
   
   for (n = node; n; n = right ? n->right : n->next) {
+
+    if ((n->strval) && (!n->is_verbatim)) {
+      if (n->type == AMI_NT_VARVALSTR) {
+	replaced_var = _replace_strval_from_variables(ami, n->strval);
+      }
+    }
+    
     switch(n->type) {
     case AMI_NT_REFERENCE:
       kv_push(char *, ami->references, n->strval);      
@@ -91,7 +162,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       printf("%s\n", n->strval);
       break;
     case AMI_NT_VARVALSTR:
-      kv_push(char *, ami->values_stack, n->strval);
+      if (replaced_var) {
+	kv_push(char *, ami->values_stack, replaced_var);
+      } else {
+	kv_push(char *, ami->values_stack, n->strval);
+      }
       break;
     case AMI_NT_VARVALINT:
       asprintf(&tmp_str, "%d", n->intval);

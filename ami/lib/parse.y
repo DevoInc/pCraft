@@ -173,7 +173,7 @@ reference: REFERENCE string {
     printf("[parse.y](reference: REFERENCE STRING):%s\n", $2);
   }  
   /* kv_push(char *, ami->references, ref); */
-  ami_node_create(&ami->root_node, AMI_NT_REFERENCE, $2, 0, 0);
+  ami_node_create(&ami->root_node, AMI_NT_REFERENCE, $2, 0, 0, 0);
   
   free($2);
 }
@@ -183,7 +183,7 @@ tag: TAG string {
   if (ami->debug) {
     printf("[parse.y](tag: TAG STRING):%s\n", $2);
   }
-  ami_node_create(&ami->root_node, AMI_NT_TAG, $2, 0, 0);
+  ami_node_create(&ami->root_node, AMI_NT_TAG, $2, 0, 0, 0);
 
   free($2);
 }
@@ -191,7 +191,7 @@ tag: TAG string {
 
 message: MESSAGE string {
 
-  ami_append_item(ami, AMI_NT_MESSAGE, $2, 0, 0);
+  ami_append_item(ami, AMI_NT_MESSAGE, $2, 0, 0, 0);
 
   /* if (ami->debug) { */
   /*   printf("[parse.y](message: MESSAGE STRING): %s\n", $2); */
@@ -213,7 +213,7 @@ variable: VARIABLE EQUAL varset {
   }
 
    /* ami_node_create(&ami->root_node, AMI_NT_VARNAME, $1, 0); */
-  ami_append_item(ami, AMI_NT_VARNAME, $1, 0, 0);
+  ami_append_item(ami, AMI_NT_VARNAME, $1, 0, 0, 0);
   
   free($1);
 }
@@ -230,7 +230,7 @@ variable_string: string {
     printf("[parse.y] variable_string: STRING(%s)\n", $1);
   }  
     
-  ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0, 0);
+  ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0, 0, 0);
   
   free($1);
 }
@@ -241,7 +241,7 @@ variable_int: INTEGER {
     printf("[parse.y] variable_int: INTEGER(%d)\n", $1);
   }
 
-  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0);
+  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0, 0);
   
 }
 ;
@@ -262,7 +262,7 @@ variable_variable: VARIABLE {
     }
 
     
-    ami_append_item(ami, AMI_NT_VARVAR, $1, 0, 0);
+    ami_append_item(ami, AMI_NT_VARVAR, $1, 0, 0, 0);
 
     free($1);
 }
@@ -282,7 +282,7 @@ sleep_float: SLEEP FLOAT {
     printf("[parse.y] sleep: SLEEP FLOAT(%f)\n", $2);
   }
 
-  ami_append_item(ami, AMI_NT_SLEEP, NULL, 0, $2);
+  ami_append_item(ami, AMI_NT_SLEEP, NULL, 0, $2, 0);
 }
 ;
 sleep_int: SLEEP INTEGER {
@@ -290,7 +290,7 @@ sleep_int: SLEEP INTEGER {
     printf("[parse.y] sleep: SLEEP INTEGER(%d)\n", $2);
   }
 
-  ami_append_item(ami, AMI_NT_SLEEP, NULL, $2, 0);
+  ami_append_item(ami, AMI_NT_SLEEP, NULL, $2, 0, 0);
 }
 ;
 
@@ -302,7 +302,7 @@ repeat: REPEAT INTEGER AS VARIABLE OPENSECTION {
   ami->_opened_sections++;
   ami->_repeat_block_id = ami->_opened_sections;
   
-  ami_node_create(&ami->root_node, AMI_NT_REPEAT, $4, $2, 0);
+  ami_node_create(&ami->root_node, AMI_NT_REPEAT, $4, $2, 0, 0);
   
   free($4);
 }
@@ -317,7 +317,7 @@ closesection: CLOSESECTION {
     if (ami->debug) {
       printf("[parse.y] Closing Action Block\n");
     }
-    ami_append_item(ami, AMI_NT_ACTIONCLOSE, NULL, 0, 0);
+    ami_append_item(ami, AMI_NT_ACTIONCLOSE, NULL, 0, 0, 0);
   }
 
   if (ami->_repeat_block_id == ami->_opened_sections) {
@@ -341,7 +341,7 @@ action: ACTION WORD OPENSECTION {
   ami->_opened_sections++;
   ami->_action_block_id = ami->_opened_sections;
 
-  ami_append_item(ami, AMI_NT_ACTION, $2, 0, 0);
+  ami_append_item(ami, AMI_NT_ACTION, $2, 0, 0, 0);
   /* ami_node_create(&ami->root_node, AMI_NT_ACTION, $2, 0); */
   
   free($2);
@@ -353,7 +353,7 @@ field_function_inline: FIELD OPENBRACKET string CLOSEBRACKET DOT function {
    printf("[parse.y] field_function_inline: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET DOT function\n", $3);
   }
 
-  ami_append_item(ami, AMI_NT_FIELDFUNC, $3, 0, 0);
+  ami_append_item(ami, AMI_NT_FIELDFUNC, $3, 0, 0, 0);
   
   free($3);
 }
@@ -364,7 +364,7 @@ field_assigned_to_variable: FIELD OPENBRACKET string CLOSEBRACKET EQUAL varset {
     printf("[parse.y] field_assigned_to_variable: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET EQUAL varset\n", $3);
   }
 
-  ami_append_item(ami, AMI_NT_FIELDVAR, $3, 0, 0);
+  ami_append_item(ami, AMI_NT_FIELDVAR, $3, 0, 0, 0);
 
  }
 ;
@@ -374,7 +374,7 @@ exec: EXEC WORD {
     printf("[parse.y] exec: EXEC WORD(%s)\n", $2);
   }
 
-  ami_append_item(ami, AMI_NT_EXEC, $2, 0, 0);
+  ami_append_item(ami, AMI_NT_EXEC, $2, 0, 0, 0);
   
   free($2);
 }
@@ -385,7 +385,7 @@ function: FUNCTIONNAME OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
     printf("[parse.y] function: FUNCTIONNAME(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
   }
 
-  ami_append_item(ami, AMI_NT_FUNCTION, $1, 0, 0);
+  ami_append_item(ami, AMI_NT_FUNCTION, $1, 0, 0, 0);
   
   free($1);
 }
@@ -394,7 +394,7 @@ function: FUNCTIONNAME OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
     printf("[parse.y] function: WORD(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
   }
 
-  ami_append_item(ami, AMI_NT_FUNCTION, $1, 0, 0);
+  ami_append_item(ami, AMI_NT_FUNCTION, $1, 0, 0, 0);
   
   free($1);
 }
@@ -421,7 +421,7 @@ function_argument_assign: string ASSIGN varset {
   }
 
   
-  ami_append_item(ami, AMI_NT_REPLACE, $1, 0, 0);
+  ami_append_item(ami, AMI_NT_REPLACE, $1, 0, 0, 0);
   
   free($1);
 }
@@ -432,7 +432,7 @@ function_argument_string: string {
     printf("[parse.y] function_argument_string: STRING(%s)\n", $1);
   }
 
-  ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0, 0);
+  ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0, 0, 0);
 
   free($1);
 }
@@ -443,7 +443,7 @@ function_argument_int: INTEGER {
     printf("[parse.y] function_argument_int: INTEGER(%d)\n", $1);
   }
 
-  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0);
+  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0, 0);
 }
 ;
 
@@ -452,7 +452,7 @@ function_argument_variable: VARIABLE {
     printf("[parse.y] function_argument_variable: VARIABLE(%s)\n", $1);
   }
 
-  ami_append_item(ami, AMI_NT_VARVAR, $1, 0, 0);
+  ami_append_item(ami, AMI_NT_VARVAR, $1, 0, 0, 0);
   
   free($1);
 }
@@ -463,7 +463,7 @@ function_argument_word_eq_string: WORD EQUAL string {
     printf("[parse.y] function_argument_word_eq_string: WORD(%s) EQUAL STRING(%s)\n", $1, $3);
   }
 
-  ami_append_item(ami, AMI_NT_VARVALSTR, $3, 0, 0);
+  ami_append_item(ami, AMI_NT_VARVALSTR, $3, 0, 0, 0);
   
   free($1);
   free($3);
@@ -475,7 +475,7 @@ function_argument_word_eq_int: WORD EQUAL INTEGER {
     printf("[parse.y] function_argument_word_eq_int: WORD(%s) EQUAL INTEGER(%d)\n", $1, $3);
   }
 
-  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $3, 0);
+  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $3, 0, 0);
   
   free($1);
 }
@@ -525,9 +525,11 @@ label: LABEL {
 ;
 
 string: STRING {
+  ami->_is_verbatim_string = 0;
   $$ = $1;
  }
 | VERBATIM {
+  ami->_is_verbatim_string = 1;
   $$ = $1;
  }
  ;

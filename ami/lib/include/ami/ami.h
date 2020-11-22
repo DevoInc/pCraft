@@ -51,6 +51,7 @@ struct _ami_t {
   int _action_block_id;
   int _repeat_block_id;
   int _opened_sections;
+  int _is_verbatim_string;
   int debug;
   int version;
   int revision;
@@ -98,7 +99,7 @@ void ami_erase_local_variables(ami_t *ami);
 void ami_erase_repeat_variables(ami_t *ami);
 void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata);
 void ami_ast_tree_debug(ami_t *ami);
-void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval);
+void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
 char *ami_get_variable(ami_t *ami, char *key);
 void ami_print_all_variables(ami_t *ami);
 float ami_get_sleep_cursor(ami_t *ami);
