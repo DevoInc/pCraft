@@ -250,20 +250,22 @@ void ami_close(ami_t *ami)
     }
   }
 
-  for (n = ami->root_node; n; n = n->next) {
-    if (n->strval) {
-      free(n->strval);
-    }
-    if (n->right) {
-      for (ami_node_t *r = n->right; r; r = r->right) {
-	if (r->strval) {
-	  free(r->strval);
-	}
-	free(r);
+  if (ami->root_node) {
+    for (n = ami->root_node; n; n = n->next) {
+      if (n->strval) {
+	free(n->strval);
       }
+      if (n->right) {
+	for (ami_node_t *r = n->right; r; r = r->right) {
+	  if (r->strval) {
+	    free(r->strval);
+	  }
+	  free(r);
+	}
+      }
+      free(n);
     }
-    free(n);
-  }  
+  }
 
   kh_destroy(strhash, ami->global_variables);
   kh_destroy(strhash, ami->repeat_variables);
