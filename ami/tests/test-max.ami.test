@@ -62,7 +62,7 @@ ami_version 1
 * Repeat Variables:
 * Local Variables:
     lv:[0] $localvar = mylocalvar
-    lv:[1] $rc4var = 0000000000000000000000000000
+    lv:[1] $rc4var = 6da20ca7f0c0145973f1da06b53f
     lv:[2] $b64e = UGxlYXNlIGVuY29kZSB0aGlzIHN0cmluZw==
     lv:[3] $localfromglobal = my global variable
     lv:[4] $fromanotherlocal = mylocalvar

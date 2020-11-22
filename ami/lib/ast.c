@@ -360,11 +360,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	  kv_push(char *, ami->values_stack, strdup(result));
 	}
       } else if (!strcmp("replace", n->strval)) {
-	kv_push(char *, ami->values_stack, strdup("replace"));// So we know we have a replace to perform
+	kv_push(char *, ami->values_stack, "replace");// So we know we have a replace to perform
 	/* printf("We are going to REPLACE!\n"); */
       } else {
       	fprintf(stderr, "Unhandled function:[%s]\n", n->strval);
-	kv_push(char *, ami->values_stack, strdup(n->strval));
+	kv_push(char *, ami->values_stack, n->strval);
       }
       varpos = 0;
       break;
