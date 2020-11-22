@@ -263,8 +263,8 @@ void ami_close(ami_t *ami)
 	  free(r);
 	}
       }
-      free(n);
     }
+    free(n);
   }
 
   kh_destroy(strhash, ami->global_variables);
