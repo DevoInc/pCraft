@@ -1,0 +1,15 @@
+ami_version 1
+
+$global = "my global"
+
+
+repeat 2 as $index {
+       $repeatvar = "repeat"
+       action Simple {
+       	      exec Simple
+	      $local = $global
+	      $reallocal = "local"
+	      $substituted = "We add the global content:${global}"
+	      $multiple = "The local: ${reallocal} global: ${global}"
+      }
+}
