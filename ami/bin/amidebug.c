@@ -102,6 +102,17 @@ int simple_debug(const char *amifile)
   return 0;
 }
 
+int quiet_debug(const char *amifile)
+{
+  ami_t *ami;
+  ami = ami_new();  
+  ami_parse_file(ami, amifile);
+  ami_ast_walk_actions(ami);
+  ami_close(ami);
+  return 0;
+}
+
+
 int main(int argc, char **argv)
 {
   ami_t *ami;
@@ -118,6 +129,12 @@ int main(int argc, char **argv)
     }
   }
 
+  if (argc > 2) {
+    if (!strcmp("--quiet", argv[2])) {
+      return quiet_debug(argv[1]);
+    }
+  }
+  
   printf("Starting AMI Debugger!\n");
 
   ami = ami_new();
