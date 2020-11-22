@@ -56,6 +56,8 @@ char *ami_strutil_replace_all_substrings(const char *haystack, const char *needl
     read_from_offset += read_to_offset + needle_len;
     read_to_offset += needle_len;
   }
+
+  memcpy(retstr + write_offset, haystack + read_to_offset, haystack_len - read_to_offset);
   
   return retstr;
 }
@@ -78,16 +80,16 @@ char *ami_strutil_make_replacevar(const char *var)
   return outbuf;
 }
 
-/* int main(int argc, char **argv) */
-/* { */
-/*   char *out = NULL; */
+int main(int argc, char **argv)
+{
+  char *out = NULL;
 
-/*   out = ami_strutil_make_replacevar("$hello"); */
-/* /\*   out = replace_all_substrings("This$varFoo$var", "$var", "a"); *\/ */
-/*   if (out) { */
-/*     printf("out:%s\n", out); */
-/*   } */
-/*   free(out); */
+  /* out = ami_strutil_make_replacevar("$hello"); */
+  out = ami_strutil_replace_all_substrings("This$varFoo$var value", "$var", "a");
+  if (out) {
+    printf("out:%s\n", out);
+  }
+  free(out);
   
-/*   return 0; */
-/* } */
+  return 0;
+}
