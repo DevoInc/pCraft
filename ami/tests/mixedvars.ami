@@ -1,0 +1,8 @@
+ami_version 1
+
+action VarFromFunction {
+       exec nada
+
+       $fromfunc = base64.encode("Hello")
+       $b64string = "This is a base64 string: ${fromfunc}"
+}
