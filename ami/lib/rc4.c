@@ -42,7 +42,7 @@ unsigned char *ami_rc4_do(ami_rc4_t *rc4, unsigned char *key, size_t key_len, un
 
   memset(outbuf, 0, data_len);
   
-  int cursor;
+  int cursor = 0;
   while(cursor < data_len) {
     i = (i+1) % 256;
     j = (j+rc4->s[i]) % 256;
