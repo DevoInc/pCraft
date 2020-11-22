@@ -25,6 +25,8 @@ ami_t *ami_new(void)
     return NULL;
   }
 
+  ami->error = NO_ERROR;
+  
   ami->_action_block_id = 0;
   ami->_repeat_block_id = 0;
   ami->_opened_sections = 0;
