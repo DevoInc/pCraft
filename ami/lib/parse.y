@@ -12,6 +12,7 @@ typedef void *yyscan_t;
 #include <ami/action.h> 
 #include <ami/csvread.h>
 
+#include <unistd.h>
 }
 
 %code provides
@@ -28,7 +29,6 @@ typedef void *yyscan_t;
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <unistd.h>
 }
 
 

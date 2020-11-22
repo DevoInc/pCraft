@@ -15,6 +15,10 @@ add_executable(aminewclose ami-new-close.c)
 target_link_libraries(aminewclose ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
 add_test(AmiNewClose aminewclose)
 
+add_executable(amiitems ami-items.c)
+target_link_libraries(amiitems ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
+add_test(AmiItems amiitems)
+
 add_executable(actionnewclose action-new-close.c)
 target_link_libraries(actionnewclose ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
 add_test(ActionNewClose actionnewclose)
