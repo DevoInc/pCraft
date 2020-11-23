@@ -1,0 +1,11 @@
+ami_version 1
+
+$simple = "simple"
+$escaped = "escaped \"str\""
+$escape3 = "This is an \"escaped\" string"
+$verbatim = """verbatim 
+string
+$simple
+on multiple lines"""
+$harder = "harder than ${simple}"
+$verbatim2 = """verbatim "other" string"""

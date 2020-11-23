@@ -1,0 +1,13 @@
+ami_version 1
++++++++
+* Global Variables:
+    gv:[0] $escaped = escaped \"str\"
+    gv:[1] $verbatim2 = verbatim "other" string
+    gv:[2] $verbatim = verbatim 
+string
+$simple
+on multiple lines
+    gv:[3] $harder = harder than simple
+    gv:[4] $escape3 = This is an \"escaped\" string
+    gv:[5] $simple = simple
+

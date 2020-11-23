@@ -12,6 +12,7 @@ add_test(FieldAssignment ${AMITEST} field-assignment.ami)
 add_test(Loop2ThenAction ${AMITEST} loop2-then-action.ami)
 add_test(Variables ${AMITEST} vars.ami)
 add_test(MixedVariables ${AMITEST} mixedvars.ami)
+add_test(Strings ${AMITEST} strings.ami)
   
 add_executable(aminewclose ami-new-close.c)
 target_link_libraries(aminewclose ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
