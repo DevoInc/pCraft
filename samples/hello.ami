@@ -1,0 +1,17 @@
+ami_version 1
+
+action newdomain {
+       exec GenerateNewDomain
+}
+
+sleep 3
+
+repeat 3 as $index {
+
+     action DNSConnection {
+            exec DNSConnection
+     }
+     sleep 0.2
+}
+
+sleep 0.3

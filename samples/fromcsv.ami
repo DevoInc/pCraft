@@ -1,0 +1,18 @@
+ami_version 1
+
+repeat 5 as $index {
+       action DNSConnection {
+              exec DNSConnection
+	      $domain1 = csv("fromcsv.csv", 2, field="domain", has_header=true)
+	      $domain2 = csv("fromcsv.csv", random.int(1, 4), field="domain", has_header=true)
+	      $domain = "${domain1}-${domain2}"
+      }
+
+      action DNSConnection2 {
+             $domain = "cezasaduzo"
+	     exec DNSConnection
+     }
+}
+
+
+

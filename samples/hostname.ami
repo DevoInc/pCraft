@@ -1,0 +1,14 @@
+ami_version 1
+
+$host = hostname_generator("127.0.0.1")
+
+action dns {
+       exec DNSConnection
+       $domain = $host
+}
+
+action dns2 {
+       $myip = "192.168.0.23"
+       $domain = hostname_generator($myip)
+       exec DNSConnection
+}

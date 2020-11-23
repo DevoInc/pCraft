@@ -1,0 +1,12 @@
+ami_version 1
+
+action GenerateNewDomain {
+       exec GenerateNewDomain
+}
+
+action WriteKeyValues {
+       # This is call the MyPlugin plugin
+       $log_plugin = "MyPlugin"
+       field["foo"] = "bar"
+       field["yo"] = "domain-> ${domain}"
+}
