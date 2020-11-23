@@ -23,9 +23,12 @@ int consume_multiline_comments(char *str) {
 }
 
 char *escape_string(char *str) {
-    size_t str_len;
+    size_t str_len;    
     char *s;
-
+    size_t pos = 0;
+    size_t read_pos;
+    int replace_count = 0;
+    
     str_len = strlen(str);
     if (str_len <= 2) {
         return strdup("");
@@ -37,7 +40,26 @@ char *escape_string(char *str) {
         return strdup("");    
     }
     memset(s, '\0', str_len - 1);
-    memcpy(s, &str[1], str_len - 2);
+    read_pos = 1;
+    for (pos = 0; pos < str_len - 2; pos++) {
+        if (pos == str_len - 2 - replace_count) {
+	    break;
+	}
+        switch(str[read_pos]) {
+	case '\\':
+	    if (str[read_pos+1] == '\"') {
+	        s[pos] = '\"';
+	        read_pos++;
+		replace_count++;
+	    }
+	    break;
+	default:
+	    s[pos] = str[read_pos];
+	    break;
+	}
+        read_pos++;
+    }
+
     return s;
 }
 

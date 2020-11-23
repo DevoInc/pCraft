@@ -4,7 +4,7 @@ ami_version 1
 * Repeat Variables:
     rv:[0] $repeatvar = repeat
 * Local Variables:
-    lv:[0] $escapedstring = This is an \"escaped\" string
+    lv:[0] $escapedstring = This is an "escaped" string
     lv:[1] $reallocal = local
     lv:[2] $multiple = The local: local global: my global
     lv:[3] $substituted = We add the global content:my global
@@ -15,7 +15,7 @@ ami_version 1
 * Repeat Variables:
     rv:[0] $repeatvar = repeat
 * Local Variables:
-    lv:[0] $escapedstring = This is an \"escaped\" string
+    lv:[0] $escapedstring = This is an "escaped" string
     lv:[1] $reallocal = local
     lv:[2] $multiple = The local: local global: my global
     lv:[3] $substituted = We add the global content:my global
