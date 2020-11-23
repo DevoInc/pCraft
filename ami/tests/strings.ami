@@ -9,3 +9,7 @@ $simple
 on multiple lines"""
 $harder = "harder than ${simple}"
 $verbatim2 = """verbatim "other" string"""
+$verbatimsub = s"""This is not a simple
+verbatim string here.
+We can use variable substitution,
+such as escape:${escaped} or simple:${simple}"""

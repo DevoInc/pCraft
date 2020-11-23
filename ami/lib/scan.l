@@ -10,6 +10,9 @@
 char verbatim_buf[8192];
 int vbindex;
 
+char verbasub_buf[8192];
+int vbsubindex;
+
 int consume_multiline_comments(char *str) {
 // The reason for this is to increase the line count for each line return
 // so we can give the proper error line.
@@ -69,6 +72,7 @@ COMMENT1 #.*\n
 COMMENT2 \/\*(.*\n)*.*\*\/
 STRING \"[^\"](\\.|\"\"|[^"\n])*\"
 %x VERBASTRING
+%x VERBASUBSTITUTESTRING
 FLOAT [0-9\.]+
 INTEGER [0-9]+
 VARIABLE $[a-zA-Z0-9\-_]+
@@ -113,6 +117,23 @@ FALSE false
      verbatim_buf[vbindex] = yytext[0];
      vbindex++;
 }
+
+"s\"\"\"" { vbsubindex = 0; BEGIN(VERBASUBSTITUTESTRING); }
+<VERBASUBSTITUTESTRING>"\"\"\"" {
+    BEGIN(INITIAL);
+    verbasub_buf[vbsubindex] = '\0';
+    yylval->TOK_STRING = strdup(verbasub_buf);
+    return TOK_STRING;
+}
+
+<VERBASUBSTITUTESTRING>(.|\n) {
+     if (vbsubindex > 8191) {
+         ami_yyerror(yyscanner, NULL, "Verbatim substitute string too long! (max 8192)\n");
+     }
+     verbasub_buf[vbsubindex] = yytext[0];
+     vbsubindex++;
+}
+
 
 "=" return TOK_EQUAL;
 "=>" return TOK_ASSIGN;
