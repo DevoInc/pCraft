@@ -1,0 +1,28 @@
+ami_version 1
+------------------------
+* Action name(Simple) exec(Simple) sleep_cursor(0.000000) repeat_index(1)
+* Repeat Variables:
+    rv:[0] $repeatvar = repeat
+* Local Variables:
+    lv:[0] $escapedstring = This is an \"escaped\" string
+    lv:[1] $reallocal = local
+    lv:[2] $multiple = The local: local global: my global
+    lv:[3] $substituted = We add the global content:my global
+    lv:[4] $local = my global
+* Field Actions:
+------------------------
+* Action name(Simple) exec(Simple) sleep_cursor(0.000000) repeat_index(2)
+* Repeat Variables:
+    rv:[0] $repeatvar = repeat
+* Local Variables:
+    lv:[0] $escapedstring = This is an \"escaped\" string
+    lv:[1] $reallocal = local
+    lv:[2] $multiple = The local: local global: my global
+    lv:[3] $substituted = We add the global content:my global
+    lv:[4] $local = my global
+* Field Actions:
++++++++
+* Global Variables:
+    gv:[0] $index = 2
+    gv:[1] $global = my global
+
