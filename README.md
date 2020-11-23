@@ -5,45 +5,50 @@
 pCraft
 ======
 
+pCraft is a PCAP Crafter, which creates a PCAP from an AMI scenario.
 
-pCraft is a PCAP Crafter, which creates a PCAP from a YAML scenario.
-
-When generating data for testing, it is rather hard to do forthe following reasons:
+When generating data for testing, it is rather hard to do for the following reasons:
 - Lack of consistency between clients and servers
 - Make sure no personal data leaks
 - Consistency across different services.
 - Keeping timing right
 - etc.
 
-This program helps solving this problem, one simply creates a script in YAML and the program outputs a PCAP.
+This program helps solving this problem, one simply creates a script in AMI and the program outputs a PCAP.
+
+AMI?
+----
+
+AMI is a language that was designed to build highly readable scenarios to generate PCAPs. It is a C library with C++ bindings generating
+the Python bindings used by pcraft.
 
 Creating a Hello World script
 -----------------------------
 
-Create a file called "hello.yaml", we want to add the following content:
+Create a file called "hello.ami", we want to add the following content:
 
 ```
-start: Generate_a_new_domain
+ami_version 1
 
-Generate_a_new_domain:
-  _plugin: GenerateNewDomain
-  _next: DNSConnection
+action Generate_a_new_domain {
+  exec GenerateNewDomain
+}
 
-DNSConnection:
-  _plugin: DNSConnection
-  _next: loop-1
+sleep 3
 
-loop-1:
-  count: 3
-  newip: 1 # We get a new IP address for each loop
-  _sleep: {"before-start":3,"interval":0.2,"once-finished":0.3}
-  _next: done
-  _start: DNSConnection # Where our loop starts
+repeat 3 as $index {
+       action dns {
+       	      exec DNSConnection
+       }
+       sleep 0.2
+}
+
+sleep 0.3
 ```
 
 Now execute the pcraft program:
 ```
-pcrafter hello.yaml hello.pcap
+pcrafter hello.ami hello.pcap
 ```
 
 Let's read the result pcap using tshark:
