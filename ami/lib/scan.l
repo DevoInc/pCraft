@@ -45,8 +45,8 @@ char *escape_string(char *str) {
 
 COMMENT1 #.*\n
 COMMENT2 \/\*(.*\n)*.*\*\/
-STRING \"(\\.|\"\"|[^"\n])*\"
-%x VERBASTRING 
+STRING \"[^\"](\\.|\"\"|[^"\n])*\"
+%x VERBASTRING
 FLOAT [0-9\.]+
 INTEGER [0-9]+
 VARIABLE $[a-zA-Z0-9\-_]+

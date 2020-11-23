@@ -9,6 +9,7 @@ repeat 2 as $index {
        	      exec Simple
 	      $local = $global
 	      $reallocal = "local"
+	      $escapedstring = "This is an \"escaped\" string"
 	      $substituted = "We add the global content:${global}"
 	      $multiple = "The local: ${reallocal} global: ${global}"
       }
