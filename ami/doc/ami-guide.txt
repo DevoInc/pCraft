@@ -192,6 +192,26 @@ Note that you can create an uppercase hostname by providing this function as an 
 $uphost = string.upper(hostname_generator("127.0.0.1"))
 ```
 
+Strings
+=======
+
+There are three types of strings in AMI:
+
+  * A regular string, such as "my string" or "my \"string\"". It cannot have line return.
+  * A Verbatim string, enclosed in three double-quotes: """my verbatim string""" which can contain line returns.
+  * A Verbatim with substitutions string: prepend 's' to your verbatim string, and variables replacement will be done.
+
+Examples
+--------
+
+```
+$str = "Hello, World!"
+$mystr = s"""This verbatim string
+can have "${str}" as a string substitution
+"""
+$verbatim = """This string will not replace ${str} as it would with regular strings or substitute strings."""
+```
+
 Field operations
 ================
 
