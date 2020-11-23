@@ -22,6 +22,8 @@ AMI?
 AMI is a language that was designed to build highly readable scenarios to generate PCAPs. It is a C library with C++ bindings generating
 the Python bindings used by pcraft.
 
+You can find more documentation on AMI with the [Programming with AMI][ami] guide.
+
 Creating a Hello World script
 -----------------------------
 
@@ -80,3 +82,4 @@ The Plugins documentation is generated from themselves: [Plugins Documentation][
 
 [scenario]: doc/scenario.md
 [plugins]: doc/plugins.md
+[ami]: ami/doc/ami-guide.txt
