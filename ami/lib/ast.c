@@ -251,7 +251,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *b64 = base64_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
       } else if (!strcmp("crypto.md5", n->strval)) {
-	const char *strbuf = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	const char *strbuf = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	MD5_CTX ctx;
 	unsigned char buf[16];
 	
@@ -262,7 +262,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *hex = ami_rc4_to_hex(buf, 16);	
 	kv_push(char *, ami->values_stack, hex);
       } else if (!strcmp("crypto.sha1", n->strval)) {
-	const char *strbuf = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	const char *strbuf = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	SHA1_CTX ctx;
 	unsigned char buf[SHA1_BLOCK_SIZE];
 	
@@ -273,7 +273,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *hex = ami_rc4_to_hex(buf, SHA1_BLOCK_SIZE);	
 	kv_push(char *, ami->values_stack, hex);
       } else if (!strcmp("crypto.sha256", n->strval)) {
-	const char *strbuf = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	const char *strbuf = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	SHA256_CTX ctx;
 	unsigned char buf[SHA256_BLOCK_SIZE];
 	
@@ -284,7 +284,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *hex = ami_rc4_to_hex(buf, SHA256_BLOCK_SIZE);	
 	kv_push(char *, ami->values_stack, hex);
       } else if (!strcmp("string.upper", n->strval)) {
-	const char *str_origin = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	const char *str_origin = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char *s = (char *)str_origin;
 	char c;
 	int i = 0;
@@ -303,7 +303,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	kv_push(char *, ami->values_stack, out);
       } else if (!strcmp("string.lower", n->strval)) {
-	const char *str_origin = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	const char *str_origin = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char *s = (char *)str_origin;
 	char c;
 	int i = 0;
@@ -322,7 +322,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	kv_push(char *, ami->values_stack, out);
       } else if (!strcmp("hostname_generator", n->strval)) {
-	const char *ipaddr = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	const char *ipaddr = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char vowels[] = {'a','e','i','o','u','y','a','e','i','o'};
 	char consonants[] = {'p','b','c','z','m','f','d','s','t','r'};
 	in_addr_t ipint;
@@ -348,7 +348,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	kv_push(char *, ami->values_stack, retstr); 	
 	
       } else if (!strcmp("file.readall", n->strval)) {
-	const char *filename = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	const char *filename = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	struct stat st;
 	FILE *fp;
 	off_t filesize;
@@ -379,7 +379,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       } else if (!strcmp("uuid.v5", n->strval)) { // form string
 	uuid_t uuid;
 	uuid_t *uuid_template;
-	const char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	const char *data = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	size_t data_len = strlen(data);
 	char retstr[37];
 	uuid_template = uuid_get_template("dns");
@@ -388,9 +388,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	kv_push(char *, ami->values_stack, strdup((char *)retstr));
       } else if (!strcmp("crypto.rc4", n->strval)) {
 	ami_rc4_t rc4;
-	char *value = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	char *value = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	size_t value_len = strlen(value);
-	char *key = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+	char *key = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
 
 	unsigned char *res = ami_rc4_do(&rc4, (unsigned char*)key, strlen(key), (unsigned char *)value, value_len);
 	/* for (int count = 0; count < value_len; count++) { */
@@ -417,14 +417,14 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	/* }	 */
 	
 	int has_header = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
-	char *field = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+	char *field = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
 	char *line_val = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-3));
 	if (!line_val) {
 	  fprintf(stderr, "Cannot get the variable value from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-3));
 	  exit(1);
 	}
 	int line_in_csv = (int)strtod(line_val, NULL);
-	char *file = kv_A(ami->values_stack, kv_size(ami->values_stack)-4);
+	char *file = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-4));
 
 	/* printf("file:%s;line_in_csv:%d;field:%s;has_header:%d\n", file, line_in_csv, field, has_header); */
 	char *result = ami_csvread_get_field_at_line(file, line_in_csv, field, has_header);
