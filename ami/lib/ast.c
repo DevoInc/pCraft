@@ -330,6 +330,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	size_t ia_len;
 	size_t i;
 	char retstr[11]; // size of max int len + 1
+
+	if (!ipaddr) {
+	  fprintf(stderr, "No such IP Address from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	  exit(1);
+	}
 	
 	ipint = inet_addr(ipaddr);
 	asprintf(&ia, "%d", ipint);
