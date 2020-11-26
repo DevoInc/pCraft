@@ -40,7 +40,7 @@ If you do not know what this it, do not use it.
             User_Agent=b'' + bytes(kvstring.encode("utf-8"))
         )
         httpreq = Ether() / IP(src="10.10.10.10",dst="10.10.10.10") / TCP(sport=666,dport=666, flags="P""A", seq=self.seq) / req
-        self.plugins_data.pcap.append(httpreq)
+        self.plugins_data.AddPacket(httpreq)
 
         self.seq += len(httpreq['TCP'].payload)
         if self.seq > 2147483647: # 2^32 - 1

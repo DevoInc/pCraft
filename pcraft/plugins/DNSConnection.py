@@ -47,8 +47,8 @@ dnsconnect:
         # self.set_value_or_default(action, "domain", "example.com") # Default is never applied since it is a requirement
 
         query = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("resolver")) / UDP(sport=4096,dport=53)/DNS(rd=1, qd=DNSQR(qname=self.getvar("domain")))
-        self.plugins_data.pcap.append(query)
+        self.plugins_data.AddPacket(query)
         resp = Ether() / IP(dst=self.getvar("ip-src"),src=self.getvar("resolver")) / UDP(sport=53,dport=4096)/DNS(id=query[DNS].id, qr=1, qd=query[DNS].qd, an=DNSRR(rrname=query[DNS].qd.qname, rdata=self.getvar("ip-dst")))
-        self.plugins_data.pcap.append(resp)
+        self.plugins_data.AddPacket(resp)
 
         return self.plugins_data

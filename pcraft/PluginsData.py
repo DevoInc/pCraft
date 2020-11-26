@@ -3,6 +3,9 @@ class PluginsData(object):
         self.pcap = []
         self.args = {}
 
+    def AddPacket(self, pkt):
+        self.pcap.append(pkt)
+        
     def _set(self, key, value):
         self.args[key] = value
 
