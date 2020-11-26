@@ -1,9 +1,13 @@
+import time
+
 class PluginsData(object):
-    def __init__(self):
+    def __init__(self, ami):
         self.pcap = []
         self.args = {}
+        self.current_time = time.time()
+        self.ami = ami
 
-    def AddPacket(self, pkt):
+    def AddPacket(self, pkt):    
         self.pcap.append(pkt)
         
     def _set(self, key, value):
