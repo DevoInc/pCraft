@@ -6,8 +6,10 @@ class PluginsData(object):
         self.args = {}
         self.current_time = time.time()
         self.ami = ami
+        self.packet_time = self.current_time - self.ami.GetSleepCursor()
 
-    def AddPacket(self, action, pkt):    
+    def AddPacket(self, action, pkt):
+        pkt.time = self.packet_time + action.GetSleepCursor()
         self.pcap.append(pkt)
         
     def _set(self, key, value):

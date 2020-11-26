@@ -26,6 +26,7 @@ If you do not know what this it, do not use it.
         self.seq = 0
         
     def run(self, ami, action):
+        action_ptr = action
         kvstring=""
         afa = action.FieldActions()
         for field, action in afa.items():
@@ -34,13 +35,12 @@ If you do not know what this it, do not use it.
                     for k, v in actionval.items():
                         kvstring += "%s='''%s''' " % (field,k)
                         
-        
         req = http.HTTPRequest(
             Path=b'/' + bytes(self.getvar("log_plugin").encode("utf-8")),
             User_Agent=b'' + bytes(kvstring.encode("utf-8"))
         )
         httpreq = Ether() / IP(src="10.10.10.10",dst="10.10.10.10") / TCP(sport=666,dport=666, flags="P""A", seq=self.seq) / req
-        self.plugins_data.AddPacket(action, httpreq)
+        self.plugins_data.AddPacket(action_ptr, httpreq)
 
         self.seq += len(httpreq['TCP'].payload)
         if self.seq > 2147483647: # 2^32 - 1
