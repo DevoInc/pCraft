@@ -62,9 +62,9 @@ ping:
             
             # PING
             echo_request = Ether() / IP(src=script["ip-src"], dst=str(individual_ip)) / ICMP(type="echo-request")
-            self.plugins_data.AddPacket(echo_request)
+            self.plugins_data.AddPacket(action, echo_request)
             echo_reply = Ether() / IP(src=str(individual_ip), dst=script["ip-src"]) / ICMP(type="echo-reply")
-            self.plugins_data.AddPacket(echo_reply)
+            self.plugins_data.AddPacket(action, echo_reply)
             if str(individual_ip) == ipstop:
                 has_stoped= True
             

@@ -7,7 +7,7 @@ class PluginsData(object):
         self.current_time = time.time()
         self.ami = ami
 
-    def AddPacket(self, pkt):    
+    def AddPacket(self, action, pkt):    
         self.pcap.append(pkt)
         
     def _set(self, key, value):

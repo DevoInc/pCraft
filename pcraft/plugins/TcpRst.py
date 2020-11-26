@@ -38,10 +38,10 @@ rstack:
         
         # SYN
         syn = Ether() / IP(src=self.getvar("ip-src"), dst=self.getvar("ip-dst")) / TCP(dport=port, flags="S")
-        self.plugins_data.AddPacket(syn)
+        self.plugins_data.AddPacket(action, syn)
             
         # RST-ACK
         rst_ack = Ether() / IP(src=self.getvar("ip-dst"), dst=self.getvar("ip-src")) / TCP(sport=port, dport=syn[TCP].sport, flags="R""A")
-        self.plugins_data.AddPacket(rst_ack)
+        self.plugins_data.AddPacket(action, rst_ack)
             
         return self.plugins_data

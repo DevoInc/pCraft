@@ -53,7 +53,7 @@ httpconnect:
 
         
         # print("port src:%s" % self.getvar("port-src"))
-        utils.append_tcp_three_way_handshake(self.session, self.plugins_data, self.getvar("port-src"))
+        utils.append_tcp_three_way_handshake(self.session, action, self.plugins_data, self.getvar("port-src"))
 
         # print(action.Variables())
         print("HTTP Method:%s" % self.getvar("method"))
@@ -116,7 +116,7 @@ httpconnect:
         self.session.append_to_session(httpreq1)
         httpreq1 = self.session.fix_seq_ack(httpreq1)    
 
-        self.plugins_data.AddPacket(httpreq1)
+        self.plugins_data.AddPacket(action, httpreq1)
 
         # self.session.append_to_session(httpreq1)
         
@@ -124,14 +124,14 @@ httpconnect:
 
         self.session.append_to_session(ack)
         ack = self.session.fix_seq_ack(ack)
-        self.plugins_data.AddPacket(ack)
+        self.plugins_data.AddPacket(action, ack)
         
         httpreq2 = Ether() / IP(src=self.getvar("ip-dst"),dst=self.getvar("ip-src")) / TCP(sport=80,dport=self.getvar("port-src"), flags="P""A") / httpresp_string
 
         self.session.append_to_session(httpreq2)
         httpreq2 = self.session.fix_seq_ack(httpreq2)
 
-        self.plugins_data.AddPacket(httpreq2)
+        self.plugins_data.AddPacket(action, httpreq2)
 
         # self.session.append_to_session(httpreq2)
 

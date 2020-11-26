@@ -82,14 +82,14 @@ importphishing:
                             packet[IP].dst = str(ip_replacement)
                             n_items_replaced += 1
                             
-                self.plugins_data.AddPacket(packet)
+                self.plugins_data.AddPacket(action, packet)
                 packets_injected += 1
 
                     # seq += 1
                 last_packet = packet
                             
             else: # if ip_list
-                self.plugins_data.AddPacket(packet)
+                self.plugins_data.AddPacket(action, packet)
                 packets_injected += 1
                 
         print("%s replaced %d items" % ( self.name, n_items_replaced) )
