@@ -115,6 +115,18 @@ Hash using sha256 the "string":
 crypto.sha256("string")
 ```
 
+file.amidir
+-----------
+
+Prefixes the ami file dir to the file given as argument
+```
+csv(file.amidir("file.csv"), 3, "field", 1)
+$filename = file.amidir("filename.pcap")
+```
+
+Will not take the file from the current dir, but from the dir where
+the ami file is.
+
 file.readall
 ------------
 

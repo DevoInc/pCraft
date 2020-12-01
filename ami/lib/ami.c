@@ -26,7 +26,7 @@ ami_t *ami_new(void)
   }
 
   ami->error = NO_ERROR;
-  
+  ami->file = NULL;
   ami->_action_block_id = 0;
   ami->_repeat_block_id = 0;
   ami->_opened_sections = 0;
@@ -264,6 +264,7 @@ void ami_close(ami_t *ami)
   khint_t k;
 
   if (!ami) return;
+  if (ami->file) free(ami->file);
   
   kv_destroy(ami->references);
   kv_destroy(ami->values_stack);
@@ -367,6 +368,8 @@ int ami_parse_file(ami_t *ami, const char *file)
 	fflush(fpin);
 	fclose(fpin);
 
+	ami->file = strdup(file);
+	
 	return ami_validate(ami);
 }
 

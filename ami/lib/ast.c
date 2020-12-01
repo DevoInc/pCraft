@@ -11,6 +11,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#include <libgen.h>
+
+
 #include <ami/kvec.h>
 #include <ami/ami.h>
 #include <ami/action.h>
@@ -352,6 +355,15 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	free(ia);
 	kv_push(char *, ami->values_stack, retstr); 	
 	
+      } else if (!strcmp("file.amidir", n->strval)) {
+	const char *filename = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	char *result;
+	char *dname, *da;
+	da = strdup(ami->file);
+	dname = dirname(da);
+	asprintf(&result,"%s/%s", dname, filename);
+	free(da);
+	kv_push(char *, ami->values_stack, result);
       } else if (!strcmp("file.readall", n->strval)) {
 	const char *filename = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	struct stat st;

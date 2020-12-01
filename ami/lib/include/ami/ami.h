@@ -47,6 +47,7 @@ typedef void (*sleep_cb)(int msec);
 typedef void (*ami_action_cb)(ami_action_t *action, void *userdata);
 
 struct _ami_t {
+  const char *file;
   ami_error_t error;
   int _action_block_id;
   int _repeat_block_id;
