@@ -1,6 +1,6 @@
 ami_version 1
 ------------------------
-* Action name(VarFromFunction) exec(nada) sleep_cursor(0.000000) repeat_index(0)
+* Action name(VarFromFunction) exec(nada) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
 * Repeat Variables:
 * Local Variables:
     lv:[0] $b64string = This is a base64 string: SGVsbG8=

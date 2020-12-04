@@ -1,6 +1,6 @@
 ami_version 1
 ------------------------
-* Action name(Simple) exec(Simple) sleep_cursor(0.000000) repeat_index(1)
+* Action name(Simple) exec(Simple) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
 * Repeat Variables:
     rv:[0] $repeatvar = repeat
 * Local Variables:
@@ -11,7 +11,7 @@ ami_version 1
     lv:[4] $local = my global
 * Field Actions:
 ------------------------
-* Action name(Simple) exec(Simple) sleep_cursor(0.000000) repeat_index(2)
+* Action name(Simple) exec(Simple) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Repeat Variables:
     rv:[0] $repeatvar = repeat
 * Local Variables:
