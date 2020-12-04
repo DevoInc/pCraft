@@ -65,7 +65,6 @@ typedef void *yyscan_t;
 %token AS
 %token REPEAT
 %token SLEEP
-%token INCLUDE
 %token ACTION
 %token FIELD
 %token EXEC
@@ -93,7 +92,6 @@ input:
        | input tag
        | input message
        | input variable
-       | input include
        | input sleep_float
        | input sleep_int
        | input repeat
@@ -265,15 +263,6 @@ variable_variable: VARIABLE {
     ami_append_item(ami, AMI_NT_VARVAR, $1, 0, 0, 0);
 
     free($1);
-}
-;
-
-include: INCLUDE STRING {
-  if (ami->debug) {
-    printf("[parse.y] include: INCLUDE STRING(%s)\n", $2);
-  }
-
-  free($2);
 }
 ;
 

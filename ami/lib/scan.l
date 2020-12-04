@@ -3,9 +3,14 @@
 %option prefix="ami_yy"
 %option yylineno
 
+%x incl
+
 %{
 #define YYSTYPE AMI_YYSTYPE
 #include <parse.h>
+
+static char *filename;
+static char *realfile;
 
 char verbatim_buf[8192];
 int vbindex;
@@ -65,6 +70,11 @@ char *escape_string(char *str) {
 
     return s;
 }
+
+#define MAX_INCLUDE_DEPTH 10
+YY_BUFFER_STATE includes[MAX_INCLUDE_DEPTH];
+char *filenames[MAX_INCLUDE_DEPTH];
+int includes_index = 0;
 
 %}
 
@@ -155,7 +165,49 @@ FALSE false
 {REFERENCE} { return TOK_REFERENCE; }
 {TAG} { return TOK_TAG; }
 {MESSAGE} { return TOK_MESSAGE; }
-{INCLUDE} { return TOK_INCLUDE; }
+{INCLUDE} { BEGIN(incl); }
+<incl>[ \t]*
+<incl>[^ \t\n]+	{ /* got the include file name */
+		  if (includes_index >= MAX_INCLUDE_DEPTH) {
+			  ami_yyerror(yyscanner, NULL, "Includes nested too deeply");
+			  exit(1);
+		  }
+
+		filename = strndup(yytext, yyleng);
+
+
+		filenames[includes_index] = filename;
+		includes[includes_index++] = YY_CURRENT_BUFFER;
+
+		realfile = strdup(filename);
+
+		yyin = fopen(realfile, "r");
+		if (!yyin) {
+			printf("Can not open %s\n", realfile);
+                        free(realfile);
+			exit(1);
+		}
+		free(realfile);
+		free(filename);
+
+		ami_yy_switch_to_buffer(ami_yy_create_buffer(yyin, YY_BUF_SIZE, yyscanner), yyscanner);
+
+                  BEGIN(INITIAL);
+		}
+<<EOF>>		{
+		  if (--includes_index < 0) {
+                          YY_NEW_FILE;
+			  yyterminate();
+		  } else {
+			  free(filenames[includes_index + 1]);
+			  filename = filenames[includes_index];
+			  ami_yy_delete_buffer(YY_CURRENT_BUFFER, yyscanner);
+			  ami_yy_switch_to_buffer(includes[includes_index], yyscanner);
+		  }
+		}
+
+
+
 {SLEEP} { return TOK_SLEEP; }
 {REPEAT} { return TOK_REPEAT; }
 {AS} { return TOK_AS; }
