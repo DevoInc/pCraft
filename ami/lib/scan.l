@@ -26,20 +26,20 @@ int vbsubindex;
 #define YY_DECL yylex(YYSTYPE * yylval_param, yyscan_t yyscanner, ami_t *ami)
 
 static char *get_include_file(ami_t *ami, const char *str) {
+        char *dname, *da, *result;
+
         if (!ami) {
                 printf("ami is null!\n");
                 return NULL;
         }
 
-        //printf("ami file:%s\n", ami->file);
-        return str;
-#if 0
-char *dname, *da;
 	da = strdup(ami->file);
 	dname = dirname(da);
-	asprintf(&result,"%s/%s", dname, filename);
-	free(da);
-#endif
+	asprintf(&result,"%s/%s", dname, str);
+        free(da);
+        //printf("result:%s\n", result);
+
+        return result;
 }
 
 int consume_multiline_comments(char *str) {
@@ -197,7 +197,7 @@ FALSE false
 			  exit(1);
 		  }
 
-		filename = strndup(get_include_file(ami, yytext), yyleng);
+		filename = get_include_file(ami, yytext);
 
 
 		filenames[includes_index] = filename;
