@@ -1,0 +1,4 @@
+ami_version 1
+
+include first.sal
+include second.sal
