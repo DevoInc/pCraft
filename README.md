@@ -56,16 +56,12 @@ pcrafter hello.ami hello.pcap
 Let's read the result pcap using tshark:
 ```
 $ tshark -r hello.pcap 
-    1   0.000000 192.168.67.150 → 10.218.175.58 DNS 81 Standard query 0x0000 A masaryk-treasurer.com
-    2   0.000552 10.218.175.58 → 192.168.67.150 DNS 118 Standard query response 0x0000 A masaryk-treasurer.com A 199.34.228.66
-    3   0.001115 192.168.53.38 → 10.44.21.216 DNS 81 Standard query 0x0000 A masaryk-treasurer.com
-    4   0.001529 10.44.21.216 → 192.168.53.38 DNS 118 Standard query response 0x0000 A masaryk-treasurer.com A 199.34.228.66
-    5   0.002126 192.168.160.175 → 10.79.78.60  DNS 81 Standard query 0x0000 A masaryk-treasurer.com
-    6   0.002531  10.79.78.60 → 192.168.160.175 DNS 118 Standard query response 0x0000 A masaryk-treasurer.com A 199.34.228.66
-    7   0.003038 192.168.33.44 → 10.46.101.67 DNS 81 Standard query 0x0000 A masaryk-treasurer.com
-    8   0.003439 10.46.101.67 → 192.168.33.44 DNS 118 Standard query response 0x0000 A masaryk-treasurer.com A 199.34.228.66
-    9   0.003947 192.168.140.220 → 10.117.63.91 DNS 81 Standard query 0x0000 A masaryk-treasurer.com
-   10   0.004350 10.117.63.91 → 192.168.140.220 DNS 118 Standard query response 0x0000 A masaryk-treasurer.com A 199.34.228.66
+    1   0.000000 192.168.127.116 ? 1.1.1.1      DNS 83 Standard query 0x0000 A alice-kaleidoscopes.com
+    2   0.000000      1.1.1.1 ? 192.168.127.116 DNS 122 Standard query response 0x0000 A alice-kaleidoscopes.com A 10.81.21.0
+    3   0.200000 192.168.34.135 ? 1.1.1.1      DNS 83 Standard query 0x0000 A alice-kaleidoscopes.com
+    4   0.200000      1.1.1.1 ? 192.168.34.135 DNS 122 Standard query response 0x0000 A alice-kaleidoscopes.com A 10.171.215.203
+    5   0.400000 192.168.234.128 ? 1.1.1.1      DNS 83 Standard query 0x0000 A alice-kaleidoscopes.com
+    6   0.400000      1.1.1.1 ? 192.168.234.128 DNS 122 Standard query response 0x0000 A alice-kaleidoscopes.com A 10.0.8.113
 ```
 
 Writing a Scenario
