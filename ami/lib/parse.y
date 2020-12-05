@@ -13,14 +13,11 @@ typedef void *yyscan_t;
 #include <ami/csvread.h>
 
 #include <unistd.h>
+
 }
 
 %code provides
 {
-/* #define YY_DECL       \ */
-/*   ami_yytoken_kind_t yylex(YYSTYPE *yylval, yyscan_t yyscanner, scanres_t *res) */
-/*   YY_DECL; */
-
   void ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...);
 }
 
@@ -29,8 +26,13 @@ typedef void *yyscan_t;
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+
 }
 
+%code
+{
+  YY_DECL;
+}
 
 %define api.pure full
 %define api.prefix {ami_yy}

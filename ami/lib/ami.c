@@ -344,6 +344,9 @@ int ami_parse_file(ami_t *ami, const char *file)
 	  fprintf(stderr, "Cannot parse file %s as library initialization failed.\n", file);
 	  return 1;
 	}
+
+
+	ami->file = strdup(file);
 	
 	if (ami_yylex_init(&scanner) != 0) {
 		fprintf(stderr, "Error initializing yylex\n");
@@ -368,8 +371,6 @@ int ami_parse_file(ami_t *ami, const char *file)
 	fflush(fpin);
 	fclose(fpin);
 
-	ami->file = strdup(file);
-	
 	return ami_validate(ami);
 }
 

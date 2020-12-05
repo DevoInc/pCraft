@@ -7,7 +7,11 @@
 
 %{
 #define YYSTYPE AMI_YYSTYPE
+
 #include <parse.h>
+#include <libgen.h>
+
+#include <ami/ami.h>
 
 static char *filename;
 static char *realfile;
@@ -17,6 +21,26 @@ int vbindex;
 
 char verbasub_buf[8192];
 int vbsubindex;
+
+
+#define YY_DECL yylex(YYSTYPE * yylval_param, yyscan_t yyscanner, ami_t *ami)
+
+static char *get_include_file(ami_t *ami, const char *str) {
+        if (!ami) {
+                printf("ami is null!\n");
+                return NULL;
+        }
+
+        //printf("ami file:%s\n", ami->file);
+        return str;
+#if 0
+char *dname, *da;
+	da = strdup(ami->file);
+	dname = dirname(da);
+	asprintf(&result,"%s/%s", dname, filename);
+	free(da);
+#endif
+}
 
 int consume_multiline_comments(char *str) {
 // The reason for this is to increase the line count for each line return
@@ -173,7 +197,7 @@ FALSE false
 			  exit(1);
 		  }
 
-		filename = strndup(yytext, yyleng);
+		filename = strndup(get_include_file(ami, yytext), yyleng);
 
 
 		filenames[includes_index] = filename;
