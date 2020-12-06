@@ -28,18 +28,34 @@ int vbsubindex;
 static char *get_include_file(ami_t *ami, const char *str) {
         char *dname, *da, *result;
 
+        if (!str) {
+              return NULL;
+        }
+
+        if (strlen(str) <= 0) {
+              return NULL;
+        }
+
         if (!ami) {
                 printf("ami is null!\n");
                 return NULL;
         }
 
-	da = strdup(ami->file);
-	dname = dirname(da);
-	asprintf(&result,"%s/%s", dname, str);
-        free(da);
-        //printf("result:%s\n", result);
+        switch(str[0]) {
+                case '/':
+                        return strdup(str);
+                break;
+                default:
+	                da = strdup(ami->file);
+	                dname = dirname(da);
+	                asprintf(&result,"%s/%s", dname, str);
+                        free(da);
+                        return result;
+                break;
+        }
 
-        return result;
+        return NULL;
+
 }
 
 int consume_multiline_comments(char *str) {
@@ -198,7 +214,10 @@ FALSE false
 		  }
 
 		filename = get_include_file(ami, yytext);
-
+                if (!filename) {
+			  ami_yyerror(yyscanner, NULL, "Error reading file '%s'", yytext);
+			  exit(1);
+                }
 
 		filenames[includes_index] = filename;
 		includes[includes_index++] = YY_CURRENT_BUFFER;
