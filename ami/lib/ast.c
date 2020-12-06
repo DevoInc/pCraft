@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <errno.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -253,6 +254,93 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("ip.cidr",n->strval)) {
+	static const uint32_t cidr_table[] = { 0x00000000, 0x00000080, 0x000000c0, 0x000000e0, 0x000000f0,
+					       0x000000f8, 0x000000fc, 0x000000fe, 0x000000ff, 0x000080ff,
+					       0x0000c0ff, 0x0000e0ff, 0x0000f0ff, 0x0000f8ff, 0x0000fcff,
+					       0x0000feff, 0x0000ffff, 0x0080ffff, 0x00c0ffff, 0x00e0ffff,
+					       0x000fffff, 0x00f8ffff, 0x00fcffff, 0x00feffff, 0x00ffffff,
+					       0x80ffffff, 0xc0ffffff, 0xe0ffffff, 0xf0ffffff, 0xf8ffffff,
+					       0xfcffffff, 0xfeffffff, 0xffffffff};
+	const char *ipaddr = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
+	char *ipnumber = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	int ipn = (int)strtod(ipnumber, NULL);
+	int ret;
+	struct in_addr addr4;
+	struct in_addr out_network;
+	struct in_addr out_broadcast;
+	struct in_addr addr_iter;
+	const char ret_network[INET6_ADDRSTRLEN];
+	const char ret_broadcast[INET6_ADDRSTRLEN];
+	char *ip, *mask;
+	int mask_int;
+	int counter;
+	
+	if (!ipaddr) {
+	  fprintf(stderr, "No such IP Address from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
+	  exit(1);	  
+	}
+
+	ip = strtok(ipaddr, "/");
+	if (!ip) {
+	  fprintf(stderr, "Could not get mask from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
+	  exit(1);
+	}
+	mask = strtok(NULL, "\0");
+	if (!mask) {
+	  fprintf(stderr, "Could not get mask from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
+	  exit(1);
+	}
+	mask_int = (int)strtod(mask, NULL);
+	if ((mask_int > 32) || (mask_int < 0)) {
+	  fprintf(stderr, "Invalid mask: %d\n", mask_int);
+	  exit(1);
+	}
+	
+	ret = inet_pton(AF_INET, ip, &addr4);
+	switch(ret) {
+	case 1: // Success
+	  break;
+	case 0:
+	  fprintf(stderr, "Invalid network address: %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	  exit(1);
+	  break;
+	case -1:
+	  fprintf(stderr, "IP Conversion Error: %s\n", strerror(errno));
+	  exit(1);
+	  break;
+	}
+	
+	out_network.s_addr = ntohl(addr4.s_addr & cidr_table[mask_int]);
+	out_broadcast.s_addr = ntohl(addr4.s_addr | ~cidr_table[mask_int]);
+
+	counter = 0;
+	for (addr_iter.s_addr = out_network.s_addr; addr_iter.s_addr <= out_broadcast.s_addr; addr_iter.s_addr++) {
+	  struct in_addr out;
+	  out.s_addr = ntohl(addr_iter.s_addr);
+	  if (inet_ntop(AF_INET, (const void *)&out, ret_network, sizeof(ret_network)) == NULL) {
+	    fprintf(stderr, "Cannot convert IP address %s: %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2), strerror(errno));
+	    exit(1);
+	  }
+	  if (counter == ipn) {
+	    break;
+	  }
+	  
+	  counter++;
+	}
+	
+	/* if (inet_ntop(AF_INET, (const void *)&out_network, ret_network, sizeof(ret_network)) == NULL) { */
+	/*   fprintf(stderr, "Cannot convert IP address %s: %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2), strerror(errno)); */
+	/*   exit(1); */
+	/* } */
+	/* if (inet_ntop(AF_INET, (const void *)&out_broadcast, ret_broadcast, sizeof(ret_broadcast)) == NULL) { */
+	/*   fprintf(stderr, "Cannot convert IP address %s: %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2), strerror(errno)); */
+	/*   exit(1); */
+	/* } */
+
+	/* printf("Network return:%s, broadcast:%s\n", ret_network, ret_broadcast); */
+	
+	kv_push(char *, ami->values_stack, ret_network);
       } else if (!strcmp("crypto.md5", n->strval)) {
 	const char *strbuf = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	MD5_CTX ctx;
