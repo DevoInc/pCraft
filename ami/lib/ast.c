@@ -182,7 +182,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       kv_push(char *, ami->values_stack, strdup(n->strval));            
       break;
     case AMI_NT_VARNAME:
-      tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+      tmp_str = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
       if (ami->in_repeat || ami->in_action) {
 	if (!ami->in_action) {
 	  /* printf("%s is a local repeat variable with value:%s\n", n->strval, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
@@ -507,12 +507,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	kv_push(char *, ami->values_stack, rc4hex);
 	free(res);		    
       } else if (!strcmp("random.int", n->strval)) {
-	time_t t;
 	char *randstr;
-	
+
 	int to = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
 	int from = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-2), NULL);
-	srand((unsigned) time(&t));
+
 	int rout = (rand() % (to - from + 1)) + from;
 	asprintf(&randstr, "%d", rout);
 	kv_push(char *, ami->values_stack, randstr);		
@@ -565,6 +564,8 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 int ami_ast_walk_actions(ami_t *ami)
 {
+  time_t t;
+  srand((unsigned) time(&t));
   
   if (!ami) {
     fprintf(stderr, "Ami is empty, cannot run %s!\n", __FUNCTION__);
@@ -575,7 +576,7 @@ int ami_ast_walk_actions(ami_t *ami)
     fprintf(stderr, "Ami root node is empty, cannot run %s!\n", __FUNCTION__);
     return -1;
   }
-
+  
   walk_node(ami, ami->root_node, 0, 0);
 
   return 0;

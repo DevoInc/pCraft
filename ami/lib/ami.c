@@ -94,6 +94,8 @@ int ami_set_local_variable(ami_t *ami, char *key, char *val) {
   if (!ami) return 1;
   if (!ami->local_variables) return 1;  
 
+  /* printf("%s: %s -> %s\n", __FUNCTION__, key, val); */
+  
   k = kh_put(strhash, ami->local_variables, key, &absent);
   if (absent) {
     kh_key(ami->local_variables, k) = strdup(key);
@@ -113,6 +115,8 @@ int ami_set_repeat_variable(ami_t *ami, char *key, char *val) {
   if (!ami) return 1;
   if (!ami->repeat_variables) return 1;  
 
+  /* printf("%s: %s -> %s\n", __FUNCTION__, key, val); */
+  
   k = kh_put(strhash, ami->repeat_variables, key, &absent);
   if (absent) {
     kh_key(ami->repeat_variables, k) = strdup(key);
@@ -128,7 +132,7 @@ int ami_set_repeat_variable(ami_t *ami, char *key, char *val) {
 const char *ami_get_global_variable(ami_t *ami, char *key)
 {
   khint_t k;
-  
+
   k = kh_get(strhash, ami->global_variables, key);
   int is_missing = (k == kh_end(ami->global_variables));
   if (is_missing) return NULL;
