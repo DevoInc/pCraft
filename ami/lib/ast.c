@@ -283,9 +283,10 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	ip = strtok(ipaddr, "/");
 	if (!ip) {
-	  fprintf(stderr, "Could not get mask from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
+	  fprintf(stderr, "Could not get ip from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
 	  exit(1);
 	}
+
 	mask = strtok(NULL, "\0");
 	if (!mask) {
 	  fprintf(stderr, "Could not get mask from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
