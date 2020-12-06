@@ -29,6 +29,8 @@ enum _ami_node_type_t {
        AMI_NT_FIELDVAR,  // field["foo"] = ...
        AMI_NT_EXIT,
        AMI_NT_SLEEP,
+       AMI_NT_ARRAYVAR, // $var = []
+       AMI_NT_ARRAYGET, // $var[1]
 };
 typedef enum _ami_node_type_t ami_node_type_t;
 

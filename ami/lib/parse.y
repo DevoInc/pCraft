@@ -110,6 +110,8 @@ input:
        | input _goto
        | input label
        | input string
+       | input array
+       | input array_item
        ;
 
 
@@ -223,6 +225,7 @@ varset:   variable_string
         | variable_int
         | variable_function
         | variable_variable
+        | variable_array
         ;
 
 variable_string: string {
@@ -267,6 +270,10 @@ variable_variable: VARIABLE {
     free($1);
 }
 ;
+
+variable_array:   array
+                | array_item
+                ;
 
 sleep_float: SLEEP FLOAT {
   if (ami->debug) {
@@ -393,10 +400,15 @@ function: FUNCTIONNAME OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
 
 function_arguments:   function_argument
                     | function_arguments COMMA function_argument
+{
+  // done parsing function arguments.
+}
                     ;
 
-function_argument:   variable
-                   | function_argument_variable
+/* function_argument: variable <- Why variable?
+                      | function_argument_variable */
+
+function_argument: function_argument_variable
                    | function_argument_string
                    | function_argument_int
                    | function_argument_word_eq_string
@@ -411,6 +423,7 @@ function_argument_assign: string ASSIGN varset {
     printf("[parse.y] function_argument_assign: STRING(%s) ASSIGN varset\n", $1);
   }
 
+  ami->arguments_count++;
   
   ami_append_item(ami, AMI_NT_REPLACE, $1, 0, 0, 0);
   
@@ -423,6 +436,8 @@ function_argument_string: string {
     printf("[parse.y] function_argument_string: STRING(%s)\n", $1);
   }
 
+  ami->arguments_count++;
+  
   ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0, 0, 0);
 
   free($1);
@@ -434,6 +449,9 @@ function_argument_int: INTEGER {
     printf("[parse.y] function_argument_int: INTEGER(%d)\n", $1);
   }
 
+  ami->arguments_count++;
+
+  
   ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0, 0);
 }
 ;
@@ -443,6 +461,8 @@ function_argument_variable: VARIABLE {
     printf("[parse.y] function_argument_variable: VARIABLE(%s)\n", $1);
   }
 
+  ami->arguments_count++;
+  
   ami_append_item(ami, AMI_NT_VARVAR, $1, 0, 0, 0);
   
   free($1);
@@ -454,6 +474,8 @@ function_argument_word_eq_string: WORD EQUAL string {
     printf("[parse.y] function_argument_word_eq_string: WORD(%s) EQUAL STRING(%s)\n", $1, $3);
   }
 
+  ami->arguments_count++;
+  
   ami_append_item(ami, AMI_NT_VARVALSTR, $3, 0, 0, 0);
   
   free($1);
@@ -466,6 +488,8 @@ function_argument_word_eq_int: WORD EQUAL INTEGER {
     printf("[parse.y] function_argument_word_eq_int: WORD(%s) EQUAL INTEGER(%d)\n", $1, $3);
   }
 
+  ami->arguments_count++;
+  
   ami_append_item(ami, AMI_NT_VARVALINT, NULL, $3, 0, 0);
   
   free($1);
@@ -524,7 +548,28 @@ string: STRING {
   $$ = $1;
  }
  ;
- 
+
+array: VARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
+  if (ami->debug) {
+    printf("[parse.y] array[...]\n");
+  }
+
+  ami_append_item(ami, AMI_NT_ARRAYVAR, NULL, ami->arguments_count, 0, 0);
+
+  ami->arguments_count = 0;
+  
+ }
+ ;
+
+array_item: VARIABLE OPENBRACKET INTEGER CLOSEBRACKET {
+  if (ami->debug) {
+    printf("[parse.y] array_item[%d]\n", $3);
+  }
+
+  ami_append_item(ami, AMI_NT_ARRAYGET, NULL, $3, 0, 0);
+  
+ }
+ ;
 
 %%
 

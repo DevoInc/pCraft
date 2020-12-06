@@ -69,6 +69,7 @@ struct _ami_t {
   ami_kvec_t values_stack;
   int replace_count;
   float sleep_cursor; // How much sleep we need to add to our action. Starts at 0, then adds every sleep we need.
+  int arguments_count;
 };
 typedef struct _ami_t ami_t;
 

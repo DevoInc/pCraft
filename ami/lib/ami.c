@@ -60,6 +60,8 @@ ami_t *ami_new(void)
 
   ami->in_repeat = 0;
   ami->in_action = 0;
+
+  ami->arguments_count = 0;
   
   return ami;
 }
