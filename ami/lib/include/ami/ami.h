@@ -35,13 +35,6 @@ enum _ami_error_t {
 };
 typedef enum _ami_error_t ami_error_t;
 
-struct _ami_replace_t {
-  char *field;
-  char *from;
-  char *to;
-};
-typedef struct _ami_replace_t ami_replace_t;
-
 typedef void (*print_message_cb)(char *message);
 typedef void (*sleep_cb)(int msec);
 typedef void (*ami_action_cb)(ami_action_t *action, void *userdata);
