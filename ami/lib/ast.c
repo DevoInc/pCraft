@@ -464,6 +464,12 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       ami->sleep_cursor += n->intval;
       ami->sleep_cursor += n->fval;
       break;
+    case AMI_NT_ARRAYVAR:
+      /* printf("We set the values for our array. We have %d values\n", n->intval); */
+      break;
+    case AMI_NT_ARRAYGET:
+      /* printf("We get something from our array\n"); */
+      break;
     }
   }
 }
