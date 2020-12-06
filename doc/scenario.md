@@ -1,12 +1,13 @@
 Writing a Scenario
 ==================
 
-The Scenario file is a YAML file, first and foremost, it must comply with the YAML Language.
+The Scenario file is written in AMI, a language that exists to just describe steps, and add convenient features such as
+functions, variables, string replacement etc.
 
 The Scenario file must start with:
 
 ```
-start: <ACTION_NAME>
+ami_version 1
 ```
 
 The Action Name is the entry point, it must call a generating plugin only (one that does not requires anything to start with).
@@ -17,16 +18,13 @@ Then, for each action call there are various options, at least:
 
 For example, to create a DNS Connection, one must write:
 ```
-Create_a_new_connection:
-  _plugin: DNSConnection
-  _next: done
+action dns {
+       exec DNSConnection
+}
 ```
 
-Each option starting with the _ character means it is part of the engine. Anything which does not start with _ means it is part
-of the plugin.
-
 The obvious question here is "But where IS my domain I do a DNS Connection to?", well, in this specific case, it has been
-passed as a paramater coming from the previous plugin, as the "domain" variable.
+passed as a paramater coming from the previous plugin, as the "domain" variable. If not, the plugin won't work.
 
 The list of all availables variables to be used across different plugins is available in the [pcraft Taxonomy][taxonomy].
 
@@ -34,77 +32,40 @@ The list of all availables variables to be used across different plugins is avai
 
 It is possible to set and use variables through the scenario file, a variable simply starts with the dollar sign '$'.
 
-For example, the plugin 'HostnameFromIP' will generate the same hostname from a given IP address. We now want to make a
-DNS request on that hostname. Which means we extract the generated 'hostname' variable to set the 'domain' one.
+Since AMI provides many functions, we can assign it to our variable. Such as 'hostname_generator' to generate the
+same string for the same IP address provided as an argument. We now want to make a DNS request on that hostname.
+Which means we assign that function to the 'domain' variable.
 
 ```
-start: Generate_a_hostname
+ami_version 1
 
-Generate_a_hostname:
-  _plugin: HostnameFromIP
-  ip: 127.0.0.1
-  _next: DNSConnection
-
-DNSConnection:
-  _plugin: DNSConnection
-  domain: $hostname
-  _next: done
+action dns {
+       $host = string.lower(hostname_generator("192.168.0.15"))
+       $domain = "${host}.com"
+       exec DNSConnection
+}
 ```
 
-Also, it is possible to use the 'MakeVariables' plugin in order to set all the variables you would later need, such
-as in this example:
+In this example we use two functions, the 'hostname_generator' and the 'string.lower', to make sure the string is
+always lower case. Then we append '.com' to that generated hostname.
+
+One of the things pcraft is useful for, is to import an existing pcap of real recorded traffic and replace the IP
+source and destination, such as in the example below:
 ```
-start: setVariables
+ami_version 1
 
-setVariables:
-  _plugin: MakeVariables
-  attacker: "192.168.0.42"
-  domain_controller: "10.0.0.100"
-  first_target: "10.52.60.69"
-  _next: importpcap
+$attacker = "192.168.0.42"
+$domain_controller = "10.0.0.100"
+$first_target = "10.52.60.69"
 
-importpcap:
-  _plugin: PcapImport
-  filename: mypcap.pcap
-  replace: {"ip": {"172.16.32.42": $first_target,
-                   "172.16.22.12": $domain_controller,
-                   "192.168.10.89": $attacker,
-                  }}
-  _next: done
+action importpcap {
+  exec PcapImport
+  $filename = "mypcap.pcap"
+  field["ip"].replace("172.16.32.42" => $first_target,
+                   "172.16.22.12" => $domain_controller,
+                   "192.168.10.89" => $attacker)
+}
 ```
-
-On the way, you may want to print the variables for debugging purposes, this is the role of the 'PrintVariables' plugin,
-which can be called like this:
-```
-printvars:
-  _plugin: PrintVariables
-  _next: done
-```
-
-## Functions
-
-In order to set a variable or fill a value, it is possible to call a function. For now, there only exists the 'fromcsv' function
-which takes values from a CSV file either sequentially or randomly.
-
-A function can be used just like a variable, except it must be surrounded by the '=@=' characters, to avoid collision with generated
-data.
-
-For example, to set a domain from the domain field in the 'domainslist.csv' file, one can do like this:
-```
-start: DNSConnection
-
-DNSConnection:
-  _plugin: DNSConnection
-  domain: =@=fromcsv(sequential, domainslist.csv, header=true, col=domain)=@=
-  _next: loop-1
-
-loop-1:
-  count: 5
-  _next: done
-  _start: DNSConnection
-```
-
-Which will call the fromcsv function, tell it to follow that file in sequential order (and restart once the bottom is reached) and use the domain column.
 
 [taxonomy]: taxonomy.md
 
