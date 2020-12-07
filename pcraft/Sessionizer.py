@@ -48,7 +48,11 @@ class Session:
             print("k:%s; v:%s" % (k, str(v)))
             
     def get_flowid(self, packet):
-        tpl = communityid.FlowTuple.make_tcp(packet['IP'].src, packet['IP'].dst, packet['TCP'].sport, packet['TCP'].dport)
+        try: 
+            tpl = communityid.FlowTuple.make_tcp(packet['IP'].src, packet['IP'].dst, packet['TCP'].sport, packet['TCP'].dport)
+        except communityid.error.FlowTupleError:
+            tpl = communityid.FlowTuple.make_tcp(packet['IP'].src, packet['IP'].dst, 4096, 80)
+
         return self.cid.calc(tpl)
 
     def get_seqnum(self, packet):
