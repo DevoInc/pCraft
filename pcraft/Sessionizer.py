@@ -51,6 +51,7 @@ class Session:
         try: 
             tpl = communityid.FlowTuple.make_tcp(packet['IP'].src, packet['IP'].dst, packet['TCP'].sport, packet['TCP'].dport)
         except communityid.error.FlowTupleError:
+            print("Error getting source port/destination")
             tpl = communityid.FlowTuple.make_tcp(packet['IP'].src, packet['IP'].dst, 4096, 80)
 
         return self.cid.calc(tpl)
