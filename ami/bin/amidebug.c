@@ -18,6 +18,16 @@ void foreach_action(ami_action_t *action, void *userdata)
   /* printf("Running %s\n", action->name); */
 }
 
+void quiet_foreach_action(ami_action_t *action, void *userdata)
+{
+  ami_field_action_t *field_action;
+
+  ami_t *ami = (ami_t *)userdata;
+  for (field_action=action->field_actions; field_action; field_action=field_action->next) {
+  }
+
+}
+
 void simple_foreach_action(ami_action_t *action, void *userdata)
 {
   ami_field_action_t *field_action;
@@ -106,6 +116,7 @@ int quiet_debug(const char *amifile)
 {
   ami_t *ami;
   ami = ami_new();  
+  ami_set_action_callback(ami, quiet_foreach_action, ami);
   ami_parse_file(ami, amifile);
   ami_ast_walk_actions(ami);
   ami_close(ami);
@@ -119,7 +130,7 @@ int main(int argc, char **argv)
   int ret;
   
   if (argc < 2) {
-    fprintf(stderr, "Syntax: %s file.ami [--node|--ami|--simple]\n", argv[0]);
+    fprintf(stderr, "Syntax: %s file.ami [--node|--ami|--simple|--quiet]\n", argv[0]);
     return 1;
   }
 
