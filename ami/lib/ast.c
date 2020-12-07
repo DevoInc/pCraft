@@ -106,6 +106,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   static int varpos = 0;  
   ami_field_action_t *field_action;
   char *replaced_var = NULL;
+  int repeat_n = 0;
   
   for (n = node; n; n = right ? n->right : n->next) {
 
@@ -151,8 +152,13 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       /* ami_erase_local_variables(ami); */
       break;
     case AMI_NT_REPEAT:
+      {
+	char *repeat = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	repeat_n = (int)strtod(repeat, NULL);
+      }
+      
       ami->in_repeat = 1;
-      for (index = 1; index <= n->intval; index++) {
+      for (index = 1; index <= repeat_n; index++) {
 	char *indexvar;
 	asprintf(&indexvar, "%d", index);
 	ami_set_global_variable(ami, n->strval, indexvar);

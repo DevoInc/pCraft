@@ -81,6 +81,7 @@ typedef void *yyscan_t;
 %token GOTO
 
 %type <char *> string
+%type <int> variable_int
 
 %%
 
@@ -245,7 +246,7 @@ variable_int: INTEGER {
   }
 
   ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0, 0);
-  
+  $$ = $1;
 }
 ;
 
@@ -292,18 +293,18 @@ sleep_int: SLEEP INTEGER {
 }
 ;
 
-repeat: REPEAT INTEGER AS VARIABLE OPENSECTION {
+repeat: REPEAT varset AS VARIABLE OPENSECTION {
   if (ami->debug) {
-    printf("[parse.y] repeat: REPEAT INTEGER(%d) AS VARIABLE(%s) OPENSECTION)\n", $2, $4);
+    printf("[parse.y] repeat: REPEAT varset AS VARIABLE(%s) OPENSECTION)\n", $4);
   }
 
   ami->_opened_sections++;
   ami->_repeat_block_id = ami->_opened_sections;
   
-  ami_node_create(&ami->root_node, AMI_NT_REPEAT, $4, $2, 0, 0);
+  ami_node_create(&ami->root_node, AMI_NT_REPEAT, $4, 0, 0, 0);
   
   free($4);
-}
+  }
 ;
 
 closesection: CLOSESECTION {
