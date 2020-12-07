@@ -184,6 +184,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       break;
     case AMI_NT_VARNAME:
       tmp_str = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+      if (!tmp_str) {
+	fprintf(stderr, "Error: no such value for '%s'\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	exit(1);
+      }
+      
       if (ami->in_repeat || ami->in_action) {
 	if (!ami->in_action) {
 	  /* printf("%s is a local repeat variable with value:%s\n", n->strval, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */

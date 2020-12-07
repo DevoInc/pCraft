@@ -1,0 +1,6 @@
+ami_version 1
+
+action a {
+       $host = $foo
+       exec nada
+}

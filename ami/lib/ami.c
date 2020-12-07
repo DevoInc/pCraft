@@ -94,6 +94,11 @@ int ami_set_local_variable(ami_t *ami, char *key, char *val) {
   if (!ami) return 1;
   if (!ami->local_variables) return 1;  
 
+  if (!val) {
+    fprintf(stderr, "Cannot set value for %s: empty\n", key);
+    return 1;
+  }
+  
   /* printf("%s: %s -> %s\n", __FUNCTION__, key, val); */
   
   k = kh_put(strhash, ami->local_variables, key, &absent);
