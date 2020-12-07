@@ -129,6 +129,7 @@ VARIABLE $[a-zA-Z0-9\-_]+
 LABEL ^[a-zA-Z0-9\-_]+:
 
 AMIVERSION ami_version
+AMIVERSIONSHORT av
 REVISION revision
 AUTHOR author
 SHORTDESC shortdesc
@@ -198,6 +199,7 @@ FALSE false
 ":" return TOK_COLON;
 
 {AMIVERSION} { return TOK_AMIVERSION; }
+{AMIVERSIONSHORT} { return TOK_AMIVERSION; }
 {REVISION} { return TOK_REVISION; }
 {AUTHOR} { return TOK_AUTHOR; }
 {SHORTDESC} { return TOK_SHORTDESC; }
