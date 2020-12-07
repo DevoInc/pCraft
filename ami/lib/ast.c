@@ -11,6 +11,7 @@
 #include <sys/socket.h> 
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <netdb.h>
 
 #include <libgen.h>
 
@@ -254,6 +255,23 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("ip.gethostbyname", n->strval)) {
+	struct hostent *he;
+	const char *hostname = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char ipstr[INET6_ADDRSTRLEN];
+	
+	he = gethostbyname(hostname);
+	if (!he) {
+	  fprintf(stderr, "Could not resolve '%s'\n", hostname);
+	  exit(1);
+	}
+
+	if (inet_ntop(AF_INET, (const void *)he->h_addr_list[0], ipstr, sizeof(ipstr)) == NULL) {
+	  fprintf(stderr, "Cannot convert IP address %s: %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-1), strerror(errno));
+	  exit(1);
+	}
+
+	kv_push(char *, ami->values_stack, ipstr);	
       } else if (!strcmp("ip.cidr",n->strval)) {
 	static const uint32_t cidr_table[] = { 0x00000000, 0x00000080, 0x000000c0, 0x000000e0, 0x000000f0,
 					       0x000000f8, 0x000000fc, 0x000000fe, 0x000000ff, 0x000080ff,
