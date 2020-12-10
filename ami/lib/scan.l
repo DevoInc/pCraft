@@ -126,7 +126,7 @@ STRING \"[^\"](\\.|\"\"|[^"\n])*\"
 FLOAT [0-9\.]+
 INTEGER [0-9]+
 GVARIABLE $[a-zA-Z0-9\-_]+
-LVARIABLE _[a-zA-Z0-9\-_]+
+LVARIABLE _([a-zA-Z0-9\-_]+)
 LABEL ^[a-zA-Z0-9][a-zA-Z0-9\-_]+:
 
 AMIVERSION ami_version
@@ -273,7 +273,7 @@ FALSE false
            }
 
 {LVARIABLE} {
-              yylval->TOK_LVARIABLE = strdup(yytext);
+              yylval->TOK_LVARIABLE = strdup(yytext+1); // We skip the _ char
               return TOK_LVARIABLE;
            }
 
