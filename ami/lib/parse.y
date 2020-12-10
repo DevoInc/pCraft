@@ -47,6 +47,7 @@ typedef void *yyscan_t;
 %token <char *>VERBATIM
 %token <char *>EVERYTHING
 %token <char *>GVARIABLE
+%token <char *>LVARIABLE
 %token <char *>LABEL
 %token <int>INTEGER
 %token <float>FLOAT
@@ -219,7 +220,25 @@ variable: GVARIABLE EQUAL varset {
   ami_append_item(ami, AMI_NT_VARNAME, $1, 0, 0, 0);
   
   free($1);
-}
+ }
+ | LVARIABLE EQUAL varset {
+   if (ami->debug) {
+    printf("[parse.y] variable: LVARIABLE(%s) EQUAL varset\n", $1);
+   }
+
+   if (!ami->_action_block_id) {
+     fprintf(stderr, "Error with variable %s: it must be local to an action.\n", $1);
+     exit(1);
+   }
+   
+   // FIXME: For now this is a fieldvar, but this must change. We must
+   // clarify between a global variable $var which can be used and redefined
+   // anywhere and a local variable _var which is only used in the scope of
+   // an action   
+  ami_append_item(ami, AMI_NT_FIELDVAR, $1, 0, 0, 0);
+
+  free($1);
+ }
 ;
 
 varset:   variable_string
