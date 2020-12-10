@@ -46,7 +46,7 @@ typedef void *yyscan_t;
 %token <char *>STRING
 %token <char *>VERBATIM
 %token <char *>EVERYTHING
-%token <char *>VARIABLE
+%token <char *>GVARIABLE
 %token <char *>LABEL
 %token <int>INTEGER
 %token <float>FLOAT
@@ -210,9 +210,9 @@ message: MESSAGE string {
 }
 ;
 
-variable: VARIABLE EQUAL varset {
+variable: GVARIABLE EQUAL varset {
   if (ami->debug) {
-    printf("[parse.y] variable: VARIABLE(%s) EQUAL varset\n", $1);
+    printf("[parse.y] variable: GVARIABLE(%s) EQUAL varset\n", $1);
   }
 
    /* ami_node_create(&ami->root_node, AMI_NT_VARNAME, $1, 0); */
@@ -260,9 +260,9 @@ variable_function: function {
 }
 ;
 
-variable_variable: VARIABLE {
+variable_variable: GVARIABLE {
     if (ami->debug) {
-      printf("[parse.y] variable_variable: VARIABLE(%s)\n", $1);
+      printf("[parse.y] variable_variable: GVARIABLE(%s)\n", $1);
     }
 
     
@@ -293,9 +293,9 @@ sleep_int: SLEEP INTEGER {
 }
 ;
 
-repeat: REPEAT varset AS VARIABLE OPENSECTION {
+repeat: REPEAT varset AS GVARIABLE OPENSECTION {
   if (ami->debug) {
-    printf("[parse.y] repeat: REPEAT varset AS VARIABLE(%s) OPENSECTION)\n", $4);
+    printf("[parse.y] repeat: REPEAT varset AS GVARIABLE(%s) OPENSECTION)\n", $4);
   }
 
   ami->_opened_sections++;
@@ -461,9 +461,9 @@ function_argument_int: INTEGER {
 }
 ;
 
-function_argument_variable: VARIABLE {
+function_argument_variable: GVARIABLE {
   if (ami->debug) {
-    printf("[parse.y] function_argument_variable: VARIABLE(%s)\n", $1);
+    printf("[parse.y] function_argument_variable: GVARIABLE(%s)\n", $1);
   }
 
   ami->arguments_count++;
@@ -554,7 +554,7 @@ string: STRING {
  }
  ;
 
-array: VARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
+array: GVARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
   if (ami->debug) {
     printf("[parse.y] array[...]\n");
   }
@@ -566,7 +566,7 @@ array: VARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
  }
  ;
 
-array_item: VARIABLE OPENBRACKET INTEGER CLOSEBRACKET {
+array_item: GVARIABLE OPENBRACKET INTEGER CLOSEBRACKET {
   if (ami->debug) {
     printf("[parse.y] array_item[%d]\n", $3);
   }

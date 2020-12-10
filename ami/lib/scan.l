@@ -125,7 +125,7 @@ STRING \"[^\"](\\.|\"\"|[^"\n])*\"
 %x VERBASUBSTITUTESTRING
 FLOAT [0-9\.]+
 INTEGER [0-9]+
-VARIABLE $[a-zA-Z0-9\-_]+
+GVARIABLE $[a-zA-Z0-9\-_]+
 LABEL ^[a-zA-Z0-9\-_]+:
 
 AMIVERSION ami_version
@@ -266,9 +266,9 @@ FALSE false
 {TRUE} { yylval->TOK_INTEGER = 1; return TOK_INTEGER; }
 {FALSE} { yylval->TOK_INTEGER = 0; return TOK_INTEGER;}
 
-{VARIABLE} {
-              yylval->TOK_VARIABLE = strdup(yytext);
-              return TOK_VARIABLE;
+{GVARIABLE} {
+              yylval->TOK_GVARIABLE = strdup(yytext);
+              return TOK_GVARIABLE;
            }
 
 {LABEL} {
