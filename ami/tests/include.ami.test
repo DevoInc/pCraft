@@ -1,0 +1,14 @@
+ami_version 1
+------------------------
+* Action name(test) exec(First) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
+* Repeat Variables:
+* Local Variables:
+* Field Actions:
+------------------------
+* Action name(Second) exec(MySecond) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
+* Repeat Variables:
+* Local Variables:
+* Field Actions:
++++++++
+* Global Variables:
+
