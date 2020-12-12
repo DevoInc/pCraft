@@ -27,3 +27,7 @@ add_test(AmiItems amiitems)
 add_executable(actionnewclose action-new-close.c)
 target_link_libraries(actionnewclose ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
 add_test(ActionNewClose actionnewclose)
+
+add_executable(apivars api-variables.c)
+target_link_libraries(apivars ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
+add_test(API_Variables apivars)
