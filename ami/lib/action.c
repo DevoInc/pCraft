@@ -21,6 +21,7 @@ ami_action_t *ami_action_new()
   kv_init(action->replace_key);
   kv_init(action->replace_val);
   action->action_variables = kh_init(actionhash);
+  action->variables = kh_init(localvarhash);
   action->field_actions = NULL;
   action->sleep_cursor = 0;
   action->repeat_index = 0;

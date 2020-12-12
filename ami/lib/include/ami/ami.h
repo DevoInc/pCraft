@@ -8,6 +8,7 @@
 
 #include "action.h"
 #include "tree.h"
+#include "variable.h"
 
 #include "khash.h"
 #include "kvec.h"
@@ -21,6 +22,7 @@ extern "C" {
 #define MAX_VARIABLES 1
 
 KHASH_MAP_INIT_STR(strhash, char *)
+KHASH_MAP_INIT_STR(varhash, ami_variable_t *)
 
 struct _ami_kvec_t {
   size_t n;
@@ -54,6 +56,7 @@ struct _ami_t {
   char *description;
   ami_kvec_t references;
   ami_kvec_t tags;
+  khash_t(varhash) *variables;
   khash_t(strhash) *global_variables;
   khash_t(strhash) *repeat_variables;
   khash_t(strhash) *local_variables;
@@ -83,7 +86,10 @@ int ami_loop(ami_t *ami, foreach_action_cb action_cb, void *user_data);
 void ami_close(ami_t *ami);
 char *ami_error_to_string(ami_t *ami);
 void ami_debug(ami_t *ami);
+int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var);
+ami_variable_t *ami_get_newvariable(ami_t *ami, const char *key); // FIXME remove new
 int ami_set_global_variable(ami_t *ami, char *key, char *val);
+/* <deprecated> */
 const char *ami_get_global_variable(ami_t *ami, char *key);
 int ami_set_local_variable(ami_t *ami, char *key, char *val);
 const char *ami_get_local_variable(ami_t *ami, char *key);
@@ -92,6 +98,7 @@ const char *ami_get_repeat_variable(ami_t *ami, char *key);
 void ami_erase_global_variables(ami_t *ami);
 void ami_erase_local_variables(ami_t *ami);
 void ami_erase_repeat_variables(ami_t *ami);
+/* </deprecated> */
 void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata);
 void ami_ast_tree_debug(ami_t *ami);
 void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);

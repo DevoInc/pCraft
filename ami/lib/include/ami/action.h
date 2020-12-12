@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#include "variable.h"
+
 #include "khash.h"
 #include "kvec.h"
 
@@ -12,6 +14,7 @@ extern "C" {
 
 
 KHASH_MAP_INIT_STR(actionhash, char *)
+KHASH_MAP_INIT_STR(localvarhash, ami_variable_t *)
 
 typedef struct _ami_t ami_t;
   
@@ -33,6 +36,7 @@ typedef struct _ami_field_action_t ami_field_action_t;
   
 struct _ami_action_t {
   char *name;
+  khash_t(localvarhash) *variables;
   khash_t(actionhash) *action_variables;
   ami_field_action_t *field_actions;
   char *replace_field;

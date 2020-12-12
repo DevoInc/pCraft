@@ -160,8 +160,14 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       ami->in_repeat = 1;
       for (index = 1; index <= repeat_n; index++) {
 	char *indexvar;
+	ami_variable_t *var;
 	asprintf(&indexvar, "%d", index);
 	ami_set_global_variable(ami, n->strval, indexvar);
+
+	var = ami_variable_new();
+	ami_variable_set_int(var, index);
+	ami_set_variable(ami, n->strval, var);
+	
 	/* printf("We run a repeat action at index:%d\n", index); */
       	walk_node(ami, n->right, index, 1);
       }
@@ -193,6 +199,16 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       if (!tmp_str) {
 	fprintf(stderr, "Error: no such value for '%s'\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	exit(1);
+      }
+
+      if (n->strval[0] == '_') {
+	// Set local
+	printf("A local variable\n");
+      } else {
+	ami_variable_t *var;
+	var = ami_variable_new();
+	ami_variable_set_string(var, tmp_str);
+	ami_set_variable(ami, n->strval, var);
       }
       
       if (ami->in_repeat || ami->in_action) {

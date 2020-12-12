@@ -29,10 +29,26 @@ void ami_variable_set_int(ami_variable_t *var, int ival)
   var->ival = ival;
 }
 
+ami_variable_t *ami_variable_new_int(int ival)
+{
+  ami_variable_t *var;
+  var = ami_variable_new();
+  ami_variable_set_int(var, ival);
+  return var;
+}
+
 void ami_variable_set_float(ami_variable_t *var, float fval)
 {
   var->type = AMI_VAR_FLOAT;
   var->fval = fval;
+}
+
+ami_variable_t *ami_variable_new_float(float fval)
+{
+  ami_variable_t *var;
+  var = ami_variable_new();
+  ami_variable_set_float(var, fval);
+  return var;
 }
 
 void ami_variable_set_string(ami_variable_t *var, char *strval)
@@ -40,6 +56,14 @@ void ami_variable_set_string(ami_variable_t *var, char *strval)
   var->type = AMI_VAR_STR;
   var->strval = strdup(strval);
   var->len = strlen(strval);
+}
+
+ami_variable_t *ami_variable_new_string(char *strval)
+{
+  ami_variable_t *var;
+  var = ami_variable_new();
+  ami_variable_set_string(var, strval);
+  return var;
 }
 
 ami_variable_t *ami_variable_array_append(ami_variable_t *var, ami_variable_t *to_append)
@@ -91,6 +115,38 @@ ami_variable_t *ami_variable_array_get_at_index(ami_variable_t *array, size_t in
   }
 
   return NULL;  
+}
+
+ami_variable_t *ami_variable_copy(ami_variable_t *var)
+{
+  ami_variable_t *new;
+  
+  if (!var) {
+    fprintf(stderr, "Please provide a variable!\n");
+    return NULL;
+  }
+
+  new = ami_variable_new();
+  switch(var->type) {
+  case AMI_VAR_ARRAY:
+    printf("Cannot copy an array, right now: FIXME!\n");
+    break;
+  case AMI_VAR_INT:
+    ami_variable_set_int(new, var->ival);
+    break;
+  case AMI_VAR_FLOAT:
+    ami_variable_set_float(new, var->fval);
+    break;
+  case AMI_VAR_STR:
+    ami_variable_set_string(new, var->strval);
+    break;
+  default:
+    fprintf(stderr, "Error: no such type of variable. Cannot copy!\n");
+    ami_variable_free(new);
+    return NULL;
+  }
+
+  return new;
 }
 
 void ami_variable_debug(ami_variable_t *var)

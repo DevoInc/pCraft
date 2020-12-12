@@ -28,10 +28,14 @@ typedef struct _ami_variable_t ami_variable_t;
 
 ami_variable_t *ami_variable_new(void);
 void ami_variable_set_int(ami_variable_t *var, int ival);
+ami_variable_t *ami_variable_new_int(int ival);
 void ami_variable_set_float(ami_variable_t *var, float fval);
+ami_variable_t *ami_variable_new_float(float fval);
 void ami_variable_set_string(ami_variable_t *var, char *strval);
+ami_variable_t *ami_variable_new_string(char *strval);
 ami_variable_t *ami_variable_array_append(ami_variable_t *var, ami_variable_t *to_append);
 ami_variable_t *ami_variable_array_get_at_index(ami_variable_t *array, size_t index);
+ami_variable_t *ami_variable_copy(ami_variable_t *var);
 void ami_variable_debug(ami_variable_t *var);
 void ami_variable_free(ami_variable_t *var);
   

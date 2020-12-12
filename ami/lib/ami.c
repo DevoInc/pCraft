@@ -46,6 +46,7 @@ ami_t *ami_new(void)
   kv_init(ami->references);
   kv_init(ami->tags);
   
+  ami->variables = kh_init(varhash);
   ami->global_variables = kh_init(strhash);
   ami->repeat_variables = kh_init(strhash);
   ami->local_variables = kh_init(strhash);
@@ -64,6 +65,37 @@ ami_t *ami_new(void)
   ami->arguments_count = 0;
   
   return ami;
+}
+
+int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var)
+{
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->variables) return 1;  
+  
+  k = kh_put(varhash, ami->variables, key, &absent);
+  if (absent) {
+    kh_key(ami->variables, k) = strdup(key);
+    kh_value(ami->variables, k) = var;
+  } else {
+    ami_variable_free(kh_value(ami->variables, k));
+    kh_value(ami->variables, k) = var;
+  }
+  
+  return 0;
+}
+
+ami_variable_t *ami_get_newvariable(ami_t *ami, const char *key)
+{
+  khint_t k;
+
+  k = kh_get(varhash, ami->variables, key);
+  int is_missing = (k == kh_end(ami->variables));
+  if (is_missing) return NULL;
+  ami_variable_t *var = kh_value(ami->variables, k);
+  return var;
 }
 
 int ami_set_global_variable(ami_t *ami, char *key, char *val) {
@@ -203,6 +235,18 @@ void ami_debug(ami_t *ami)
       if (kh_exist(ami->global_variables, k)) {
 	printf("\t%s => %s\n", (char *)kh_key(ami->global_variables, k), (char *)kh_value(ami->global_variables, k));
     }
+  }
+
+  printf("final new global variables (they can change in the flow):\n");
+  if (ami->variables) {
+    for (k = 0; k < kh_end(ami->variables); ++k)
+      if (kh_exist(ami->variables, k)) {
+	const char *key = kh_key(ami->variables, k);
+	ami_variable_t *var = (ami_variable_t *)kh_value(ami->variables, k);
+	printf("variable key:%s\n", key);
+	ami_variable_debug(var);
+	/* printf("\t%s => %s\n", (char *)kh_key(ami->global_variables, k), (char *)kh_value(ami->global_variables, k)); */
+      }
   }
 
   
