@@ -68,11 +68,41 @@ ami_variable_t *ami_variable_array_append(ami_variable_t *var, ami_variable_t *t
   return var;
 }
 
+ami_variable_t *ami_variable_array_get_at_index(ami_variable_t *array, size_t index)
+{
+  size_t count = 1;
+  ami_variable_t *varp = array;
+  
+  if (!array) {
+    fprintf(stderr, "Error: No array given to get an index!\n");
+    return NULL;
+  }
+  if (array->type != AMI_VAR_ARRAY) {
+    fprintf(stderr, "Error: The variable given is not an array!\n");
+    return NULL;
+  }
+
+  while(varp->array) {
+    if (count == index) {
+      return varp->array;
+    }
+    count++;
+    varp = varp->array;
+  }
+
+  return NULL;  
+}
+
 void ami_variable_debug(ami_variable_t *var)
 {
   ami_variable_t *varp;
 
   /* fprintf(stderr, "%s\n", __FUNCTION__); */
+
+  if (!var) {
+    fprintf(stderr, "NULL variable, cannot debug!\n");
+    return;
+  }
   
   switch(var->type) {
   case AMI_VAR_ARRAY:
@@ -101,6 +131,7 @@ void ami_variable_debug(ami_variable_t *var)
 
 void ami_variable_free(ami_variable_t *var)
 {
+  if (!var) return;
   if (var->type == AMI_VAR_STR) {
     free(var->strval);
   }

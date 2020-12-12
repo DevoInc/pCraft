@@ -8,6 +8,7 @@ int main(int argc, char **argv)
   ami_variable_t *var;
   ami_variable_t *var2;
   ami_variable_t *var3;
+  ami_variable_t *n;
   
   array = ami_variable_new();
   var = ami_variable_new();
@@ -21,6 +22,13 @@ int main(int argc, char **argv)
   ami_variable_array_append(array, var3);
 
   ami_variable_debug(array);
+
+  n = ami_variable_array_get_at_index(array, 0);
+  ami_variable_debug(n);
+  n = ami_variable_array_get_at_index(array, 2);
+  ami_variable_debug(n);
+  n = ami_variable_array_get_at_index(array, 806);
+  ami_variable_debug(n);
   
   ami_variable_free(array);
   ami_variable_free(var);
