@@ -95,6 +95,8 @@ ami_variable_t *ami_get_newvariable(ami_t *ami, const char *key)
   int is_missing = (k == kh_end(ami->variables));
   if (is_missing) return NULL;
   ami_variable_t *var = kh_value(ami->variables, k);
+
+  
   return var;
 }
 

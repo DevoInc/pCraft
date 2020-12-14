@@ -3,6 +3,8 @@
 
 #include <stddef.h>
 
+#include "khash.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -26,6 +28,8 @@ struct _ami_variable_t {
 };
 typedef struct _ami_variable_t ami_variable_t;
 
+KHASH_MAP_INIT_STR(varhash, ami_variable_t *)
+  
 ami_variable_t *ami_variable_new(void);
 void ami_variable_set_int(ami_variable_t *var, int ival);
 ami_variable_t *ami_variable_new_int(int ival);

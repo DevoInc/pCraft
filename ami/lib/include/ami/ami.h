@@ -22,7 +22,6 @@ extern "C" {
 #define MAX_VARIABLES 1
 
 KHASH_MAP_INIT_STR(strhash, char *)
-KHASH_MAP_INIT_STR(varhash, ami_variable_t *)
 
 struct _ami_kvec_t {
   size_t n;
