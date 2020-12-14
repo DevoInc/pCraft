@@ -6,7 +6,10 @@ class PluginsData(object):
         self.args = {}
         self.current_time = time.time()
         self.ami = ami
-        self.packet_time = self.current_time - self.ami.GetSleepCursor()
+        if self.ami.GetStartTime() > 0:            
+            self.packet_time = self.ami.GetStartTime()
+        else:
+            self.packet_time = self.current_time - self.ami.GetSleepCursor()
 
     def AddPacket(self, action, pkt):
         pkt.time = self.packet_time + action.GetSleepCursor()
