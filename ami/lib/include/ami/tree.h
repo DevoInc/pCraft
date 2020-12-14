@@ -13,6 +13,7 @@ enum _ami_node_type_t {
        AMI_NT_IF_ELSE,
        AMI_NT_LABEL,     // label:
        AMI_NT_GOTO,      // goto label:
+       AMI_NT_LOCALVARNAME, // _var
        AMI_NT_VARNAME, // $var
        AMI_NT_VARVALSTR, // = "blah"
        AMI_NT_VARVALINT, // = 1

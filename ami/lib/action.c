@@ -269,6 +269,41 @@ ami_field_action_t *ami_field_action_append(ami_field_action_t *dst, ami_field_a
   return dst;  
 }
 
+int ami_action_set_variable(ami_action_t *action, const char *key, ami_variable_t *var)
+{
+  int absent;
+  khint_t k;
+  
+  if (!action) return 1;
+  if (!action->variables) return 1;  
+  
+  k = kh_put(varhash, action->variables, key, &absent);
+  if (absent) {
+    kh_key(action->variables, k) = strdup(key);
+    kh_value(action->variables, k) = var;
+  } else {
+    ami_variable_free(kh_value(action->variables, k));
+    kh_value(action->variables, k) = var;
+  }
+
+  return 0;
+}
+
+ami_variable_t *ami_action_get_newvariable(ami_action_t *action, const char *key)
+{
+  khint_t k;
+
+  if (!action) return NULL;
+  if (!action->variables) return NULL;  
+  
+  k = kh_get(varhash, action->variables, key);
+  int is_missing = (k == kh_end(action->variables));
+  if (is_missing) return NULL;
+  ami_variable_t *var = kh_value(action->variables, k);
+  
+  return var;
+}
+
 void ami_field_action_debug(ami_action_t *action)
 {
   ami_field_action_t *a;

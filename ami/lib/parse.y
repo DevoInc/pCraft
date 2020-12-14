@@ -236,7 +236,7 @@ variable: GVARIABLE EQUAL varset {
    // anywhere and a local variable _var which is only used in the scope of
    // an action   
   /* ami_append_item(ami, AMI_NT_FIELDVAR, $1, 0, 0, 0); */
-   ami_append_item(ami, AMI_NT_VARNAME, $1, 0, 0, 0);
+   ami_append_item(ami, AMI_NT_LOCALVARNAME, $1, 0, 0, 0);
 
   free($1);
  }

@@ -64,6 +64,8 @@ char *ami_action_get_replacement_value_at_pos_with_ami(ami_t *ami, ami_action_t 
 char *ami_action_get_replacement_value_at_pos(ami_action_t *action, int pos);
 ami_field_action_t *ami_field_action_new(void);
 ami_field_action_t *ami_field_action_append(ami_field_action_t *dst, ami_field_action_t *src);
+int ami_action_set_variable(ami_action_t *action, const char *key, ami_variable_t *var);
+ami_variable_t *ami_action_get_newvariable(ami_action_t *action, const char *key);  
 void ami_field_action_debug(ami_action_t *action);
   
 #ifdef __cplusplus

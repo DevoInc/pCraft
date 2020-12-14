@@ -201,15 +201,10 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	exit(1);
       }
 
-      if (n->strval[0] == '_') {
-	// Set local
-	printf("A local variable\n");
-      } else {
-	ami_variable_t *var;
-	var = ami_variable_new();
-	ami_variable_set_string(var, tmp_str);
-	ami_set_variable(ami, n->strval, var);
-      }
+      ami_variable_t *var;
+      var = ami_variable_new();
+      ami_variable_set_string(var, tmp_str);
+      ami_set_variable(ami, n->strval, var);
       
       if (ami->in_repeat || ami->in_action) {
 	if (!ami->in_action) {
@@ -223,6 +218,18 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	/* printf("%s is a global variable with value:%s\n", n->strval, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
 	  ami_set_global_variable(ami, n->strval, tmp_str);
       }
+      break;
+    case AMI_NT_LOCALVARNAME:
+      tmp_str = ami_action_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+      if (!tmp_str) {
+	fprintf(stderr, "Error: no such value for '%s'\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	exit(1);
+      }
+
+      ami_variable_t *lvar;
+      lvar = ami_variable_new();
+      ami_variable_set_string(lvar, tmp_str);
+      ami_action_set_variable(action, n->strval, lvar);      
       break;
     case AMI_NT_FIELDFUNC:
       /* printf("Fieldfunc :%s\n", n->strval); // ip */
