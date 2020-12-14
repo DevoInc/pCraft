@@ -141,7 +141,8 @@ PYBIND11_MODULE(pyami, m) {
       .def("GetReferences", &Ami::GetReferences)
       .def("GetTags", &Ami::GetTags)
       .def("GetSleepCursor", &Ami::GetSleepCursor)
-      .def("Debug", &Ami::Debug);    
+      .def("Debug", &Ami::Debug)
+      .def("GetStartTime", &Ami::GetStartTime);    
     py::class_<Action>(m, "Action")
       .def(py::init<>())
       .def("Variables", &Action::get_variables)

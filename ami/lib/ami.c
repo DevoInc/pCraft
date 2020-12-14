@@ -34,6 +34,7 @@ ami_t *ami_new(void)
   ami->current_line = 1;
   ami->debug = 0;
   ami->version = 0;
+  ami->start_time = 0;
   ami->revision = 0;
   ami->author = NULL;
   ami->shortdesc = NULL;

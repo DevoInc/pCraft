@@ -49,6 +49,7 @@ struct _ami_t {
   int _is_verbatim_string;
   int debug;
   int version;
+  int start_time;
   int revision;
   char *author;
   char *shortdesc;

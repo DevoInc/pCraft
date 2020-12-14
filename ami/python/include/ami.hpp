@@ -26,6 +26,7 @@ public:
   std::vector<std::string> GetReferences(void);
   std::vector<std::string> GetTags(void);
   float GetSleepCursor(void) { return _ami->sleep_cursor; };
+  int GetStartTime(void) { return _ami->start_time; };
 private:
   ami_t *_ami;
   static void foreach_action(ami_action_t *action, void *userdata);  

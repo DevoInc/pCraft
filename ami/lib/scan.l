@@ -131,6 +131,8 @@ LABEL ^[a-zA-Z0-9][a-zA-Z0-9\-_]+:
 
 AMIVERSION ami_version
 AMIVERSIONSHORT av
+STARTTIME start_time
+STARTTIMESHORT st
 REVISION revision
 AUTHOR author
 SHORTDESC shortdesc
@@ -199,16 +201,18 @@ FALSE false
 "," return TOK_COMMA;
 ":" return TOK_COLON;
 
-{AMIVERSION} { return TOK_AMIVERSION; }
+{AMIVERSION}      { return TOK_AMIVERSION; }
 {AMIVERSIONSHORT} { return TOK_AMIVERSION; }
-{REVISION} { return TOK_REVISION; }
-{AUTHOR} { return TOK_AUTHOR; }
-{SHORTDESC} { return TOK_SHORTDESC; }
-{DESCRIPTION} { return TOK_DESCRIPTION; }
-{REFERENCE} { return TOK_REFERENCE; }
-{TAG} { return TOK_TAG; }
-{MESSAGE} { return TOK_MESSAGE; }
-{INCLUDE} { BEGIN(incl); }
+{STARTTIME}       { return TOK_STARTTIME; }
+{STARTTIMESHORT}  { return TOK_STARTTIME; }
+{REVISION}        { return TOK_REVISION; }
+{AUTHOR}          { return TOK_AUTHOR; }
+{SHORTDESC}       { return TOK_SHORTDESC; }
+{DESCRIPTION}     { return TOK_DESCRIPTION; }
+{REFERENCE}       { return TOK_REFERENCE; }
+{TAG}             { return TOK_TAG; }
+{MESSAGE}         { return TOK_MESSAGE; }
+{INCLUDE}         { BEGIN(incl); }
 <incl>[ \t]*
 <incl>[^ \t\n]+	{ /* got the include file name */
 		  if (includes_index >= MAX_INCLUDE_DEPTH) {

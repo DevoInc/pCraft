@@ -52,6 +52,7 @@ typedef void *yyscan_t;
 %token <int>INTEGER
 %token <float>FLOAT
 %token AMIVERSION
+%token STARTTIME
 %token REVISION
 %token AUTHOR
 %token SHORTDESC
@@ -88,6 +89,7 @@ typedef void *yyscan_t;
 
 input:
        | input amiversion
+       | input starttime
        | input revision
        | input author
        | input shortdesc
@@ -128,6 +130,15 @@ amiversion: AMIVERSION INTEGER
 
   }
   ;
+
+starttime: STARTTIME INTEGER
+{
+  if (ami->debug) {
+    printf("[parse.y] Start Time:%d\n", $2);   
+  }
+  ami->start_time = $2;
+}
+;
 
 revision: REVISION INTEGER
   {
