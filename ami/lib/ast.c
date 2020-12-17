@@ -531,7 +531,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	fread(file_content, 1, filesize, fp);
 	file_content[filesize] = '\0';
 	fclose(fp);
-	kv_push(char *, ami->values_stack, file_content);	       
+	char *b64 = base64url_enc_malloc(file_content, filesize);
+
+	kv_push(char *, ami->values_stack, b64);	       
       } else if (!strcmp("uuid.v4", n->strval)) { // random
 	uuid_t uuid;
 	char retstr[37];
