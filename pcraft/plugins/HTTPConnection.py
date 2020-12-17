@@ -56,8 +56,8 @@ httpconnect:
         utils.append_tcp_three_way_handshake(self.session, action, self.plugins_data, self.getvar("port-src"))
 
         # print(action.Variables())
-        print("HTTP Method:%s" % self.getvar("method"))
-        
+        # print("HTTP Method:%s" % self.getvar("method"))
+
         user = self.getvar("user")
         if user != "":
             user = "\r\nUser: %s" % user
