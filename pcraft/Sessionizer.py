@@ -17,17 +17,32 @@ class Session:
             last = self.sessions[flowid][-1]
             current_seq = 0
             current_ack = 0
-            if last['tcp_segment_len'] == 0:
-                current_seq = last['ack'] + 1
-                current_ack = last['seq']
-            else:
+            if last['ip'] != packet['IP'].src:
                 current_seq = last['ack']
                 current_ack = last['seq'] + last['tcp_segment_len']
-            session_details = {'seq': current_seq, 'ack': current_ack, 'tcp_segment_len': len(packet['TCP']) - 20}
+                if last['tcp_segment_len'] == 0:
+                    if 'S' in last['flags'] or 'F' in last['flags']:
+                        current_ack += 1
+            else:
+                current_seq = last['seq'] + last['tcp_segment_len']
+                current_ack = last['ack']
+            session_details = {
+                'seq': current_seq, 
+                'ack': current_ack, 
+                'tcp_segment_len': len(packet['TCP']) - 20, 
+                'flags': packet['TCP'].flags.flagrepr(),
+                'ip': packet['IP'].src
+            }
             self.sessions[flowid].append(session_details)            
         except KeyError:
             self.sessions[flowid] = []
-            session_details = {'seq': 1, 'ack': 0, 'tcp_segment_len': len(packet['TCP']) - 20}
+            session_details = {
+                'seq': 0, 
+                'ack': 0, 
+                'tcp_segment_len': len(packet['TCP']) - 20, 
+                'flags': packet['TCP'].flags.flagrepr(),
+                'ip': packet['IP'].src
+            }
             self.sessions[flowid].append(session_details)
 
     def fix_seq_ack(self, packet):
