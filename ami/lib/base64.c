@@ -36,6 +36,7 @@
 #include <assert.h>
 
 static char encoder[]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+static char encoderurl[]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 static char decoder[256];
 static int initialized;
 
@@ -123,6 +124,64 @@ base64_encode(char *dest, int size, unsigned char *src, int slen)
 	return dlen;
 }
 
+int
+base64url_encode(char *dest, int size, unsigned char *src, int slen)
+{
+	int dlen, i, j;
+	uint32_t a, b, c, triple;
+
+	dlen = base64_encsize(slen);
+
+	// Sanity checks
+	if (src == NULL || dest == NULL)
+	{
+		return -1;
+	}
+	if (dlen + 1 > size)
+	{
+		return -1;
+	}
+	if (slen == 0)
+	{
+		if (size > 0)
+		{
+			dest[0] = 0;
+			return 0;
+		}
+		return -1;
+	}
+
+	for (i = 0, j = 0; i < slen;)
+	{
+		a = src[i++];
+
+		// b and c may be off limit
+		b = i < slen ? src[i++] : 0;
+		c = i < slen ? src[i++] : 0;
+
+		triple = (a << 16) + (b << 8) + c;
+
+		dest[j++] = encoderurl[(triple >> 18) & 0x3F];
+		dest[j++] = encoderurl[(triple >> 12) & 0x3F];
+		dest[j++] = encoderurl[(triple >> 6) & 0x3F];
+		dest[j++] = encoderurl[triple & 0x3F];
+	}
+
+	// Pad zeroes at the end
+	switch (slen % 3)
+	{
+	case 1:
+		dest[j - 2] = '=';
+	case 2:
+		dest[j - 1] = '=';
+	}
+
+	// Always add \0
+	dest[j] = 0;
+
+	return dlen;
+}
+
 char *
 base64_enc_malloc(unsigned char *src, int slen)
 {
@@ -138,6 +197,30 @@ base64_enc_malloc(unsigned char *src, int slen)
 	}
 
 	size = base64_encode(buffer, size, src, slen);
+	if (size == -1)
+	{
+		free(buffer);
+		return NULL;
+	}
+
+	return buffer;
+}
+
+char *
+base64url_enc_malloc(unsigned char *src, int slen)
+{
+	int size;
+	char *buffer;
+
+	size = base64_encsize(slen) + 1;
+
+	buffer = (char *) malloc(size);
+	if (buffer == NULL)
+	{
+		return NULL;
+	}
+
+	size = base64url_encode(buffer, size, src, slen);
 	if (size == -1)
 	{
 		free(buffer);
