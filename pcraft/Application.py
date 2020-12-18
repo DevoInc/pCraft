@@ -1,5 +1,6 @@
 import pprint
 import pyami
+import time
 
 from pcraft.Plugins import *
 from pcraft.Functions import *
@@ -9,6 +10,9 @@ class Application:
         self.literals = ["rule"] # FIXME, this should be defined by plugins
         self.ami = pyami.Ami()
         self.ami.Parse(scenariofile)
+        start_time = int(self.ami.GetStartTime())
+        if start_time > 0:
+            print("Start Time: %s" % time.ctime(start_time))
         self.plugins_loader, self.loaded_plugins = self.load_plugins(self.ami)
         self.scenariofile = scenariofile
         self.actions = self.ami.GetActions()
