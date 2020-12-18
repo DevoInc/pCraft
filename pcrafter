@@ -35,4 +35,6 @@ if __name__ == "__main__":
         loaded_plugins[action.Exec()].run(app.ami, action)
         
     wrpcap(sys.argv[2], plugins_loader.get_plugins_data().pcap)
+
+    app.finalize()
     

@@ -10,12 +10,14 @@ class Application:
         self.literals = ["rule"] # FIXME, this should be defined by plugins
         self.ami = pyami.Ami()
         self.ami.Parse(scenariofile)
-        start_time = int(self.ami.GetStartTime())
-        if start_time > 0:
-            print("Start Time: %s" % time.ctime(start_time))
+        self.start_time = int(self.ami.GetStartTime())
         self.plugins_loader, self.loaded_plugins = self.load_plugins(self.ami)
         self.scenariofile = scenariofile
         self.actions = self.ami.GetActions()
+
+    def finalize(self):
+        if self.start_time > 0:
+            print("Start Time: %s" % time.ctime(self.start_time))
         
     def load_plugins(self, _ami):
         plugins_loader = Plugins(ami=_ami, app=self, loadfunc=self.print_loading_plugins)
