@@ -48,9 +48,6 @@ ami_t *ami_new(void)
   kv_init(ami->tags);
   
   ami->variables = kh_init(varhash);
-  ami->global_variables = kh_init(strhash);
-  ami->repeat_variables = kh_init(strhash);
-  ami->local_variables = kh_init(strhash);
 
   ami->root_node = NULL;
   ami->current_node = NULL;
@@ -68,7 +65,68 @@ ami_t *ami_new(void)
   return ami;
 }
 
+int ami_variable_exists(ami_t *ami, const char *key)
+{
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->variables) return 1;  
+  
+  k = kh_put(varhash, ami->variables, key, &absent);
+  if (absent) {
+    return 0;
+  }
+  
+  return 1;
+}
+
+/* If the variable already exists, return 1. 0 otherwise. */
 int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var)
+{
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->variables) return 1;  
+  
+  k = kh_put(varhash, ami->variables, key, &absent);
+  if (absent) {
+    kh_key(ami->variables, k) = strdup(key);
+    kh_value(ami->variables, k) = var;
+  } else {
+    /* ami_variable_free(kh_value(ami->variables, k)); */
+    kh_value(ami->variables, k) = var;
+    return 1;
+  }
+  
+  return 0;
+}
+
+int ami_set_variable_int(ami_t *ami, const char *varkey, int ival)
+{
+  ami_variable_t *var;
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->variables) return 1;  
+
+  for (k = 0; k < kh_end(ami->variables); ++k) {
+    if (kh_exist(ami->variables, k)) {
+      char *key = (char *)kh_key(ami->variables, k);
+      if (!strcmp(key, varkey)) {
+	var = (ami_variable_t *)kh_value(ami->variables, k);
+	var->ival = ival;
+	return 0;
+      }
+    }
+  }
+  
+  return 1;
+}
+
+int ami_replace_variable(ami_t *ami, const char *key, ami_variable_t *var)
 {
   int absent;
   khint_t k;
@@ -83,12 +141,13 @@ int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var)
   } else {
     ami_variable_free(kh_value(ami->variables, k));
     kh_value(ami->variables, k) = var;
+    return 1;
   }
   
   return 0;
 }
 
-ami_variable_t *ami_get_newvariable(ami_t *ami, const char *key)
+ami_variable_t *ami_get_variable(ami_t *ami, const char *key)
 {
   khint_t k;
 
@@ -96,110 +155,21 @@ ami_variable_t *ami_get_newvariable(ami_t *ami, const char *key)
   int is_missing = (k == kh_end(ami->variables));
   if (is_missing) return NULL;
   ami_variable_t *var = kh_value(ami->variables, k);
-
   
   return var;
 }
 
-int ami_set_global_variable(ami_t *ami, char *key, char *val) {
-  int absent;
-  khint_t k;
-  
-  if (!ami) return 1;
-  if (!ami->global_variables) return 1;  
-
-  /* printf("%s: %s -> %s\n", __FUNCTION__, key, val); */
-  
-  k = kh_put(strhash, ami->global_variables, key, &absent);
-  if (absent) {
-    kh_key(ami->global_variables, k) = strdup(key);
-    kh_value(ami->global_variables, k) = strdup(val);
-  } else {
-    free(kh_value(ami->global_variables, k));
-    kh_value(ami->global_variables, k) = strdup(val);
-  }
-  
-  return 0;
-}
-
-int ami_set_local_variable(ami_t *ami, char *key, char *val) {
-  int absent;
-  khint_t k;
-  
-  if (!ami) return 1;
-  if (!ami->local_variables) return 1;  
-
-  if (!val) {
-    fprintf(stderr, "Cannot set value for %s: empty\n", key);
-    return 1;
-  }
-  
-  /* printf("%s: %s -> %s\n", __FUNCTION__, key, val); */
-  
-  k = kh_put(strhash, ami->local_variables, key, &absent);
-  if (absent) {
-    kh_key(ami->local_variables, k) = strdup(key);
-    kh_value(ami->local_variables, k) = strdup(val);
-  } else {
-    free(kh_value(ami->local_variables, k));
-    kh_value(ami->local_variables, k) = strdup(val);
-  }
-  
-  return 0;
-}
-
-int ami_set_repeat_variable(ami_t *ami, char *key, char *val) {
-  int absent;
-  khint_t k;
-  
-  if (!ami) return 1;
-  if (!ami->repeat_variables) return 1;  
-
-  /* printf("%s: %s -> %s\n", __FUNCTION__, key, val); */
-  
-  k = kh_put(strhash, ami->repeat_variables, key, &absent);
-  if (absent) {
-    kh_key(ami->repeat_variables, k) = strdup(key);
-    kh_value(ami->repeat_variables, k) = strdup(val);
-  } else {
-    free(kh_value(ami->repeat_variables, k));
-    kh_value(ami->repeat_variables, k) = strdup(val);
-  }
-  
-  return 0;
-}
-
-const char *ami_get_global_variable(ami_t *ami, char *key)
+ami_variable_t *ami_fetch_variable(ami_t *ami, const char *key)
 {
-  khint_t k;
-
-  k = kh_get(strhash, ami->global_variables, key);
-  int is_missing = (k == kh_end(ami->global_variables));
-  if (is_missing) return NULL;
-  const char *val = kh_value(ami->global_variables, k);
-  return val;
-}
-
-const char *ami_get_local_variable(ami_t *ami, char *key)
-{
-  khint_t k;
+  // REMOVE ME, USE NESTED_VARIABLE INSTEAD
+  /* khint_t k;   */
   
-  k = kh_get(strhash, ami->local_variables, key);
-  int is_missing = (k == kh_end(ami->local_variables));
-  if (is_missing) return NULL;
-  const char *val = kh_value(ami->local_variables, k);
-  return val;
-}
-
-const char *ami_get_repeat_variable(ami_t *ami, char *key)
-{
-  khint_t k;
+  /* k = kh_get(varhash, ami->variables, key); */
+  /* int is_missing = (k == kh_end(ami->variables)); */
+  /* if (is_missing) return NULL; */
+  /* ami_variable_t *var = kh_value(ami->variables, k); */
   
-  k = kh_get(strhash, ami->repeat_variables, key);
-  int is_missing = (k == kh_end(ami->repeat_variables));
-  if (is_missing) return NULL;
-  const char *val = kh_value(ami->repeat_variables, k);
-  return val;
+  /* return var; */
 }
 
 void ami_debug(ami_t *ami)
@@ -232,14 +202,6 @@ void ami_debug(ami_t *ami)
     }
   }
 
-  if (ami->global_variables) {
-    printf("final global variables (they can change in the flow):\n");
-    for (k = 0; k < kh_end(ami->global_variables); ++k)
-      if (kh_exist(ami->global_variables, k)) {
-	printf("\t%s => %s\n", (char *)kh_key(ami->global_variables, k), (char *)kh_value(ami->global_variables, k));
-    }
-  }
-
   printf("final new global variables (they can change in the flow):\n");
   if (ami->variables) {
     for (k = 0; k < kh_end(ami->variables); ++k)
@@ -255,46 +217,43 @@ void ami_debug(ami_t *ami)
   
 }
 
-void ami_erase_global_variables(ami_t *ami)
+int ami_erase_variable(ami_t *ami, char *varkey)
 {
   khiter_t k;
+  char *key;
+  ami_variable_t *var;
   
-  for (k = 0; k < kh_end(ami->global_variables); ++k) {
-    if (kh_exist(ami->global_variables, k)) {
-      free((char *)kh_key(ami->global_variables, k));
-      free((char *)kh_value(ami->global_variables, k));
-      kh_del(strhash, ami->global_variables, k);
+  for (k = 0; k < kh_end(ami->variables); ++k) {
+    if (kh_exist(ami->variables, k)) {
+      key = (char *)kh_key(ami->variables, k);
+      if (!strcmp(key, varkey)) {
+	var = (ami_variable_t *)kh_value(ami->variables, k);
+	free(key);
+	ami_variable_free(var);
+	kh_del(varhash, ami->variables, k);
+	return 0;
+      }
     }
   }
-  
+  return 1;
 }
 
-void ami_erase_local_variables(ami_t *ami)
+void ami_erase_variables(ami_t *ami)
 {
   khiter_t k;
+  char *key;
+  ami_variable_t *var;
   
-  for (k = 0; k < kh_end(ami->local_variables); ++k) {
-    if (kh_exist(ami->local_variables, k)) {
-      free((char *)kh_key(ami->local_variables, k));
-      free((char *)kh_value(ami->local_variables, k));
-      kh_del(strhash, ami->local_variables, k);
+  for (k = 0; k < kh_end(ami->variables); ++k) {
+    if (kh_exist(ami->variables, k)) {
+      key = (char *)kh_key(ami->variables, k);
+      /* printf("Deleting %s\n", key); */
+      var = (ami_variable_t *)kh_value(ami->variables, k);
+      free(key);
+      ami_variable_free(var);
+      kh_del(varhash, ami->variables, k);
     }
-  }
-  
-}
-
-void ami_erase_repeat_variables(ami_t *ami)
-{
-  khiter_t k;
-  
-  for (k = 0; k < kh_end(ami->repeat_variables); ++k) {
-    if (kh_exist(ami->repeat_variables, k)) {
-      free((char *)kh_key(ami->repeat_variables, k));
-      free((char *)kh_value(ami->repeat_variables, k));
-      kh_del(strhash, ami->repeat_variables, k);
-    }
-  }
-  
+  }  
 }
 
 void ami_node_close(ami_node_t *node, int right)
@@ -327,38 +286,13 @@ void ami_close(ami_t *ami)
   kv_destroy(ami->references);
   kv_destroy(ami->values_stack);
 
-  if (ami->global_variables) {
-    for (k = 0; k < kh_end(ami->global_variables); ++k) {
-      if (kh_exist(ami->global_variables, k)) {
-	free((char *)kh_key(ami->global_variables, k));
-	free((char *)kh_value(ami->global_variables, k));
-      }
-    }
-  }
-  if (ami->repeat_variables) {
-    for (k = 0; k < kh_end(ami->repeat_variables); ++k) {
-      if (kh_exist(ami->repeat_variables, k)) {
-	free((char *)kh_key(ami->repeat_variables, k));
-	free((char *)kh_value(ami->repeat_variables, k));
-      }
-    }
-  }
-  if (ami->local_variables) {
-    for (k = 0; k < kh_end(ami->local_variables); ++k) {
-      if (kh_exist(ami->local_variables, k)) {
-	free((char *)kh_key(ami->local_variables, k));
-	free((char *)kh_value(ami->local_variables, k));
-      }
-    }
-  }
+  ami_erase_variables(ami);
 
   if (ami->root_node) {
     ami_node_close(ami->root_node, 0);
   }
 
-  kh_destroy(strhash, ami->global_variables);
-  kh_destroy(strhash, ami->repeat_variables);
-  kh_destroy(strhash, ami->local_variables);
+  kh_destroy(varhash, ami->variables);
   
   free(ami);
 }
@@ -447,10 +381,11 @@ int ami_loop(ami_t *ami, foreach_action_cb action_cb, void *user_data)
 
 }
 
-void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata)
+void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata1, void *userdata2)
 {
   ami->action_cb = action_cb;
-  ami->action_cb_userdata = userdata;
+  ami->action_cb_userdata1 = userdata1;
+  ami->action_cb_userdata2 = userdata2;  
 }
 
 void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
@@ -463,53 +398,45 @@ void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval,
     }
 }
 
-char *ami_get_variable(ami_t *ami, char *key)
+char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value)
 {
-  char *retval;
-  if (!key) {
+  ami_variable_t *retvar;
+
+  if (!var_value) {
     fprintf(stderr, "Key is NULL! No Variable to extract!\n");
     return "";
   }
 
-  if (strlen(key) > 0) {
-    if (key[0] != '$') return key; // This is not a variable
+  if (strlen(var_value) > 0) {
+    if (var_value[0] != '$') return var_value; // This is not a variable
+  } else {
+    fprintf(stderr, "Variable value empty!\n");
+    return NULL;
   }
-  
-  retval = ami_get_local_variable(ami, key);
-  if (retval) return retval;
-  
-  retval = ami_get_repeat_variable(ami, key);
-  if (retval) return retval;
 
-  return ami_get_global_variable(ami, key);  
+  retvar = ami_get_variable(ami, var_value);
+  
+  return retvar->strval;
 }
 
-void ami_print_all_variables(ami_t *ami)
+int ami_get_nested_variable_as_int(ami_t *ami, char *var_value)
 {
-  khint_t k;
+  ami_variable_t *retvar;
 
-  if (ami->global_variables) {
-    printf("Global Variables:\n");
-    for (k = 0; k < kh_end(ami->global_variables); ++k)
-      if (kh_exist(ami->global_variables, k)) {
-	printf("\t%s => %s\n", (char *)kh_key(ami->global_variables, k), (char *)kh_value(ami->global_variables, k));
-      }
+  if (!var_value) {
+    fprintf(stderr, "Key is NULL! No Variable to extract!\n");
+    return -1;
   }
-  if (ami->repeat_variables) {
-    printf("Repeat Variables:\n");
-    for (k = 0; k < kh_end(ami->repeat_variables); ++k)
-      if (kh_exist(ami->repeat_variables, k)) {
-	printf("\t%s => %s\n", (char *)kh_key(ami->repeat_variables, k), (char *)kh_value(ami->repeat_variables, k));
-      }
+
+  if (strlen(var_value) > 0) {
+    if (var_value[0] != '$') return strtod(var_value, NULL); // This is not a variable
   }
-  if (ami->local_variables) {
-    printf("Local Variables:\n");
-    for (k = 0; k < kh_end(ami->local_variables); ++k)
-      if (kh_exist(ami->local_variables, k)) {
-	printf("\t%s => %s\n", (char *)kh_key(ami->local_variables, k), (char *)kh_value(ami->local_variables, k));
-      }
-  }
+
+  retvar = ami_get_variable(ami, var_value);
+  
+  return retvar->ival;
 }
+
 
 float ami_get_sleep_cursor(ami_t *ami)
 {

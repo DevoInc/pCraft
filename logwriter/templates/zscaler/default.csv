@@ -1,0 +1,38 @@
+key,default_value
+reason,Allowed
+vendor,Zscaler
+event-id,555000222003330000
+protocol,SSL
+action,Allowed
+transactionsize,4242
+responsesize,903
+requestsize,218
+urlcategory,Corporate Marketing
+serverip,192.168.0.42
+clienttranstime,16400
+requestmethod,CONNECT
+refererurl,None
+useragent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+product,NSS
+location,Prod Web1
+clientip,10.0.23.158
+status,200
+user,AWallace
+url,https://www.slashdot.42:443/foumwala
+hostname,slashdot.42
+clientpublicip,216.105.38.15
+threatcategory,None
+threatname,None
+filetype,None
+appname,browsing
+pagerrisk,0
+department,Default Department
+urlsupercategory,Business and Economy
+appclass,General Browsing
+dlpengine,None
+urlclass,Business and Economy
+threatclass,None
+dlpdictionaries,None
+fileclass,None
+bwthrottle,NO
+servertranstime,16400

@@ -1,0 +1,20 @@
+key,default_value
+event_duration,342
+src_ip_addr,192.168.0.42
+http_status_code,200
+dvc_action,TCP_NC_MISS
+http_response_body_bytes,539
+http_request_body_bytes,551
+http_request_method,GET
+network_application_protocol,http
+url_hostname,www.slashdot.42
+http_user_agent_original,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+url_path,/
+url_query,
+user_name,-
+url_category,Marketing Site
+dst_mime_type,text/html
+event_result,PROXIED
+dst_port_number,80
+dst_ip_addr,216.105.38.15
+http_referer_original,-

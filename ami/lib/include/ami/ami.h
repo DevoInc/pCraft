@@ -38,7 +38,7 @@ typedef enum _ami_error_t ami_error_t;
 
 typedef void (*print_message_cb)(char *message);
 typedef void (*sleep_cb)(int msec);
-typedef void (*ami_action_cb)(ami_action_t *action, void *userdata);
+typedef void (*ami_action_cb)(ami_action_t *action, void *userdata1, void *userdata2);
 
 struct _ami_t {
   const char *file;
@@ -57,13 +57,14 @@ struct _ami_t {
   ami_kvec_t references;
   ami_kvec_t tags;
   khash_t(varhash) *variables;
-  khash_t(strhash) *global_variables;
-  khash_t(strhash) *repeat_variables;
-  khash_t(strhash) *local_variables;
+  /* khash_t(strhash) *global_variables; */
+  /* khash_t(strhash) *repeat_variables; */
+  /* khash_t(strhash) *local_variables; */
   sleep_cb sleepcb;
   print_message_cb printmessagecb;
   ami_action_cb action_cb;
-  void *action_cb_userdata;
+  void *action_cb_userdata1;
+  void *action_cb_userdata2;
   size_t current_line;
   ami_node_t *root_node; // root
   ami_node_t *current_node;
@@ -86,25 +87,18 @@ int ami_loop(ami_t *ami, foreach_action_cb action_cb, void *user_data);
 void ami_close(ami_t *ami);
 char *ami_error_to_string(ami_t *ami);
 void ami_debug(ami_t *ami);
+int ami_erase_variable(ami_t *ami, char *varkey);  
+int ami_variable_exists(ami_t *ami, const char *key);
 int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var);
-ami_variable_t *ami_get_newvariable(ami_t *ami, const char *key); // FIXME remove new
-int ami_set_global_variable(ami_t *ami, char *key, char *val);
-/* <deprecated> */
-const char *ami_get_global_variable(ami_t *ami, char *key);
-int ami_set_local_variable(ami_t *ami, char *key, char *val);
-const char *ami_get_local_variable(ami_t *ami, char *key);
-int ami_set_repeat_variable(ami_t *ami, char *key, char *val);
-const char *ami_get_repeat_variable(ami_t *ami, char *key);
-void ami_erase_global_variables(ami_t *ami);
-void ami_erase_local_variables(ami_t *ami);
-void ami_erase_repeat_variables(ami_t *ami);
-/* </deprecated> */
-void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata);
+int ami_replace_variable(ami_t *ami, const char *key, ami_variable_t *var);
+ami_variable_t *ami_get_variable(ami_t *ami, const char *key);
+ami_variable_t *ami_fetch_variable(ami_t *ami, const char *key);  
+void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata1, void *userdata2);
 void ami_ast_tree_debug(ami_t *ami);
 void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
-char *ami_get_variable(ami_t *ami, char *key);
-void ami_print_all_variables(ami_t *ami);
 float ami_get_sleep_cursor(ami_t *ami);
+char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value);
+int ami_get_nested_variable_as_int(ami_t *ami, char *var_value);
 
 #ifdef __cplusplus
 }
