@@ -9,6 +9,7 @@ class Application:
     def __init__(self, scenariofile):
         self.literals = ["rule"] # FIXME, this should be defined by plugins
         self.ami = pyami.Ami()
+        print("Scenariofile: [%s]" % scenariofile)
         self.ami.Parse(scenariofile)
         self.start_time = int(self.ami.GetStartTime())
         self.plugins_loader, self.loaded_plugins = self.load_plugins(self.ami)
@@ -18,7 +19,9 @@ class Application:
     def finalize(self):
         if self.start_time > 0:
             print("Start Time: %s" % time.ctime(self.start_time))
-        
+        sleep_cursor = self.ami.GetSleepCursor()
+        print("Final Sleep Cursor: %d seconds; %d hours; %d days" % (int(sleep_cursor), int(sleep_cursor / 60 / 60), int(sleep_cursor / 60 / 60 / 24)))
+            
     def load_plugins(self, _ami):
         plugins_loader = Plugins(ami=_ami, app=self, loadfunc=self.print_loading_plugins)
         loaded_plugins = plugins_loader.get_loaded_plugins()
