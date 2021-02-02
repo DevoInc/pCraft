@@ -14,11 +14,13 @@
 
 namespace py = pybind11;
 
-void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
+void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata2)
 {
   ami_field_action_t *field_action;
   khint_t k;
   
+  py::object cb_func = *(py::object *)userdata2;
+
   Ami *pami = (Ami *)userdata;
   Action *action = new Action();
   action->set_name(ami_action_get_name(amiaction));
@@ -27,31 +29,24 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
   action->repeat_index = amiaction->repeat_index;
   
   // ami_action_debug(pami->_ami, amiaction);
-  
-  if (pami->_ami->global_variables) {
-    for (k = 0; k < kh_end(pami->_ami->global_variables); ++k)
-      if (kh_exist(pami->_ami->global_variables, k)) {
-	char *key = (char *)kh_key(pami->_ami->global_variables, k);
-	char *value = (char *)kh_value(pami->_ami->global_variables, k);
-	action->variables[key] = ami_get_variable(pami->_ami, value);
+
+  if (pami->_ami->variables) {
+    for (k = 0; k < kh_end(pami->_ami->variables); ++k) {
+      if (kh_exist(pami->_ami->variables, k)) {
+	const char *key = kh_key(pami->_ami->variables, k);
+	ami_variable_t *var = (ami_variable_t *)kh_value(pami->_ami->variables, k);
+	switch(var->type) {
+	case AMI_VAR_STR:
+	  action->variables[key] = ami_get_nested_variable_as_str(pami->_ami, var->strval);
+	  break;
+	case AMI_VAR_INT:
+	  char *tmpstr;
+	  asprintf(&tmpstr, "%d", var->ival);
+	  action->variables[key] = tmpstr;
+	  break;
+	}
       }
-  }
-  
-  if (pami->_ami->repeat_variables) {
-    for (k = 0; k < kh_end(pami->_ami->repeat_variables); ++k)
-      if (kh_exist(pami->_ami->repeat_variables, k)) {
-	char *key = (char *)kh_key(pami->_ami->repeat_variables, k);
-	char *value = (char *)kh_value(pami->_ami->repeat_variables, k);
-	action->variables[key] = ami_get_variable(pami->_ami, value);
-      }
-  }
-  if (pami->_ami->local_variables) {
-    for (k = 0; k < kh_end(pami->_ami->local_variables); ++k)
-      if (kh_exist(pami->_ami->local_variables, k)) {
-	char *key = (char *)kh_key(pami->_ami->local_variables, k);
-	char *value = (char *)kh_value(pami->_ami->local_variables, k);
-	action->variables[key] = ami_get_variable(pami->_ami, value);
-      }
+    }
   }
 
   for (field_action=amiaction->field_actions; field_action; field_action=field_action->next) {
@@ -61,8 +56,8 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata)
       action->field_actions[field_action->field][field_action->action][field_action->right] = "";
     }
   }
-  
-  pami->actions.push_back(action);  
+
+  cb_func(action);
 }
 
 Ami::Ami(void) {
@@ -73,16 +68,12 @@ Ami::~Ami(void) {
   ami_close(_ami);
 }
 
-std::vector<Action*> Ami::GetActions(void) {
-  return actions;
-}
-
-int Ami::Parse(std::string file) {
+int Ami::Parse(std::string file, py::object func) {
   int ret;
 
   file_path = file;
   
-  ami_set_action_callback(_ami, foreach_action, this);
+  ami_set_action_callback(_ami, foreach_action, this, &func);
 
   ret = ami_parse_file(_ami, (char *)file.c_str());
   if (ret) {
@@ -131,11 +122,11 @@ std::vector<std::string> Ami::GetTags(void) {
   return tags;
 }
 
+
 PYBIND11_MODULE(pyami, m) {
     m.doc() = "AMI Language for Python";
     py::class_<Ami>(m, "Ami")
       .def(py::init<>())
-      .def("GetActions", &Ami::GetActions)
       .def("Parse", &Ami::Parse)
       .def("GetFilePath", &Ami::GetFilePath)
       .def("GetReferences", &Ami::GetReferences)

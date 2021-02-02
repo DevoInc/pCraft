@@ -10,7 +10,7 @@ from pcraft.PluginsData import *
 from pcraft.Sessionizer import *
 
 class Plugins:
-    def __init__(self, ami=None, pluginsdir=None, app=None, arguments_dealer=None, loadfunc=None):
+    def __init__(self, ami=None, pcap_out=None, pluginsdir=None, app=None, arguments_dealer=None, loadfunc=None):
         self.ami = ami
         self.loaded_plugins = {}
         self.arguments_dealer = arguments_dealer
@@ -25,7 +25,7 @@ class Plugins:
             raise Exception("No Plugins found from %s; The engine is useless!" % pluginsdir)
 #        print(self.plugins)
 
-        self.plugins_data = PluginsData(self.ami)
+        self.plugins_data = PluginsData(self.ami, pcap_out)
         self.session = Session()
         self.app = app
         

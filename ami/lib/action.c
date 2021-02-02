@@ -20,7 +20,6 @@ ami_action_t *ami_action_new()
   action->exec = NULL;
   kv_init(action->replace_key);
   kv_init(action->replace_val);
-  action->action_variables = kh_init(actionhash);
   action->variables = kh_init(varhash);
   action->field_actions = NULL;
   action->sleep_cursor = 0;
@@ -47,77 +46,16 @@ void ami_action_close(ami_action_t *action)
   /*   free(action->replace_field); */
   /* } */
   
-  for (k = 0; k < kh_end(action->action_variables); ++k) {
-    if (kh_exist(action->action_variables, k)) {
-      free((char *)kh_key(action->action_variables, k));
-      free((char *)kh_value(action->action_variables, k));
-      kh_del(actionhash, action->action_variables, k);
+  for (k = 0; k < kh_end(action->variables); ++k) {
+    if (kh_exist(action->variables, k)) {
+      free((char *)kh_key(action->variables, k));
+      ami_variable_free((ami_variable_t *)kh_value(action->variables, k));
+      kh_del(actionhash, action->variables, k);
     }
   }
-  kh_destroy(actionhash, action->action_variables);
+  kh_destroy(actionhash, action->variables);
   
   free(action);
-}
-
-ami_action_t *ami_action_copy_variables(ami_t *ami, ami_action_t *action)
-{
-  khint_t k, k2;
-  int absent;
-  // ami->global_variables
-  
-  if (ami->global_variables) {
-    for (k = 0; k < kh_end(ami->global_variables); ++k)
-      if (kh_exist(ami->global_variables, k)) {
-	char *key = (char *)kh_key(ami->global_variables, k);
-	char *val = (char *)kh_value(ami->global_variables, k);
-	k2 = kh_put(actionhash, action->action_variables, key, &absent);
-	if (absent) {
-	  kh_key(action->action_variables, k2) = strdup(key);	  
-	  kh_value(action->action_variables, k2) = strdup(val);
-	} else {
-	  free(kh_value(action->action_variables, k2));
-	  kh_value(action->action_variables, k2) = strdup(val);
-	}
-	/* free(key); */
-	/* free(val); */
-      }
-  }
-  if (ami->repeat_variables) {
-    for (k = 0; k < kh_end(ami->repeat_variables); ++k)
-      if (kh_exist(ami->repeat_variables, k)) {
-	char *key = (char *)kh_key(ami->repeat_variables, k);
-	char *val = (char *)kh_value(ami->repeat_variables, k);
-	k2 = kh_put(actionhash, action->action_variables, key, &absent);
-	if (absent) {
-	  kh_key(action->action_variables, k2) = strdup(key);	  
-	  kh_value(action->action_variables, k2) = strdup(val);
-	} else {
-	  free(kh_value(action->action_variables, k2));
-	  kh_value(action->action_variables, k2) = strdup(val);
-	}
-	/* free(key); */
-	/* free(val); */
-      }
-  }  
-  if (ami->local_variables) {
-    for (k = 0; k < kh_end(ami->local_variables); ++k)
-      if (kh_exist(ami->local_variables, k)) {
-	char *key = (char *)kh_key(ami->local_variables, k);
-	char *val = (char *)kh_value(ami->local_variables, k);
-	k2 = kh_put(actionhash, action->action_variables, key, &absent);
-	if (absent) {
-	  kh_key(action->action_variables, k2) = strdup(key);	  
-	  kh_value(action->action_variables, k2) = strdup(val);
-	} else {
-	  free(kh_value(action->action_variables, k2));
-	  kh_value(action->action_variables, k2) = strdup(val);
-	}
-	/* free(key); */
-	/* free(val); */
-      }
-  }
-
-  return action;
 }
 
 void ami_action_debug(ami_t *ami, ami_action_t *action)
@@ -130,18 +68,20 @@ void ami_action_debug(ami_t *ami, ami_action_t *action)
     fprintf(stderr, "action is NULL, nothing to debug!\n");
     return;
   }
-  
-  printf("action->name:%s\n", action->name);
-  printf("action->exec:%s\n", action->exec);
-  
-  if (action->action_variables) {
-    for (k = 0; k < kh_end(action->action_variables); ++k)
-      if (kh_exist(action->action_variables, k)) {
-	char *key = (char *)kh_key(action->action_variables, k);
-	char *val = (char *)kh_value(action->action_variables, k);
-	printf("action_variable: %s:%s\n", key, val);
+
+  if (action->name) printf("action->name:%s\n", action->name);
+  if (action->exec) printf("action->exec:%s\n", action->exec);
+
+  if (action->variables) {
+    printf("*** action->variables\n");
+    for (k = 0; k < kh_end(action->variables); ++k)
+      if (kh_exist(action->variables, k)) {
+	char *key = (char *)kh_key(action->variables, k);
+	ami_variable_t *val = (ami_variable_t *)kh_value(action->variables, k);
+	printf("action variable name:%s;value:\n", key);
+	ami_variable_debug(val);
       }
-  }
+  } else { printf("no action variable!\n");}
   size_t n_array = kv_size(action->replace_key);
   if (n_array > 0) {
     for (size_t i = 0; i< n_array; i++) {
@@ -149,7 +89,7 @@ void ami_action_debug(ami_t *ami, ami_action_t *action)
       char *value = kv_A(action->replace_val, i);      
       if (strlen(value) > 0) {
 	if (value[0] == '$') {
-	  value = ami_get_global_variable(ami, value);
+	  value = ami_get_variable(ami, value);
 	}		    
       }
       printf("action replace %s with %s\n", key, value);
@@ -157,44 +97,44 @@ void ami_action_debug(ami_t *ami, ami_action_t *action)
   }
 }
 
-int ami_action_get_variables_len(ami_action_t *action)
-{
-  khint_t k;
-  int len = 0;
+/* int ami_action_get_variables_len(ami_action_t *action) */
+/* { */
+/*   khint_t k; */
+/*   int len = 0; */
   
-  if (action->action_variables) {
-    for (k = 0; k < kh_end(action->action_variables); ++k) {
-      len++;
-    }
-  }
-  return len;
-}
+/*   if (action->action_variables) { */
+/*     for (k = 0; k < kh_end(action->action_variables); ++k) { */
+/*       len++; */
+/*     } */
+/*   } */
+/*   return len; */
+/* } */
 
-char *ami_action_get_variables_key_at_pos(ami_action_t *action, int pos)
-{
-  khint_t k;
-  int len = 0;
+/* char *ami_action_get_variables_key_at_pos(ami_action_t *action, int pos) */
+/* { */
+/*   khint_t k; */
+/*   int len = 0; */
   
-  if (action->action_variables) {
-    for (k = 0; k < kh_end(action->action_variables); ++k) {
-      if (kh_exist(action->action_variables, k)) {
-	if (k == pos) {
-	  return (char *)kh_key(action->action_variables, k);
-	}
-      }
-    }
-  }
-  return NULL;
-}
+/*   if (action->action_variables) { */
+/*     for (k = 0; k < kh_end(action->action_variables); ++k) { */
+/*       if (kh_exist(action->action_variables, k)) { */
+/* 	if (k == pos) { */
+/* 	  return (char *)kh_key(action->action_variables, k); */
+/* 	} */
+/*       } */
+/*     } */
+/*   } */
+/*   return NULL; */
+/* } */
 
-const char *ami_action_get_variable(ami_action_t *action, char *key)
+ami_variable_t *ami_action_get_variable(ami_action_t *action, char *key)
 {
   khint_t k;
   
-  k = kh_get(actionhash, action->action_variables, key);
-  int is_missing = (k == kh_end(action->action_variables));
+  k = kh_get(actionhash, action->variables, key);
+  int is_missing = (k == kh_end(action->variables));
   if (is_missing) return NULL;
-  const char *val = kh_value(action->action_variables, k);
+  ami_variable_t *val = kh_value(action->variables, k);
   return val;
 }
 
@@ -218,7 +158,7 @@ char *ami_action_get_replacement_value_at_pos_with_ami(ami_t *ami, ami_action_t 
   char *value = kv_A(action->replace_val, pos);
   if (strlen(value) > 0) {
     if (value[0] == '$') {
-      value = ami_get_global_variable(ami, value);
+      value = ami_get_variable(ami, value);
     }
   }
   
@@ -276,7 +216,7 @@ int ami_action_set_variable(ami_action_t *action, const char *key, ami_variable_
   
   if (!action) return 1;
   if (!action->variables) return 1;  
-  
+
   k = kh_put(varhash, action->variables, key, &absent);
   if (absent) {
     kh_key(action->variables, k) = strdup(key);
@@ -295,7 +235,7 @@ ami_variable_t *ami_action_get_newvariable(ami_action_t *action, const char *key
 
   if (!action) return NULL;
   if (!action->variables) return NULL;  
-  
+
   k = kh_get(varhash, action->variables, key);
   int is_missing = (k == kh_end(action->variables));
   if (is_missing) return NULL;

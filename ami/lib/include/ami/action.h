@@ -36,7 +36,6 @@ typedef struct _ami_field_action_t ami_field_action_t;
 struct _ami_action_t {
   char *name;
   khash_t(varhash) *variables;
-  khash_t(actionhash) *action_variables;
   ami_field_action_t *field_actions;
   char *replace_field;
   action_kvec_t replace_key;
@@ -49,14 +48,13 @@ typedef struct _ami_action_t ami_action_t;
 
 ami_action_t *ami_action_new();
 void ami_action_close(ami_action_t *action);
-ami_action_t *ami_action_copy_variables(ami_t *ami, ami_action_t *action);
 void ami_action_debug(ami_t *ami, ami_action_t *action);
 char *ami_action_get_name(ami_action_t *action);
 char *ami_action_get_exec(ami_action_t *action);
 void ami_action_copy_replacements(ami_t *ami, ami_action_t *action);
-int ami_action_get_variables_len(ami_action_t *action);
-char *ami_action_get_variables_key_at_pos(ami_action_t *action, int pos);
-const char *ami_action_get_variable(ami_action_t *action, char *key);
+/* int ami_action_get_variables_len(ami_action_t *action); */
+/* char *ami_action_get_variables_key_at_pos(ami_action_t *action, int pos); */
+ami_variable_t *ami_action_get_variable(ami_action_t *action, char *key);
 int ami_action_get_replacement_len(ami_action_t *action);
 char *ami_action_get_replacement_field(ami_action_t *action);
 char *ami_action_get_replacement_key_at_pos(ami_action_t *action, int pos);

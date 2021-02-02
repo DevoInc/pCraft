@@ -20,21 +20,9 @@ if __name__ == "__main__":
         print("Syntax: %s script.ami output.pcap" % sys.argv[0])
         sys.exit(1)
 
-    app = Application(scenariofile=sys.argv[1])
-    plugins_loader = app.plugins_loader
-    loaded_plugins = app.loaded_plugins
-    
     print("Opening Script File %s" % sys.argv[1])
-    scenario_file = app.scenariofile
-
-    for action in app.actions:
-        print("Executing action %s using %s\n" % (action.Name(), action.Exec()))
-        # print(action.Variables())
-        for k, v in action.Variables().items():
-            plugins_loader.plugins_data._set(k[1:], v) # we trim the $ sign for the key name
-        loaded_plugins[action.Exec()].run(app.ami, action)
-        
-    wrpcap(sys.argv[2], plugins_loader.get_plugins_data().pcap)
+    
+    app = Application(scenariofile=sys.argv[1], pcap_out=sys.argv[2])
 
     app.finalize()
     

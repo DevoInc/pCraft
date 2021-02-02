@@ -1,7 +1,8 @@
 import time
+from scapy.utils import PcapWriter
 
 class PluginsData(object):
-    def __init__(self, ami):
+    def __init__(self, ami, pcapout):
         self.pcap = []
         self.args = {}
         self.current_time = time.time()
@@ -11,9 +12,12 @@ class PluginsData(object):
         else:
             self.packet_time = self.current_time - self.ami.GetSleepCursor()
 
+        self.outpcap = PcapWriter(pcapout, append=True, sync=True)
+            
     def AddPacket(self, action, pkt):
         pkt.time = self.packet_time + action.GetSleepCursor()
-        self.pcap.append(pkt)
+        self.outpcap.write(pkt)
+#        self.pcap.append(pkt)
         
     def _set(self, key, value):
         self.args[key] = value

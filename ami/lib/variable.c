@@ -53,6 +53,11 @@ ami_variable_t *ami_variable_new_float(float fval)
 
 void ami_variable_set_string(ami_variable_t *var, char *strval)
 {
+  if (!var) {
+    fprintf(stderr, "Error: Empty ami_variable_t!\n");
+    return;
+  }
+  
   var->type = AMI_VAR_STR;
   var->strval = strdup(strval);
   var->len = strlen(strval);
@@ -120,7 +125,8 @@ ami_variable_t *ami_variable_array_get_at_index(ami_variable_t *array, size_t in
 ami_variable_t *ami_variable_copy(ami_variable_t *var)
 {
   ami_variable_t *new;
-  
+  ami_variable_t *varp;
+
   if (!var) {
     fprintf(stderr, "Please provide a variable!\n");
     return NULL;
@@ -129,7 +135,10 @@ ami_variable_t *ami_variable_copy(ami_variable_t *var)
   new = ami_variable_new();
   switch(var->type) {
   case AMI_VAR_ARRAY:
-    printf("Cannot copy an array, right now: FIXME!\n");
+    for (varp=var->array; varp; varp=varp->array) {
+      ami_variable_t *newchild = ami_variable_copy(varp);
+      ami_variable_array_append(new, newchild);
+    }
     break;
   case AMI_VAR_INT:
     ami_variable_set_int(new, var->ival);
@@ -149,44 +158,51 @@ ami_variable_t *ami_variable_copy(ami_variable_t *var)
   return new;
 }
 
-void ami_variable_debug(ami_variable_t *var)
+void _ami_variable_debug_indent(ami_variable_t *var, int indent)
 {
   ami_variable_t *varp;
-
   /* fprintf(stderr, "%s\n", __FUNCTION__); */
 
+  FILE *out = stdout;
+  
   if (!var) {
-    fprintf(stderr, "NULL variable, cannot debug!\n");
+    fprintf(out, "NULL variable, cannot debug!\n");
     return;
   }
   
   switch(var->type) {
   case AMI_VAR_ARRAY:
-    fprintf(stderr, "AMI_VAR_ARRAY\n");
+    fprintf(out, "AMI_VAR_ARRAY\n");
     for (varp=var->array; varp; varp=varp->array) {
-      ami_variable_debug(varp);
+      _ami_variable_debug_indent(varp, 1);
     }
     break;
   case AMI_VAR_INT:
-    fprintf(stderr, "AMI_VAR_INT\n");
-    fprintf(stderr, "\t%d\n", var->ival);
+    fprintf(out, "%sAMI_VAR_INT\n", indent?"\t":"");
+    fprintf(out, "%s\t%d\n", indent?"\t":"", var->ival);
     break;
   case AMI_VAR_FLOAT:
-    fprintf(stderr, "AMI_VAR_FLOAT\n");
-    fprintf(stderr, "\t%f\n", var->fval);    
+    fprintf(out, "%sAMI_VAR_FLOAT\n", indent?"\t":"");
+    fprintf(out, "%s\t%f\n", indent?"\t":"", var->fval);    
     break;
   case AMI_VAR_STR:
-    fprintf(stderr, "AMI_VAR_STR\n");
-    fprintf(stderr, "\t[len:%ld] %s\n", var->len, var->strval);        
+    fprintf(out, "%sAMI_VAR_STR\n",indent?"\t":"");
+    fprintf(out, "%s\t[len:%ld] %s\n", indent?"\t":"",var->len, var->strval);        
     break;
   default:
-    fprintf(stderr, "No such variable type:%d\n", var->type);
+    fprintf(out, "No such variable type:%d\n", var->type);
     break;
   }
 }
 
+void ami_variable_debug(ami_variable_t *var)
+{
+  _ami_variable_debug_indent(var, 0);
+}
+
 void ami_variable_free(ami_variable_t *var)
 {
+  /* printf("Calling %s\n", __FUNCTION__); */
   if (!var) return;
   if (var->type == AMI_VAR_STR) {
     free(var->strval);
