@@ -241,12 +241,7 @@ variable: GVARIABLE EQUAL varset {
      fprintf(stderr, "Error with variable %s: it must be local to an action.\n", $1);
      exit(1);
    }
-   
-   // FIXME: For now this is a fieldvar, but this must change. We must
-   // clarify between a global variable $var which can be used and redefined
-   // anywhere and a local variable _var which is only used in the scope of
-   // an action   
-  /* ami_append_item(ami, AMI_NT_FIELDVAR, $1, 0, 0, 0); */
+
    ami_append_item(ami, AMI_NT_LOCALVARNAME, $1, 0, 0, 0);
 
   free($1);
@@ -590,8 +585,18 @@ array: GVARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
     printf("[parse.y] array[...]\n");
   }
 
-  ami_append_item(ami, AMI_NT_ARRAYVAR, NULL, ami->arguments_count, 0, 0);
+  ami_append_item(ami, AMI_NT_ARRAYVAR, $1, ami->arguments_count, 0, 0);
 
+  ami->arguments_count = 0;
+  
+ }
+| LVARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
+  if (ami->debug) {
+    printf("[parse.y] array[...]\n");
+  }
+
+  ami_append_item(ami, AMI_NT_ARRAYVAR, $1, ami->arguments_count, 0, 0);
+  
   ami->arguments_count = 0;
   
  }
@@ -602,7 +607,16 @@ array_item: GVARIABLE OPENBRACKET INTEGER CLOSEBRACKET {
     printf("[parse.y] array_item[%d]\n", $3);
   }
 
-  ami_append_item(ami, AMI_NT_ARRAYGET, NULL, $3, 0, 0);
+  ami_append_item(ami, AMI_NT_ARRAYGET, $1, $3, 0, 0);
+  
+ }
+|
+ LVARIABLE OPENBRACKET INTEGER CLOSEBRACKET {
+  if (ami->debug) {
+    printf("[parse.y] array_item[%d]\n", $3);
+  }
+
+  ami_append_item(ami, AMI_NT_ARRAYGET, $1, $3, 0, 0);
   
  }
  ;
