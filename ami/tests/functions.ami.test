@@ -1,18 +1,35 @@
 ami_version 1
 ------------------------
 * Action name(Foo) exec(yo) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
-* Repeat Variables:
 * Local Variables:
-    lv:[0] $upperstr = THIS IS AN UPPER 1234, STRING!
-    lv:[1] $lowerstr = this, a lower 1234 string!
-    lv:[2] $hostname = FODOBUBEC
-    lv:[3] $rc4var = 64ba58a2b1fd550e61ebdc4faf37c395637e6b5499722c1a3e71c033322f4c8ba5d7ed1a304edf513bd18c09c12229b0
-    lv:[4] $sha1 = 943a702d06f34599aee1f8da8ef9f7296031d699
-    lv:[5] $md5 = 6cd3556deb0da54bca060b4c39479839
-    lv:[6] $b64var = Zm9vYmFy
-    lv:[7] $sha256 = 315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3
-    lv:[8] $uuidv5 = 0787322a-d709-54b0-80f5-64b85c9eba4c
 * Field Actions:
 +++++++
 * Global Variables:
+[0] $upperstr
+AMI_VAR_STR
+	[len:30] THIS IS AN UPPER 1234, STRING!
+[1] $lowerstr
+AMI_VAR_STR
+	[len:26] this, a lower 1234 string!
+[2] $hostname
+AMI_VAR_STR
+	[len:9] FODOBUBEC
+[3] $rc4var
+AMI_VAR_STR
+	[len:96] 64ba58a2b1fd550e61ebdc4faf37c395637e6b5499722c1a3e71c033322f4c8ba5d7ed1a304edf513bd18c09c12229b0
+[4] $sha1
+AMI_VAR_STR
+	[len:40] 943a702d06f34599aee1f8da8ef9f7296031d699
+[5] $md5
+AMI_VAR_STR
+	[len:32] 6cd3556deb0da54bca060b4c39479839
+[6] $b64var
+AMI_VAR_STR
+	[len:8] Zm9vYmFy
+[7] $sha256
+AMI_VAR_STR
+	[len:64] 315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3
+[8] $uuidv5
+AMI_VAR_STR
+	[len:36] 0787322a-d709-54b0-80f5-64b85c9eba4c
 

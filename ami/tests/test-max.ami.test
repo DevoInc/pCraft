@@ -2,12 +2,14 @@ ami_version 1
 ------------------------
 * Action name(FieldAssignment) exec(FieldAssignement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
 * Repeat Variables:
+* Old Local Variables:
 * Local Variables:
 * Field Actions:
     field:CommandLine;action:set;left:;right:foo
 ------------------------
 * Action name(FieldReplacement) exec(FieldReplacement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
 * Repeat Variables:
+* Old Local Variables:
 * Local Variables:
 * Field Actions:
     field:ip;action:replace;left:172.16.0.32;right:192.168.0.55
@@ -15,12 +17,14 @@ ami_version 1
 ------------------------
 * Action name(FieldAssignment) exec(FieldAssignement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
 * Repeat Variables:
+* Old Local Variables:
 * Local Variables:
 * Field Actions:
     field:CommandLine;action:set;left:;right:foo
 ------------------------
 * Action name(FieldReplacement) exec(FieldReplacement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Repeat Variables:
+* Old Local Variables:
 * Local Variables:
 * Field Actions:
     field:ip;action:replace;left:172.16.0.32;right:192.168.0.55
@@ -28,12 +32,14 @@ ami_version 1
 ------------------------
 * Action name(FieldAssignment) exec(FieldAssignement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Repeat Variables:
+* Old Local Variables:
 * Local Variables:
 * Field Actions:
     field:CommandLine;action:set;left:;right:foo
 ------------------------
 * Action name(FieldReplacement) exec(FieldReplacement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(3)
 * Repeat Variables:
+* Old Local Variables:
 * Local Variables:
 * Field Actions:
     field:ip;action:replace;left:172.16.0.32;right:192.168.0.55
@@ -41,43 +47,48 @@ ami_version 1
 ------------------------
 * Action name(FieldAssignment) exec(FieldAssignement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(3)
 * Repeat Variables:
+* Old Local Variables:
 * Local Variables:
 * Field Actions:
     field:CommandLine;action:set;left:;right:foo
 ------------------------
 * Action name(GlobalVar) exec(GlobalVar) ami->sleep_cursor(0.420000); sleep_cursor(0.420000) repeat_index(0)
 * Repeat Variables:
+* Old Local Variables:
 * Local Variables:
 * Field Actions:
 ------------------------
 * Action name(LocalVar) exec(LocalVar) ami->sleep_cursor(10.420000); sleep_cursor(10.420000) repeat_index(0)
 * Repeat Variables:
-* Local Variables:
+* Old Local Variables:
     lv:[0] $localvar = mylocalvar
     lv:[1] $localfromglobal = my global variable
     lv:[2] $fromanotherlocal = mylocalvar
+* Local Variables:
 * Field Actions:
 ------------------------
 * Action name(RunFunctions) exec(RunFunctions) ami->sleep_cursor(10.420000); sleep_cursor(10.420000) repeat_index(1)
 * Repeat Variables:
-* Local Variables:
+* Old Local Variables:
     lv:[0] $localvar = mylocalvar
     lv:[1] $rc4var = 6da20ca7f0c0145973f1da06b53f
     lv:[2] $b64e = UGxlYXNlIGVuY29kZSB0aGlzIHN0cmluZw==
     lv:[3] $localfromglobal = my global variable
     lv:[4] $fromanotherlocal = mylocalvar
     lv:[5] $uuidv5 = 7f4bdf58-ba65-5b32-9a12-3265f2c20d83
+* Local Variables:
 * Field Actions:
 ------------------------
 * Action name(RunFunctions) exec(RunFunctions) ami->sleep_cursor(10.420000); sleep_cursor(10.420000) repeat_index(2)
 * Repeat Variables:
-* Local Variables:
+* Old Local Variables:
     lv:[0] $localvar = mylocalvar
     lv:[1] $localfromglobal = my global variable
     lv:[2] $fromanotherlocal = mylocalvar
     lv:[3] $rc4var = 6da20ca7f0c0145973f1da06b53f
     lv:[4] $b64e = UGxlYXNlIGVuY29kZSB0aGlzIHN0cmluZw==
     lv:[5] $uuidv5 = 7f4bdf58-ba65-5b32-9a12-3265f2c20d83
+* Local Variables:
 * Field Actions:
 +++++++
 * Global Variables:
