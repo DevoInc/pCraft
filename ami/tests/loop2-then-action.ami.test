@@ -34,7 +34,7 @@ AMI_VAR_STR
 	[len:9] 127.0.0.1
 [4] $filename
 AMI_VAR_STR
-	[len:18] mail-phishing.pcap
+	[len:11] gdrive.pcap
 [5] $index
 AMI_VAR_INT
 	2

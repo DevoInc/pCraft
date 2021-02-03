@@ -155,10 +155,12 @@ char *ami_action_get_replacement_key_at_pos(ami_action_t *action, int pos)
 
 char *ami_action_get_replacement_value_at_pos_with_ami(ami_t *ami, ami_action_t *action, int pos)
 {
+  ami_variable_t *var;
   char *value = kv_A(action->replace_val, pos);
   if (strlen(value) > 0) {
     if (value[0] == '$') {
-      value = ami_get_variable(ami, value);
+      var = ami_get_variable(ami, value);
+      value = var->strval;
     }
   }
   
