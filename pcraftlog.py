@@ -14,14 +14,14 @@ from pcraft.Application import *
 from LogWrite import LogWrite
 
 def ami2pcap(amifile, pcap):
-    app = Application(scenariofile=amifile)
+    app = Application(scenariofile=amifile, pcap_out=pcap)
     plugins_loader = app.plugins_loader
     loaded_plugins = app.loaded_plugins
     
     print("Opening Script File %s" % amifile)
     scenario_file = app.scenariofile
 
-    print("Executing %d actions" % len(app.actions))
+    # print("Executing %d actions" % len(app.actions))
     
     for action in app.actions:
         for k, v in action.Variables().items():
