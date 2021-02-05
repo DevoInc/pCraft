@@ -3,7 +3,7 @@ ami_version 1
 sleep 0.1
 
 action Foo {
-       exec _dump
+       exec Void
 }
 
 sleep 5
