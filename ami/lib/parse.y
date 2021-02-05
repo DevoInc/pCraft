@@ -81,9 +81,14 @@ typedef void *yyscan_t;
 %token DEBUGOFF
 %token EXIT
 %token GOTO
+%token PLUS
+%token MINUS
+
+%left PLUS MINUS
 
 %type <char *> string
 %type <int> variable_int
+%type <int> expression
 
 %%
 
@@ -116,6 +121,7 @@ input:
        | input string
        | input array
        | input array_item
+       | input expression
        ;
 
 
@@ -310,7 +316,7 @@ sleep_float: SLEEP FLOAT {
   ami_append_item(ami, AMI_NT_SLEEP, NULL, 0, $2, 0);
 }
 ;
-sleep_int: SLEEP INTEGER {
+sleep_int: SLEEP expression {
   if (ami->debug) {
     printf("[parse.y] sleep: SLEEP INTEGER(%d)\n", $2);
   }
@@ -621,6 +627,10 @@ array_item: GVARIABLE OPENBRACKET INTEGER CLOSEBRACKET {
  }
  ;
 
+expression: INTEGER { $$ = $1; }
+          | expression PLUS expression { $$ = $1 + $3; }
+          | expression MINUS expression { $$ = $1 - $3; }
+;
 %%
 
 

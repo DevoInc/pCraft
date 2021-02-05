@@ -200,6 +200,8 @@ FALSE false
 "." return TOK_DOT;
 "," return TOK_COMMA;
 ":" return TOK_COLON;
+"+" return TOK_PLUS;
+"-" return TOK_MINUS;
 
 {AMIVERSION}      { return TOK_AMIVERSION; }
 {AMIVERSIONSHORT} { return TOK_AMIVERSION; }
