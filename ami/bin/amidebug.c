@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 
   if (argc > 2) {
     if (!strcmp("--node", argv[2])) {
-      ami_node_debug(ami->root_node);
+      ami_node_debug2(ami->root_node, 0);
     }
   }
   ami_ast_walk_actions(ami);

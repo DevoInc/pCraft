@@ -84,14 +84,14 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   ami_variable_t *localvar;
   ami_variable_t *tmp_var = NULL;
 
-  
-  for (n = node; n; n = right ? n->right : n->next) {
+  for (n = node; n; n = n->right ? n->right : n->next) {
+
     if ((n->strval) && (!n->is_verbatim)) {
       if (n->type == AMI_NT_VARVALSTR) {
 	replaced_var = _replace_strval_from_variables(ami, n->strval);
       }
     }
-    
+
     switch(n->type) {
     case AMI_NT_REFERENCE:
       kv_push(char *, ami->references, n->strval);      
@@ -128,24 +128,20 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       /* ami_erase_local_variables(ami); */
       break;
     case AMI_NT_REPEAT:
-      {
-	char *lastval = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-	/* ami_variable_t *repeat = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
-	repeat_n = (int)strtod(lastval, NULL);
-	free(lastval);
-      }
       
-      ami->in_repeat = 1;
+      /* ami->current_repeat_block++; */
+      tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+      index = (int)strtod(tmp_str, NULL);
       tmp_var = ami_variable_new();
-      for (index = 1; index <= repeat_n; index++) {
-	ami_variable_set_int(tmp_var, index);
-	ami_set_variable(ami, n->strval, tmp_var);
-	
-      	walk_node(ami, n->right, index, 1);
+      ami_variable_set_int(tmp_var, index);
+      ami_set_variable(ami, n->strval, tmp_var);
+
+      for (size_t i = 1; i < index; i++) {
+	walk_node(ami, n->next, index, 1);
       }
-      /* ami_erase_repeat_variables(ami); */
-      ami->in_repeat = 0;
-      index = 0;
+      break;
+    case AMI_NT_REPEATCLOSE:
+      ami->current_repeat_block--;
       break;
     case AMI_NT_MESSAGE:
       printf("%s\n", n->strval);

@@ -332,8 +332,8 @@ repeat: REPEAT varset AS GVARIABLE OPENSECTION {
 
   ami->_opened_sections++;
   ami->_repeat_block_id = ami->_opened_sections;
-  
-  ami_node_create(&ami->root_node, AMI_NT_REPEAT, $4, 0, 0, 0);
+
+  ami_append_repeat(ami, AMI_NT_REPEAT, $4, 0, 0, 0);
   
   free($4);
   }
@@ -355,7 +355,9 @@ closesection: CLOSESECTION {
     if (ami->debug) {
       printf("[parse.y] Closing Repeat Block\n");
     }
-      ami->_repeat_block_id = 0;
+    /* printf("We close the repeat that has block id:%d\n", ami->_repeat_block_id); */
+    ami->_repeat_block_id = 0;
+    ami_append_item(ami, AMI_NT_REPEATCLOSE, NULL, 0, 0, 0);
   }
   
   ami->_opened_sections--;

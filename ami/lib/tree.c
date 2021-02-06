@@ -14,6 +14,7 @@ ami_node_t *ami_node_new(void)
   }
   
   node->strval = NULL;
+  node->lineno = 0;
   node->is_verbatim = 0;
   node->intval = 0;
   node->fval = 0;
@@ -53,6 +54,35 @@ void ami_node_debug(ami_node_t *node)
       }
     }
   }
+}
+
+void _print_tab_for_level(int level) {
+  int i;
+  for (i = 0; i < level; i++) {
+    printf("\t");
+  }
+}
+
+void ami_node_debug2(ami_node_t *node, int level)
+{
+  ami_node_t *n;
+  
+  for (n = node; n; n = n->next) {
+    _print_tab_for_level(level);
+    printf("---------\n");
+    _print_tab_for_level(level);    
+    printf("type:%s\n", ami_node_names[n->type]);
+    if (n->strval) {
+          _print_tab_for_level(level);
+      printf("strval:%s\n", n->strval);
+    }
+    _print_tab_for_level(level);
+    printf("intval:%d\n", n->intval);
+    if (n->right) {
+      ami_node_debug2(n->right, level+1);
+    }
+  }
+  
 }
 
 ami_tree_t *ami_tree_new(void)
@@ -268,7 +298,7 @@ ami_node_t *ami_node_append_right(ami_node_t *nodedst, ami_node_t *nodesrc)
 }
 
 
-void ami_node_create(ami_node_t **root, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
+ami_node_t *ami_node_create(ami_node_t **root, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
 {
   ami_node_t *node = ami_node_new();
 
@@ -279,10 +309,12 @@ void ami_node_create(ami_node_t **root, ami_node_type_t type, char *strval, int 
   node->intval = intval;
   node->fval = fval;
 
-  *root = ami_node_append(*root, node);  
+  *root = ami_node_append(*root, node);
+
+  return node;
 }
 
-void ami_node_create_right(ami_node_t **root, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
+ami_node_t *ami_node_create_right(ami_node_t **root, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
 {
   ami_node_t *node = ami_node_new();
 
@@ -293,5 +325,7 @@ void ami_node_create_right(ami_node_t **root, ami_node_type_t type, char *strval
   node->intval = intval;
   node->fval = fval;
 
-  *root = ami_node_append_right(*root, node);  
+  *root = ami_node_append_right(*root, node);
+
+  return node;
 }

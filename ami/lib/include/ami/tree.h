@@ -21,6 +21,7 @@ enum _ami_node_type_t {
        AMI_NT_REPLACE,   // foo => blah
        AMI_NT_ACTION,    // action Foo {
        AMI_NT_ACTIONCLOSE, // } for an action
+       AMI_NT_REPEATCLOSE, // } for a repeat
        AMI_NT_MESSAGE,   // message "Hello"
        AMI_NT_FUNCTION,  // csv("a", "b", ..)
        AMI_NT_FUNCARG,   // "a"
@@ -37,6 +38,7 @@ typedef enum _ami_node_type_t ami_node_type_t;
 
 struct _ami_node_t {
   ami_node_type_t type;
+  int lineno; // Holds the line where this was created to drop an error later.
   char *strval;
   int is_verbatim;
   int   intval;
@@ -76,6 +78,7 @@ static const char *ami_node_names[] = {
        "AMI_NT_IF_ELSE",
        "AMI_NT_LABEL",
        "AMI_NT_GOTO",
+       "AMI_NT_LOCALVARNAME",
        "AMI_NT_VARNAME",
        "AMI_NT_VARVALSTR",
        "AMI_NT_VARVALINT",
@@ -83,6 +86,7 @@ static const char *ami_node_names[] = {
        "AMI_NT_REPLACE",
        "AMI_NT_ACTION",
        "AMI_NT_ACTIONCLOSE",
+       "AMI_NT_REPEATCLOSE",
        "AMI_NT_MESSAGE",
        "AMI_NT_FUNCTION",
        "AMI_NO_FUNCARG",
@@ -91,7 +95,9 @@ static const char *ami_node_names[] = {
        "AMI_NT_FIELDFUNC",
        "AMI_NT_FIELDVAR",
        "AMI_NT_EXIT",
-       "AMI_NT_SLEEP"
+       "AMI_NT_SLEEP",
+       "AMI_NT_ARRAYVAR",
+       "AMI_NT_ARRAYGET",
 };
 
 ami_tree_t *ami_tree_new(void);
@@ -109,10 +115,11 @@ void ami_tree_append_str_no_leaves(ami_tree_t *tree, ami_node_type_t type, char 
 
 ami_node_t *ami_node_new(void);
 void ami_node_debug(ami_node_t *node);
+void ami_node_debug2(ami_node_t *node, int level);
 ami_node_t *ami_node_prepend(ami_node_t *nodedst, ami_node_t *nodesrc);
 ami_node_t *ami_node_append(ami_node_t *nodedst, ami_node_t *nodesrc);
 ami_node_t *ami_node_append_right(ami_node_t *nodedst, ami_node_t *nodesrc);
-void ami_node_create(ami_node_t **root, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
-void ami_node_create_right(ami_node_t **root, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
+ami_node_t *ami_node_create(ami_node_t **root, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
+ami_node_t *ami_node_create_right(ami_node_t **root, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
 
 #endif // _AMI_TREE_H_

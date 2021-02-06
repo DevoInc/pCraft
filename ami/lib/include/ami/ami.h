@@ -18,9 +18,9 @@
 extern "C" {
 #endif
 
-
 #define MAX_VARIABLES 1
-
+#define MAX_NESTED_REPEAT 16
+  
 KHASH_MAP_INIT_STR(strhash, char *)
 
 struct _ami_kvec_t {
@@ -40,6 +40,7 @@ typedef void (*print_message_cb)(char *message);
 typedef void (*sleep_cb)(int msec);
 typedef void (*ami_action_cb)(ami_action_t *action, void *userdata1, void *userdata2);
 
+/* TODO: Cleanup this structure. */
 struct _ami_t {
   const char *file;
   ami_error_t error;
@@ -57,9 +58,6 @@ struct _ami_t {
   ami_kvec_t references;
   ami_kvec_t tags;
   khash_t(varhash) *variables;
-  /* khash_t(strhash) *global_variables; */
-  /* khash_t(strhash) *repeat_variables; */
-  /* khash_t(strhash) *local_variables; */
   sleep_cb sleepcb;
   print_message_cb printmessagecb;
   ami_action_cb action_cb;
@@ -74,6 +72,9 @@ struct _ami_t {
   int replace_count;
   float sleep_cursor; // How much sleep we need to add to our action. Starts at 0, then adds every sleep we need.
   int arguments_count;
+  int repeat_indices[MAX_NESTED_REPEAT];
+  int repeat_indices_cursor[MAX_NESTED_REPEAT];  
+  int current_repeat_block;
 };
 typedef struct _ami_t ami_t;
 
@@ -96,6 +97,7 @@ ami_variable_t *ami_fetch_variable(ami_t *ami, const char *key);
 void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata1, void *userdata2);
 void ami_ast_tree_debug(ami_t *ami);
 void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
+void ami_append_repeat(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
 float ami_get_sleep_cursor(ami_t *ami);
 char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value);
 int ami_get_nested_variable_as_int(ami_t *ami, char *var_value);

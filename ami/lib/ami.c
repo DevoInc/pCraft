@@ -18,7 +18,8 @@ ami_t *ami_new(void)
 {
   ami_t *ami;
   int retval;
-
+  int i;
+  
   ami = (ami_t *)malloc(sizeof(ami_t));
   if (!ami) {
     fprintf(stderr, "Cannot allocate ami_t!\n");
@@ -61,6 +62,14 @@ ami_t *ami_new(void)
   ami->in_action = 0;
 
   ami->arguments_count = 0;
+
+  for (i = 0; i < MAX_NESTED_REPEAT; i++) {
+    ami->repeat_indices[i] = 0;
+  }
+  for (i = 0; i < MAX_NESTED_REPEAT; i++) {
+    ami->repeat_indices_cursor[i] = 0;
+  }
+  ami->current_repeat_block = 0;
   
   return ami;
 }
@@ -390,12 +399,22 @@ void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata
 
 void ami_append_item(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
 {
-    if (ami->_repeat_block_id > 0) {
-      // All the stuff we repeat come one after another
-      ami_node_create_right(&ami->root_node, type, strval, intval, fval, 0);
+  /* printf("\tnode type:%s\n", ami_node_names[type]); */
+  if (ami->_repeat_block_id > 0) {
+      ami_node_create(&ami->current_node, type, strval, intval, fval, 0);
     } else {
       ami_node_create(&ami->root_node, type, strval, intval, fval, 0);
+      ami->current_node = NULL;
     }
+}
+
+void ami_append_repeat(ami_t *ami, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
+{
+      if (ami->current_node) {
+	ami->current_node = ami_node_create_right(&ami->current_node, type, strval, intval, fval, 0);
+      } else {
+	ami->current_node = ami_node_create_right(&ami->root_node, type, strval, intval, fval, 0);
+      }
 }
 
 char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value)
