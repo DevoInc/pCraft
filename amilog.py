@@ -36,8 +36,16 @@ def action_handler(action):
     action_time = event_time + action.GetSleepCursor()
     
     variables = action.Variables()
-    # print(variables)
-    event = tb.get_event(variables["$event_type"], variables["$event_template"], None)
+    field_actions = action.FieldActions()
+    
+    kvdict = {}
+    for field, atype in field_actions.items():
+        for at, aval in atype.items():
+            if at == "set":
+                for k, v in aval.items():
+                    kvdict[field] = k
+
+    event = tb.get_event(variables["$event_type"], variables["$event_template"], kvdict)
     et = datetime.fromtimestamp(action_time)
     event = et.strftime(event)
     
