@@ -1,0 +1,16 @@
+av 1
+
+message "Hello, world!"
+
+repeat 2 as $i1 {
+    message "first repeat"
+    action A2 {
+    	exec Void
+    }
+    repeat 4 as $i2 {
+	message "second repeat"
+	action N3 {
+	    exec Void
+	}
+    }
+}

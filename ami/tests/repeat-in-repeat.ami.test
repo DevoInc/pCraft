@@ -1,0 +1,61 @@
+ami_version 1
+Hello, world!
+first repeat
+------------------------
+* Action name(A2) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
+* Local Variables:
+* Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(4)
+* Local Variables:
+* Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(4)
+* Local Variables:
+* Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(4)
+* Local Variables:
+* Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
+* Local Variables:
+* Field Actions:
+first repeat
+------------------------
+* Action name(A2) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
+* Local Variables:
+* Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(4)
+* Local Variables:
+* Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(4)
+* Local Variables:
+* Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(4)
+* Local Variables:
+* Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
+* Local Variables:
+* Field Actions:
++++++++
+* Global Variables:
+[0] $i1
+AMI_VAR_INT
+	2
+[1] $i2
+AMI_VAR_INT
+	4
+

@@ -67,7 +67,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 {
   ami_node_t *n;
   ami_action_t *action;
-  int index;
+  int index = 0;
   char *stack_str = NULL; // Keeping the last value
   int stack_int = 0;
   char *tmp_str;
