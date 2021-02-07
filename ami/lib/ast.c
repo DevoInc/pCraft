@@ -71,6 +71,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   char *stack_str = NULL; // Keeping the last value
   int stack_int = 0;
   char *tmp_str;
+  float tmp_float;
   /* static char *csv_args[4] = { NULL, NULL, NULL, NULL }; // For now, we only have the CSV function */
   kvec_t(char *) values_stack;
   static int varpos = 0;  
@@ -606,8 +607,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       varpos = 0;
       break;
     case AMI_NT_SLEEP:
-      ami->sleep_cursor += n->intval;
-      ami->sleep_cursor += n->fval;
+      tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+      tmp_float = (float)strtof(tmp_str, NULL);
+      ami->sleep_cursor += tmp_float;
       break;
     case AMI_NT_ARRAYVAR:
       /* printf("We set the values for our array. We have %d values\n", n->intval); */

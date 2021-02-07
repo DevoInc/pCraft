@@ -88,6 +88,7 @@ typedef void *yyscan_t;
 
 %type <char *> string
 %type <int> variable_int
+%type <float> variable_float
 %type <int> expression
 
 %%
@@ -103,8 +104,7 @@ input:
        | input tag
        | input message
        | input variable
-       | input sleep_float
-       | input sleep_int
+       | input sleep_varset
        | input repeat
        | input closesection
        | input action
@@ -256,9 +256,11 @@ variable: GVARIABLE EQUAL varset {
 
 varset:   variable_string
         | variable_int
+        | variable_float
         | variable_function
         | variable_variable
         | variable_array
+        /* | variable_expression */
         ;
 
 variable_string: string {
@@ -278,6 +280,16 @@ variable_int: INTEGER {
   }
 
   ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0, 0);
+  $$ = $1;
+}
+;
+
+variable_float: FLOAT {
+  if (ami->debug) {
+    printf("[parse.y] variable_float: FLOAT(%d)\n", $1);
+  }
+
+  ami_append_item(ami, AMI_NT_VARVALFLOAT, NULL, 0, $1, 0);
   $$ = $1;
 }
 ;
@@ -308,20 +320,15 @@ variable_array:   array
                 | array_item
                 ;
 
-sleep_float: SLEEP FLOAT {
+/* variable_expression: expression */
+/* ; */
+
+sleep_varset: SLEEP varset {
   if (ami->debug) {
-    printf("[parse.y] sleep: SLEEP FLOAT(%f)\n", $2);
+    printf("[parse.y] sleep: SLEEP varset\n");
   }
 
-  ami_append_item(ami, AMI_NT_SLEEP, NULL, 0, $2, 0);
-}
-;
-sleep_int: SLEEP expression {
-  if (ami->debug) {
-    printf("[parse.y] sleep: SLEEP INTEGER(%d)\n", $2);
-  }
-
-  ami_append_item(ami, AMI_NT_SLEEP, NULL, $2, 0, 0);
+  ami_append_item(ami, AMI_NT_SLEEP, NULL, 0, 0, 0);
 }
 ;
 
