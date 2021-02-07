@@ -84,7 +84,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   ami_variable_t *localvar;
   ami_variable_t *tmp_var = NULL;
 
-  for (n = node; n; n = n->right ? n->right : n->next) {
+  for (n = node; n; n = n->next) {
 
     if ((n->strval) && (!n->is_verbatim)) {
       if (n->type == AMI_NT_VARVALSTR) {
@@ -127,8 +127,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       ami_action_close(action);
       /* ami_erase_local_variables(ami); */
       break;
-    case AMI_NT_REPEAT:
-      
+    case AMI_NT_REPEAT:      
       /* ami->current_repeat_block++; */
       tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
       index = (int)strtod(tmp_str, NULL);
@@ -630,7 +629,13 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       
       break;
     }
-  }
+
+    if (n->right) {
+      walk_node(ami, n->right, index, 1);
+    }
+  } // For loop
+
+  
 }
 
 int ami_ast_walk_actions(ami_t *ami)
