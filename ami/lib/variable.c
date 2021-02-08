@@ -200,6 +200,26 @@ void ami_variable_debug(ami_variable_t *var)
   _ami_variable_debug_indent(var, 0);
 }
 
+char *ami_variable_to_string(ami_variable_t *var)
+{
+  char *retstr;
+  
+  switch(var->type) {
+  case AMI_VAR_INT:
+    asprintf(&retstr, "%d", var->ival);
+    return retstr;
+    break;
+  case AMI_VAR_FLOAT:
+    asprintf(&retstr, "%f", var->fval);
+    return retstr;
+    break;
+  case AMI_VAR_STR:
+    return strdup(var->strval);
+    break;
+  }
+  return "None";
+}
+
 void ami_variable_free(ami_variable_t *var)
 {
   /* printf("Calling %s\n", __FUNCTION__); */

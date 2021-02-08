@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
 
@@ -42,6 +43,44 @@ void simple_foreach_action(ami_action_t *action, void *userdata1, void *userdata
     printf("    field:%s;action:%s;left:%s;right:%s\n", field_action->field, field_action->action, field_action->left?field_action->left:"", field_action->right);
   }
 
+}
+
+void break_foreach_action(ami_action_t *action, void *userdata1, void *userdata2)
+{
+  ami_field_action_t *field_action;
+  char c;
+  khint_t k;
+  int count = 0;
+
+  ami_t *ami = (ami_t *)userdata1;
+  printf("<press enter>");
+
+  while (c = getchar()) {
+    fflush(stdin);
+    if (c == '\n'){
+      printf("action %s {\n", action->name);
+      printf("\texec %s\n", action->exec);
+
+      if (ami->variables) {
+	for (k = 0; k < kh_end(ami->variables); ++k)
+	  if (kh_exist(ami->variables, k)) {
+	    char *key = (char *)kh_key(ami->variables, k);
+	    ami_variable_t *value = (ami_variable_t *)kh_value(ami->variables, k);
+	    if (value->type == AMI_VAR_STR) {
+	      printf("\t%s = \"%s\"\n", key, ami_variable_to_string(value));
+	    } else {
+	      printf("\t%s = %s\n", key, ami_variable_to_string(value));
+	    }
+	    /* ami_variable_debug(value); */
+	    count++;
+	  }
+      }      
+      printf("}\n");
+      
+      
+      break;
+    }
+  }
 }
 
 void simple_print_global_variables(ami_t *ami)
@@ -93,6 +132,17 @@ int simple_debug(const char *amifile)
   return 0;
 }
 
+int break_debug(const char *amifile)
+{
+  ami_t *ami;
+  ami = ami_new();
+  ami_set_action_callback(ami, break_foreach_action, ami, NULL);
+  ami_parse_file(ami, amifile);
+  ami_ast_walk_actions(ami);
+  ami_close(ami);
+  return 0;
+}
+
 int quiet_debug(const char *amifile)
 {
   ami_t *ami;
@@ -111,7 +161,7 @@ int main(int argc, char **argv)
   int ret;
   
   if (argc < 2) {
-    fprintf(stderr, "Syntax: %s file.ami [--node|--ami|--simple|--quiet]\n", argv[0]);
+    fprintf(stderr, "Syntax: %s file.ami [--node|--ami|--simple|--break|--quiet]\n", argv[0]);
     return 1;
   }
 
@@ -129,6 +179,12 @@ int main(int argc, char **argv)
   
   printf("Starting AMI Debugger!\n");
 
+  if (argc > 2) {
+    if (!strcmp("--break", argv[2])) {
+      return break_debug(argv[1]);
+    }
+  }  
+  
   ami = ami_new();
   if (!ami) {
     printf("Closing amidebug\n");

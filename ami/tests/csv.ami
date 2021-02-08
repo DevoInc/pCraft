@@ -1,0 +1,13 @@
+av 1
+
+repeat 2 as $index {
+    $first = csv(file.amidir("test.csv"), $index, field="first", true)
+    $second = csv(file.amidir("test.csv"), $index, field="second", true)
+    $third = csv(file.amidir("test.csv"), $index, field="third", true)
+
+    action one {
+	exec Void
+    }
+    
+}
+
