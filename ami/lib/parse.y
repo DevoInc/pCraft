@@ -87,9 +87,10 @@ typedef void *yyscan_t;
 %left PLUS MINUS
 
 %type <char *> string
-%type <int> variable_int
-%type <float> variable_float
-%type <int> expression
+%type <int> variable_expression_int
+%type <float> variable_expression_float
+%type <int> expression_int
+%type <float> expression_float
 
 %%
 
@@ -121,7 +122,8 @@ input:
        | input string
        | input array
        | input array_item
-       | input expression
+       | input expression_int
+       | input expression_float
        ;
 
 
@@ -255,12 +257,11 @@ variable: GVARIABLE EQUAL varset {
 ;
 
 varset:   variable_string
-        | variable_int
-        | variable_float
+        | variable_expression_int
+        | variable_expression_float
         | variable_function
         | variable_variable
         | variable_array
-        /* | variable_expression */
         ;
 
 variable_string: string {
@@ -274,25 +275,6 @@ variable_string: string {
 }
 ;
 
-variable_int: INTEGER {
-  if (ami->debug) {
-    printf("[parse.y] variable_int: INTEGER(%d)\n", $1);
-  }
-
-  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0, 0);
-  $$ = $1;
-}
-;
-
-variable_float: FLOAT {
-  if (ami->debug) {
-    printf("[parse.y] variable_float: FLOAT(%f)\n", $1);
-  }
-
-  ami_append_item(ami, AMI_NT_VARVALFLOAT, NULL, 0, $1, 0);
-  $$ = $1;
-}
-;
 
 variable_function: function {
   if (ami->debug) {
@@ -320,8 +302,19 @@ variable_array:   array
                 | array_item
                 ;
 
-/* variable_expression: expression */
-/* ; */
+variable_expression_int: expression_int {
+  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0, 0);
+  $$ = $1;
+ }
+;
+
+variable_expression_float: expression_float {
+  ami_append_item(ami, AMI_NT_VARVALFLOAT, NULL, 0, $1, 0);
+
+  $$ = $1;
+ }
+;
+
 
 sleep_varset: SLEEP varset {
   if (ami->debug) {
@@ -636,9 +629,14 @@ array_item: GVARIABLE OPENBRACKET INTEGER CLOSEBRACKET {
  }
  ;
 
-expression: INTEGER { $$ = $1; }
-          | expression PLUS expression { $$ = $1 + $3; }
-          | expression MINUS expression { $$ = $1 - $3; }
+expression_int: INTEGER { $$ = $1; }
+          | expression_int PLUS expression_int { $$ = $1 + $3; }
+          | expression_int MINUS expression_int { $$ = $1 - $3; }
+;
+
+expression_float: FLOAT { $$ = $1; }
+          | expression_float PLUS expression_float { $$ = $1 + $3; }
+          | expression_float MINUS expression_float { $$ = $1 - $3; }
 ;
 %%
 
