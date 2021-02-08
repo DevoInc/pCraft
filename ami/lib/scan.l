@@ -8,6 +8,9 @@
 %{
 #define YYSTYPE AMI_YYSTYPE
 
+#define _GNU_SOURCE
+#include <stdio.h>
+
 #include <parse.h>
 #include <libgen.h>
 

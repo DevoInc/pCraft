@@ -18,7 +18,9 @@ typedef void *yyscan_t;
 
 %code provides
 {
+
   void ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...);
+  int get_lineno(yyscan_t scanner);
 }
 
 %code top
@@ -196,7 +198,7 @@ reference: REFERENCE string {
     printf("[parse.y](reference: REFERENCE STRING):%s\n", $2);
   }  
   /* kv_push(char *, ami->references, ref); */
-  ami_node_create(&ami->root_node, AMI_NT_REFERENCE, $2, 0, 0, 0);
+  ami_node_create(&ami->root_node, get_lineno(scanner), AMI_NT_REFERENCE, $2, 0, 0, 0);
   
   free($2);
 }
@@ -206,7 +208,7 @@ tag: TAG string {
   if (ami->debug) {
     printf("[parse.y](tag: TAG STRING):%s\n", $2);
   }
-  ami_node_create(&ami->root_node, AMI_NT_TAG, $2, 0, 0, 0);
+  ami_node_create(&ami->root_node, get_lineno(scanner), AMI_NT_TAG, $2, 0, 0, 0);
 
   free($2);
 }
@@ -214,7 +216,7 @@ tag: TAG string {
 
 message: MESSAGE string {
 
-  ami_append_item(ami, AMI_NT_MESSAGE, $2, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_MESSAGE, $2, 0, 0, 0);
 
   /* if (ami->debug) { */
   /*   printf("[parse.y](message: MESSAGE STRING): %s\n", $2); */
@@ -236,7 +238,7 @@ variable: GVARIABLE EQUAL varset {
   }
 
    /* ami_node_create(&ami->root_node, AMI_NT_VARNAME, $1, 0); */
-  ami_append_item(ami, AMI_NT_VARNAME, $1, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARNAME, $1, 0, 0, 0);
   
   free($1);
  }
@@ -250,7 +252,7 @@ variable: GVARIABLE EQUAL varset {
      exit(1);
    }
 
-   ami_append_item(ami, AMI_NT_LOCALVARNAME, $1, 0, 0, 0);
+   ami_append_item(ami, get_lineno(scanner), AMI_NT_LOCALVARNAME, $1, 0, 0, 0);
 
   free($1);
  }
@@ -269,7 +271,7 @@ variable_string: string {
     printf("[parse.y] variable_string: STRING(%s)\n", $1);
   }  
     
-  ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALSTR, $1, 0, 0, 0);
   
   free($1);
 }
@@ -292,7 +294,7 @@ variable_variable: GVARIABLE {
     }
 
     
-    ami_append_item(ami, AMI_NT_VARVAR, $1, 0, 0, 0);
+    ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVAR, $1, 0, 0, 0);
 
     free($1);
 }
@@ -303,13 +305,13 @@ variable_array:   array
                 ;
 
 variable_expression_int: expression_int {
-  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALINT, NULL, $1, 0, 0);
   $$ = $1;
  }
 ;
 
 variable_expression_float: expression_float {
-  ami_append_item(ami, AMI_NT_VARVALFLOAT, NULL, 0, $1, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALFLOAT, NULL, 0, $1, 0);
 
   $$ = $1;
  }
@@ -321,7 +323,7 @@ sleep_varset: SLEEP varset {
     printf("[parse.y] sleep: SLEEP varset\n");
   }
 
-  ami_append_item(ami, AMI_NT_SLEEP, NULL, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_SLEEP, NULL, 0, 0, 0);
 }
 ;
 
@@ -334,7 +336,7 @@ repeat: REPEAT varset AS GVARIABLE OPENSECTION {
   ami->_opened_sections++;
   ami->_repeat_block_id = ami->_opened_sections;
 
-  ami_append_repeat(ami, AMI_NT_REPEAT, $4, 0, 0, 0);
+  ami_append_repeat(ami, get_lineno(scanner), AMI_NT_REPEAT, $4, 0, 0, 0);
   
   free($4);
   }
@@ -349,7 +351,7 @@ closesection: CLOSESECTION {
     if (ami->debug) {
       printf("[parse.y] Closing Action Block\n");
     }
-    ami_append_item(ami, AMI_NT_ACTIONCLOSE, NULL, 0, 0, 0);
+    ami_append_item(ami, get_lineno(scanner), AMI_NT_ACTIONCLOSE, NULL, 0, 0, 0);
   }
 
   if (ami->_repeat_block_id == ami->_opened_sections) {
@@ -358,7 +360,7 @@ closesection: CLOSESECTION {
     }
     /* printf("We close the repeat that has block id:%d\n", ami->_repeat_block_id); */
     ami->_repeat_block_id = 0;
-    ami_append_item(ami, AMI_NT_REPEATCLOSE, NULL, 0, 0, 0);
+    ami_append_item(ami, get_lineno(scanner), AMI_NT_REPEATCLOSE, NULL, 0, 0, 0);
   }
   
   ami->_opened_sections--;
@@ -375,7 +377,7 @@ action: ACTION WORD OPENSECTION {
   ami->_opened_sections++;
   ami->_action_block_id = ami->_opened_sections;
 
-  ami_append_item(ami, AMI_NT_ACTION, $2, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_ACTION, $2, 0, 0, 0);
   /* ami_node_create(&ami->root_node, AMI_NT_ACTION, $2, 0); */
   
   free($2);
@@ -387,7 +389,7 @@ field_function_inline: FIELD OPENBRACKET string CLOSEBRACKET DOT function {
    printf("[parse.y] field_function_inline: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET DOT function\n", $3);
   }
 
-  ami_append_item(ami, AMI_NT_FIELDFUNC, $3, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_FIELDFUNC, $3, 0, 0, 0);
   
   free($3);
 }
@@ -398,7 +400,7 @@ field_assigned_to_variable: FIELD OPENBRACKET string CLOSEBRACKET EQUAL varset {
     printf("[parse.y] field_assigned_to_variable: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET EQUAL varset\n", $3);
   }
 
-  ami_append_item(ami, AMI_NT_FIELDVAR, $3, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_FIELDVAR, $3, 0, 0, 0);
 
  }
 ;
@@ -408,7 +410,7 @@ exec: EXEC WORD {
     printf("[parse.y] exec: EXEC WORD(%s)\n", $2);
   }
 
-  ami_append_item(ami, AMI_NT_EXEC, $2, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_EXEC, $2, 0, 0, 0);
   
   free($2);
 }
@@ -419,7 +421,7 @@ function: FUNCTIONNAME OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
     printf("[parse.y] function: FUNCTIONNAME(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
   }
 
-  ami_append_item(ami, AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0);
 
   ami->arguments_count = 0;
   
@@ -430,7 +432,7 @@ function: FUNCTIONNAME OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
     printf("[parse.y] function: WORD(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
   }
 
-  ami_append_item(ami, AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0);
 
   ami->arguments_count = 0;
   
@@ -465,7 +467,7 @@ function_argument_assign: string ASSIGN varset {
 
   ami->arguments_count++;
   
-  ami_append_item(ami, AMI_NT_REPLACE, $1, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_REPLACE, $1, 0, 0, 0);
   
   free($1);
 }
@@ -478,7 +480,7 @@ function_argument_string: string {
 
   ami->arguments_count++;
   
-  ami_append_item(ami, AMI_NT_VARVALSTR, $1, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALSTR, $1, 0, 0, 0);
 
   free($1);
 }
@@ -492,7 +494,7 @@ function_argument_int: INTEGER {
   ami->arguments_count++;
 
   
-  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $1, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALINT, NULL, $1, 0, 0);
 }
 ;
 
@@ -503,7 +505,7 @@ function_argument_variable: GVARIABLE {
 
   ami->arguments_count++;
   
-  ami_append_item(ami, AMI_NT_VARVAR, $1, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVAR, $1, 0, 0, 0);
   
   free($1);
 }
@@ -516,7 +518,7 @@ function_argument_word_eq_string: WORD EQUAL string {
 
   ami->arguments_count++;
   
-  ami_append_item(ami, AMI_NT_VARVALSTR, $3, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALSTR, $3, 0, 0, 0);
   
   free($1);
   free($3);
@@ -530,7 +532,7 @@ function_argument_word_eq_int: WORD EQUAL INTEGER {
 
   ami->arguments_count++;
   
-  ami_append_item(ami, AMI_NT_VARVALINT, NULL, $3, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALINT, NULL, $3, 0, 0);
   
   free($1);
 }
@@ -594,7 +596,7 @@ array: GVARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
     printf("[parse.y] array[...]\n");
   }
 
-  ami_append_item(ami, AMI_NT_ARRAYVAR, $1, ami->arguments_count, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYVAR, $1, ami->arguments_count, 0, 0);
 
   ami->arguments_count = 0;
   
@@ -604,7 +606,7 @@ array: GVARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
     printf("[parse.y] array[...]\n");
   }
 
-  ami_append_item(ami, AMI_NT_ARRAYVAR, $1, ami->arguments_count, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYVAR, $1, ami->arguments_count, 0, 0);
   
   ami->arguments_count = 0;
   
@@ -616,7 +618,7 @@ array_item: GVARIABLE OPENBRACKET varset CLOSEBRACKET {
     printf("[parse.y] array_item[varset]\n");
   }
 
-  ami_append_item(ami, AMI_NT_ARRAYGET, $1, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYGET, $1, 0, 0, 0);
   
  }
 | LVARIABLE OPENBRACKET varset CLOSEBRACKET {
@@ -624,7 +626,7 @@ array_item: GVARIABLE OPENBRACKET varset CLOSEBRACKET {
     printf("[parse.y] array_item[varset]\n");
   }
 
-  ami_append_item(ami, AMI_NT_ARRAYGET, $1, 0, 0, 0);  
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYGET, $1, 0, 0, 0);  
  }
  ;
 
@@ -654,3 +656,8 @@ ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...)
   fputc('\n', stderr);
 }
 
+int get_lineno(yyscan_t scanner)
+{
+  (void) scanner;
+  return ami_yyget_lineno();
+}
