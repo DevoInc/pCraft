@@ -585,12 +585,14 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	/* char *field = ami_get_variable(ami, field_val_stack); */
 	char *line_val_stack = kv_A(ami->values_stack, kv_size(ami->values_stack)-3);
 	/* printf("line val:%s\n", line_val_stack); */
+	char *line_as_string = NULL;
 	ami_variable_t *line_val = ami_get_variable(ami, line_val_stack);
 	if (!line_val) {
 	  fprintf(stderr, "[line:%d] Cannot get the variable value from %s\n", n->lineno, kv_A(ami->values_stack, kv_size(ami->values_stack)-3));
 	  exit(1);
 	}
-	int line_in_csv = line_val->ival;
+	line_as_string = ami_variable_to_string(line_val);
+	int line_in_csv = strtod(line_as_string, NULL);
 	char *file = kv_A(ami->values_stack, kv_size(ami->values_stack)-4);
 	/* char *file_stack = kv_A(ami->values_stack, kv_size(ami->values_stack)-4); */
 	/* printf("file stack:%s\n", file_stack); */
