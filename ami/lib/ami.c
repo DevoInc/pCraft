@@ -98,7 +98,7 @@ int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var)
   
   if (!ami) return 1;
   if (!ami->variables) return 1;  
-  
+
   k = kh_put(varhash, ami->variables, key, &absent);
   if (absent) {
     kh_key(ami->variables, k) = strdup(key);

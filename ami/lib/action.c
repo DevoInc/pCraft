@@ -130,8 +130,11 @@ void ami_action_debug(ami_t *ami, ami_action_t *action)
 ami_variable_t *ami_action_get_variable(ami_action_t *action, char *key)
 {
   khint_t k;
+
+  if (!action) return NULL;
+  if (!action->variables) return NULL;  
   
-  k = kh_get(actionhash, action->variables, key);
+  k = kh_get(varhash, action->variables, key);
   int is_missing = (k == kh_end(action->variables));
   if (is_missing) return NULL;
   ami_variable_t *val = kh_value(action->variables, k);
@@ -229,21 +232,6 @@ int ami_action_set_variable(ami_action_t *action, const char *key, ami_variable_
   }
 
   return 0;
-}
-
-ami_variable_t *ami_action_get_newvariable(ami_action_t *action, const char *key)
-{
-  khint_t k;
-
-  if (!action) return NULL;
-  if (!action->variables) return NULL;  
-
-  k = kh_get(varhash, action->variables, key);
-  int is_missing = (k == kh_end(action->variables));
-  if (is_missing) return NULL;
-  ami_variable_t *var = kh_value(action->variables, k);
-  
-  return var;
 }
 
 void ami_field_action_debug(ami_action_t *action)

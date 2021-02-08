@@ -132,12 +132,13 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       /* ami->current_repeat_block++; */
       tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
       index = (int)strtod(tmp_str, NULL);
+      
       tmp_var = ami_variable_new();
-      ami_variable_set_int(tmp_var, index);
-      ami_set_variable(ami, n->strval, tmp_var);
-
       for (size_t i = 1; i < index; i++) {
-	walk_node(ami, n->next, index, 1);
+	ami_variable_set_int(tmp_var, i);
+	ami_set_variable(ami, n->strval, tmp_var);
+	
+	walk_node(ami, n->next, i, 1);
       }
       break;
     case AMI_NT_REPEATCLOSE:
@@ -632,8 +633,18 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       
       break;
     case AMI_NT_ARRAYGET:
-      array_get_index = n->intval;
-      kv_push(char *, ami->values_stack, n->strval);
+      /* array_get_index = n->intval; */
+      tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+      /* printf("str:%s\n", tmp_str); */
+      if (tmp_str) {
+	ami_variable_t *var = ami_action_get_variable(action, n->strval);
+	if (!var) {
+	  printf("Cannot get variable %s\n", n->strval);
+	}
+	ami_variable_debug(var);
+      }
+      printf("Get from array:%s; variable name:%s\n", tmp_str, n->strval);
+      kv_push(char *, ami->values_stack, strdup(n->strval));
       
       break;
     }

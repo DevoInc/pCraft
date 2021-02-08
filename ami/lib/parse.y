@@ -325,6 +325,7 @@ sleep_varset: SLEEP varset {
 }
 ;
 
+
 repeat: REPEAT varset AS GVARIABLE OPENSECTION {
   if (ami->debug) {
     printf("[parse.y] repeat: REPEAT varset AS GVARIABLE(%s) OPENSECTION)\n", $4);
@@ -610,22 +611,20 @@ array: GVARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
  }
  ;
 
-array_item: GVARIABLE OPENBRACKET INTEGER CLOSEBRACKET {
+array_item: GVARIABLE OPENBRACKET varset CLOSEBRACKET {
   if (ami->debug) {
-    printf("[parse.y] array_item[%d]\n", $3);
+    printf("[parse.y] array_item[varset]\n");
   }
 
-  ami_append_item(ami, AMI_NT_ARRAYGET, $1, $3, 0, 0);
+  ami_append_item(ami, AMI_NT_ARRAYGET, $1, 0, 0, 0);
   
  }
-|
- LVARIABLE OPENBRACKET INTEGER CLOSEBRACKET {
+| LVARIABLE OPENBRACKET varset CLOSEBRACKET {
   if (ami->debug) {
-    printf("[parse.y] array_item[%d]\n", $3);
+    printf("[parse.y] array_item[varset]\n");
   }
 
-  ami_append_item(ami, AMI_NT_ARRAYGET, $1, $3, 0, 0);
-  
+  ami_append_item(ami, AMI_NT_ARRAYGET, $1, 0, 0, 0);  
  }
  ;
 
