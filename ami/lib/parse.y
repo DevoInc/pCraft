@@ -286,7 +286,7 @@ variable_int: INTEGER {
 
 variable_float: FLOAT {
   if (ami->debug) {
-    printf("[parse.y] variable_float: FLOAT(%d)\n", $1);
+    printf("[parse.y] variable_float: FLOAT(%f)\n", $1);
   }
 
   ami_append_item(ami, AMI_NT_VARVALFLOAT, NULL, 0, $1, 0);
