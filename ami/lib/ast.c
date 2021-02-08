@@ -86,7 +86,6 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   ami_variable_t *tmp_var = NULL;
 
   for (n = node; n; n = n->next) {
-
     if ((n->strval) && (!n->is_verbatim)) {
       if (n->type == AMI_NT_VARVALSTR) {
 	replaced_var = _replace_strval_from_variables(ami, n->strval);
@@ -114,16 +113,18 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     case AMI_NT_ACTIONCLOSE:
       ami->in_action = 0;
 
-      /* ami_field_action_debug(action); */
-      if (right) {
-	action->repeat_index = repeat_index;
-      }
-      action->sleep_cursor = ami->sleep_cursor;
-      /* action = ami_action_copy_variables(ami, action); */
-      if (ami->action_cb) {
-	ami->action_cb(action, ami->action_cb_userdata1, ami->action_cb_userdata2);
-      } else {
-	fprintf(stderr,"*** Warning: No Action Callback Set!\n");
+      if (repeat_index >= 0) {
+	/* ami_field_action_debug(action); */
+	if (right) {
+	  action->repeat_index = repeat_index;
+	}
+	action->sleep_cursor = ami->sleep_cursor;
+	/* action = ami_action_copy_variables(ami, action); */
+	if (ami->action_cb) {
+	  ami->action_cb(action, ami->action_cb_userdata1, ami->action_cb_userdata2);
+	} else {
+	  fprintf(stderr,"*** Warning: No Action Callback Set!\n");
+	}
       }
       ami_action_close(action);
       /* ami_erase_local_variables(ami); */
@@ -134,7 +135,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       index = (int)strtod(tmp_str, NULL);
       
       tmp_var = ami_variable_new();
-      for (size_t i = 1; i < index; i++) {
+      for (size_t i = 1; i <= index; i++) {
 	ami_variable_set_int(tmp_var, i);
 	ami_set_variable(ami, n->strval, tmp_var);
 	
@@ -585,20 +586,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	/* char *field = ami_get_variable(ami, field_val_stack); */
 	char *line_val_stack = kv_A(ami->values_stack, kv_size(ami->values_stack)-3);
 	/* printf("line val:%s\n", line_val_stack); */
-	char *line_as_string = NULL;
-	ami_variable_t *line_val = ami_get_variable(ami, line_val_stack);
-	if (!line_val) {
-	  fprintf(stderr, "[line:%d] Cannot get the variable value from %s\n", n->lineno, kv_A(ami->values_stack, kv_size(ami->values_stack)-3));
-	  exit(1);
-	}
-	line_as_string = ami_variable_to_string(line_val);
+	char *line_as_string = ami_get_nested_variable_as_str(ami, line_val_stack);
+	
 	int line_in_csv = strtod(line_as_string, NULL);
 	char *file = kv_A(ami->values_stack, kv_size(ami->values_stack)-4);
-	/* char *file_stack = kv_A(ami->values_stack, kv_size(ami->values_stack)-4); */
-	/* printf("file stack:%s\n", file_stack); */
-	/* char *file = ami_get_variable(ami, file_stack); */
-	
-	/* printf("file:%s;line_in_csv:%d;field:%s;has_header:%d\n", file, line_in_csv, field, has_header); */
+
 	char *result = ami_csvread_get_field_at_line(file, line_in_csv, field, has_header);
 	if (!result) {
 	  fprintf(stderr, "Error reading CSV file %s, field:%s, line:%d\n", file, field, line_in_csv);
@@ -652,7 +644,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     }
 
     if (n->right) {
-      walk_node(ami, n->right, index, 1);
+	walk_node(ami, n->right, -1, 1);
     }
   } // For loop
 
