@@ -293,6 +293,14 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64url_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("sin", n->strval)) {
+	ami_variable_t *arg = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	char *arg_str = ami_variable_to_string(arg);
+	float fval = (float)strtof(arg_str, NULL);
+	float fres = sinf(fval);
+	char *outstr;
+	asprintf(&outstr, "%f", fres);
+	kv_push(char *, ami->values_stack, outstr);	
       } else if (!strcmp("ip.gethostbyname", n->strval)) {
 	struct hostent *he;
 	const char *hostname = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
