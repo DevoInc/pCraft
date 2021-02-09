@@ -4,6 +4,7 @@
 #include <time.h>
 #include <string.h>
 #include <errno.h>
+#include <math.h>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -574,6 +575,17 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	int rout = (rand() % (to - from + 1)) + from;
 	asprintf(&randstr, "%d", rout);
+	kv_push(char *, ami->values_stack, randstr);		
+      } else if (!strcmp("random.float", n->strval)) {
+	char *randstr;
+
+	float to = (float)strtof(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
+	float from = (float)strtof(kv_A(ami->values_stack, kv_size(ami->values_stack)-2), NULL);
+
+	float anything = sin(rand() * rand());
+	float rout = to + (from - to) * fabs(anything);
+
+	asprintf(&randstr, "%f", rout);
 	kv_push(char *, ami->values_stack, randstr);		
       } else if (!strcmp("csv", n->strval)) {
 	/* size_t stacklen = kv_size(ami->values_stack); */

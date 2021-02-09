@@ -453,6 +453,7 @@ function_arguments:   function_argument
 function_argument: function_argument_variable
                    | function_argument_string
                    | function_argument_int
+                   | function_argument_float
                    | function_argument_word_eq_string
                    | function_argument_word_eq_int
                    | function_argument_assign
@@ -495,6 +496,18 @@ function_argument_int: INTEGER {
 
   
   ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALINT, NULL, $1, 0, 0);
+}
+;
+
+function_argument_float: FLOAT {
+  if (ami->debug) {
+    printf("[parse.y] function_argument_float: FLOAT(%f)\n", $1);
+  }
+
+  ami->arguments_count++;
+
+  
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALFLOAT, NULL, 0, $1, 0);
 }
 ;
 

@@ -31,7 +31,8 @@ def make_logsdir(dirname, force_mkdir=False):
 
 def action_handler(action):    
     if action.Exec() != "Controller":
-        raise ValueError("Action exec must be Controller")
+        return
+        # raise ValueError("Action exec must be Controller")
 
     action_time = event_time + action.GetSleepCursor()
     
