@@ -263,7 +263,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       char *vstr = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
       char *value = ami_get_nested_variable_as_str(ami, vstr);
       if (!value) {
-	fprintf(stderr, "Error getting value for field %s\n", n->strval);
+	fprintf(stderr, "[line:%d] Error getting value for field %s\n", n->lineno, n->strval);
 	exit(1);
       }
       field_action->right = value;
