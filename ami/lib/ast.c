@@ -620,9 +620,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       varpos = 0;
       break;
     case AMI_NT_SLEEP:
-      tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-      tmp_float = (float)strtof(tmp_str, NULL);
-      ami->sleep_cursor += tmp_float;
+      if (repeat_index >= 0) {
+	tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	tmp_float = (float)strtof(tmp_str, NULL);
+	ami->sleep_cursor += tmp_float;
+      }
       break;
     case AMI_NT_ARRAYVAR:
       /* printf("We set the values for our array. We have %d values\n", n->intval); */
@@ -653,7 +655,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       kv_push(char *, ami->values_stack, strdup(n->strval));
       
       break;
-    }
+    } // switch(n->type)
 
     if (n->right) {
 	walk_node(ami, n->right, -1, 1);
