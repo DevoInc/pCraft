@@ -27,6 +27,10 @@ class TemplateBuilder:
         dirpath = os.path.join(self.templates_dir, event_type.replace(".", "/"), template + ".tmpl")        
         return dirpath
 
+    def get_header(self, event_type, template):
+        dirpath = os.path.join(self.templates_dir, event_type.replace(".", "/"), template + ".header")        
+        return dirpath
+
     def get_default(self, event_type, template):
         dirpath = os.path.join(self.templates_dir, event_type.replace(".", "/"), "default.csv")        
         return dirpath
@@ -84,6 +88,15 @@ class TemplateBuilder:
 
         return True
 
+    def get_header(self, event_type, template):
+        try:
+            fp = open(self.get_header(event_type, template), "r")
+            fpbuf = fp.read()
+            fp.close()
+            return fpbuf()
+        except:
+            return None
+    
     def get_event(self, event_type, template, valuesdict):
         values = self.get_defaults(event_type, template)
         if valuesdict:
@@ -97,9 +110,15 @@ class TemplateBuilder:
     
 if __name__ == "__main__":
     tb = TemplateBuilder()
-    myuser = {"user_name": "Yoplaboom"}
-    if tb.check_coverage("bluecoat.proxysg", "main"):
-        print(tb.get_event("bluecoat.proxysg", "main", myuser))
+    # myuser = {"user_name": "Yoplaboom"}
+    if tb.check_coverage("paloalto.firewall", "traffic"):
+        header = tb.get_header("paloalto.firewall", "traffic")
+        if header:
+            print(header)
+        print(tb.get_event("paloalto.firewall", "traffic", None))
+
+    # if tb.check_coverage("bluecoat.proxysg", "main"):
+    #     print(tb.get_event("bluecoat.proxysg", "main", myuser))
 
     # if tb.check_coverage("zscaler", "proxy"):
     #     print(tb.get_event("zscaler", "proxy", None))
@@ -116,9 +135,9 @@ if __name__ == "__main__":
     #     event = event_time.strftime(event)
     #     print(event)
 
-    if tb.check_coverage("microsoft.o365", "exchange"):
-        event_time = datetime.datetime.now()
-        event = tb.get_event("microsoft.o365", "exchange", None)
-        event = event_time.strftime(event)
-        print(event)
-        
+    # if tb.check_coverage("microsoft.o365", "exchange"):
+    #     event_time = datetime.datetime.now()
+    #     event = tb.get_event("microsoft.o365", "exchange", None)
+    #     event = event_time.strftime(event)
+    #     print(event)
+
