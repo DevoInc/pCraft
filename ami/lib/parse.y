@@ -646,7 +646,16 @@ array_item: GVARIABLE OPENBRACKET varset CLOSEBRACKET {
 expression_int: INTEGER { $$ = $1; }
           | expression_int PLUS expression_int { $$ = $1 + $3; }
           | expression_int MINUS expression_int { $$ = $1 - $3; }
+          | string PLUS expression_int {
+	    int converted_str = (int)strtod($1, NULL);
+	    $$ = converted_str + $3;
+           }
+          | string MINUS expression_int {
+	    int converted_str = (int)strtod($1, NULL);	    
+	    $$ = converted_str - $3;
+           }
 ;
+
 
 expression_float: FLOAT { $$ = $1; }
           | expression_float PLUS expression_float { $$ = $1 + $3; }
