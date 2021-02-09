@@ -4,7 +4,7 @@ from datetime import datetime
 
 tb = TemplateBuilder()
 
-event = tb.get_event("isc.named", "query", None)
+event = tb.get_event("microsoft.windows.security.logstash14", "5140", None)
 print(event)
 # frame_time = datetime.now()
 # event = frame_time.strftime(event)

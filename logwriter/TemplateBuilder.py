@@ -27,7 +27,7 @@ class TemplateBuilder:
         dirpath = os.path.join(self.templates_dir, event_type.replace(".", "/"), template + ".tmpl")        
         return dirpath
 
-    def get_header(self, event_type, template):
+    def get_header_file(self, event_type, template):
         dirpath = os.path.join(self.templates_dir, event_type.replace(".", "/"), template + ".header")        
         return dirpath
 
@@ -90,10 +90,10 @@ class TemplateBuilder:
 
     def get_header(self, event_type, template):
         try:
-            fp = open(self.get_header(event_type, template), "r")
+            fp = open(self.get_header_file(event_type, template), "r")
             fpbuf = fp.read()
             fp.close()
-            return fpbuf()
+            return fpbuf
         except:
             return None
     
