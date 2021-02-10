@@ -1,0 +1,5 @@
+start: Generate_a_ping
+
+Generate_a_ping:
+  _plugin: Ping
+  _next: done
