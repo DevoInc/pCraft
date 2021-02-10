@@ -1,0 +1,17 @@
+key,default_value
+alert_id,
+computer_name,
+computer_ip,192.168.0.42
+intel_id,
+intel_type,
+intel_name,
+intel_labels,
+properties,
+service_id,2839ffe8-e435-8374-9ff3-d93df3647116
+os,Microsoft Windows 10 Enterprise
+patch_level,10.0.17778.1.0
+platform,Windows
+unique_event_id,720575940378767925
+unique_process_id,677656456908182943
+hash,7384047332
+
