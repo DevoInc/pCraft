@@ -1,0 +1,27 @@
+key,default_value
+mcafee_msg,The content was categorized as non-spam
+mcafee_dvc,hostname
+mcafee_dst,192.168.0.42
+mcafee_dhost,printer.local
+mcafee_src,192.168.0.21
+mcafee_shost,jdoe.local
+mcafee_suser,jdoe
+mcafee_duser,printer
+mcafee_filepath,svchost.exe
+mcafee_fileid,934
+mcafee_fsize,2048
+mcafee_rt,
+mcafee_email_attachments,
+mcafee_cs6,
+mcafee_originalsubject,I love you
+mcafee_originalsender,jdoe@jdoe.local
+mcafee_originalmessageid,934
+mcafee_numemailattachments,0
+mcafee_numemailrecipients,1
+mcafee_scanhostip,192.168.0.254
+mcafee_hostname,console.av.local
+mcafee_hostdomain,av.local
+mcafee_macaddress,32:32:fe:32:32:44
+mcafee_uuid,8e748500-ffe4-94b6-8394-a0045c5bbb439
+mcafee_username,root
+
