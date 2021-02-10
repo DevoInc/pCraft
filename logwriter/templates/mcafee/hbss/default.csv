@@ -1,0 +1,12 @@
+key,default_value
+mcafee_machine_name,BAMUSABEM
+mcafee_agent_guid,{00000000-0000-0000-0000-000000000000}
+mcafee_raw_mac_address,C4F3F4EDFFFF
+mcafee_ip_address,192.168.0.42
+mcafee_agent_version,5.6.6.192
+mcafee_os_name,Windows 10
+mcafee_timezone_bias,300
+mcafee_username,
+mcafee_event_id,2412
+mcafee_severity,4
+mcafee_site_name,sfbay
