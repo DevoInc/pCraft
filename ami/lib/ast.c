@@ -630,13 +630,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *field = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
 	/* char *field = ami_get_variable(ami, field_val_stack); */
 	char *line_val_stack = kv_A(ami->values_stack, kv_size(ami->values_stack)-3);
-	/* printf("line val:%s\n", line_val_stack); */
-	char *line_as_string = ami_get_nested_variable_as_str(ami, line_val_stack);
-	
-	int line_in_csv = strtod(line_as_string, NULL);
+	/* char *line_as_string = ami_get_nested_variable_as_str(ami, line_val_stack); */
+	ami_variable_t *line_in_csv = ami_get_variable(ami, line_val_stack);
 	char *file = kv_A(ami->values_stack, kv_size(ami->values_stack)-4);
 
-	char *result = ami_csvread_get_field_at_line(file, line_in_csv, field, has_header);
+	char *result = ami_csvread_get_field_at_line(file, line_in_csv->ival, field, has_header);
 	if (!result) {
 	  fprintf(stderr, "[line:%d] Error reading CSV file %s, field:%s, line:%d\n", n->lineno, file, field, line_in_csv);
 	  exit(1);
