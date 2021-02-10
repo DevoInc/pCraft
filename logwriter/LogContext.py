@@ -28,6 +28,9 @@ class LogContext(object):
     def retrieve_template(self, template, event, variables_dict):
         return self.templates.get_event(template, event, variables_dict)
 
+    def retrieve_template_header(self, template, event):
+        return self.templates.get_header(template, event)
+    
     
 
 

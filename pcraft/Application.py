@@ -1,6 +1,7 @@
 import pprint
 import pyami
 import time
+import os
 
 from pcraft.Plugins import *
 from pcraft.Functions import *
@@ -9,6 +10,11 @@ class Application:
     def __init__(self, scenariofile, pcap_out):
         self.literals = ["rule"] # FIXME, this should be defined by plugins
         self.ami = pyami.Ami()
+        try:
+            os.remove(pcap_out)
+        except FileNotFoundError:
+            pass
+        
         self.pcapout = pcap_out
         print("Scenariofile: [%s]" % scenariofile)
         self.plugins_loader, self.loaded_plugins = self.load_plugins(self.ami)
