@@ -10,3 +10,28 @@ mcafee_username,
 mcafee_event_id,2412
 mcafee_severity,4
 mcafee_site_name,sfbay
+mcafee_product_name,McAfee Agent
+mcafee_product_version,5.0.0
+mcafee_product_family,TVD
+mcafee_reaction,2
+mcafee_threat_handled,false
+mcafee_process_user_name,NT AUTHORITY\SYSTEM
+mcafee_process_id,14392
+mcafee_process,/usr/bin/ssh
+mcafee_rule_class,Program
+mcafee_rule_directive,open_with_any
+mcafee_remote_ip_address,10.0.0.254
+mcafee_signature_name,CERT_LNCH008
+mcafee_exe_description,SSH Cygwin CLIENT
+mcafee_exe_fingerprint,c39ee64174b9c157e6d3688a965a609c
+mcafee_subject_dn,CN=EXAMPLE INC., O=EXAMPLE INC., L=SANFRANCISCO, S=CA, C=US, SERIALNUMBER=8379471, OID.2.5.4.15=PRIVATE ORGANIZATION, OID.1.3.6.1.4.1.311.60.2.1.2=DELAWARE, OID.1.3.6.1.4.1.311.60.2.1.3=US
+mcafee_subject_on,EXAMPLE INC.
+mcafee_target_description,MCAFEE PROCESS VALIDATION SERVICE
+mcafee_target_dn,CN='MCAFEE, INC.', OU=ENGINEERING, O='MCAFEE, INC.', L=SANTA CLARA, S=CALIFORNIA, C=US
+mcafee_target_filename,ssh
+mcafee_target_fingerprint,6629326c0f840e9e0180a1a9b40943d3
+mcafee_target_on,MCAFEE, INC.
+mcafee_target_path,/usr/bin/ssh
+mcafee_workstation_name,WRKST-0194
+mcafee_epo_reachable,True
+mcafee_in_trusted_network,Unknown
