@@ -434,7 +434,10 @@ char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value)
   }
 
   retvar = ami_get_variable(ami, var_value);
-  
+  if (!retvar) {
+    fprintf(stderr, "Cannot get value for variable %s\n", var_value);
+    return NULL;
+  }
   return retvar->strval;
 }
 
