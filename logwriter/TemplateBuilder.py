@@ -110,12 +110,19 @@ class TemplateBuilder:
     
 if __name__ == "__main__":
     tb = TemplateBuilder()
+
+    if tb.check_coverage("tanium", "threats"):
+        print(tb.get_event("tanium", "threats", None))
+        
+    # if tb.check_coverage("mcafee.email-gateway.cef0", "default"):
+    #     print(tb.get_event("mcafee.email-gateway.cef0", "default", None))
+
     # myuser = {"user_name": "Yoplaboom"}
-    if tb.check_coverage("paloalto.firewall", "traffic"):
-        header = tb.get_header("paloalto.firewall", "traffic")
-        if header:
-            print(header)
-        print(tb.get_event("paloalto.firewall", "traffic", None))
+    # if tb.check_coverage("paloalto.firewall", "traffic"):
+    #     header = tb.get_header("paloalto.firewall", "traffic")
+    #     if header:
+    #         print(header)
+    #     print(tb.get_event("paloalto.firewall", "traffic", None))
 
     # if tb.check_coverage("bluecoat.proxysg", "main"):
     #     print(tb.get_event("bluecoat.proxysg", "main", myuser))
