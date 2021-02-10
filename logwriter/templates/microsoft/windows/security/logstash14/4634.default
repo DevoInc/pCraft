@@ -1,5 +1,5 @@
 key,default_value
-@timestamp,"2019-11-15T08:19:17.134Z"
+@timestamp,"%Y-%m-%dT%H:%M:%S.000Z"
 @metadata_beat,"winlogbeat"
 @metadata_type,"_doc"
 @metadata_version,"7.9.3"
