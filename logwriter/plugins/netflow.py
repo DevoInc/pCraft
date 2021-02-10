@@ -34,6 +34,9 @@ class LogPlugin(LogContext):
             return packet.udp.srcport        
         return ""        
         
+    def validate_keys(self, kvdict):
+        pass
+        
     def run(self, cap, packet, pktid, layer):
 
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))

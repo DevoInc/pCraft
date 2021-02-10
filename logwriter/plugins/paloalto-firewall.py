@@ -24,6 +24,9 @@ class LogPlugin(LogContext):
     def __del__(self):
         self.closelog()
 
+    def validate_keys(self, kvdict):
+        pass
+        
     def get_country_from_ip(self, ip):
         try:
             response = self.reader.country(ip)

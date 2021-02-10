@@ -81,7 +81,9 @@ class LogWrite(object):
                     kvdict = dict(re.findall(r"(\S+)=('''.*?'''|\S+)", keysvalues))
                     for k,v in kvdict.items():
                         kvdict[k] = v.strip("'")
-    
+
+                    self.loaded_plugins[plugin].validate_keys(kvdict)
+                        
                     self.loaded_plugins[plugin].run(cap, pkt, pktid, kvdict)
                     continue
                 

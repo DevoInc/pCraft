@@ -31,6 +31,9 @@ class LogPlugin(LogContext):
     def __del__(self):
         self.closelog()
 
+    def validate_keys(self, kvdict):
+        pass
+        
     def template_to_log(self, packet):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
 
