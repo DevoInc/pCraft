@@ -74,7 +74,15 @@ void break_foreach_action(ami_action_t *action, void *userdata1, void *userdata2
 	    /* ami_variable_debug(value); */
 	    count++;
 	  }
-      }      
+      }
+
+
+      for (field_action=action->field_actions; field_action; field_action=field_action->next) {
+	if (!strcmp(field_action->action, "set")) {
+	  printf("\tfield[\"%s\"] = \"%s\"\n", field_action->field, field_action->right);
+	}
+      }
+      
       printf("}\n");
       
       
