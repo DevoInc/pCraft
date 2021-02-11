@@ -1,0 +1,7 @@
+ami_version 1
+
+action ping {
+       $ip-src = "10.10.10.10"
+       $ip-dst = "8.8.8.8"
+       exec Ping
+}
