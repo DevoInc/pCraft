@@ -31,6 +31,8 @@ class LogContext(object):
         keys = self.retrieve_template_keys(event_type, kvdict["event_id"])
         for k, v in kvdict.items():
             if k not in keys:
+                if k in ["event_id"]:
+                    continue
                 print("The key '%s' does not exists in the event_type '%s' template '%s'" % (k, event_type, event))
                 could_be = difflib.get_close_matches(k, keys, cutoff=0.6)
                 could_be = []
