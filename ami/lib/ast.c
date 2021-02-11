@@ -634,7 +634,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	ami_variable_t *line_in_csv = ami_get_variable(ami, line_val_stack);
 	char *file = kv_A(ami->values_stack, kv_size(ami->values_stack)-4);
 
-	char *result = ami_csvread_get_field_at_line(file, line_in_csv->ival, field, has_header);
+	char *result = ami_csvread_get_field_at_line(file, ami_variable_to_int(line_in_csv), field, has_header);
 	if (!result) {
 	  fprintf(stderr, "[line:%d] Error reading CSV file %s, field:%s, line:%d\n", n->lineno, file, field, line_in_csv);
 	  exit(1);

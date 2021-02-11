@@ -220,6 +220,24 @@ char *ami_variable_to_string(ami_variable_t *var)
   return "None";
 }
 
+int ami_variable_to_int(ami_variable_t *var)
+{
+  int retint;
+  
+  switch(var->type) {
+  case AMI_VAR_INT:
+    return var->ival;
+    break;
+  case AMI_VAR_FLOAT:
+    return (int)var->fval;
+    break;
+  case AMI_VAR_STR:
+    return (int)strtod(var->strval, NULL);
+    break;
+  }
+  return -1;
+}
+
 void ami_variable_free(ami_variable_t *var)
 {
   /* printf("Calling %s\n", __FUNCTION__); */
