@@ -430,7 +430,8 @@ char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value)
     if (var_value[0] != '$') return var_value; // This is not a variable
   } else {
     fprintf(stderr, "Variable value empty!\n");
-    return NULL;
+    return "";
+    /* return NULL; */
   }
 
   retvar = ami_get_variable(ami, var_value);

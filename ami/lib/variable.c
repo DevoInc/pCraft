@@ -223,6 +223,11 @@ char *ami_variable_to_string(ami_variable_t *var)
 int ami_variable_to_int(ami_variable_t *var)
 {
   int retint;
+
+  if (!var) {
+    fprintf(stderr, "Error: no such variable. Assign the integer to -1.");
+    return -1;
+  }
   
   switch(var->type) {
   case AMI_VAR_INT:

@@ -13,8 +13,12 @@ class PluginsData(object):
             self.packet_time = self.current_time - self.ami.GetSleepCursor()
 
         self.outpcap = PcapWriter(pcapout, append=True, sync=True)
-            
+        self.packets_counter = 0
+        
     def AddPacket(self, action, pkt):
+        self.packets_counter += 1
+        if self.packets_counter % 1000 == 0:
+            print(".", end="")
         pkt.time = self.packet_time + action.GetSleepCursor()
         self.outpcap.write(pkt)
 #        self.pcap.append(pkt)
