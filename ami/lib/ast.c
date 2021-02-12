@@ -328,9 +328,13 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 					       0xfcffffff, 0xfeffffff, 0xffffffff};
 	char *ipaddr = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
 	char *ipnumber = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-	int ipn = ami_get_nested_variable_as_int(ami, ipnumber);
-	/* char *ipnumber = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
-	/* int ipn = (int)strtod(ipnumber, NULL); */
+	ami_variable_t *ipn_var = ami_get_variable(ami, ipnumber);
+	int ipn = 1;
+	if (ipn_var) {
+	  ipn = ami_variable_to_int(ipn_var);
+	} else {
+	  ipn = ami_get_nested_variable_as_int(ami, ipnumber);
+	}
 	int ret;
 	struct in_addr addr4;
 	struct in_addr out_network;
@@ -632,6 +636,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *line_val_stack = kv_A(ami->values_stack, kv_size(ami->values_stack)-3);
 	/* char *line_as_string = ami_get_nested_variable_as_str(ami, line_val_stack); */
 	ami_variable_t *line_in_csv = ami_get_variable(ami, line_val_stack);
+	if (!line_in_csv) {
+	  fprintf(stderr, "Could not get the variable from '%s'\n", line_val_stack);
+	}
 	char *file = kv_A(ami->values_stack, kv_size(ami->values_stack)-4);
 
 	char *result = ami_csvread_get_field_at_line(file, ami_variable_to_int(line_in_csv), field, has_header);
