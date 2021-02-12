@@ -14,13 +14,18 @@ class PluginsData(object):
 
         self.outpcap = PcapWriter(pcapout, append=True, sync=True)
         self.packets_counter = 0
+        self.writing_errors = 0
         
     def AddPacket(self, action, pkt):
         self.packets_counter += 1
         if self.packets_counter % 1000 == 0:
             print(".", end="")
         pkt.time = self.packet_time + action.GetSleepCursor()
-        self.outpcap.write(pkt)
+
+        try:
+            self.outpcap.write(pkt)
+        except:
+            self.writing_errors += 1
 #        self.pcap.append(pkt)
         
     def _set(self, key, value):

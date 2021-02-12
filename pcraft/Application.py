@@ -34,7 +34,9 @@ class Application:
             print("Start Time: %s" % time.ctime(self.start_time))
         sleep_cursor = self.ami.GetSleepCursor()
         print("Final Sleep Cursor: %d seconds; %d hours; %d days" % (int(sleep_cursor), int(sleep_cursor / 60 / 60), int(sleep_cursor / 60 / 60 / 24)))
-            
+        print("%s writing errors" % self.plugins_loader.plugins_data.writing_errors)
+
+        
     def load_plugins(self, _ami):
         plugins_loader = Plugins(ami=_ami, pcap_out=self.pcapout, app=self, loadfunc=self.print_loading_plugins)
         loaded_plugins = plugins_loader.get_loaded_plugins()
