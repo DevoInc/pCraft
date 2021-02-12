@@ -39,14 +39,14 @@ static char *_replace_strval_from_variables(ami_t *ami, char *strval) {
   khint_t k;
 
   replaced_buf = strdup(strval);
-  
+
   if (ami->variables) {
     for (k = 0; k < kh_end(ami->variables); ++k) {
       if (kh_exist(ami->variables, k)) {
 	char *key = (char *)kh_key(ami->variables, k);
 	ami_variable_t *value = (ami_variable_t *)kh_value(ami->variables, k);
 	if (!value->type == AMI_VAR_STR) {
-	  fprintf(stderr, "Error: Can only get value from a string variable!\n");
+	  /* fprintf(stderr, "Error: Can only get value from a string variable!\n"); */
 	  return replaced_buf;
 	}
 	char *replacevar = ami_strutil_make_replacevar(key);
@@ -275,12 +275,28 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	action->field_actions = ami_field_action_append(action->field_actions, field_action);
       }
       break;
+    /* case AMI_NT_REPLACE: */
+    /*   { */
+    /* 	/\* ami_print_all_variables(ami); *\/ */
+    /* 	/\* char *replace_with = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); *\/ */
+    /* 	/\* printf("replace:%s with:%s\n", n->strval, replace_with); *\/ */
+    /* 	kv_push(char *, ami->values_stack, strdup(n->strval)); */
+    /* 	ami->replace_count++; */
+    /*   } */
+    /*   break; */
     case AMI_NT_REPLACE:
       {
-	/* ami_print_all_variables(ami); */
-	/* char *replace_with = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
-	/* printf("replace:%s with:%s\n", n->strval, replace_with); */
-	kv_push(char *, ami->values_stack, strdup(n->strval));
+	char *replace_to_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	char *replace_from_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+	ami_variable_t *replace_from = ami_get_variable(ami, replace_from_str);
+	if (replace_from) {
+	  char *varstr = ami_variable_to_string(replace_from);
+	  kv_push(char *, ami->values_stack, strdup(varstr));
+	} else {
+	  kv_push(char *, ami->values_stack, strdup(replace_from_str));
+	}
+	ami_variable_free(replace_from);
+	
 	ami->replace_count++;
       }
       break;

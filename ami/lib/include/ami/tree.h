@@ -19,7 +19,8 @@ enum _ami_node_type_t {
        AMI_NT_VARVALINT, // = 1
        AMI_NT_VARVALFLOAT, // = 1
        AMI_NT_VARVAR,    // = $var
-       AMI_NT_REPLACE,   // foo => blah
+       AMI_NT_REPLACE,   // foo => varset
+       AMI_NT_REPLACE2,   // varset => varset
        AMI_NT_ACTION,    // action Foo {
        AMI_NT_ACTIONCLOSE, // } for an action
        AMI_NT_REPEATCLOSE, // } for a repeat
@@ -86,6 +87,7 @@ static const char *ami_node_names[] = {
        "AMI_NT_VARVALFLOAT",
        "AMI_NT_VARVAR",
        "AMI_NT_REPLACE",
+       "AMI_NT_REPLACE2",
        "AMI_NT_ACTION",
        "AMI_NT_ACTIONCLOSE",
        "AMI_NT_REPEATCLOSE",
