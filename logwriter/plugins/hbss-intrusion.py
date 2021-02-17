@@ -16,7 +16,8 @@ class LogPlugin(LogContext):
         self.closelog()
 
     def validate_keys(self, kvdict):
-        self.do_validate_keys("mcafee.hbss", "intrusion", kvdict)               
+        pass
+        # self.do_validate_keys("mcafee.hbss", "intrusion", kvdict)               
         
     def template_to_log(self, packet, kvdict):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
