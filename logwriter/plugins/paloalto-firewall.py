@@ -83,9 +83,8 @@ class LogPlugin(LogContext):
             return "server-to-client"        
         
         return "client-to-server"        
-        
-    def run(self, cap, packet, pktid, layer):
 
+    def execute(self, cap, packet, pktid, layer):
         if self.first:
             header = self.retrieve_template_header("paloalto.firewall", "traffic")
             if header:
@@ -118,3 +117,12 @@ class LogPlugin(LogContext):
         event = frame_time.strftime(event)
         
         self.log_fp.write(event)
+    
+    def run(self, cap, packet, pktid, layer):
+
+        if hasattr(packet, 'tcp'):
+            if str(packet.tcp.flags) == "0x00000002": # We only write TCP-SYN
+                self.execute(cap, packet, pktid, layer)
+        else:
+            self.execute(cap, packet, pktid, layer)
+
