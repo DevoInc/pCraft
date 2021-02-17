@@ -230,17 +230,13 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       /* printf("Fieldfunc :%s\n", n->strval); // ip */
       if (!strcmp("replace", kv_A(ami->values_stack, kv_size(ami->values_stack)-1))) {
 	size_t stacklen = kv_size(ami->values_stack);
-	/* printf("the stacklen when we replace:%ld\n", stacklen); */
-	/* for (size_t i = 0; i < stacklen; i++) { */
-	/*   printf("i:%d;val:%s\n", i, kv_A(ami->values_stack, i)); */
-	/* } */
-
+	
 	for (int i = 1; i <= ami->replace_count; i++) {
-	  int pos_from = (i*-1)-i; 
-	  int pos_to = (i*-1)-(i+1);
+	  int pos_to = (i*-1)-i; 
+	  int pos_from = (i*-1)-(i+1);
 	  char *to = kv_A(ami->values_stack, stacklen+pos_to);
 	  char *from = kv_A(ami->values_stack, stacklen+pos_from);
-	  
+
 	  field_action = ami_field_action_new();
 	  field_action->field = n->strval;
 	  field_action->action = "replace";
@@ -286,16 +282,21 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     /*   break; */
     case AMI_NT_REPLACE:
       {
-	char *replace_to_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-	char *replace_from_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
-	ami_variable_t *replace_from = ami_get_variable(ami, replace_from_str);
-	if (replace_from) {
-	  char *varstr = ami_variable_to_string(replace_from);
-	  kv_push(char *, ami->values_stack, strdup(varstr));
-	} else {
-	  kv_push(char *, ami->values_stack, strdup(replace_from_str));
-	}
-	ami_variable_free(replace_from);
+	
+	/* char *replace_to_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1); */
+	/* char *replace_from_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-2); */
+
+	/* printf("AST -> replace %s => %s\n", replace_from_str, replace_to_str); */
+	
+	/* ami_variable_t *replace_from = ami_get_variable(ami, replace_from_str); */
+	/* if (replace_from) { */
+	/*   char *varstr = ami_variable_to_string(replace_from); */
+	/*   printf("FROM VAR\n"); */
+	/*   kv_push(char *, ami->values_stack, strdup(varstr)); */
+	/* } else { */
+	/*   kv_push(char *, ami->values_stack, strdup(replace_from_str)); */
+	/* } */
+	/* ami_variable_free(replace_from); */
 	
 	ami->replace_count++;
       }

@@ -1,18 +1,18 @@
 ami_version 1
 ------------------------
+* Action name(MailPhishing) exec(PcapImport) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
+* Local Variables:
+* Field Actions:
+    field:ip;action:replace;left:94.23.64.3;right:172.16.32.42
+    field:ip;action:replace;left:94.23.64.3;right:109.232.105.106
+    field:ip;action:replace;left:192.168.0.32;right:109.232.105.106
+------------------------
 * Action name(MailPhishing) exec(PcapImport) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Local Variables:
 * Field Actions:
     field:ip;action:replace;left:94.23.64.3;right:172.16.32.42
-    field:ip;action:replace;left:109.232.105.106;right:192.168.0.32
-    field:ip;action:replace;left:192.168.204.151;right:127.0.0.1
-------------------------
-* Action name(MailPhishing) exec(PcapImport) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
-* Local Variables:
-* Field Actions:
-    field:ip;action:replace;left:94.23.64.3;right:172.16.32.42
-    field:ip;action:replace;left:109.232.105.106;right:192.168.0.32
-    field:ip;action:replace;left:192.168.204.151;right:127.0.0.1
+    field:ip;action:replace;left:94.23.64.3;right:109.232.105.106
+    field:ip;action:replace;left:192.168.0.32;right:109.232.105.106
 ------------------------
 * Action name(GDriveDownload) exec(PcapImport) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
 * Local Variables:

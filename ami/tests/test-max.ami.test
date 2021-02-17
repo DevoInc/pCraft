@@ -9,7 +9,7 @@ ami_version 1
 * Local Variables:
 * Field Actions:
     field:ip;action:replace;left:172.16.0.32;right:192.168.0.55
-    field:ip;action:replace;left:172.16.0.32;right:127.0.0.1
+    field:ip;action:replace;left:127.0.0.1;right:192.168.0.32
 ------------------------
 * Action name(FieldAssignment) exec(FieldAssignement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
 * Local Variables:
@@ -20,7 +20,7 @@ ami_version 1
 * Local Variables:
 * Field Actions:
     field:ip;action:replace;left:172.16.0.32;right:192.168.0.55
-    field:ip;action:replace;left:172.16.0.32;right:127.0.0.1
+    field:ip;action:replace;left:127.0.0.1;right:192.168.0.32
 ------------------------
 * Action name(FieldAssignment) exec(FieldAssignement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Local Variables:
@@ -31,7 +31,7 @@ ami_version 1
 * Local Variables:
 * Field Actions:
     field:ip;action:replace;left:172.16.0.32;right:192.168.0.55
-    field:ip;action:replace;left:172.16.0.32;right:127.0.0.1
+    field:ip;action:replace;left:127.0.0.1;right:192.168.0.32
 ------------------------
 * Action name(FieldAssignment) exec(FieldAssignement) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(3)
 * Local Variables:
