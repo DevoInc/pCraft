@@ -5,4 +5,7 @@ dnspython>=1.16
 Faker
 communityid
 parsuricata
-
+geoip2
+pyfaup
+pypcapkit[PyShark]
+pystache
