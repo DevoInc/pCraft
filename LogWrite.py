@@ -6,6 +6,7 @@ import importlib
 import os
 import re
 import shutil
+import pyami
 
 from logwriter.plugins import *
 
@@ -15,7 +16,8 @@ class LogWrite(object):
         self.pcap_file = pcap_file
         self.output_dir = output_dir
         self.has_error = False
-        
+        self.cap = pyshark.FileCapture(self.pcap_file)
+
         try:
             os.makedirs(self.output_dir)
         except FileExistsError:
@@ -57,13 +59,12 @@ class LogWrite(object):
             loaded_plugins[plugin_name] = module.LogPlugin(outpath)
         # print(str(loaded_plugins))
         return loaded_plugins
-
+    
     def process(self):
-        cap = pyshark.FileCapture(self.pcap_file)
         #cap.set_debug()
 
         pktid=0
-        for pkt in cap:
+        for pkt in self.cap:
             # Controller from pcraft, to call plugins such as EDR
             # When PCAP is not enough...
             # This is cheating, we make sure our pcap has ip source and destination of 10.10.10.10 and port source and destination of 666
@@ -84,7 +85,7 @@ class LogWrite(object):
 
                     self.loaded_plugins[plugin].validate_keys(kvdict)
                         
-                    self.loaded_plugins[plugin].run(cap, pkt, pktid, kvdict)
+                    self.loaded_plugins[plugin].run(self.cap, pkt, pktid, kvdict)
                     continue
                 
             for layer in pkt.layers:            
@@ -92,7 +93,7 @@ class LogWrite(object):
                 try:
                     for p in self.plugins_by_layer[layer_name]:
     #                    try:
-                        self.loaded_plugins[p].run(cap, pkt, pktid, layer)
+                        self.loaded_plugins[p].run(self.cap, pkt, pktid, layer)
                         # except:
                         #     print("x", end="")
                 except KeyError:
@@ -100,7 +101,43 @@ class LogWrite(object):
     
         print("Layers that did not match a plugin: %d" % self.layer_that_do_not_match_plugin)
 
-    
+class LogRewrite(object):
+    def __init__(self, pcap_file, output_dir, config_ami):
+        self.pcap_file = pcap_file
+        self.output_dir = output_dir
+        self.config_ami = config_ami
+        
+        self.logs_fpr = {} # Used to open files for reading to modify using config
+        self.logs_fprbuf = {} # Used to store buffer for reading
+        self.logs_fpw = {} # Used to open files for writing to modify using config
+
+        self.ami = pyami.Ami()
+        
+    def process_config_handler(self, action):
+        try:
+            fp_write = self.logs_fpw[action.Exec()]
+        except KeyError:
+            self.logs_fpw[action.Exec()] = open(os.path.join(self.output_dir, action.Exec() + ".log2"), "w")
+            fp_write = self.logs_fpw[action.Exec()]
+                        
+        to_replace = action.FieldActions()
+        ip_list = to_replace["ip"]["replace"]
+        newbuf = self.logs_fprbuf[action.Exec()]
+        for k, v in ip_list.items():            
+            newbuf = newbuf.replace(k, v)
+        fp_write.write(newbuf)
+            
+    def process(self):
+        buffer_files = [x for x in glob.glob(os.path.join(self.output_dir, "*.log"))]
+        buffer_names = [x[len(self.output_dir)+1:-4] for x in glob.glob(os.path.join(self.output_dir, "*.log"))]
+        for counter,bf in enumerate(buffer_files):
+            fp = open(bf, "r")
+            buf = fp.read()
+            self.logs_fprbuf[buffer_names[counter]] = buf
+            fp.close()
+            
+        self.ami.Parse(self.config_ami, self.process_config_handler)
+        
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Syntax: %s pcap_file output_dir" % sys.argv[0])

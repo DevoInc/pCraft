@@ -21,7 +21,7 @@ class LogPlugin(LogContext):
     def template_to_log(self, packet, kvdict):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
 
-        event = self.retrieve_template("microsoft.o365", kvdict["event_id"], kvdict)
+        event = self.retrieve_template("microsoft.o365", "exchange", kvdict)
         event = frame_time.strftime(event)
 
         return event
