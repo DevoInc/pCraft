@@ -16,6 +16,13 @@ def pcap2logs(pcap, logsdir, config_ami):
         del(writer)
         rewriter = LogRewrite(pcap, logsdir, config_ami)
         rewriter.process()
+
+def logs2logs(pcap, logsdir, config_ami):
+    if config_ami:
+        rewriter = LogRewrite(pcap, logsdir, config_ami)
+        rewriter.process()
+    else:
+        print("Error, no configuration given to rewrite. Stopping.")
         
 if __name__ == "__main__":
     if len(sys.argv) < 3:
@@ -28,6 +35,9 @@ if __name__ == "__main__":
     if len(sys.argv) > 3:
         if sys.argv[3] != "-f":
             config_ami = sys.argv[3]
-    
-    pcap2logs(pcapfile, outdir, config_ami)
+
+    if "-s" in sys.argv:
+        logs2logs(pcapfile, outdir, config_ami)
+    else:            
+        pcap2logs(pcapfile, outdir, config_ami)
 
