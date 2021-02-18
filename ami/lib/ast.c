@@ -641,6 +641,27 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	asprintf(&randstr, "%f", rout);
 	kv_push(char *, ami->values_stack, randstr);		
+      } else if (!strcmp("random.string", n->strval)) {
+	char *randstr ;
+
+	int stringlen = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
+	if (stringlen <= 0) {
+	  fprintf(stderr, "Error[random.string]: should be at least 1.");
+	  exit(1);
+	}
+	randstr = malloc(stringlen+1);
+	if (!randstr) {
+	  fprintf(stderr, "Error[random.string]: Could not allocate random string!\n");
+	  exit(1);
+	}
+	memset(randstr, 0, stringlen+1);
+
+	for (int i=0; i < stringlen; i++) {
+	  int rout = (rand() % (122 - 97 + 1)) + 97;
+	  randstr[i] = rout;
+	}
+	
+	kv_push(char *, ami->values_stack, strdup(randstr));		
       } else if (!strcmp("csv", n->strval)) {
 	/* size_t stacklen = kv_size(ami->values_stack); */
 	/* for (size_t i = 0; i < stacklen; i++) { */
