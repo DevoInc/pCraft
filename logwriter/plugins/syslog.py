@@ -9,7 +9,6 @@ class LogPlugin(LogContext):
     def __init__(self, outpath):
         super().__init__(outpath)
         self.log_fp = self.openlog("syslog.log")
-        print("opening syslog.log")
         
     def __del__(self):
         self.closelog()
