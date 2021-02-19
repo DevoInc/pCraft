@@ -79,8 +79,8 @@ class LogPlugin(LogContext):
             pass
         
         variables["orig_h"] = IP(packet.ip.src)
-        variables["orig_p"] = IP(packet.ip.dst)
-        variables["resp_h"] = self.get_srcport(packet)
+        variables["orig_p"] = self.get_srcport(packet)
+        variables["resp_h"] = IP(packet.ip.dst)
         variables["resp_p"] = self.get_dstport(packet)
         
         event = self.retrieve_template("corelight", "ntp", variables)
