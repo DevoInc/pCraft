@@ -30,7 +30,7 @@ class Application:
         try:
             self.loaded_plugins[action.Exec()].run(self.ami, action)
         except:
-            print("Error with action %s" % action.Exec())
+            print("Error with action name '%s' -> exec is '%s'" % (action.Name(), action.Exec()))
         
     def finalize(self):
         if self.start_time > 0:
