@@ -27,7 +27,10 @@ class Application:
         # print(action.Variables())
         for k, v in action.Variables().items():
             self.plugins_loader.plugins_data._set(k[1:], v) # we trim the $ sign for the key name
-        self.loaded_plugins[action.Exec()].run(self.ami, action)
+        try:
+            self.loaded_plugins[action.Exec()].run(self.ami, action)
+        except:
+            print("Error with action %s" % action.Exec())
         
     def finalize(self):
         if self.start_time > 0:
