@@ -118,6 +118,7 @@ void ami_tree_append_int_no_leaves(ami_tree_t *tree, ami_node_type_t type, int v
 void ami_tree_append_str_no_leaves(ami_tree_t *tree, ami_node_type_t type, char *val);
 
 ami_node_t *ami_node_new(void);
+void ami_node_debug_current(ami_node_t *node);
 void ami_node_debug(ami_node_t *node);
 void ami_node_debug2(ami_node_t *node, int level);
 ami_node_t *ami_node_prepend(ami_node_t *nodedst, ami_node_t *nodesrc);

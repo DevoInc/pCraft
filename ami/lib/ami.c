@@ -417,7 +417,7 @@ void ami_append_repeat(ami_t *ami, int lineno, ami_node_type_t type, char *strva
   }
 }
 
-char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value)
+char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_value)
 {
   ami_variable_t *retvar;
 
@@ -430,6 +430,7 @@ char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value)
     if (var_value[0] != '$') return var_value; // This is not a variable
   } else {
     fprintf(stderr, "Variable value for '%s' empty!\n", var_value);
+    ami_node_debug_current(node);
     return "";
     /* return NULL; */
   }

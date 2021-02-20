@@ -99,7 +99,7 @@ void ami_ast_tree_debug(ami_t *ami);
 void ami_append_item(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
 void ami_append_repeat(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
 float ami_get_sleep_cursor(ami_t *ami);
-char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value);
+char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_value);
 int ami_get_nested_variable_as_int(ami_t *ami, char *var_value);
 
 #ifdef __cplusplus
