@@ -368,14 +368,16 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 					       0x000fffff, 0x00f8ffff, 0x00fcffff, 0x00feffff, 0x00ffffff,
 					       0x80ffffff, 0xc0ffffff, 0xe0ffffff, 0xf0ffffff, 0xf8ffffff,
 					       0xfcffffff, 0xfeffffff, 0xffffffff};
-	char *ipaddr = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
-	char *ipnumber = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-	ami_variable_t *ipn_var = ami_get_variable(ami, ipnumber);
+	char *ipaddr_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+	char *ipnum_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);	
+	ami_variable_t *ipaddr_v = ami_get_variable(ami, ipaddr_s);
+	ami_variable_t *ipnum_v = ami_get_variable(ami, ipnum_s);
+	char *ipaddr = ami_variable_to_string(ipaddr_v);
 	int ipn = 1;
-	if (ipn_var) {
-	  ipn = ami_variable_to_int(ipn_var);
+	if (ipnum_v) {
+	  ipn = ami_variable_to_int(ipnum_v);
 	} else {
-	  ipn = ami_get_nested_variable_as_int(ami, ipnumber);
+	  ipn = ami_get_nested_variable_as_int(ami, ipnum_s);;
 	}
 	int ret;
 	struct in_addr addr4;
