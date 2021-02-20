@@ -46,7 +46,11 @@ def action_handler(action):
                 for k, v in aval.items():
                     kvdict[field] = k
 
-    event = tb.get_event(variables["$event_type"], variables["$event_template"], kvdict)
+    try:
+        event = tb.get_event(variables["$event_type"], variables["$event_template"], kvdict)
+    except:
+        print("Could not extract the right variables: $event_type and $event_template from action %s" % action.Name())
+        return
     et = datetime.fromtimestamp(action_time)
     event = et.strftime(event)
     
