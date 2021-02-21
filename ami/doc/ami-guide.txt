@@ -167,6 +167,38 @@ Generate a random value between 10 and 42
 random.int(10, 42)
 ```
 
+random.float
+------------
+
+Generate a random value between 0 and 1
+```
+random.int(0, 1)
+```
+
+random.string
+-------------
+
+Generate a random string of the wanted length
+```
+random.string(10)
+```
+
+random.hexstring
+----------------
+
+Generate a random hexadecimal string of the wanted length
+```
+random.hexstring(6)
+```
+
+random.macaddr
+--------------
+
+Generate a random mac address 
+```
+random.macaddr(" ")
+```
+
 csv
 ---
 
