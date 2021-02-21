@@ -335,6 +335,33 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	asprintf(&outstr, "%d", total);
 	
 	kv_push(char *, ami->values_stack, outstr);	
+      } else if (!strcmp("random.macaddr", n->strval)) {
+	char macchars[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+	char *randstr = malloc(18);
+	int rout;
+	
+	if (!randstr) {
+	  fprintf(stderr, "Error[random.macaddr]: Could not allocate random string!\n");
+	  exit(1);
+	}
+	memset(randstr, 0, 18);
+	for (int i=0; i < 17; i++) {
+	  switch(i) {
+	  case 2:
+	  case 5:
+	  case 8:
+	  case 11:
+	  case 14:
+	    randstr[i] = ':';
+	    break;
+	  default:
+	    rout = (rand() % (16 - 0 + 1)) + 0;
+	    randstr[i] = macchars[rout];
+	  }
+	}
+
+	kv_push(char *, ami->values_stack, strdup(randstr));
+	free(randstr);
       } else if (!strcmp("sin", n->strval)) {
 	ami_variable_t *arg = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char *arg_str = ami_variable_to_string(arg);
@@ -669,7 +696,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	asprintf(&randstr, "%f", rout);
 	kv_push(char *, ami->values_stack, randstr);		
       } else if (!strcmp("random.string", n->strval)) {
-	char *randstr ;
+	char *randstr;
 
 	int stringlen = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
 	if (stringlen <= 0) {
