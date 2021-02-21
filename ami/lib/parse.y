@@ -18,9 +18,9 @@ typedef void *yyscan_t;
 
 %code provides
 {
-
   void ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...);
   int get_lineno(yyscan_t scanner);
+
 }
 
 %code top
@@ -28,6 +28,8 @@ typedef void *yyscan_t;
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+
+#include <parse.h>
 
 }
 

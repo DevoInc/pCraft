@@ -702,7 +702,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	/* char *line_as_string = ami_get_nested_variable_as_str(ami, n,line_val_stack); */
 	ami_variable_t *line_in_csv = ami_get_variable(ami, line_val_stack);
 	if (!line_in_csv) {
-	  fprintf(stderr, "Could not get the variable from '%s'\n", line_val_stack);
+	  fprintf(stderr, "Could not get the variable from '%s', line:%d\n", line_val_stack, n->lineno);
 	}
 	int csvline = ami_variable_to_int(line_in_csv);
 	/* ami_variable_debug(line_in_csv); */
