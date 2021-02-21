@@ -1,0 +1,15 @@
+key,default_value
+version,2
+account_id,123456789000
+interface,eni-1234
+ip_src,192.168.0.42
+ip_dst,10.0.1.2
+port_src,4392
+port_dst,22
+protocol,6
+packets,42
+bytes,1234
+starttime,1613892587
+endtime,1613892954
+action,ACCEPT
+status,OK
