@@ -70,8 +70,14 @@ ami_t *ami_new(void)
     ami->repeat_indices_cursor[i] = 0;
   }
   ami->current_repeat_block = 0;
+
+  ami->global_counter = 0;
   
   return ami;
+}
+
+void ami_global_counter_incr(ami_t *ami) {
+  ami->global_counter++;
 }
 
 int ami_variable_exists(ami_t *ami, const char *key)

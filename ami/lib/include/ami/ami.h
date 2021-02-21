@@ -75,12 +75,14 @@ struct _ami_t {
   int repeat_indices[MAX_NESTED_REPEAT];
   int repeat_indices_cursor[MAX_NESTED_REPEAT];  
   int current_repeat_block;
+  size_t global_counter;
 };
 typedef struct _ami_t ami_t;
 
 typedef int (*foreach_action_cb)(ami_t *ami, ami_action_t *action, void *user_data);
 
 ami_t *ami_new(void);
+void ami_global_counter_incr(ami_t *ami);  
 int ami_parse_file(ami_t *ami, const char *file);
 void ami_set_message_callback(ami_t *ami, print_message_cb message_cb);
 void ami_set_sleep_callback(ami_t *ami, sleep_cb sleep_cb);

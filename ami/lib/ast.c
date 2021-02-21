@@ -87,6 +87,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   ami_variable_t *tmp_var = NULL;
 
   for (n = node; n; n = n->next) {
+
+    ami_global_counter_incr(ami); // used for better random numbers
+    
     if ((n->strval) && (!n->is_verbatim)) {
       if (n->type == AMI_NT_VARVALSTR) {
 	replaced_var = _replace_strval_from_variables(ami, n->strval);
@@ -339,6 +342,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char macchars[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 	char *randstr = malloc(18);
 	int rout;
+
+	time_t t;
+	srand((unsigned) time(&t) + ami->global_counter);
 	
 	if (!randstr) {
 	  fprintf(stderr, "Error[random.macaddr]: Could not allocate random string!\n");
@@ -355,7 +361,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	    randstr[i] = ':';
 	    break;
 	  default:
-	    rout = (rand() % (16 - 0 + 1)) + 0;
+	    rout = rand() % 16;
 	    randstr[i] = macchars[rout];
 	  }
 	}
@@ -681,12 +687,18 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	int to = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
 	int from = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-2), NULL);
 
+	time_t t;
+	srand((unsigned) time(&t) + ami->global_counter);
+
 	int rout = (rand() % (to - from + 1)) + from;
 	asprintf(&randstr, "%d", rout);
 	kv_push(char *, ami->values_stack, randstr);		
       } else if (!strcmp("random.float", n->strval)) {
 	char *randstr;
 
+	time_t t;
+	srand((unsigned) time(&t) + ami->global_counter);
+	
 	float to = (float)strtof(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
 	float from = (float)strtof(kv_A(ami->values_stack, kv_size(ami->values_stack)-2), NULL);
 
@@ -716,6 +728,33 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	}
 	
 	kv_push(char *, ami->values_stack, strdup(randstr));		
+	free(randstr);
+      } else if (!strcmp("random.hexstring", n->strval)) {
+	char *randstr;
+	char hexchars[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+	time_t t;
+	srand((unsigned) time(&t) + ami->global_counter);
+
+	int stringlen = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
+	if (stringlen <= 0) {
+	  fprintf(stderr, "Error[random.string]: should be at least 1.");
+	  exit(1);
+	}
+	randstr = malloc(stringlen+1);
+	if (!randstr) {
+	  fprintf(stderr, "Error[random.string]: Could not allocate random string!\n");
+	  exit(1);
+	}
+	memset(randstr, 0, stringlen+1);
+
+	for (int i=0; i < stringlen; i++) {
+	  int rout = rand() % 16;
+	  randstr[i] = rout;
+	}
+	
+	kv_push(char *, ami->values_stack, strdup(randstr));
+	free(randstr);
       } else if (!strcmp("csv", n->strval)) {
 	/* size_t stacklen = kv_size(ami->values_stack); */
 	/* for (size_t i = 0; i < stacklen; i++) { */
