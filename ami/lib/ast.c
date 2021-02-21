@@ -750,7 +750,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	for (int i=0; i < stringlen; i++) {
 	  int rout = rand() % 16;
-	  randstr[i] = rout;
+	  randstr[i] = hexchars[rout];
 	}
 	
 	kv_push(char *, ami->values_stack, strdup(randstr));
