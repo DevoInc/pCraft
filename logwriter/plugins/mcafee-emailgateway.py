@@ -15,10 +15,13 @@ class LogPlugin(LogContext):
     def __del__(self):
         self.closelog()
 
+    def validate_keys(self, kvdict):
+        pass
+
     def template_to_log(self, packet, kvdict):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
 
-        event = self.retrieve_template("mcafee.emailgateway", kvdict["event_id"], kvdict)
+        event = self.retrieve_template("mcafee.email-gateway.cef0", "default", kvdict)
         event = frame_time.strftime(event)
 
         return event
