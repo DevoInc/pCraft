@@ -783,6 +783,33 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	} else {
 	  kv_push(char *, ami->values_stack, strdup(result));
 	}
+      } else if (!strcmp("csv.linescount", n->strval)) {
+	const char *filename = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	struct stat st;
+	FILE *fp;
+	size_t readf;
+	char readbuf;
+	size_t nlines = 0;
+	char *outstr;
+	
+	fp = fopen(filename, "rb");
+	if (!fp) {
+	  fprintf(stderr, "file.readall: Could not read file %s\n", filename);
+	  return;
+	}
+
+	fseek(fp, 0, SEEK_SET);
+	
+	while ((readf = fread(&readbuf, 1, 1, fp)) > 0) {
+	  if (readbuf == '\n') {
+	    nlines++;
+	  }
+	}
+
+	nlines--;
+	
+	asprintf(&outstr, "%ld", nlines);
+	kv_push(char *, ami->values_stack, outstr);
       } else if (!strcmp("replace", n->strval)) {
 	kv_push(char *, ami->values_stack, "replace");// So we know we have a replace to perform
 	/* printf("We are going to REPLACE!\n"); */
