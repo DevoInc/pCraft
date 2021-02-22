@@ -12,7 +12,7 @@
 
 #include "khash.h"
 #include "kvec.h"
-
+#include <regex.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -101,6 +101,7 @@ void ami_append_repeat(ami_t *ami, int lineno, ami_node_type_t type, char *strva
 float ami_get_sleep_cursor(ami_t *ami);
 char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value);
 int ami_get_nested_variable_as_int(ami_t *ami, char *var_value);
+regex_t compile_regex(char *regex_char);
 
 #ifdef __cplusplus
 }

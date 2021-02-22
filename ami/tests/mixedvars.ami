@@ -5,4 +5,5 @@ action VarFromFunction {
 
        $fromfunc = base64.encode("Hello")
        $b64string = "This is a base64 string: ${fromfunc}"
+       $reserved_chars = "$this_is_not_a_var"
 }
