@@ -22,5 +22,7 @@ o365_actor_context_id,"8331b18d-2d87-48ef-a35f-ac8818ebf9b4"
 o365_target_context_id,"8331b18d-2d87-48ef-a35f-ac8818ebf9b4"
 o365_version,"1"
 o365_extended_properties,"[{""Name"": ""UserAgent"", ""Value"": ""Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36""}, {""Name"": ""UserAuthenticationMethod"", ""Value"": ""4""}, {""Name"": ""RequestType"", ""Value"": ""OAuth2:Authorize""}, {""Name"": ""ResultStatusDetail"", ""Value"": ""Redirect""}]"
-o365_user_id,"biff.bullhorn@example.com"
-o365_actor_email,"biff.bullhorn@example.com"
+o365_user_id,biff.bullhorn@example.com
+o365_actor_email,biff.bullhorn@example.com
+o365_user_agent,Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36
+o365_actor_id,c15eeebf-461b-4380-8f30-ea45b91fe253

@@ -19,8 +19,8 @@ class getRandomIP:
             try:
                 return self.get()
             except RecursionError:
-                if ipfail:
-                    return str(ipfail) # We have set an IP in case of failure, so we don't crash the program
+                if self.ipfail:
+                    return str(self.ipfail) # We have set an IP in case of failure, so we don't crash the program
                 raise Exception("No more new IP can be pulled. Increase the Network size.")
 
         return "0.0.0.0"

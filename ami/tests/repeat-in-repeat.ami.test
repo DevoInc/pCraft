@@ -1,71 +1,85 @@
 ami_version 1
 Hello, world!
 first repeat
-ACTION CLOSE: repeat index:0
 ------------------------
 * Action name(A2) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
 * Local Variables:
 * Field Actions:
 second repeat
-ACTION CLOSE: repeat index:0
 ------------------------
 * Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
 * Local Variables:
 * Field Actions:
 second repeat
-ACTION CLOSE: repeat index:0
 ------------------------
 * Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Local Variables:
 * Field Actions:
 second repeat
-ACTION CLOSE: repeat index:0
 ------------------------
 * Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(3)
 * Local Variables:
 * Field Actions:
 second repeat
-ACTION CLOSE: repeat index:4
 ------------------------
-* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(4)
 * Local Variables:
 * Field Actions:
+second repeat
 first repeat
-ACTION CLOSE: repeat index:2
 ------------------------
-* Action name(A2) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(0)
+* Action name(A2) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Local Variables:
 * Field Actions:
 second repeat
-ACTION CLOSE: repeat index:0
 ------------------------
 * Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
 * Local Variables:
 * Field Actions:
 second repeat
-ACTION CLOSE: repeat index:0
 ------------------------
 * Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Local Variables:
 * Field Actions:
 second repeat
-ACTION CLOSE: repeat index:0
 ------------------------
 * Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(3)
 * Local Variables:
 * Field Actions:
 second repeat
-ACTION CLOSE: repeat index:4
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(4)
+* Local Variables:
+* Field Actions:
+second repeat
+first repeat
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
+* Local Variables:
+* Field Actions:
+second repeat
 ------------------------
 * Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Local Variables:
 * Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(3)
+* Local Variables:
+* Field Actions:
+second repeat
+------------------------
+* Action name(N3) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(4)
+* Local Variables:
+* Field Actions:
+second repeat
 +++++++
 * Global Variables:
 [0] $i1
 AMI_VAR_INT
-	1
+	2
 [1] $i2
 AMI_VAR_INT
-	3
+	4
 

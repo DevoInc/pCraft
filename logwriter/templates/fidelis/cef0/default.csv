@@ -1,0 +1,29 @@
+key,default_value
+fidelis_customer,CoolInc
+fidelis_action,alert
+fidelis_linkback,https://console.local/j/alert.html?4f7d8a48-8cb0-4fd9-ad4a-f20314d3c52b
+fidelis_compression,2
+fidelis_dst_ip,192.168.0.42
+fidelis_dst_port,1234
+fidelis_fname,st
+fidelis_from,<n/a>
+fidelis_group,default
+fidelis_malware_name,<n/a>
+fidelis_malware_type,<n/a>
+fidelis_file_hash,<n/a>
+fidelis_policy,<n/a>
+fidelis_protocol,HTTP
+fidelis_request_client_application,Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.14) Gecko/20101001 Firefox/3.5.14 ( .NET CLR 3.5.30729)
+fidelis_request_method,GET
+fidelis_url,www.example.com/
+fidelis_dvc_ip,127.0.0.1
+fidelis_dvc_host,localhost
+fidelis_severity,1
+fidelis_src_ip,10.23.43.1
+fidelis_src_port,4567
+fidelis_message,Testing our Platform
+fidelis_target,www.example.com
+fidelis_dst_user,<n/a>
+fidelis_src_user,<n/a>
+fidelis_reason,[{"F.Protocol.HTTP":[{"matched":"true","Session":"<n\\/a>"}]}]
+fidelis_vlan_id,-1

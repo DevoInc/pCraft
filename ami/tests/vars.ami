@@ -12,5 +12,7 @@ repeat 2 as $index {
 	      $escapedstring = "This is an \"escaped\" string"
 	      $substituted = "We add the global content:${global}"
 	      $multiple = "The local: ${reallocal} global: ${global}"
+	      _anotherone = "Hello, World!"
       }
 }
+

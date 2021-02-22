@@ -323,7 +323,7 @@ FALSE false
 
 [ \t\r]+ ;
 
-. ami_yyerror(yyscanner, NULL, "Syntax error: invalid character '%c'\n", yytext[0]);
+. ami_yyerror(yyscanner, NULL, "Syntax error: invalid character '%c' from '%s'. File '%s'\n", yytext[0], yytext, filenames[includes_index]?filenames[includes_index]:"main");
 
 %%
 

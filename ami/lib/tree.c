@@ -25,6 +25,19 @@ ami_node_t *ami_node_new(void)
   return node;
 }
 
+void ami_node_debug_current(ami_node_t *node)
+{
+  if (!node) {
+    fprintf(stderr, "Node is NULL!\n");
+  }
+
+  printf("\ttype:%s\n", ami_node_names[node->type]);
+  if (node->strval) {
+    printf("\tstrval:%s\n", node->strval);
+  }
+  printf("\tintval:%d\n", node->intval);  
+}
+
 void ami_node_debug(ami_node_t *node)
 {
   ami_node_t *n;

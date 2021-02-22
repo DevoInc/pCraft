@@ -19,7 +19,8 @@ enum _ami_node_type_t {
        AMI_NT_VARVALINT, // = 1
        AMI_NT_VARVALFLOAT, // = 1
        AMI_NT_VARVAR,    // = $var
-       AMI_NT_REPLACE,   // foo => blah
+       AMI_NT_REPLACE,   // foo => varset
+       AMI_NT_REPLACE2,   // varset => varset
        AMI_NT_ACTION,    // action Foo {
        AMI_NT_ACTIONCLOSE, // } for an action
        AMI_NT_REPEATCLOSE, // } for a repeat
@@ -86,6 +87,7 @@ static const char *ami_node_names[] = {
        "AMI_NT_VARVALFLOAT",
        "AMI_NT_VARVAR",
        "AMI_NT_REPLACE",
+       "AMI_NT_REPLACE2",
        "AMI_NT_ACTION",
        "AMI_NT_ACTIONCLOSE",
        "AMI_NT_REPEATCLOSE",
@@ -116,6 +118,7 @@ void ami_tree_append_int_no_leaves(ami_tree_t *tree, ami_node_type_t type, int v
 void ami_tree_append_str_no_leaves(ami_tree_t *tree, ami_node_type_t type, char *val);
 
 ami_node_t *ami_node_new(void);
+void ami_node_debug_current(ami_node_t *node);
 void ami_node_debug(ami_node_t *node);
 void ami_node_debug2(ami_node_t *node, int level);
 ami_node_t *ami_node_prepend(ami_node_t *nodedst, ami_node_t *nodesrc);

@@ -43,7 +43,7 @@ importphishing:
         print("Importing PCAP: %s" % pcap_in)
 
         to_replace = action.FieldActions()
-        
+
         n_items_replaced = 0
         packets_injected = 0
         

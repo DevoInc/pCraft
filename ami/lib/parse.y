@@ -18,9 +18,9 @@ typedef void *yyscan_t;
 
 %code provides
 {
-
   void ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...);
   int get_lineno(yyscan_t scanner);
+
 }
 
 %code top
@@ -28,6 +28,8 @@ typedef void *yyscan_t;
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+
+#include <parse.h>
 
 }
 
@@ -461,16 +463,28 @@ function_argument: function_argument_variable
                    | function
                    ;
 
-function_argument_assign: string ASSIGN varset {
+/* function_argument_assign: string ASSIGN varset { */
+/*   if (ami->debug) { */
+/*     printf("[parse.y] function_argument_assign: STRING(%s) ASSIGN varset\n", $1); */
+/*   } */
+
+/*   ami->arguments_count++; */
+  
+/*   ami_append_item(ami, get_lineno(scanner), AMI_NT_REPLACE, $1, 0, 0, 0); */
+  
+/*   free($1); */
+/* } */
+/* ; */
+
+function_argument_assign: varset ASSIGN varset {
   if (ami->debug) {
-    printf("[parse.y] function_argument_assign: STRING(%s) ASSIGN varset\n", $1);
+    printf("[parse.y] function_argument_assign: varset ASSIGN varset\n");
   }
 
   ami->arguments_count++;
   
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_REPLACE, $1, 0, 0, 0);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_REPLACE, NULL, 0, 0, 0);
   
-  free($1);
 }
 ;
 

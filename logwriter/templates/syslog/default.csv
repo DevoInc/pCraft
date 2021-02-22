@@ -1,0 +1,6 @@
+key,default_value
+msg,Feb  3 12:04:32 voidptr logw[1234]: This is a test message
+timestamp_rfc3164,Feb 23 17:36:00
+hostname,voidptr
+procid,logw
+msgid,[1234]: This is a test message

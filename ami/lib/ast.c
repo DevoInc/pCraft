@@ -39,14 +39,14 @@ static char *_replace_strval_from_variables(ami_t *ami, char *strval) {
   khint_t k;
 
   replaced_buf = strdup(strval);
-  
+
   if (ami->variables) {
     for (k = 0; k < kh_end(ami->variables); ++k) {
       if (kh_exist(ami->variables, k)) {
 	char *key = (char *)kh_key(ami->variables, k);
 	ami_variable_t *value = (ami_variable_t *)kh_value(ami->variables, k);
 	if (!value->type == AMI_VAR_STR) {
-	  fprintf(stderr, "Error: Can only get value from a string variable!\n");
+	  /* fprintf(stderr, "Error: Can only get value from a string variable!\n"); */
 	  return replaced_buf;
 	}
 	char *replacevar = ami_strutil_make_replacevar(key);
@@ -87,6 +87,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   ami_variable_t *tmp_var = NULL;
 
   for (n = node; n; n = n->next) {
+
+    ami_global_counter_incr(ami); // used for better random numbers
+    
     if ((n->strval) && (!n->is_verbatim)) {
       if (n->type == AMI_NT_VARVALSTR) {
 	replaced_var = _replace_strval_from_variables(ami, n->strval);
@@ -230,22 +233,18 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       /* printf("Fieldfunc :%s\n", n->strval); // ip */
       if (!strcmp("replace", kv_A(ami->values_stack, kv_size(ami->values_stack)-1))) {
 	size_t stacklen = kv_size(ami->values_stack);
-	/* printf("the stacklen when we replace:%ld\n", stacklen); */
-	/* for (size_t i = 0; i < stacklen; i++) { */
-	/*   printf("i:%d;val:%s\n", i, kv_A(ami->values_stack, i)); */
-	/* } */
-
+	
 	for (int i = 1; i <= ami->replace_count; i++) {
-	  int pos_from = (i*-1)-i; 
-	  int pos_to = (i*-1)-(i+1);
+	  int pos_to = (i*-1)-i; 
+	  int pos_from = (i*-1)-(i+1);
 	  char *to = kv_A(ami->values_stack, stacklen+pos_to);
 	  char *from = kv_A(ami->values_stack, stacklen+pos_from);
-	  
+
 	  field_action = ami_field_action_new();
 	  field_action->field = n->strval;
 	  field_action->action = "replace";
-	  field_action->left = ami_get_nested_variable_as_str(ami, from);
-	  field_action->right = ami_get_nested_variable_as_str(ami, to);
+	  field_action->left = ami_get_nested_variable_as_str(ami, n,from);
+	  field_action->right = ami_get_nested_variable_as_str(ami, n,to);
 	  action->field_actions = ami_field_action_append(action->field_actions, field_action);
 	  
 	}
@@ -262,7 +261,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       field_action->field = n->strval;
       field_action->action = "set";
       char *vstr = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-      char *value = ami_get_nested_variable_as_str(ami, vstr);
+      char *value = ami_get_nested_variable_as_str(ami, n,vstr);
       if (!value) {
 	fprintf(stderr, "[line:%d] Error getting value for field %s\n", n->lineno, n->strval);
 	exit(1);
@@ -275,12 +274,33 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	action->field_actions = ami_field_action_append(action->field_actions, field_action);
       }
       break;
+    /* case AMI_NT_REPLACE: */
+    /*   { */
+    /* 	/\* ami_print_all_variables(ami); *\/ */
+    /* 	/\* char *replace_with = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); *\/ */
+    /* 	/\* printf("replace:%s with:%s\n", n->strval, replace_with); *\/ */
+    /* 	kv_push(char *, ami->values_stack, strdup(n->strval)); */
+    /* 	ami->replace_count++; */
+    /*   } */
+    /*   break; */
     case AMI_NT_REPLACE:
       {
-	/* ami_print_all_variables(ami); */
-	/* char *replace_with = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
-	/* printf("replace:%s with:%s\n", n->strval, replace_with); */
-	kv_push(char *, ami->values_stack, strdup(n->strval));
+	
+	/* char *replace_to_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1); */
+	/* char *replace_from_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-2); */
+
+	/* printf("AST -> replace %s => %s\n", replace_from_str, replace_to_str); */
+	
+	/* ami_variable_t *replace_from = ami_get_variable(ami, replace_from_str); */
+	/* if (replace_from) { */
+	/*   char *varstr = ami_variable_to_string(replace_from); */
+	/*   printf("FROM VAR\n"); */
+	/*   kv_push(char *, ami->values_stack, strdup(varstr)); */
+	/* } else { */
+	/*   kv_push(char *, ami->values_stack, strdup(replace_from_str)); */
+	/* } */
+	/* ami_variable_free(replace_from); */
+	
 	ami->replace_count++;
       }
       break;
@@ -293,6 +313,61 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64url_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("add", n->strval)) {
+	char *left_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+	char *right_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);	
+	ami_variable_t *left = ami_get_variable(ami, left_s);
+	int left_int;
+	int right_int;
+	int total;
+	char *outstr;
+
+	if (!left) {
+	  left_int = (int)strtod(left_s, NULL);
+	} else {
+	  left_int = ami_variable_to_int(left);
+	}
+	ami_variable_t *right = ami_get_variable(ami, right_s);
+	if (!right) {
+	  right_int = (int)strtod(right_s, NULL);
+	} else {
+	  right_int = ami_variable_to_int(right);
+	}
+
+	total = left_int + right_int;
+	asprintf(&outstr, "%d", total);
+	
+	kv_push(char *, ami->values_stack, outstr);	
+      } else if (!strcmp("random.macaddr", n->strval)) {
+	char macchars[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+	char *randstr = malloc(18);
+	int rout;
+
+	time_t t;
+	srand((unsigned) time(&t) + ami->global_counter);
+	
+	if (!randstr) {
+	  fprintf(stderr, "Error[random.macaddr]: Could not allocate random string!\n");
+	  exit(1);
+	}
+	memset(randstr, 0, 18);
+	for (int i=0; i < 17; i++) {
+	  switch(i) {
+	  case 2:
+	  case 5:
+	  case 8:
+	  case 11:
+	  case 14:
+	    randstr[i] = ':';
+	    break;
+	  default:
+	    rout = rand() % 16;
+	    randstr[i] = macchars[rout];
+	  }
+	}
+
+	kv_push(char *, ami->values_stack, strdup(randstr));
+	free(randstr);
       } else if (!strcmp("sin", n->strval)) {
 	ami_variable_t *arg = ami_get_variable(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char *arg_str = ami_variable_to_string(arg);
@@ -303,7 +378,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	kv_push(char *, ami->values_stack, outstr);	
       } else if (!strcmp("ip.gethostbyname", n->strval)) {
 	struct hostent *he;
-	const char *hostname = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *hostname = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char ipstr[INET6_ADDRSTRLEN];
 	
 	he = gethostbyname(hostname);
@@ -326,11 +401,17 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 					       0x000fffff, 0x00f8ffff, 0x00fcffff, 0x00feffff, 0x00ffffff,
 					       0x80ffffff, 0xc0ffffff, 0xe0ffffff, 0xf0ffffff, 0xf8ffffff,
 					       0xfcffffff, 0xfeffffff, 0xffffffff};
-	char *ipaddr = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
-	char *ipnumber = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-	int ipn = ami_get_nested_variable_as_int(ami, ipnumber);
-	/* char *ipnumber = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1)); */
-	/* int ipn = (int)strtod(ipnumber, NULL); */
+	char *ipaddr_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+	char *ipnum_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);	
+	ami_variable_t *ipaddr_v = ami_get_variable(ami, ipaddr_s);
+	ami_variable_t *ipnum_v = ami_get_variable(ami, ipnum_s);
+	char *ipaddr = ami_variable_to_string(ipaddr_v);
+	int ipn = 1;
+	if (ipnum_v) {
+	  ipn = ami_variable_to_int(ipnum_v);
+	} else {
+	  ipn = ami_get_nested_variable_as_int(ami, ipnum_s);;
+	}
 	int ret;
 	struct in_addr addr4;
 	struct in_addr out_network;
@@ -410,7 +491,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	
 	kv_push(char *, ami->values_stack, strdup(ret_network));
       } else if (!strcmp("crypto.md5", n->strval)) {
-	const char *strbuf = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *strbuf = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	MD5_CTX ctx;
 	unsigned char buf[16];
 	
@@ -421,7 +502,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *hex = ami_rc4_to_hex(buf, 16);	
 	kv_push(char *, ami->values_stack, hex);
       } else if (!strcmp("crypto.sha1", n->strval)) {
-	const char *strbuf = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *strbuf = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	SHA1_CTX ctx;
 	unsigned char buf[SHA1_BLOCK_SIZE];
 	
@@ -432,7 +513,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *hex = ami_rc4_to_hex(buf, SHA1_BLOCK_SIZE);	
 	kv_push(char *, ami->values_stack, hex);
       } else if (!strcmp("crypto.sha256", n->strval)) {
-	const char *strbuf = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *strbuf = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	SHA256_CTX ctx;
 	unsigned char buf[SHA256_BLOCK_SIZE];
 	
@@ -443,7 +524,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *hex = ami_rc4_to_hex(buf, SHA256_BLOCK_SIZE);	
 	kv_push(char *, ami->values_stack, hex);
       } else if (!strcmp("string.upper", n->strval)) {
-	const char *str_origin = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *str_origin = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char *s = (char *)str_origin;
 	char c;
 	int i = 0;
@@ -462,7 +543,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	kv_push(char *, ami->values_stack, out);
       } else if (!strcmp("string.lower", n->strval)) {
-	const char *str_origin = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *str_origin = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char *s = (char *)str_origin;
 	char c;
 	int i = 0;
@@ -481,7 +562,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	kv_push(char *, ami->values_stack, out);
       } else if (!strcmp("hostname_generator", n->strval)) {
-	const char *ipaddr = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *ipaddr = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char vowels[] = {'a','e','i','o','u','y','a','e','i','o'};
 	char consonants[] = {'p','b','c','z','m','f','d','s','t','r'};
 	in_addr_t ipint;
@@ -512,7 +593,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	kv_push(char *, ami->values_stack, retstr); 	
 	
       } else if (!strcmp("file.amidir", n->strval)) {
-	const char *filename = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *filename = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	char *result;
 	char *dname, *da;
 	da = strdup(ami->file);
@@ -521,7 +602,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	free(da);
 	kv_push(char *, ami->values_stack, result);
       } else if (!strcmp("file.readall", n->strval)) {
-	const char *filename = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *filename = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	struct stat st;
 	FILE *fp;
 	off_t filesize;
@@ -546,7 +627,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	kv_push(char *, ami->values_stack, b64);	       
       } else if (!strcmp("file.linescount", n->strval)) {
-	const char *filename = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *filename = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	struct stat st;
 	FILE *fp;
 	size_t readf;
@@ -579,7 +660,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       } else if (!strcmp("uuid.v5", n->strval)) { // form string
 	uuid_t uuid;
 	const uuid_t *uuid_template;
-	const char *data = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	const char *data = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	size_t data_len = strlen(data);
 	char retstr[37];
 	uuid_template = uuid_get_template("dns");
@@ -588,9 +669,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	kv_push(char *, ami->values_stack, strdup((char *)retstr));
       } else if (!strcmp("crypto.rc4", n->strval)) {
 	ami_rc4_t rc4;
-	char *value = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	char *value = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	size_t value_len = strlen(value);
-	char *key = ami_get_nested_variable_as_str(ami, kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
+	char *key = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
 
 	unsigned char *res = ami_rc4_do(&rc4, (unsigned char*)key, strlen(key), (unsigned char *)value, value_len);
 	/* for (int count = 0; count < value_len; count++) { */
@@ -606,12 +687,18 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	int to = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
 	int from = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-2), NULL);
 
+	time_t t;
+	srand((unsigned) time(&t) + ami->global_counter);
+
 	int rout = (rand() % (to - from + 1)) + from;
 	asprintf(&randstr, "%d", rout);
 	kv_push(char *, ami->values_stack, randstr);		
       } else if (!strcmp("random.float", n->strval)) {
 	char *randstr;
 
+	time_t t;
+	srand((unsigned) time(&t) + ami->global_counter);
+	
 	float to = (float)strtof(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
 	float from = (float)strtof(kv_A(ami->values_stack, kv_size(ami->values_stack)-2), NULL);
 
@@ -620,6 +707,54 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	asprintf(&randstr, "%f", rout);
 	kv_push(char *, ami->values_stack, randstr);		
+      } else if (!strcmp("random.string", n->strval)) {
+	char *randstr;
+
+	int stringlen = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
+	if (stringlen <= 0) {
+	  fprintf(stderr, "Error[random.string]: should be at least 1.");
+	  exit(1);
+	}
+	randstr = malloc(stringlen+1);
+	if (!randstr) {
+	  fprintf(stderr, "Error[random.string]: Could not allocate random string!\n");
+	  exit(1);
+	}
+	memset(randstr, 0, stringlen+1);
+
+	for (int i=0; i < stringlen; i++) {
+	  int rout = (rand() % (122 - 97 + 1)) + 97;
+	  randstr[i] = rout;
+	}
+	
+	kv_push(char *, ami->values_stack, strdup(randstr));		
+	free(randstr);
+      } else if (!strcmp("random.hexstring", n->strval)) {
+	char *randstr;
+	char hexchars[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+
+	time_t t;
+	srand((unsigned) time(&t) + ami->global_counter);
+
+	int stringlen = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
+	if (stringlen <= 0) {
+	  fprintf(stderr, "Error[random.string]: should be at least 1.");
+	  exit(1);
+	}
+	randstr = malloc(stringlen+1);
+	if (!randstr) {
+	  fprintf(stderr, "Error[random.string]: Could not allocate random string!\n");
+	  exit(1);
+	}
+	memset(randstr, 0, stringlen+1);
+
+	for (int i=0; i < stringlen; i++) {
+	  int rout = rand() % 16;
+	  randstr[i] = hexchars[rout];
+	}
+	
+	kv_push(char *, ami->values_stack, strdup(randstr));
+	free(randstr);
       } else if (!strcmp("csv", n->strval)) {
 	/* size_t stacklen = kv_size(ami->values_stack); */
 	/* for (size_t i = 0; i < stacklen; i++) { */
@@ -630,17 +765,51 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *field = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
 	/* char *field = ami_get_variable(ami, field_val_stack); */
 	char *line_val_stack = kv_A(ami->values_stack, kv_size(ami->values_stack)-3);
-	/* char *line_as_string = ami_get_nested_variable_as_str(ami, line_val_stack); */
+	/* char *line_as_string = ami_get_nested_variable_as_str(ami, n,line_val_stack); */
 	ami_variable_t *line_in_csv = ami_get_variable(ami, line_val_stack);
+	if (!line_in_csv) {
+	  fprintf(stderr, "Could not get the variable from '%s', line:%d\n", line_val_stack, n->lineno);
+	}
+	int csvline = ami_variable_to_int(line_in_csv);
+	/* ami_variable_debug(line_in_csv); */
+	/* printf("csvline:%d\n", csvline); */
+	
 	char *file = kv_A(ami->values_stack, kv_size(ami->values_stack)-4);
 
-	char *result = ami_csvread_get_field_at_line(file, line_in_csv->ival, field, has_header);
+	char *result = ami_csvread_get_field_at_line(file, csvline, field, has_header);
 	if (!result) {
-	  fprintf(stderr, "[line:%d] Error reading CSV file %s, field:%s, line:%d\n", n->lineno, file, field, line_in_csv);
+	  fprintf(stderr, "[line:%d] Error reading CSV file %s, field:%s, line:%d\n", n->lineno, file, field, csvline);
 	  exit(1);
 	} else {
 	  kv_push(char *, ami->values_stack, strdup(result));
 	}
+      } else if (!strcmp("csv.linescount", n->strval)) {
+	const char *filename = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+	struct stat st;
+	FILE *fp;
+	size_t readf;
+	char readbuf;
+	size_t nlines = 0;
+	char *outstr;
+	
+	fp = fopen(filename, "rb");
+	if (!fp) {
+	  fprintf(stderr, "file.readall: Could not read file %s\n", filename);
+	  return;
+	}
+
+	fseek(fp, 0, SEEK_SET);
+	
+	while ((readf = fread(&readbuf, 1, 1, fp)) > 0) {
+	  if (readbuf == '\n') {
+	    nlines++;
+	  }
+	}
+
+	nlines--;
+	
+	asprintf(&outstr, "%ld", nlines);
+	kv_push(char *, ami->values_stack, outstr);
       } else if (!strcmp("replace", n->strval)) {
 	kv_push(char *, ami->values_stack, "replace");// So we know we have a replace to perform
 	/* printf("We are going to REPLACE!\n"); */

@@ -42,6 +42,7 @@ ami_variable_t *ami_variable_array_get_at_index(ami_variable_t *array, size_t in
 ami_variable_t *ami_variable_copy(ami_variable_t *var);
 void ami_variable_debug(ami_variable_t *var);
 char *ami_variable_to_string(ami_variable_t *var);
+int ami_variable_to_int(ami_variable_t *var);
 void ami_variable_free(ami_variable_t *var);
   
 #ifdef __cplusplus

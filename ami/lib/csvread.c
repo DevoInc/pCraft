@@ -23,6 +23,10 @@ typedef struct _parse_helper_t parse_helper_t;
 void on_new_field(void *s, size_t i, void *userdata)
 {
   parse_helper_t *phelp = (parse_helper_t *)userdata;
+  if (!phelp) {
+    fprintf(stderr, "Error reading field helper!");
+    return;
+  }
   
   if ((phelp->current_line == 1) && (phelp->has_header)) {
     kv_push(char *, phelp->fields, strdup(s));

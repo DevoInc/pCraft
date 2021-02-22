@@ -83,9 +83,8 @@ class LogPlugin(LogContext):
             return "server-to-client"        
         
         return "client-to-server"        
-        
-    def run(self, cap, packet, pktid, layer):
 
+    def execute(self, cap, packet, pktid, layer):
         if self.first:
             header = self.retrieve_template_header("paloalto.firewall", "traffic")
             if header:
@@ -97,19 +96,19 @@ class LogPlugin(LogContext):
         
         kvdict = {
             "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
-            "Threat/Content Type": self.get_threat_type(),
-            "Generate Time": generate_time.strftime("%Y/%m/%d %H:%M:%S"),
-            "Source address": packet.ip.src,
-            "Destination address": packet.ip.dst,
-            "Time Logged": generate_time.strftime("%Y/%m/%d %H:%M:%S"),
-            "Source Port": self.get_srcport(packet),
-            "Destination Port": self.get_dstport(packet),
-            "IP Protocol": self.get_protocol(packet),
+            "Threat/Content_Type": self.get_threat_type(),
+            "Generate_Time": generate_time.strftime("%Y/%m/%d %H:%M:%S"),
+            "Source_address": packet.ip.src,
+            "Destination_address": packet.ip.dst,
+            "Time_Logged": generate_time.strftime("%Y/%m/%d %H:%M:%S"),
+            "Source_Port": self.get_srcport(packet),
+            "Destination_Port": self.get_dstport(packet),
+            "IP_Protocol": self.get_protocol(packet),
             "URL/Filename": self.get_url_filename(packet),
             "Direction": self.get_direction(packet),
-            "Sequence Number": self.get_seqid(packet),
-            "Source Country": self.get_country_from_ip(packet.ip.src),
-            "Destination Country": self.get_country_from_ip(packet.ip.dst),
+            "Sequence_Number": self.get_seqid(packet),
+            "Source_Country": self.get_country_from_ip(packet.ip.src),
+            "Destination_Country": self.get_country_from_ip(packet.ip.dst),
             "url_idx": random.randint(1, 99),                        
         }
         self.session_id += 1
@@ -118,3 +117,12 @@ class LogPlugin(LogContext):
         event = frame_time.strftime(event)
         
         self.log_fp.write(event)
+    
+    def run(self, cap, packet, pktid, layer):
+
+        if hasattr(packet, 'tcp'):
+            if str(packet.tcp.flags) == "0x00000002": # We only write TCP-SYN
+                self.execute(cap, packet, pktid, layer)
+        else:
+            self.execute(cap, packet, pktid, layer)
+

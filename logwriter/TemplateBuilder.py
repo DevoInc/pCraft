@@ -111,8 +111,8 @@ class TemplateBuilder:
 if __name__ == "__main__":
     tb = TemplateBuilder()
 
-    if tb.check_coverage("tanium", "threats"):
-        print(tb.get_event("tanium", "threats", None))
+    # if tb.check_coverage("tanium", "threats"):
+    #     print(tb.get_event("tanium", "threats", None))
         
     # if tb.check_coverage("mcafee.email-gateway.cef0", "default"):
     #     print(tb.get_event("mcafee.email-gateway.cef0", "default", None))
@@ -142,9 +142,9 @@ if __name__ == "__main__":
     #     event = event_time.strftime(event)
     #     print(event)
 
-    # if tb.check_coverage("microsoft.o365", "exchange"):
-    #     event_time = datetime.datetime.now()
-    #     event = tb.get_event("microsoft.o365", "exchange", None)
-    #     event = event_time.strftime(event)
-    #     print(event)
+    if tb.check_coverage("microsoft.o365", "exchange"):
+        event_time = datetime.datetime.now()
+        event = tb.get_event("microsoft.o365", "exchange", None)
+        event = event_time.strftime(event)
+        print(event)
 

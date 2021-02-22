@@ -75,8 +75,14 @@ ami_t *ami_new(void)
     ami->repeat_indices_cursor[i] = 0;
   }
   ami->current_repeat_block = 0;
+
+  ami->global_counter = 0;
   
   return ami;
+}
+
+void ami_global_counter_incr(ami_t *ami) {
+  ami->global_counter++;
 }
 
 int ami_variable_exists(ami_t *ami, const char *key)
@@ -432,7 +438,7 @@ regex_t compile_regex(char *regex_char) {
   return regex;
 }
 
-char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value)
+char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_value)
 {
   ami_variable_t *retvar;
 
@@ -444,13 +450,15 @@ char *ami_get_nested_variable_as_str(ami_t *ami, char *var_value)
   if (strlen(var_value) > 0) {
     if (regexec(&regex, var_value, 0, NULL, 0) != 0) return var_value; // This is not a variable
   } else {
-    fprintf(stderr, "Variable value empty!\n");
-    return NULL;
+    fprintf(stderr, "Variable value for '%s' empty!\n", var_value);
+    ami_node_debug_current(node);
+    return "";
+    /* return NULL; */
   }
 
   retvar = ami_get_variable(ami, var_value);
   if (!retvar) {
-    fprintf(stderr, "Cannot get value for variable %s\n", var_value);
+    fprintf(stderr, "Cannot get value for variable %s at line %d\n", var_value, node->lineno);
     return NULL;
   }
   return retvar->strval;
