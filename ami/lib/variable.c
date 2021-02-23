@@ -170,6 +170,9 @@ ami_variable_t *ami_variable_copy(ami_variable_t *var)
   case AMI_VAR_STR:
     ami_variable_set_string(new, var->strval);
     break;
+  case AMI_VAR_VARIABLE:
+    ami_variable_set_string(new, var->strval);
+    break;
   default:
     fprintf(stderr, "Error: no such type of variable. Cannot copy!\n");
     ami_variable_free(new);
@@ -241,6 +244,9 @@ char *ami_variable_to_string(ami_variable_t *var)
   case AMI_VAR_STR:
     return strdup(var->strval);
     break;
+  case AMI_VAR_VARIABLE:
+    return strdup(var->strval);
+    break;
   }
   return "None";
 }
@@ -262,6 +268,9 @@ int ami_variable_to_int(ami_variable_t *var)
     return (int)var->fval;
     break;
   case AMI_VAR_STR:
+    return (int)strtod(var->strval, NULL);
+    break;
+  case AMI_VAR_VARIABLE:
     return (int)strtod(var->strval, NULL);
     break;
   }
