@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -63,11 +64,31 @@ void ami_variable_set_string(ami_variable_t *var, char *strval)
   var->len = strlen(strval);
 }
 
+void ami_variable_set_variable(ami_variable_t *var, char *strval)
+{
+  if (!var) {
+    fprintf(stderr, "Error: Empty ami_variable_t!\n");
+    return;
+  }
+  
+  var->type = AMI_VAR_VARIABLE;
+  var->strval = strdup(strval);
+  var->len = strlen(strval);
+}
+
 ami_variable_t *ami_variable_new_string(char *strval)
 {
   ami_variable_t *var;
   var = ami_variable_new();
   ami_variable_set_string(var, strval);
+  return var;
+}
+
+ami_variable_t *ami_variable_new_variable(char *strval)
+{
+  ami_variable_t *var;
+  var = ami_variable_new();
+  ami_variable_set_variable(var, strval);
   return var;
 }
 
