@@ -6,9 +6,9 @@ ami_version 1
 +++++++
 * Global Variables:
 [0] $b64string
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:33] This is a base64 string: SGVsbG8=
 [1] $fromfunc
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:8] SGVsbG8=
 

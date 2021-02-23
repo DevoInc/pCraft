@@ -194,9 +194,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	  exit(1);
 	}
 	if (!globalvar) {
-	  globalvar = ami_variable_new_string(tmp_str);
+	  globalvar = ami_variable_new_variable(tmp_str);
 	} else {
-	  ami_variable_set_string(globalvar, tmp_str);
+	  ami_variable_set_variable(globalvar, tmp_str);
 	}
 	ami_set_variable(ami, n->strval, globalvar);
 	free(tmp_str);
@@ -222,7 +222,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	  exit(1);
 	}
 	if (!localvar) {
-	  localvar = ami_variable_new_string(tmp_str);
+	  localvar = ami_variable_new_variable(tmp_str);
 	}
 	ami_action_set_variable(action, n->strval, localvar);
 	free(tmp_str);

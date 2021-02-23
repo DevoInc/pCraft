@@ -3,38 +3,38 @@ ami_version 1
 * Action name(Simple) exec(Simple) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(1)
 * Local Variables:
 _anotherone
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:13] Hello, World!
 * Field Actions:
 ------------------------
 * Action name(Simple) exec(Simple) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(2)
 * Local Variables:
 _anotherone
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:13] Hello, World!
 * Field Actions:
 +++++++
 * Global Variables:
 [0] $escapedstring
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:27] This is an "escaped" string
 [1] $multiple
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:34] The local: local global: my global
 [2] $substituted
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:35] We add the global content:my global
 [3] $local
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:7] $global
 [4] $repeatvar
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:6] repeat
 [5] $reallocal
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:5] local
 [6] $global
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:9] my global
 [7] $index
 AMI_VAR_INT

@@ -210,6 +210,10 @@ void _ami_variable_debug_indent(ami_variable_t *var, int indent)
     fprintf(out, "%sAMI_VAR_STR\n",indent?"\t":"");
     fprintf(out, "%s\t[len:%ld] %s\n", indent?"\t":"",var->len, var->strval);        
     break;
+  case AMI_VAR_VARIABLE:
+    fprintf(out, "%sAMI_VAR_VARIABLE\n",indent?"\t":"");
+    fprintf(out, "%s\t[len:%ld] %s\n", indent?"\t":"",var->len, var->strval);        
+    break;
   default:
     fprintf(out, "No such variable type:%d\n", var->type);
     break;
