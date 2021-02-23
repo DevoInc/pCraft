@@ -14,12 +14,13 @@
 
 namespace py = pybind11;
 
-void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata2)
+void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata2, void *userdata3)
 {
   ami_field_action_t *field_action;
   khint_t k;
   
   py::object cb_func = *(py::object *)userdata2;
+  py::object cbdata = *(py::object *)userdata3;
 
   Ami *pami = (Ami *)userdata;
   Action *action = new Action();
@@ -57,7 +58,7 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata
     }
   }
 
-  cb_func(action);
+  cb_func(action, cbdata);
 }
 
 Ami::Ami(void) {
@@ -68,13 +69,11 @@ Ami::~Ami(void) {
   ami_close(_ami);
 }
 
-int Ami::Parse(std::string file, py::object func) {
+int Ami::Parse(std::string file) {
   int ret;
 
   file_path = file;
   
-  ami_set_action_callback(_ami, foreach_action, this, &func);
-
   ret = ami_parse_file(_ami, (char *)file.c_str());
   if (ret) {
     if (_ami->error) {
@@ -82,6 +81,12 @@ int Ami::Parse(std::string file, py::object func) {
       return 1;
     }
   }  
+
+  return 0;
+}
+
+int Ami::Run(py::object func, py::object userdata) {
+  ami_set_action_callback(_ami, foreach_action, this, &func, &userdata);
 
   ami_ast_walk_actions(_ami);
   
@@ -128,6 +133,7 @@ PYBIND11_MODULE(pyami, m) {
     py::class_<Ami>(m, "Ami")
       .def(py::init<>())
       .def("Parse", &Ami::Parse)
+      .def("Run", &Ami::Run)
       .def("GetFilePath", &Ami::GetFilePath)
       .def("GetReferences", &Ami::GetReferences)
       .def("GetTags", &Ami::GetTags)

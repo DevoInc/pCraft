@@ -10,7 +10,7 @@
 void simple_print_global_variables(ami_t *ami);
 void simple_print_local_variables(ami_action_t *action);
 
-void foreach_action(ami_action_t *action, void *userdata1, void *userdata2)
+void foreach_action(ami_action_t *action, void *userdata1, void *userdata2, void *userdata3)
 {
   ami_t *ami = (ami_t *)userdata1;
   /* printf("===== Running action =====\n"); */
@@ -18,7 +18,7 @@ void foreach_action(ami_action_t *action, void *userdata1, void *userdata2)
   /* printf("Running %s\n", action->name); */
 }
 
-void quiet_foreach_action(ami_action_t *action, void *userdata1, void *userdata2)
+void quiet_foreach_action(ami_action_t *action, void *userdata1, void *userdata2, void *userdata3)
 {
   ami_field_action_t *field_action;
 
@@ -28,7 +28,7 @@ void quiet_foreach_action(ami_action_t *action, void *userdata1, void *userdata2
 
 }
 
-void simple_foreach_action(ami_action_t *action, void *userdata1, void *userdata2)
+void simple_foreach_action(ami_action_t *action, void *userdata1, void *userdata2, void *userdata3)
 {
   ami_field_action_t *field_action;
 
@@ -45,7 +45,7 @@ void simple_foreach_action(ami_action_t *action, void *userdata1, void *userdata
 
 }
 
-void break_foreach_action(ami_action_t *action, void *userdata1, void *userdata2)
+void break_foreach_action(ami_action_t *action, void *userdata1, void *userdata2, void *userdata3)
 {
   ami_field_action_t *field_action;
   char c;
@@ -132,7 +132,7 @@ int simple_debug(const char *amifile)
 {
   ami_t *ami;
   ami = ami_new();  
-  ami_set_action_callback(ami, simple_foreach_action, ami, NULL);
+  ami_set_action_callback(ami, simple_foreach_action, ami, NULL, NULL);
   ami_parse_file(ami, amifile);
   printf("ami_version %d\n", ami->version);
   ami_ast_walk_actions(ami);
@@ -147,7 +147,7 @@ int break_debug(const char *amifile)
 {
   ami_t *ami;
   ami = ami_new();
-  ami_set_action_callback(ami, break_foreach_action, ami, NULL);
+  ami_set_action_callback(ami, break_foreach_action, ami, NULL, NULL);
   ami_parse_file(ami, amifile);
   ami_ast_walk_actions(ami);
   ami_close(ami);
@@ -158,7 +158,7 @@ int quiet_debug(const char *amifile)
 {
   ami_t *ami;
   ami = ami_new();  
-  ami_set_action_callback(ami, quiet_foreach_action, ami, NULL);
+  ami_set_action_callback(ami, quiet_foreach_action, ami, NULL, NULL);
   ami_parse_file(ami, amifile);
   ami_ast_walk_actions(ami);
   ami_close(ami);
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
   }
 
   
-  ami_set_action_callback(ami, foreach_action, ami, NULL);  
+  ami_set_action_callback(ami, foreach_action, ami, NULL, NULL);  
   ami->debug = 1;
   
   ret = ami_parse_file(ami, argv[1]);

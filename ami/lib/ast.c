@@ -125,7 +125,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	action->sleep_cursor = ami->sleep_cursor;
 	/* action = ami_action_copy_variables(ami, action); */
 	if (ami->action_cb) {
-	  ami->action_cb(action, ami->action_cb_userdata1, ami->action_cb_userdata2);
+	  ami->action_cb(action, ami->action_cb_userdata1, ami->action_cb_userdata2, ami->action_cb_userdata3);
 	} else {
 	  fprintf(stderr,"*** Warning: No Action Callback Set!\n");
 	}

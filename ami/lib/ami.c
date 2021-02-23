@@ -396,11 +396,12 @@ int ami_loop(ami_t *ami, foreach_action_cb action_cb, void *user_data)
 
 }
 
-void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata1, void *userdata2)
+void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata1, void *userdata2, void *userdata3)
 {
   ami->action_cb = action_cb;
   ami->action_cb_userdata1 = userdata1;
   ami->action_cb_userdata2 = userdata2;  
+  ami->action_cb_userdata3 = userdata3;  
 }
 
 void ami_append_item(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
