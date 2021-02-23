@@ -24,6 +24,8 @@ class Application:
         self.scenariofile = scenariofile
 
         self.plugins_loader, self.loaded_plugins = self.load_plugins(self.ami)
+        # print("Loaded plugins: %s" % self.loaded_plugins)
+        # self.ami.Parse(scenariofile)
         self.ami.Run(self.action_handler, None)
         
     def action_handler(self, action, plugins):
