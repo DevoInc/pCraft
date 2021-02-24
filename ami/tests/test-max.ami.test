@@ -56,21 +56,21 @@ ami_version 1
 +++++++
 * Global Variables:
 [0] $globalvar
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:18] my global variable
 [1] $verstring
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:64] In a verbatim
 string I can put whatever $the H3!! I 
 action want
 [2] $localvar
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:10] mylocalvar
 [3] $localfromglobal
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:10] $globalvar
 [4] $fromanotherlocal
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:9] $localvar
 [5] $myvar
 AMI_VAR_INT
@@ -79,12 +79,12 @@ AMI_VAR_INT
 AMI_VAR_INT
 	2
 [7] $rc4var
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:28] 6da20ca7f0c0145973f1da06b53f
 [8] $b64e
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:36] UGxlYXNlIGVuY29kZSB0aGlzIHN0cmluZw==
 [9] $uuidv5
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:36] 7f4bdf58-ba65-5b32-9a12-3265f2c20d83
 

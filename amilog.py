@@ -29,7 +29,7 @@ def make_logsdir(dirname, force_mkdir=False):
 
     return True
 
-def action_handler(action):    
+def action_handler(action, userdata):    
     if action.Exec() != "Controller":
         return
         # raise ValueError("Action exec must be Controller")
@@ -72,10 +72,13 @@ if __name__ == "__main__":
     make_logsdir(logdir, "-f" in sys.argv)
     
     ami = pyami.Ami()
+    ami.Parse(ami_file)
+
+    start_time = ami.GetStartTime()    
     if ami.GetStartTime() > 0:
-        event_time = ami.GetStartTime()
+        event_time = start_time
+        print("Events Start Time:%s" % time.ctime(event_time))
     else:
         event_time = current_time - ami.GetSleepCursor()
         
-    ami.Parse(ami_file, action_handler)
-
+    ami.Run(action_handler, None)

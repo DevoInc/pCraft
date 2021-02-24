@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -63,11 +64,31 @@ void ami_variable_set_string(ami_variable_t *var, char *strval)
   var->len = strlen(strval);
 }
 
+void ami_variable_set_variable(ami_variable_t *var, char *strval)
+{
+  if (!var) {
+    fprintf(stderr, "Error: Empty ami_variable_t!\n");
+    return;
+  }
+  
+  var->type = AMI_VAR_VARIABLE;
+  var->strval = strdup(strval);
+  var->len = strlen(strval);
+}
+
 ami_variable_t *ami_variable_new_string(char *strval)
 {
   ami_variable_t *var;
   var = ami_variable_new();
   ami_variable_set_string(var, strval);
+  return var;
+}
+
+ami_variable_t *ami_variable_new_variable(char *strval)
+{
+  ami_variable_t *var;
+  var = ami_variable_new();
+  ami_variable_set_variable(var, strval);
   return var;
 }
 
@@ -149,6 +170,9 @@ ami_variable_t *ami_variable_copy(ami_variable_t *var)
   case AMI_VAR_STR:
     ami_variable_set_string(new, var->strval);
     break;
+  case AMI_VAR_VARIABLE:
+    ami_variable_set_string(new, var->strval);
+    break;
   default:
     fprintf(stderr, "Error: no such type of variable. Cannot copy!\n");
     ami_variable_free(new);
@@ -189,6 +213,10 @@ void _ami_variable_debug_indent(ami_variable_t *var, int indent)
     fprintf(out, "%sAMI_VAR_STR\n",indent?"\t":"");
     fprintf(out, "%s\t[len:%ld] %s\n", indent?"\t":"",var->len, var->strval);        
     break;
+  case AMI_VAR_VARIABLE:
+    fprintf(out, "%sAMI_VAR_VARIABLE\n",indent?"\t":"");
+    fprintf(out, "%s\t[len:%ld] %s\n", indent?"\t":"",var->len, var->strval);        
+    break;
   default:
     fprintf(out, "No such variable type:%d\n", var->type);
     break;
@@ -216,6 +244,9 @@ char *ami_variable_to_string(ami_variable_t *var)
   case AMI_VAR_STR:
     return strdup(var->strval);
     break;
+  case AMI_VAR_VARIABLE:
+    return strdup(var->strval);
+    break;
   }
   return "None";
 }
@@ -237,6 +268,9 @@ int ami_variable_to_int(ami_variable_t *var)
     return (int)var->fval;
     break;
   case AMI_VAR_STR:
+    return (int)strtod(var->strval, NULL);
+    break;
+  case AMI_VAR_VARIABLE:
     return (int)strtod(var->strval, NULL);
     break;
   }

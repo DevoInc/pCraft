@@ -9,12 +9,14 @@
 extern "C" {
 #endif
 
+
 enum _ami_variable_type_t {
 	AMI_VAR_NONE,
 	AMI_VAR_STR,
 	AMI_VAR_INT,
 	AMI_VAR_FLOAT,
 	AMI_VAR_ARRAY,
+	AMI_VAR_VARIABLE,
 };
 typedef enum _ami_variable_type_t ami_variable_type_t;
   
@@ -36,7 +38,9 @@ ami_variable_t *ami_variable_new_int(int ival);
 void ami_variable_set_float(ami_variable_t *var, float fval);
 ami_variable_t *ami_variable_new_float(float fval);
 void ami_variable_set_string(ami_variable_t *var, char *strval);
+  void ami_variable_set_variable(ami_variable_t *var, char *strval);
 ami_variable_t *ami_variable_new_string(char *strval);
+ami_variable_t *ami_variable_new_variable(char *strval);
 ami_variable_t *ami_variable_array_append(ami_variable_t *var, ami_variable_t *to_append);
 ami_variable_t *ami_variable_array_get_at_index(ami_variable_t *array, size_t index);
 ami_variable_t *ami_variable_copy(ami_variable_t *var);

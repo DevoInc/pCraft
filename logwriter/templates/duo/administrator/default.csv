@@ -1,0 +1,9 @@
+key,default_value
+host,example.com
+isotimestamp,2021-02-23T22:10:53+00:00
+status,Active
+object,User
+action,user_update
+eventtype,administrator
+timestamp,1614064451
+username,awallace

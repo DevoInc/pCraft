@@ -38,7 +38,7 @@ typedef enum _ami_error_t ami_error_t;
 
 typedef void (*print_message_cb)(char *message);
 typedef void (*sleep_cb)(int msec);
-typedef void (*ami_action_cb)(ami_action_t *action, void *userdata1, void *userdata2);
+typedef void (*ami_action_cb)(ami_action_t *action, void *userdata1, void *userdata2, void *userdata3);
 
 /* TODO: Cleanup this structure. */
 struct _ami_t {
@@ -63,6 +63,7 @@ struct _ami_t {
   ami_action_cb action_cb;
   void *action_cb_userdata1;
   void *action_cb_userdata2;
+  void *action_cb_userdata3;
   size_t current_line;
   ami_node_t *root_node; // root
   ami_node_t *current_node;
@@ -96,7 +97,7 @@ int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var);
 int ami_replace_variable(ami_t *ami, const char *key, ami_variable_t *var);
 ami_variable_t *ami_get_variable(ami_t *ami, const char *key);
 ami_variable_t *ami_fetch_variable(ami_t *ami, const char *key);  
-void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata1, void *userdata2);
+void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata1, void *userdata2, void *userdata3);
 void ami_ast_tree_debug(ami_t *ami);
 void ami_append_item(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
 void ami_append_repeat(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);

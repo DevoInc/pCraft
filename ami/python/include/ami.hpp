@@ -17,7 +17,8 @@ class Ami {
 public:
   Ami(void);
   ~Ami(void);
-  int Parse(std::string file, py::object func);
+  int Parse(std::string file);
+  int Run(py::object func, py::object userdata);
   void Debug(void);
   std::string GetFilePath(void) { return file_path; };
   std::string file_path;
@@ -27,7 +28,7 @@ public:
   int GetStartTime(void) { return _ami->start_time; };
 private:
   ami_t *_ami;
-  static void foreach_action(ami_action_t *action, void *userdata1, void *userdata2);  
+  static void foreach_action(ami_action_t *action, void *userdata1, void *userdata2, void *userdata3);  
 };
 
 #endif // _AMIPP_H_

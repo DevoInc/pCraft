@@ -7,6 +7,9 @@ class PluginsData(object):
         self.args = {}
         self.current_time = time.time()
         self.ami = ami
+
+        # print("Start time:" + time.ctime(int(self.ami.GetStartTime())))
+        
         if self.ami.GetStartTime() > 0:            
             self.packet_time = self.ami.GetStartTime()
         else:
@@ -18,10 +21,9 @@ class PluginsData(object):
         
     def AddPacket(self, action, pkt):
         self.packets_counter += 1
-        if self.packets_counter % 1000 == 0:
-            print(".", end="")
-        pkt.time = self.packet_time + action.GetSleepCursor()
 
+        pkt.time = self.packet_time + action.GetSleepCursor()
+        
         try:
             self.outpcap.write(pkt)
         except:

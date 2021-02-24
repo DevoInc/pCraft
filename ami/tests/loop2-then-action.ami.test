@@ -21,19 +21,19 @@ ami_version 1
 +++++++
 * Global Variables:
 [0] $compromized_target
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:11] 10.52.60.69
 [1] $attacker1
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:12] 192.168.0.32
 [2] $attacker2
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:12] 172.16.32.42
 [3] $current_target
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:9] 127.0.0.1
 [4] $filename
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:11] gdrive.pcap
 [5] $index
 AMI_VAR_INT

@@ -17,12 +17,18 @@ class Application:
         
         self.pcapout = pcap_out
         print("Scenariofile: [%s]" % scenariofile)
-        self.plugins_loader, self.loaded_plugins = self.load_plugins(self.ami)
-        self.ami.Parse(scenariofile, self.action_handler)
-        self.start_time = int(self.ami.GetStartTime())
+
+        self.ami.Parse(scenariofile)
+        ami_starttime = self.ami.GetStartTime()
+        self.start_time = int(ami_starttime)
         self.scenariofile = scenariofile
+
+        self.plugins_loader, self.loaded_plugins = self.load_plugins(self.ami)
+        # print("Loaded plugins: %s" % self.loaded_plugins)
+        # self.ami.Parse(scenariofile)
+        self.ami.Run(self.action_handler, None)
         
-    def action_handler(self, action):
+    def action_handler(self, action, plugins):
         # print("Executing action %s using %s\n" % (action.Name(), action.Exec()))
         # print(action.Variables())
         for k, v in action.Variables().items():
@@ -38,7 +44,6 @@ class Application:
         sleep_cursor = self.ami.GetSleepCursor()
         print("Final Sleep Cursor: %d seconds; %d hours; %d days" % (int(sleep_cursor), int(sleep_cursor / 60 / 60), int(sleep_cursor / 60 / 60 / 24)))
         print("%s writing errors" % self.plugins_loader.plugins_data.writing_errors)
-
         
     def load_plugins(self, _ami):
         plugins_loader = Plugins(ami=_ami, pcap_out=self.pcapout, app=self, loadfunc=self.print_loading_plugins)
