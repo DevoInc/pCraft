@@ -11,7 +11,4 @@ AMI_VAR_STR
 [1] $fromfunc
 AMI_VAR_STR
 	[len:8] SGVsbG8=
-[2] $reserved_chars
-AMI_VAR_STR
-	[len:18] $this_is_not_a_var
 
