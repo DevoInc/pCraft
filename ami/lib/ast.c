@@ -855,6 +855,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       kv_push(char *, ami->values_stack, strdup(n->strval));
       
       break;
+    case AMI_NT_EXIT:
+      exit(1);
+      break;      
     } // switch(n->type)
 
     if (n->right) {

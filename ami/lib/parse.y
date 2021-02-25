@@ -588,7 +588,7 @@ debugoff: DEBUGOFF {
 
 exit: EXIT {
   fprintf(stderr, "Exiting. As it was requested from the script!\n");
-  exit(1);
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_EXIT, NULL, 0, 0, 0);
 }
 ;
 
