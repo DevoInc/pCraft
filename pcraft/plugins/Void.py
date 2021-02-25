@@ -10,6 +10,7 @@ class PCraftPlugin(PluginsContext):
         super().__init__(app, session, plugins_data)
         
     def run(self, ami, action):
+        print(str(self.plugins_data))
         return self.plugins_data
 
     
