@@ -53,13 +53,21 @@ void break_foreach_action(ami_action_t *action, void *userdata1, void *userdata2
   int count = 0;
 
   ami_t *ami = (ami_t *)userdata1;
+  char *breakpoint = (char *)userdata2;
+
+  if (breakpoint) {
+    if (strcmp(action->name, breakpoint)) {
+      return;
+    }
+  }
+
   printf("<press enter>");
 
-  while (c = getchar()) {
+  while (c = getchar()) {    
     fflush(stdin);
     if (c == '\n'){
-      printf("\naction %s {\n", action->name);
-      printf("\texec %s\n", action->exec);
+      printf("\n\033[0;34maction\033[0m %s {\n", action->name);
+      printf("\t\033[0;32mexec\033[0m %s\n", action->exec);
 
       if (ami->variables) {
 	for (k = 0; k < kh_end(ami->variables); ++k)
@@ -67,22 +75,22 @@ void break_foreach_action(ami_action_t *action, void *userdata1, void *userdata2
 	    char *key = (char *)kh_key(ami->variables, k);
 	    ami_variable_t *value = (ami_variable_t *)kh_value(ami->variables, k);
 	    if (value->type == AMI_VAR_STR) {
-	      printf("\t%s = \"%s\"\n", key, ami_variable_to_string(value));
+	      printf("\t\033[0;33m%s\033[0m = \033[0;35m\"%s\"\033[0m\n", key, ami_variable_to_string(value));
 	    } else {
-	      printf("\t%s = %s\n", key, ami_variable_to_string(value));
+	      printf("\t\033[0;33m%s\033[0m = %s\n", key, ami_variable_to_string(value));
 	    }
 	    /* ami_variable_debug(value); */
 	    count++;
 	  }
       }
 
-
+      
       for (field_action=action->field_actions; field_action; field_action=field_action->next) {
 	if (!strcmp(field_action->action, "set")) {
-	  printf("\tfield[\"%s\"] = \"%s\"\n", field_action->field, field_action->right);
+	  printf("\t\033[0;32mfield\033[0m[\033[0;35m\"%s\"\033[0m] = \033[0;35m\"%s\"\033[0m\n", field_action->field, field_action->right);
 	}
 	if (!strcmp(field_action->action, "replace")) {
-	  printf("\tfield[\"%s\"].replace(\"%s\" => \"%s\")\n", field_action->field, field_action->right, field_action->left);
+	  printf("\t\033[0;32mfield\033[0m[\033[0;35m\"%s\"\033[0m].replace(\033[0;35m\"%s\"\033[0m => \033[0;35m\"%s\"\033[0m)\n", field_action->field, field_action->right, field_action->left);
 	}
       }
       
@@ -98,7 +106,7 @@ void simple_print_global_variables(ami_t *ami)
 {
   khint_t k;
   int count = 0;
-
+  
   printf("* Global Variables:\n");
   if (ami->variables) {
     for (k = 0; k < kh_end(ami->variables); ++k)
@@ -143,11 +151,11 @@ int simple_debug(const char *amifile)
   return 0;
 }
 
-int break_debug(const char *amifile)
+int break_debug(const char *amifile, char *breakpoint)
 {
   ami_t *ami;
   ami = ami_new();
-  ami_set_action_callback(ami, break_foreach_action, ami, NULL, NULL);
+  ami_set_action_callback(ami, break_foreach_action, ami, breakpoint, NULL);
   ami_parse_file(ami, amifile);
   ami_ast_walk_actions(ami);
   ami_close(ami);
@@ -192,9 +200,13 @@ int main(int argc, char **argv)
 
   if (argc > 2) {
     if (!strcmp("--break", argv[2])) {
-      return break_debug(argv[1]);
+	char *bp = NULL;
+	if (argc > 3) {
+	  bp = argv[3];
+	}
+	return break_debug(argv[1], bp);
     }
-  }  
+  }
   
   ami = ami_new();
   if (!ami) {

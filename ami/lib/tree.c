@@ -29,6 +29,7 @@ void ami_node_debug_current(ami_node_t *node)
 {
   if (!node) {
     fprintf(stderr, "Node is NULL!\n");
+    return;
   }
 
   printf("\ttype:%s\n", ami_node_names[node->type]);

@@ -37,7 +37,8 @@ static char *_replace_strval_from_variables(ami_t *ami, char *strval) {
   char *replaced_buf = NULL;
   char *found;
   khint_t k;
-
+  char maxint[50]; // There is no way an int would be longer than 49 chars
+  
   replaced_buf = strdup(strval);
 
   if (ami->variables) {
@@ -50,11 +51,13 @@ static char *_replace_strval_from_variables(ami_t *ami, char *strval) {
 	  return replaced_buf;
 	}
 	char *replacevar = ami_strutil_make_replacevar(key);
-	found = strstr(replaced_buf, replacevar);
-	if (found) {
-	  char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, value->strval);
-	  free(replaced_buf);
-	  replaced_buf = new_replaced_buf;
+	if (replaced_buf) {
+	  found = strstr(replaced_buf, replacevar);
+	  if (found) {
+	    char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, value->strval);
+	    free(replaced_buf);
+	    replaced_buf = new_replaced_buf;
+	  }
 	}
 	free(replacevar);
       }
@@ -91,7 +94,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     ami_global_counter_incr(ami); // used for better random numbers
     
     if ((n->strval) && (!n->is_verbatim)) {
-      if (n->type == AMI_NT_VARVALSTR) {
+      if ((n->type == AMI_NT_VARVALSTR) || (n->type == AMI_NT_MESSAGE)) {
 	replaced_var = _replace_strval_from_variables(ami, n->strval);
       }
     }
@@ -150,7 +153,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       ami->current_repeat_block--;
       break;
     case AMI_NT_MESSAGE:
-      printf("%s\n", n->strval);
+      if (replaced_var) {
+	printf("%s\n", replaced_var);
+      } else {
+	printf("%s\n", n->strval);
+      }
       break;
     case AMI_NT_VARVALSTR:
       if (replaced_var) {
@@ -855,6 +862,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       kv_push(char *, ami->values_stack, strdup(n->strval));
       
       break;
+    case AMI_NT_EXIT:
+      exit(1);
+      break;      
     } // switch(n->type)
 
     if (n->right) {
