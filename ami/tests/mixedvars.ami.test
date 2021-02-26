@@ -11,4 +11,7 @@ AMI_VAR_STR
 [1] $fromfunc
 AMI_VAR_STR
 	[len:8] SGVsbG8=
+[2] $empty_string
+AMI_VAR_STR
+	[len:0] 
 
