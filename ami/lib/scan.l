@@ -123,7 +123,7 @@ int includes_index = 0;
 
 COMMENT1 #.*\n
 COMMENT2 \/\*(.*\n)*.*\*\/
-STRING \"[^\"](\\.|\"\"|[^"\n])*\"
+STRING (\"[^\"](\\.|\"\"|[^"\n])*\")|(\"\")
 %x VERBASTRING
 %x VERBASUBSTITUTESTRING
 FLOAT [0-9\.]+

@@ -5,8 +5,4 @@ action VarFromFunction {
 
        $fromfunc = base64.encode("Hello")
        $b64string = "This is a base64 string: ${fromfunc}"
-       $this_is_not_a_var = "$fromfunc"
-       $this_is_a_var = "${fromfunc}"
-       $this_is_also_a_var = $fromfunc
-       $undeclared_var = "${not_declared_var}"
 }

@@ -13,17 +13,12 @@
 
 #include <ami/kvec.h>
 #include <ami/khash.h>
-#include <regex.h>
-
-const char *nested_variable_regex = "^\\$\\{[a-zA-Z0-9\\-_]+\\}$";
-regex_t regex;
 
 ami_t *ami_new(void)
 {
   ami_t *ami;
   int retval;
   int i;
-  regex = compile_regex(nested_variable_regex);
   
   ami = (ami_t *)malloc(sizeof(ami_t));
   if (!ami) {
@@ -429,16 +424,6 @@ void ami_append_repeat(ami_t *ami, int lineno, ami_node_type_t type, char *strva
   }
 }
 
-regex_t compile_regex(char *regex_char) {
-  int compile_out;
-  regex_t regex;
-  compile_out = regcomp(&regex, regex_char, 1);
-  if (compile_out != 0){
-    fprintf(stderr, "Error compiling the regex rule: %s\n", regex_char);
-  }
-  return regex;
-}
-
 char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_value)
 {
   ami_variable_t *retvar;
@@ -449,7 +434,7 @@ char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_val
   }
 
   if (strlen(var_value) > 0) {
-    if (regexec(&regex, var_value, 0, NULL, 0) != 0) return var_value; // This is not a variable
+    if (var_value[0] != '$') return var_value;
   } else {
     fprintf(stderr, "Variable value for '%s' empty!\n", var_value);
     ami_node_debug_current(node);
@@ -479,7 +464,7 @@ int ami_get_nested_variable_as_int(ami_t *ami, char *var_value)
   }
 
   if (strlen(var_value) > 0) {
-    if (regexec(&regex, var_value, 0, NULL, 0) != 0) return strtod(var_value, NULL); // This is not a variable
+    if (var_value[0] != '$') return strtod(var_value, NULL); // This is not a variable
   }
 
   retvar = ami_get_variable(ami, var_value);
