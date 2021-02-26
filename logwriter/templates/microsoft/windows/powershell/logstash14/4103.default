@@ -1,0 +1,29 @@
+key,default_value
+@timestamp,"%Y-%m-%dT%H:%M:%S.000Z"
+@metadata_beat,"winlogbeat"
+@metadata_type,"_doc"
+@metadata_version,"7.9.3"
+activity_id,{46610f5d-2acc-4dfc-bcad-d740bc9aa5f2} 
+user_id,S-1-5-21-625687983-2020625297-2465843284-500
+version,1
+command_type,Cmdlet
+user,WIN-1234\\Administrator
+command_name,Update-Help
+record_id,4
+shell_id,Microsoft.PowerShell
+payload,Update-Help has completed successfully.
+action,Executing Pipeline
+message,Update-Help has completed successfully.\n\n\nContext:\n        Severity = Informational\n        Host Name = ConsoleHost\n        Host Version = 5.1.17763.592\n        Host ID = cbe5b11f-47e9-42d9-88ac-02b130c6b5e8\n        Host Application = C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\n        Engine Version = 5.1.17763.592\n        Runspace ID = 46610f5d-2acc-4dfc-bcad-d740bc9aa5f2\n        Pipeline ID = 162\n        Command Name = Update-Help\n        Command Type = Cmdlet\n        Script Name = \n        Command Path = \n        Sequence Number = 15\n        User = WIN-961JOIU6NMG\\Administrator\n        Connected User = \n        Shell ID = Microsoft.PowerShell\n\n\nUser Data:
+severity,Informational
+runspace_id,46610f5d-2acc-4dfc-bcad-d740bc9aa5f2
+host_id,46610f5d-2acc-4dfc-bcad-d740bc9aa5f2
+domain,WIN-1234
+host_application,C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe
+ephemeral_id,46610f5d-2acc-4dfc-bcad-d740bc9aa5f2
+pipeline_id,162
+opcode,To be used when operation is just executing a method
+hostname,WIN-1234
+sequence_number,15
+id,46610f5d-2acc-4dfc-bcad-d740bc9aa5f2
+user_name,Administrator
+provider_guid,{46610f5d-2acc-4dfc-bcad-d740bc9aa5f2}
