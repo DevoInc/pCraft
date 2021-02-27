@@ -89,6 +89,14 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   ami_variable_t *localvar;
   ami_variable_t *tmp_var = NULL;
 
+  /* Random seed */
+  FILE *urandom;
+  unsigned int seed;
+  size_t seedret;
+  
+  urandom = fopen("/dev/urandom", "r");
+ 
+  
   for (n = node; n; n = n->next) {
 
     ami_global_counter_incr(ami); // used for better random numbers
@@ -350,8 +358,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *randstr = malloc(18);
 	int rout;
 
-	time_t t;
-	srand((unsigned) time(&t) + ami->global_counter);
+	seedret = fread(&seed, sizeof(unsigned int), 1, urandom);
+	if (!seedret) {
+	  fprintf(stderr, "Error reading /dev/urandom!\n");
+	}
+	srand((unsigned int)seed);
 	
 	if (!randstr) {
 	  fprintf(stderr, "Error[random.macaddr]: Could not allocate random string!\n");
@@ -694,8 +705,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	int to = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
 	int from = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-2), NULL);
 
-	time_t t;
-	srand((unsigned) time(&t) + ami->global_counter);
+	seedret = fread(&seed, sizeof(unsigned int), 1, urandom);
+	if (!seedret) {
+	  fprintf(stderr, "Error reading /dev/urandom!\n");
+	}
+	srand((unsigned int)seed);
 
 	int rout = (rand() % (to - from + 1)) + from;
 	asprintf(&randstr, "%d", rout);
@@ -703,8 +717,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       } else if (!strcmp("random.float", n->strval)) {
 	char *randstr;
 
-	time_t t;
-	srand((unsigned) time(&t) + ami->global_counter);
+	seedret = fread(&seed, sizeof(unsigned int), 1, urandom);
+	if (!seedret) {
+	  fprintf(stderr, "Error reading /dev/urandom!\n");
+	}
+	srand((unsigned int)seed);
 	
 	float to = (float)strtof(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
 	float from = (float)strtof(kv_A(ami->values_stack, kv_size(ami->values_stack)-2), NULL);
@@ -740,8 +757,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *randstr;
 	char hexchars[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-	time_t t;
-	srand((unsigned) time(&t) + ami->global_counter);
+	seedret = fread(&seed, sizeof(unsigned int), 1, urandom);
+	if (!seedret) {
+	  fprintf(stderr, "Error reading /dev/urandom!\n");
+	}
+	srand((unsigned int)seed);
 
 	int stringlen = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
 	if (stringlen <= 0) {
@@ -872,6 +892,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     }
   } // For loop
 
+  fclose(urandom);
   
 }
 
