@@ -13,7 +13,7 @@ record_id,4
 shell_id,Microsoft.PowerShell
 payload,Update-Help has completed successfully.
 action,Executing Pipeline
-message,Update-Help has completed successfully.\n\n\nContext:\n        Severity = Informational\n        Host Name = ConsoleHost\n        Host Version = 5.1.17763.592\n        Host ID = cbe5b11f-47e9-42d9-88ac-02b130c6b5e8\n        Host Application = C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\n        Engine Version = 5.1.17763.592\n        Runspace ID = 46610f5d-2acc-4dfc-bcad-d740bc9aa5f2\n        Pipeline ID = 162\n        Command Name = Update-Help\n        Command Type = Cmdlet\n        Script Name = \n        Command Path = \n        Sequence Number = 15\n        User = WIN-961JOIU6NMG\\Administrator\n        Connected User = \n        Shell ID = Microsoft.PowerShell\n\n\nUser Data:
+message,Update-Help has completed successfully. Context:          Severity = Informational        Host Name = ConsoleHost        Host Version = 5.1.17763.592        Host ID = cbe5b11f-47e9-42d9-88ac-02b130c6b5e8        Host Application = C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe        Engine Version = 5.1.17763.592        Runspace ID = 46610f5d-2acc-4dfc-bcad-d740bc9aa5f2        Pipeline ID = 162        Command Name = Update-Help        Command Type = Cmdlet        Script Name =         Command Path =         Sequence Number = 15        User = WIN-961JOIU6NMG\\Administrator       Connected User =         Shell ID = Microsoft.PowerShell   User Data:
 severity,Informational
 runspace_id,46610f5d-2acc-4dfc-bcad-d740bc9aa5f2
 host_id,46610f5d-2acc-4dfc-bcad-d740bc9aa5f2
