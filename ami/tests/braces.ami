@@ -1,0 +1,12 @@
+av 1
+
+repeat 2 as $index {
+    action f {
+	exec Void
+    }
+}
+}
+
+ action g {
+     exec Void
+ }
