@@ -109,9 +109,9 @@ void foreach_action(ami_action_t *action, void *u1, void *u2, void *u3)
 	}
 	if (!strcmp(field_action->action, "replace")) {
 	  fieldmaps[counter]->type = FIELD_MAP__TYPE__REPLACE;
+	  fieldmaps[counter]->key = field_action->left;
+	  fieldmaps[counter]->value = field_action->right;
 	}
-	fieldmaps[counter]->key = field_action->left;
-	fieldmaps[counter]->value = field_action->right;
 	counter++;
       }
     }
