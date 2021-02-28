@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+message FieldMap {
+	enum Type {
+	     UNKNOWN = 0;
+	     SET = 1;
+	     REPLACE = 2;
+	}
+	Type type = 1;
+	string fieldkey = 2;
+	string fieldvalue = 3;
+}
+
+message Variable {
+	string name = 1;
+	string value = 2;
+}
+
+message EventMessage {
+	int32 time = 1;
+	string actionexec = 2;
+	repeated Variable variables = 3;
+	repeated FieldMap fields = 4;
+}
