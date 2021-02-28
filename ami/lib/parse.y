@@ -87,6 +87,8 @@ typedef void *yyscan_t;
 %token GOTO
 %token PLUS
 %token MINUS
+%token GROUP
+%token FROMGROUP
 
 %left PLUS MINUS
 
@@ -110,6 +112,8 @@ input:
        | input message
        | input variable
        | input sleep_varset
+       | input sleep_group_varset
+       | input sleep_fromgroup
        | input repeat
        | input closesection
        | input action
@@ -329,6 +333,27 @@ sleep_varset: SLEEP varset {
 }
 ;
 
+sleep_group_varset: SLEEP GROUP string varset {
+  if (ami->debug) {
+    printf("[parse.y] sleep: SLEEP group \"%s\" varset\n", $3);
+  }
+
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_SLEEP, strdup($3), 0, 0, 0);
+
+  free($3);
+}
+;
+
+sleep_fromgroup: SLEEP FROMGROUP string {
+  if (ami->debug) {
+    printf("[parse.y] sleep: SLEEP fromgroup \"%s\"\n", $3);
+  }
+
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_SLEEP_FROMGROUP, strdup($3), 0, 0, 0);
+
+  free($3);
+}
+;
 
 repeat: REPEAT varset AS GVARIABLE OPENSECTION {
   if (ami->debug) {

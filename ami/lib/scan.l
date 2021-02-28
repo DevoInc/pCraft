@@ -156,6 +156,8 @@ EXIT exit
 GOTO goto
 TRUE true
 FALSE false
+GROUP group
+FROMGROUP fromgroup
 
 %%
 
@@ -263,6 +265,8 @@ FALSE false
 
 
 
+{FROMGROUP} { return TOK_FROMGROUP; }
+{GROUP} { return TOK_GROUP; }
 {SLEEP} { return TOK_SLEEP; }
 {REPEAT} { return TOK_REPEAT; }
 {AS} { return TOK_AS; }

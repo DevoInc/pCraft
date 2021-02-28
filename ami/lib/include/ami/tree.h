@@ -33,6 +33,7 @@ enum _ami_node_type_t {
        AMI_NT_FIELDVAR,  // field["foo"] = ...
        AMI_NT_EXIT,
        AMI_NT_SLEEP,
+       AMI_NT_SLEEP_FROMGROUP,
        AMI_NT_ARRAYVAR, // $var = []
        AMI_NT_ARRAYGET, // $var[1]
 };
@@ -100,6 +101,7 @@ static const char *ami_node_names[] = {
        "AMI_NT_FIELDVAR",
        "AMI_NT_EXIT",
        "AMI_NT_SLEEP",
+       "AMI_NT_SLEEP_FROMGROUP",
        "AMI_NT_ARRAYVAR",
        "AMI_NT_ARRAYGET",
 };

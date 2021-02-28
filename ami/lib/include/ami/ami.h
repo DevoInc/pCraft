@@ -22,6 +22,7 @@ extern "C" {
 #define MAX_NESTED_REPEAT 16
   
 KHASH_MAP_INIT_STR(strhash, char *)
+KHASH_MAP_INIT_STR(floathash, float)
 
 struct _ami_kvec_t {
   size_t n;
@@ -71,6 +72,7 @@ struct _ami_t {
   int in_action;
   ami_kvec_t values_stack;
   int replace_count;
+  khash_t(floathash) *sleepcursor; // The new sleep cursor. Shall remove the "float sleep_cursor" once this is done.
   float sleep_cursor; // How much sleep we need to add to our action. Starts at 0, then adds every sleep we need.
   int arguments_count;
   int repeat_indices[MAX_NESTED_REPEAT];
@@ -104,7 +106,9 @@ void ami_append_repeat(ami_t *ami, int lineno, ami_node_type_t type, char *strva
 float ami_get_sleep_cursor(ami_t *ami);
 char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_value);
 int ami_get_nested_variable_as_int(ami_t *ami, char *var_value);
-
+int ami_append_sleep_cursor(ami_t *ami, const char *group, float cursor);
+float ami_get_new_sleep_cursor(ami_t *ami, const char *group);
+  
 #ifdef __cplusplus
 }
 #endif

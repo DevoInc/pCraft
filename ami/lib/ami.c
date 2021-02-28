@@ -49,6 +49,7 @@ ami_t *ami_new(void)
   kv_init(ami->tags);
   
   ami->variables = kh_init(varhash);
+  ami->sleepcursor = kh_init(floathash);
 
   ami->root_node = NULL;
   ami->current_node = NULL;
@@ -271,6 +272,20 @@ void ami_erase_variables(ami_t *ami)
   }  
 }
 
+void ami_erase_sleep_cursor(ami_t *ami)
+{
+  khiter_t k;
+  char *key;
+  
+  for (k = 0; k < kh_end(ami->sleepcursor); ++k) {
+    if (kh_exist(ami->sleepcursor, k)) {
+      key = (char *)kh_key(ami->sleepcursor, k);
+      free(key);
+      kh_del(floathash, ami->sleepcursor, k);
+    }
+  }  
+}
+
 void ami_node_close(ami_node_t *node, int right)
 {
   ami_node_t *next;
@@ -302,7 +317,8 @@ void ami_close(ami_t *ami)
   kv_destroy(ami->values_stack);
 
   ami_erase_variables(ami);
-
+  ami_erase_sleep_cursor(ami);
+  
   if (ami->root_node) {
     ami_node_close(ami->root_node, 0);
   }
@@ -477,3 +493,41 @@ float ami_get_sleep_cursor(ami_t *ami)
 {
   return ami->sleep_cursor;
 }
+
+/* If the variable already exists, return 1. 0 otherwise. */
+int ami_append_sleep_cursor(ami_t *ami, const char *group, float cursor)
+{
+  int absent;
+  khint_t k;
+
+  if (!ami) return 1;
+  if (!ami->sleepcursor) return 1;
+  
+  k = kh_put(floathash, ami->sleepcursor, group, &absent);
+  if (absent) {
+    kh_key(ami->sleepcursor, k) = strdup(group);
+    kh_value(ami->sleepcursor, k) = cursor;
+  } else {
+    float stored_val = ami_get_new_sleep_cursor(ami, group);
+    float sleep = stored_val + cursor;
+
+    kh_value(ami->sleepcursor, k) = sleep;
+    
+    return 1;
+  }
+  
+  return 0;
+}
+
+float ami_get_new_sleep_cursor(ami_t *ami, const char *group)
+{
+  khint_t k;
+
+  k = kh_get(floathash, ami->sleepcursor, group);
+  int is_missing = (k == kh_end(ami->sleepcursor));
+  if (is_missing) return 0;
+  float sleepcursor = kh_value(ami->sleepcursor, k);
+  
+  return sleepcursor;
+}
+

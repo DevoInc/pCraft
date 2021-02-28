@@ -33,3 +33,7 @@ add_test(ActionNewClose actionnewclose)
 add_executable(apivars api-variables.c)
 target_link_libraries(apivars ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
 add_test(API_Variables apivars)
+
+add_executable(sleepcursor sleepcursor.c)
+target_link_libraries(sleepcursor ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
+add_test(Sleep_Cursor sleepcursor)
