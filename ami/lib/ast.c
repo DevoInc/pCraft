@@ -848,10 +848,12 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       break;
     case AMI_NT_SLEEP:
       // <toremove>
-      if (repeat_index >= 0) { // Should be removed. Also, why do I have this condition?
-	tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-	tmp_float = (float)strtof(tmp_str, NULL);
-	ami->sleep_cursor += tmp_float;
+      if (!n->strval) { // The old way does not have the group implemented
+	if (repeat_index >= 0) { // Should be removed. Also, why do I have this condition?
+	  tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	  tmp_float = (float)strtof(tmp_str, NULL);
+	  ami->sleep_cursor += tmp_float;
+	}
       }
       // </toremove>
       

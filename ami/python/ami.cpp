@@ -26,7 +26,7 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata
   Action *action = new Action();
   action->set_name(ami_action_get_name(amiaction));
   action->set_exec(ami_action_get_exec(amiaction));
-  action->sleep_cursor = amiaction->sleep_cursor;
+  action->sleep_cursor = amiaction->sleep_cursor + amiaction->sleep; // FIXME, We should use the _global group and add the local ones 
   action->repeat_index = amiaction->repeat_index;
   
   // ami_action_debug(pami->_ami, amiaction);
