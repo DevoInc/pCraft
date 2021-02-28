@@ -43,6 +43,7 @@ struct _ami_action_t {
   char *exec;
   float sleep_cursor;
   size_t repeat_index;
+  float sleep;
 };
 typedef struct _ami_action_t ami_action_t;
 

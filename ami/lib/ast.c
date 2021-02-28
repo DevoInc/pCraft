@@ -847,11 +847,14 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       varpos = 0;
       break;
     case AMI_NT_SLEEP:
+      // <toremove>
       if (repeat_index >= 0) { // Should be removed. Also, why do I have this condition?
 	tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	tmp_float = (float)strtof(tmp_str, NULL);
 	ami->sleep_cursor += tmp_float;
       }
+      // </toremove>
+      
       tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
       tmp_float = (float)strtof(tmp_str, NULL);
       if (n->strval) { // We have strval? = we have a group
@@ -859,6 +862,13 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       } else { // No strval, so this is going to the "_global" group
 	ami_append_sleep_cursor(ami, "_global", tmp_float);
       }      
+      break;
+    case AMI_NT_SLEEP_FROMGROUP:
+      if (!action) {
+	fprintf(stderr, "Error: Cannot use \"sleep fromgroup\" outside of an action!\n");
+	exit(1);
+      }      
+      action->sleep += ami_get_new_sleep_cursor(ami, n->strval);
       break;
     case AMI_NT_ARRAYVAR:
       /* printf("We set the values for our array. We have %d values\n", n->intval); */

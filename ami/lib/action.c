@@ -24,6 +24,7 @@ ami_action_t *ami_action_new()
   action->field_actions = NULL;
   action->sleep_cursor = 0;
   action->repeat_index = 0;
+  action->sleep = 0;
   
   return action;
 }
