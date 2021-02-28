@@ -121,7 +121,7 @@ class LogPlugin(LogContext):
     def run(self, cap, packet, pktid, layer):
 
         if hasattr(packet, 'tcp'):
-            if str(packet.tcp.flags) == "0x00000002": # We only write TCP-SYN
+            if str(packet.tcp.flags) == "0x00000002" or str(packet.tcp.flags) =="0x00000012": # We only write TCP-SYN
                 self.execute(cap, packet, pktid, layer)
         else:
             self.execute(cap, packet, pktid, layer)
