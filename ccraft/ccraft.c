@@ -25,7 +25,7 @@ void foreach_action(ami_action_t *action, void *u1, void *u2, void *u3)
   khint_t k;
   
   EventMessage msg = EVENT_MESSAGE__INIT;
-  FieldMap **fieldmap;
+  FieldMap **fieldmaps;
   Variable **variables;
   
   void *buf;
@@ -85,7 +85,39 @@ void foreach_action(ami_action_t *action, void *u1, void *u2, void *u3)
       
     } // if (!variable)
   } // if (ami->variables) 
-  
+
+  if (action->field_actions) {
+    // First, we count
+    counter = 0;
+    for (field_action=action->field_actions; field_action; field_action=field_action->next) {
+      counter++;
+    }
+    msg.n_fields = counter;
+    fieldmaps = malloc(sizeof(FieldMap *) * counter);
+    if (!fieldmaps) {
+      fprintf(stderr, "Could not allocate FieldMap entry!\n");      
+    } else {
+      counter = 0;
+      for (field_action=action->field_actions; field_action; field_action=field_action->next) {
+	fieldmaps[counter] = malloc(sizeof(FieldMap));
+	field_map__init(fieldmaps[counter]);
+
+	if (!strcmp(field_action->action, "set")) {
+	  fieldmaps[counter]->type = FIELD_MAP__TYPE__SET;
+	  fieldmaps[counter]->key = field_action->field;
+	  fieldmaps[counter]->value = field_action->right;
+	}
+	if (!strcmp(field_action->action, "replace")) {
+	  fieldmaps[counter]->type = FIELD_MAP__TYPE__REPLACE;
+	}
+	fieldmaps[counter]->key = field_action->left;
+	fieldmaps[counter]->value = field_action->right;
+	counter++;
+      }
+    }
+    msg.fields = fieldmaps;
+  }
+
   len = event_message__get_packed_size(&msg);
   buf = malloc(len);
   event_message__pack(&msg,buf);

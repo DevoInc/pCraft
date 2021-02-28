@@ -7,8 +7,8 @@ message FieldMap {
 	     REPLACE = 2;
 	}
 	Type type = 1;
-	string fieldkey = 2;
-	string fieldvalue = 3;
+	string key = 2;
+	string value = 3;
 }
 
 message Variable {
