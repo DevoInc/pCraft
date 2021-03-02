@@ -1,11 +1,6 @@
 #ifndef _CCRAFT_H_
 #define _CCRAFT_H_
 
-/* FIXME:
- * Using records instead of maps for variables
- * fset and freplace. 
- * I could not find a documented way to use maps
- */
 const char CCRAFT_SCHEMA[] =
 "{\
     \"type\": \"record\",\

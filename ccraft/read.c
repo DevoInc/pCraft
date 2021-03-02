@@ -1,6 +1,8 @@
+#include <stdio.h>
 #include <avro.h>
 
 #include "ccraft.h"
+#include "utils.h"
 
 int main(int argc, char **argv)
 {
@@ -9,6 +11,7 @@ int main(int argc, char **argv)
   int32_t *p, *p2;
   size_t size;
   char *dbfile;
+  int32_t tmpint;
 
   int retval;
   
@@ -50,6 +53,16 @@ int main(int argc, char **argv)
       fprintf(stderr, "Error: %s\n", avro_strerror());
     }
 
+    avro_value_t time_value;
+    if (avro_value_get_by_name(&event, "time", &time_value, NULL) == 0) {
+      avro_value_get_int(&time_value, &tmpint);
+      fprintf(stdout, "[%d]\n", tmpint);
+      ccraft_print_time(tmpint);
+    } else {
+      fprintf(stderr, "Error: %s\n", avro_strerror());
+    }
+
+    
     avro_value_t variables;
     if (avro_value_get_by_name(&event, "variables", &variables, NULL) == 0) {
       size_t var_size;
