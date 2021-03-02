@@ -1,13 +1,12 @@
 CC=gcc
-CFLAGS=-I../ami/lib/include/
-LIBS=-L../ami/build/lib/ -lami -lprotobuf-c
+CFLAGS=-I../ami/lib/include/ -ggdb
+LIBS=-L../ami/build/lib/ -lami -lavro
 
-PROTOC=protoc-c
+all: ccraft read
 
-all: protoc ccraft
-
-protoc: ccraft.proto3
-	$(PROTOC) --c_out=./pbuf $^
-
-ccraft: ccraft.c pbuf/ccraft.proto3.pb-c.c
+ccraft: ccraft.c ccraft.h
 	$(CC) $^ $(CFLAGS) $(LIBS) -o $@
+
+read: read.c ccraft.h
+	$(CC) $^ $(CFLAGS) $(LIBS) -o $@
+
