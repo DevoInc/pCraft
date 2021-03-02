@@ -19,10 +19,10 @@
 static char *filename;
 static char *realfile;
 
-char verbatim_buf[8192];
+char verbatim_buf[65536];
 int vbindex;
 
-char verbasub_buf[8192];
+char verbasub_buf[65536];
 int vbsubindex;
 
 
