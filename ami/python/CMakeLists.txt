@@ -10,5 +10,5 @@ message("Python include dirs:${Python_INCLUDE_DIRS}")
 add_library(pyami MODULE ${AMIPP_SOURCES})
 target_link_libraries(pyami PRIVATE pybind11::module PUBLIC ${AMI_LIBRARY})
 set_target_properties(pyami PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
-                                       SUFFIX "${PYTHON_MODULE_EXTENSION}")
+                                      SUFFIX "${PYTHON_MODULE_EXTENSION}")
 

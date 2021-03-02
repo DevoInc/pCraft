@@ -16,7 +16,8 @@ class LogWrite(object):
         self.pcap_file = pcap_file
         self.output_dir = output_dir
         self.has_error = False
-        self.cap = pyshark.FileCapture(self.pcap_file)
+        if self.pcap_file:
+            self.cap = pyshark.FileCapture(self.pcap_file)
 
         try:
             os.makedirs(self.output_dir)

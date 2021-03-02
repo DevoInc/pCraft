@@ -18,7 +18,7 @@ class LogPlugin(LogContext):
     def validate_keys(self, kvdict):
         pass
 
-    def template_to_log(self, packet, kvdict):
+    def template_to_log(self, frame_time, kvdict):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
 
         event = self.retrieve_template("mcafee.email-gateway.cef0", "default", kvdict)
@@ -27,4 +27,9 @@ class LogPlugin(LogContext):
         return event
 
     def run(self, cap, packet, pktid, kvdict):
-        self.log_fp.write(self.template_to_log(packet, kvdict))
+        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
+        self.log_fp.write(self.template_to_log(frame_time, kvdict))
+
+    def run_ccraft(self, event, kvdict):
+        frame_time = datetime.fromtimestamp(int(event["time"]))
+        self.log_fp.write(self.template_to_log(frame_time, kvdict))

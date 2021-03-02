@@ -18,9 +18,7 @@ class LogPlugin(LogContext):
     def validate_keys(self, kvdict):
         self.do_validate_keys("microsoft.windows.security.logstash14", kvdict["event_id"], kvdict)
         
-    def template_to_log(self, packet, kvdict):
-        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
-
+    def template_to_log(self, frame_time, kvdict):
         log_flavor = ""
         try:
             log_flavor = kvdict["log_flavor"]
@@ -33,5 +31,10 @@ class LogPlugin(LogContext):
         return event
         
     def run(self, cap, packet, pktid, kvdict):
-        self.log_fp.write(self.template_to_log(packet, kvdict))
+        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
+        self.log_fp.write(self.template_to_log(frame_time, kvdict))
+
+    def run_ccraft(self, event, kvdict):
+        frame_time = datetime.fromtimestamp(int(event["time"]))
+        self.log_fp.write(self.template_to_log(frame_time, kvdict))
 

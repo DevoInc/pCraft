@@ -16,9 +16,7 @@ class LogPlugin(LogContext):
     def validate_keys(self, kvdict):
         pass
 
-    def template_to_log(self, packet, kvdict):
-        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))        
-
+    def template_to_log(self, frame_time, kvdict):
         log_flavor = ""
         try:
             log_flavor = kvdict["log_flavor"]
@@ -31,5 +29,10 @@ class LogPlugin(LogContext):
         return event
 
     def run(self, cap, packet, pktid, kvdict):
+        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))        
         self.log_fp.write(self.template_to_log(packet, kvdict))
 
+    def run_ccraft(self, event, kvdict):
+        frame_time = datetime.fromtimestamp(int(event["time"]))
+        self.log_fp.write(self.template_to_log(frame_time, kvdict))
+        

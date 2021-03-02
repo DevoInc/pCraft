@@ -50,7 +50,7 @@ class LogPlugin(LogContext):
     def validate_keys(self, kvdict):
         pass
         
-    def template_to_log(self, packet, kvdict):
+    def template_to_log(self, frame_time, kvdict):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
 
         event = self.retrieve_template("tanium", kvdict["event_id"], kvdict)
@@ -59,6 +59,8 @@ class LogPlugin(LogContext):
         return event
 
     def run(self, cap, packet, pktid, kvdict):
+        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
+        
         flow = kvdict["processflow"]
         allrefs = []
         for item in flow.split(";"):
@@ -72,4 +74,22 @@ class LogPlugin(LogContext):
 
         kvdict["properties"] = tanium_properties
         
-        self.log_fp.write(self.template_to_log(packet, kvdict))
+        self.log_fp.write(self.template_to_log(frame_time, kvdict))
+        
+    def run_ccraft(self, event, kvdict):
+        frame_time = datetime.fromtimestamp(int(event["time"]))
+        
+        flow = kvdict["processflow"]
+        allrefs = []
+        for item in flow.split(";"):
+            tf = TaniumFile(item)
+            try:
+                allrefs.append(TaniumProcess(allrefs[-1], tf))
+            except IndexError:
+                allrefs.append(TaniumProcess(None, tf))
+                
+        tanium_properties = allrefs[-1].jsonize()
+
+        kvdict["properties"] = tanium_properties
+        
+        self.log_fp.write(self.template_to_log(frame_time, kvdict))
