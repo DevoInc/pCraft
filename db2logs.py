@@ -26,7 +26,7 @@ SCHEMA = """{
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Syntax: %s ccraft.db output_directory [-f]" % sys.argv[0])
+        print("Syntax: %s ccraft.db output_directory [-fv]" % sys.argv[0])
         sys.exit(1)
 
     ccraftfile = sys.argv[1]
@@ -39,12 +39,15 @@ if __name__ == "__main__":
    
     reader = DataFileReader(open(ccraftfile, "rb"), DatumReader())
     for event in reader:
+        # print(str(event))
         # {'time': 1614504320, 'exec': 'Void', 'variables': {'$domain': 'haute-voltige.io', '$index': '1', '$var': '1234'}, 'fset': {'myfield': 'abcd'}, 'freplace': {}}
         kvdict = event["fset"]
 
-        writer.loaded_plugins[event["exec"]].validate_keys(kvdict)
+        plugin_name = event["variables"]["$log_plugin"]
 
-        writer.loaded_plugins[event["exec"]].run_ccraft(event, kvdict)
+        if "-v" in sys.argv:
+            writer.loaded_plugins[plugin_name].validate_keys(kvdict)
+
+        writer.loaded_plugins[plugin_name].run_ccraft(event, kvdict)
         
-        print(str(event))
     reader.close()
