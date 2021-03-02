@@ -13,12 +13,7 @@ const char CCRAFT_SCHEMA[] =
     \"fields\": [\
         {\"name\": \"time\", \"type\": \"int\", \"default\": \"0\"},\
         {\"name\": \"exec\", \"type\": \"string\", \"default\": \"Void\"},\
-        {\"name\": \"variables\", \"type\": {\
-            \"type\": \"record\", \"name\": \"variable\", \"fields\": [\
-                {\"name\": \"key\", \"type\": \"string\"},\
-                {\"name\": \"value\", \"type\": \"string\"}\
-            ]\
-        }},\
+        {\"name\": \"variables\", \"type\": {\"type\": \"map\", \"name\": \"var\", \"values\": \"string\"}},\
         {\"name\": \"fset\", \"type\": {\"type\": \"map\", \"values\": \"string\"}},\
         {\"name\": \"freplace\", \"type\": {\"type\": \"map\", \"values\": \"string\"}}\
         ]\

@@ -87,27 +87,37 @@ void foreach_action(ami_action_t *action, void *u1, void *u2, void *u3)
   	    continue;
   	  }
 	  
-	  if (avro_value_get_by_name(&variables_value, "key", &varkey, NULL) == 0) {
-	    avro_value_set_string(&varkey, key);
-	  }
-	  if (avro_value_get_by_name(&variables_value, "value", &varval, NULL) == 0) {
-	    printf("SET TO %s\n", tmpstr);
-	    avro_value_set_string(&varval, tmpstr);
-	  }
+	  /* if (avro_value_get_by_name(&variables_value, "key", &varkey, NULL) == 0) { */
+	  /*   avro_value_set_string(&varkey, key); */
+	  /* } */
+	  /* if (avro_value_get_by_name(&variables_value, "value", &varval, NULL) == 0) { */
+	  /*   printf("SET TO %s\n", tmpstr); */
+	  /*   avro_value_set_string(&varval, tmpstr); */
+	  /* } */
 
-	  printf("Adding %s -> %s\n", key, tmpstr);
+	  /* printf("Adding %s -> %s\n", key, tmpstr); */
+
+
+	  avro_value_t child;
+	  avro_value_add(&variables_value, key, &child, NULL, NULL);
+	  avro_value_set_string_len(&child, tmpstr, strlen(tmpstr));
 	  
+  	  /* avro_value_t varkey; */
   	  /* avro_value_t varval; */
   	  /* int is_new = 0; */
 
 	  /* avro_value_get_by_name(&event, "variables", &variables_value, NULL); */
 
-	  /* /\* avro_generic_string_new(&varval, tmpstr);	   *\/ */
-	  /* if (avro_value_get_by_name(&variables_value, "value", &varval, NULL) == 0) { */
-	  /*   avro_value_set_string(&varval, tmpstr); */
-	  /* } else { */
-	  /*   printf("ohoh\n"); */
-	  /* } */
+	  /* avro_generic_string_new(&varval, tmpstr); */
+	  /* avro_value_set_string(&varval, tmpstr); */
+	  
+	  
+	  /* avro_value_add(&variables_value, key, &varval, &counter, &is_new); */
+	  
+
+	  
+	  /* avro_generic_string_new(&varval, tmpstr); */
+	  /* avro_value_set_string(&varval, tmpstr); */
   	  /* int retval = avro_value_add(&variables_value, key, &varval, &counter, &is_new); */
 	  /* if (retval) { */
 	  /*   printf("Error\n"); */
@@ -143,7 +153,7 @@ void foreach_action(ami_action_t *action, void *u1, void *u2, void *u3)
   avro_value_decref(&event);
   avro_value_iface_decref(event_class);
 	
-  printf("action exec :%s\n", action->exec); 
+  /* printf("action exec :%s\n", action->exec);  */
 }
 
 int main(int argc, char **argv) 
