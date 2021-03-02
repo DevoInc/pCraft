@@ -27,3 +27,8 @@ class LogPlugin(LogContext):
     def run(self, cap, packet, pktid, kvdict):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
         self.log_fp.write(self.template_to_log(frame_time, kvdict))
+
+    def run_ccraft(self, event, kvdict):
+        frame_time = datetime.fromtimestamp(int(event["time"]))
+        self.log_fp.write(self.template_to_log(frame_time, kvdict))
+        
