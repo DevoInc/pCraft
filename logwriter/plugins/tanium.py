@@ -51,8 +51,6 @@ class LogPlugin(LogContext):
         pass
         
     def template_to_log(self, frame_time, kvdict):
-        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
-
         event = self.retrieve_template("tanium", kvdict["event_id"], kvdict)
         event = frame_time.strftime(event)
 
