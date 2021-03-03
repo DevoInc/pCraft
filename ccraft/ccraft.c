@@ -44,6 +44,10 @@ void foreach_action(ami_action_t *action, void *u1, void *u2, void *u3)
   avro_value_t event;
   avro_generic_value_new(event_class, &event);
 
+  avro_value_t action_value;
+  if (avro_value_get_by_name(&event, "action", &action_value, NULL) == 0) {
+    avro_value_set_string(&action_value, action->name);
+  }
   avro_value_t exec_value;
   if (avro_value_get_by_name(&event, "exec", &exec_value, NULL) == 0) {
     avro_value_set_string(&exec_value, action->exec);

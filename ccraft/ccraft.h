@@ -7,6 +7,7 @@ const char CCRAFT_SCHEMA[] =
     \"name\": \"event\",\
     \"fields\": [\
         {\"name\": \"time\", \"type\": \"int\", \"default\": \"0\"},\
+        {\"name\": \"action\", \"type\": \"string\", \"default\": \"Void\"},\
         {\"name\": \"exec\", \"type\": \"string\", \"default\": \"Void\"},\
         {\"name\": \"variables\", \"type\": {\"type\": \"map\", \"name\": \"var\", \"values\": \"string\"}},\
         {\"name\": \"fset\", \"type\": {\"type\": \"map\", \"values\": \"string\"}},\
