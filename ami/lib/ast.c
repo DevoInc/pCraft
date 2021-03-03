@@ -907,7 +907,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     } // switch(n->type)
 
     if (n->right) {
+      if (!ami->skip_repeat) {
 	walk_node(ami, n->right, -1, 1);
+      }
     }
   } // For loop
 

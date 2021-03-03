@@ -33,6 +33,7 @@ ami_t *ami_new(void)
   ami->_opened_sections = 0;
   ami->_is_verbatim_string = 0;
   ami->current_line = 1;
+  ami->skip_repeat = 0;
   ami->debug = 0;
   ami->version = 0;
   ami->start_time = 0;

@@ -49,6 +49,7 @@ struct _ami_t {
   int _repeat_block_id;
   int _opened_sections;
   int _is_verbatim_string;
+  int skip_repeat;
   int debug;
   int version;
   int start_time;

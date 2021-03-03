@@ -89,6 +89,7 @@ typedef void *yyscan_t;
 %token MINUS
 %token GROUP
 %token FROMGROUP
+%token SKIPREPEAT
 
 %left PLUS MINUS
 
@@ -122,6 +123,7 @@ input:
        | input exec
        | input function
        | input keywords_as_argname
+       | input skiprepeat
        | input debugon
        | input debugoff
        | input exit
@@ -601,6 +603,11 @@ keyword_field: FIELD EQUAL varset {
     printf("[parse.y] keyword_field: FIELD EQUAL varset: This would be a keyword, but it is not used as a keyword. Simply as an argument. (field)\n");
   }  
   
+}
+;
+
+skiprepeat: SKIPREPEAT {
+  ami->skip_repeat = 1;
 }
 ;
 
