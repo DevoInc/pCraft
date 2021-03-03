@@ -19,10 +19,12 @@
 static char *filename;
 static char *realfile;
 
-char verbatim_buf[65536];
+#define MAX_VERBATIM_BUF_SIZE 65536
+
+char verbatim_buf[MAX_VERBATIM_BUF_SIZE];
 int vbindex;
 
-char verbasub_buf[65536];
+char verbasub_buf[MAX_VERBATIM_BUF_SIZE];
 int vbsubindex;
 
 
@@ -158,7 +160,6 @@ TRUE true
 FALSE false
 GROUP group
 FROMGROUP fromgroup
-SKIPREPEAT skip_repeat
 
 %%
 
@@ -171,8 +172,8 @@ SKIPREPEAT skip_repeat
 }
 
 <VERBASTRING>(.|\n) {
-     if (vbindex > 8191) {
-         ami_yyerror(yyscanner, NULL, "Verbatim string too long! (max 8192)\n");
+     if (vbindex > (MAX_VERBATIM_BUF_SIZE-1)) {
+         ami_yyerror(yyscanner, NULL, "Verbatim string too long! (max %d)\n", MAX_VERBATIM_BUF_SIZE);
      }
      verbatim_buf[vbindex] = yytext[0];
      vbindex++;
@@ -187,8 +188,8 @@ SKIPREPEAT skip_repeat
 }
 
 <VERBASUBSTITUTESTRING>(.|\n) {
-     if (vbsubindex > 8191) {
-         ami_yyerror(yyscanner, NULL, "Verbatim substitute string too long! (max 8192)\n");
+     if (vbsubindex > (MAX_VERBATIM_BUF_SIZE-1)) {
+         ami_yyerror(yyscanner, NULL, "Verbatim substitute string too long! (max %d)\n", MAX_VERBATIM_BUF_SIZE);
      }
      verbasub_buf[vbsubindex] = yytext[0];
      vbsubindex++;
@@ -266,7 +267,6 @@ SKIPREPEAT skip_repeat
 
 
 
-{SKIPREPEAT} { return TOK_SKIPREPEAT; }
 {FROMGROUP} { return TOK_FROMGROUP; }
 {GROUP} { return TOK_GROUP; }
 {SLEEP} { return TOK_SLEEP; }
