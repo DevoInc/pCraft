@@ -13,8 +13,8 @@
 #include "ccraft.h"
 #include "utils.h"
 
-/* #define QUICKSTOP_CODEC "deflate" */
-#define QUICKSTOP_CODEC "null"
+#define QUICKSTOP_CODEC "deflate"
+/* #define QUICKSTOP_CODEC "null" */
 
 
 FILE *dump;
