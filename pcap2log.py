@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import sys
 from LogWrite import LogWrite, LogRewrite
-import pyami
 
 def pcap2logs(pcap, logsdir, config_ami):
     writer = LogWrite(pcap, logsdir, "-f" in sys.argv)

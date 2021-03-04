@@ -47,9 +47,9 @@ class LogPlugin(LogContext):
             "dstip": packet.ip.dst,
             "srcport": self.get_srcport(packet),
             "dstport": self.get_dstport(packet),
-            "headerdate": str(int(float(packet.sniff_timestamp))),
-            "firstdate": str(int(float(packet.sniff_timestamp))-random.randint(1000, 3500000)), 
-            "lastdate": str(int(float(packet.sniff_timestamp))),
+            "headerdate": str(int(float(packet.sniff_timestamp))) + "000",
+            "firstdate": str(int(float(packet.sniff_timestamp))) + "000", 
+            "lastdate": str(int(float(packet.sniff_timestamp))) + "000",
             "bytes": str(random.randint(108, 5000)),
             "flowseq": self.get_flowseq(),            
         }
