@@ -23,6 +23,7 @@ extern "C" {
   
 KHASH_MAP_INIT_STR(strhash, char *)
 KHASH_MAP_INIT_STR(floathash, float)
+KHASH_MAP_INIT_STR(fphash, FILE *)
 
 struct _ami_kvec_t {
   size_t n;
@@ -80,7 +81,7 @@ struct _ami_t {
   int repeat_indices_cursor[MAX_NESTED_REPEAT];  
   int current_repeat_block;
   size_t global_counter;
-  khash_t(varhash) *open_files;
+  khash_t(fphash) *open_files;
 };
 typedef struct _ami_t ami_t;
 

@@ -75,7 +75,7 @@ ami_t *ami_new(void)
 
   ami->global_counter = 0;
 
-  ami->open_files = kh_init(varhash);
+  ami->open_files = kh_init(fphash);
   
   return ami;
 }
@@ -197,7 +197,7 @@ int ami_set_open_file(ami_t *ami, const char *filename, FILE *fp) {
   if (!ami) return 1;
   if (!ami->open_files) return 1;  
 
-  k = kh_put(varhash, ami->open_files, filename, &absent);
+  k = kh_put(fphash, ami->open_files, filename, &absent);
   if (absent) {
     kh_key(ami->open_files, k) = strdup(filename);
     kh_value(ami->open_files, k) = fp;
@@ -333,7 +333,7 @@ void ami_erase_open_files(ami_t *ami)
 
       free(key);
       if (!fp) return;
-      free(fp);
+      fclose(fp);
       
       kh_del(varhash, ami->open_files, k);
     }
