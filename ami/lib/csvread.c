@@ -56,7 +56,7 @@ void on_new_line(int c, void *userdata)
   phelp->current_field = 1;
 }
 
-char *ami_csvread_get_field_at_line(char *file, int index, char *field, int has_header)
+char *ami_csvread_get_field_at_line(ami_t *ami, char *file, int index, char *field, int has_header)
 {
   FILE *fp;
   struct csv_parser p;
@@ -65,11 +65,17 @@ char *ami_csvread_get_field_at_line(char *file, int index, char *field, int has_
 
   parse_helper_t *phelp;  
   char *retfield = NULL;
-  
-  fp = fopen(file, "rb");
-  if (!fp) {
-    fprintf(stderr, "Error, could not read CSV file '%s'\n", file);
-    return NULL;
+
+  fp = ami_get_open_file(ami, file);
+
+  if (fp == NULL) {
+    fp = fopen(file, "rb");
+    if (!fp) {
+      fprintf(stderr, "Error, could not read CSV file '%s'\n", file);
+      return NULL;
+    }
+    /* Save the file pointer in the ami to avoid open-close too many times on the same files */
+    ami_set_open_file(ami, file, fp);
   }
 
   /* printf("We read the csv file '%s' at index %d for the field '%s' and the header is set to %d\n", file, index, field, has_header); */
@@ -92,11 +98,11 @@ char *ami_csvread_get_field_at_line(char *file, int index, char *field, int has_
   while ((bytes_read=fread(buf, 1, CSVBUF_SIZE, fp)) > 0) {
     if ((retval = csv_parse(&p, buf, bytes_read, on_new_field, on_new_line, phelp)) != bytes_read) {
       if (csv_error(&p) == CSV_EPARSE) {
-	fprintf(stderr, "%s: malformed at byte %lu\n", file, (unsigned long)pos + retval + 1);
-	goto end;
+	      fprintf(stderr, "%s: malformed at byte %lu\n", file, (unsigned long)pos + retval + 1);
+	      goto end;
       } else {
-	printf("Error while processing %s: %s\n", file, csv_strerror(csv_error(&p)));
-	goto end;
+	      printf("Error while processing %s: %s\n", file, csv_strerror(csv_error(&p)));
+	      goto end;
       }
     }
     if (phelp->retfield) {
@@ -108,7 +114,7 @@ char *ami_csvread_get_field_at_line(char *file, int index, char *field, int has_
  end:
   free(phelp->retfield);
   free(phelp);
-  fclose(fp);
+  rewind(fp);
   csv_fini(&p, NULL, NULL, NULL);
   csv_free(&p);
 

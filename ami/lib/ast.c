@@ -782,35 +782,45 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	
 	kv_push(char *, ami->values_stack, strdup(randstr));
 	free(randstr);
-      } else if (!strcmp("csv", n->strval)) {
-	/* size_t stacklen = kv_size(ami->values_stack); */
-	/* for (size_t i = 0; i < stacklen; i++) { */
-	/*   printf("i:%d;val:%s\n", i, kv_A(ami->values_stack, i)); */
-	/* }	 */
+    } else if (!strcmp("csv", n->strval)) {
+		/*size_t stacklen = kv_size(ami->values_stack);
+		for (size_t i = 0; i < stacklen; i++) {
+			printf("[kvec] i:%d;val:%s\n", i, kv_A(ami->values_stack, i));
+		}*/
 	
-	int has_header = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
-	char *field = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
-	/* char *field = ami_get_variable(ami, field_val_stack); */
-	char *line_val_stack = kv_A(ami->values_stack, kv_size(ami->values_stack)-3);
-	/* char *line_as_string = ami_get_nested_variable_as_str(ami, n,line_val_stack); */
-	ami_variable_t *line_in_csv = ami_get_variable(ami, line_val_stack);
-	if (!line_in_csv) {
-	  fprintf(stderr, "Could not get the variable from '%s', line:%d\n", line_val_stack, n->lineno);
-	}
-	int csvline = ami_variable_to_int(line_in_csv);
-	/* ami_variable_debug(line_in_csv); */
-	/* printf("csvline:%d\n", csvline); */
-	
-	char *file = kv_A(ami->values_stack, kv_size(ami->values_stack)-4);
+		int has_header = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
+		char *field = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+		char *line_val_stack = kv_A(ami->values_stack, kv_size(ami->values_stack)-3);
 
-	char *result = ami_csvread_get_field_at_line(file, csvline, field, has_header);
-	if (!result) {
-	  fprintf(stderr, "[line:%d] Error reading CSV file %s, field:%s, line:%d\n", n->lineno, file, field, csvline);
-	  exit(1);
-	} else {
-	  kv_push(char *, ami->values_stack, strdup(result));
-	}
-      } else if (!strcmp("csv.linescount", n->strval)) {
+		/* CSV line number can be provided as a variable or an integer */
+		int csvline;
+		if (ami_variable_exists(ami, line_val_stack)) {
+			ami_variable_t *line_in_csv = ami_get_variable(ami, line_val_stack);
+			if (!line_in_csv) {
+				fprintf(stderr, "Could not get the variable from '%s', line:%d\n", line_val_stack, n->lineno);
+			} else {
+				csvline = ami_variable_to_int(line_in_csv);
+			}
+		} else {
+			csvline = atoi(line_val_stack);
+			fprintf(stderr, "csvline: %d\n", csvline);
+		}
+
+		if (csvline == 0) {
+			fprintf(stderr, "Invalid line number: %s", line_val_stack);
+		}
+	
+		char *file = kv_A(ami->values_stack, kv_size(ami->values_stack)-4);
+		char *result = ami_csvread_get_field_at_line(ami, file, csvline, field, has_header);
+		
+		if (!result) {
+			fprintf(stderr, "[line:%d] Error reading CSV file %s, field:%s, line:%d\n", n->lineno, file, field, csvline);
+			exit(1);
+		} else {
+			kv_push(char *, ami->values_stack, strdup(result));
+		}
+
+    } else if (!strcmp("csv.linescount", n->strval)) {
 	const char *filename = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
 	struct stat st;
 	FILE *fp;

@@ -74,6 +74,8 @@ ami_t *ami_new(void)
   ami->current_repeat_block = 0;
 
   ami->global_counter = 0;
+
+  ami->open_files = kh_init(varhash);
   
   return ami;
 }
@@ -174,6 +176,37 @@ ami_variable_t *ami_get_variable(ami_t *ami, const char *key)
   ami_variable_t *var = kh_value(ami->variables, k);
   
   return var;
+}
+
+FILE *ami_get_open_file(ami_t *ami, const char *filename)
+{
+  khint_t k;
+
+  k = kh_get(varhash, ami->open_files, filename);
+  int is_missing = (k == kh_end(ami->open_files));
+  if (is_missing) return NULL;
+  FILE *fp = kh_value(ami->open_files, k);
+  
+  return fp;
+}
+
+int ami_set_open_file(ami_t *ami, const char *filename, FILE *fp) {
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->open_files) return 1;  
+
+  k = kh_put(varhash, ami->open_files, filename, &absent);
+  if (absent) {
+    kh_key(ami->open_files, k) = strdup(filename);
+    kh_value(ami->open_files, k) = fp;
+  } else {
+    kh_value(ami->open_files, k) = fp;
+    return 1;
+  }
+  
+  return 0;
 }
 
 ami_variable_t *ami_fetch_variable(ami_t *ami, const char *key)
@@ -287,6 +320,26 @@ void ami_erase_sleep_cursor(ami_t *ami)
   }  
 }
 
+void ami_erase_open_files(ami_t *ami)
+{
+  khiter_t k;
+  char *key;
+  FILE *fp;
+  
+  for (k = 0; k < kh_end(ami->open_files); ++k) {
+    if (kh_exist(ami->open_files, k)) {
+      key = (char *)kh_key(ami->open_files, k);
+      fp = (FILE *)kh_value(ami->open_files, k);
+
+      free(key);
+      if (!fp) return;
+      free(fp);
+      
+      kh_del(varhash, ami->open_files, k);
+    }
+  }  
+}
+
 void ami_node_close(ami_node_t *node, int right)
 {
   ami_node_t *next;
@@ -319,12 +372,14 @@ void ami_close(ami_t *ami)
 
   ami_erase_variables(ami);
   ami_erase_sleep_cursor(ami);
+  ami_erase_open_files(ami);
   
   if (ami->root_node) {
     ami_node_close(ami->root_node, 0);
   }
 
   kh_destroy(varhash, ami->variables);
+  kh_destroy(varhash, ami->open_files);
   
   free(ami);
 }
