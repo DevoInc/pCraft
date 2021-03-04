@@ -80,6 +80,7 @@ struct _ami_t {
   int repeat_indices_cursor[MAX_NESTED_REPEAT];  
   int current_repeat_block;
   size_t global_counter;
+  khash_t(varhash) *open_files;
 };
 typedef struct _ami_t ami_t;
 
@@ -109,6 +110,8 @@ char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_val
 int ami_get_nested_variable_as_int(ami_t *ami, char *var_value);
 int ami_append_sleep_cursor(ami_t *ami, const char *group, float cursor);
 float ami_get_new_sleep_cursor(ami_t *ami, const char *group);
+FILE *ami_get_open_file(ami_t *ami, const char *filename);
+int ami_set_open_file(ami_t *ami, const char *filename, FILE *fp);
   
 #ifdef __cplusplus
 }
