@@ -54,6 +54,7 @@ class LogPlugin(LogContext):
             variables["http-request-method"] = packet.http.request_method
         except AttributeError:
             pass            
+        variables["src_port_number"] = packet.tcp.srcport
         variables["dst_port_number"] = packet.tcp.dstport
         variables["event_duration"] = str(random.randrange(20,1000))
         domain = self.faup_ctx.get_domain()
@@ -123,6 +124,11 @@ class LogPlugin(LogContext):
             variables["http-request-method"] = kvdict["$method"]
         except:
             pass
+
+        try:
+            variables["src_port_number"] = kvdict["$port-src"]
+        except:
+            pass        
 
         try:
             variables["dst_port_number"] = kvdict["$port-dst"]
