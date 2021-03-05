@@ -46,15 +46,16 @@ static char *_replace_strval_from_variables(ami_t *ami, char *strval) {
       if (kh_exist(ami->variables, k)) {
 	char *key = (char *)kh_key(ami->variables, k);
 	ami_variable_t *value = (ami_variable_t *)kh_value(ami->variables, k);
-	if (!value->type == AMI_VAR_STR) {
-	  /* fprintf(stderr, "Error: Can only get value from a string variable!\n"); */
-	  return replaced_buf;
-	}
+	/* if (value->type != AMI_VAR_STR) { */
+	/*   fprintf(stderr, "Error: Can only get value from a string variable!\n"); */
+	/*   return replaced_buf; */
+	/* } */
 	char *replacevar = ami_strutil_make_replacevar(key);
 	if (replaced_buf) {
 	  found = strstr(replaced_buf, replacevar);
 	  if (found) {
-	    char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, value->strval);
+	    char *new_replaced_buf = ami_strutil_replace_all_substrings(replaced_buf, replacevar, ami_variable_to_string(value));
+	    /* printf("Calling ami_strutil_replace_all_substrings. replacedbuf:%s;replacevar:%s;value->srtval:%s\n", replaced_buf, replacevar, value->strval); */
 	    free(replaced_buf);
 	    replaced_buf = new_replaced_buf;
 	  }
@@ -63,6 +64,9 @@ static char *_replace_strval_from_variables(ami_t *ami, char *strval) {
       }
     }
   }
+  /* else { */
+  /*   printf("There is no variables for AMI!\n"); */
+  /* } */
 
   return replaced_buf;
 }
@@ -870,7 +874,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
       tmp_float = (float)strtof(tmp_str, NULL);
       if (n->strval) { // We have strval? = we have a group
-	ami_append_sleep_cursor(ami, n->strval, tmp_float);
+	char *groupval = _replace_strval_from_variables(ami, n->strval);
+	if (!groupval) {
+	  printf("This is n->strval:%s\n", n->strval);
+	}
+	ami_append_sleep_cursor(ami, groupval, tmp_float);
       } else { // No strval, so this is going to the "_global" group
 	ami_append_sleep_cursor(ami, "_global", tmp_float);
       }      
@@ -880,7 +888,14 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	fprintf(stderr, "Error: Cannot use \"sleep fromgroup\" outside of an action!\n");
 	exit(1);
       }
-      action->sleep += ami_get_new_sleep_cursor(ami, n->strval);
+      if (n->strval) {
+      	char *groupval = _replace_strval_from_variables(ami, n->strval);
+	action->sleep += ami_get_new_sleep_cursor(ami, groupval);
+      } else {
+	fprintf(stderr, "Error, no group found!\n");
+	exit(1);
+      }
+
       break;
     case AMI_NT_ARRAYVAR:
       /* printf("We set the values for our array. We have %d values\n", n->intval); */
