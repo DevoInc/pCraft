@@ -162,6 +162,8 @@ int main(int argc, char **argv)
     /* printf("current_t = %ld\n", current_t); */
   } else {
     printf("Start Time: None\n");
+    current_t = time(NULL);
+    current_t -= ami->sleep_cursor;
   }
   
   ami_set_action_callback(ami, foreach_action, ami, NULL, NULL);
