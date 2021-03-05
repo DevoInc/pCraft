@@ -192,36 +192,58 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       /* kv_a(char *, ami->values_stack, strdup(n->strval)); */
       break;
     case AMI_NT_VARVAR:
-      kv_push(char *, ami->values_stack, strdup(n->strval));            
-      break;
+		kv_push(char *, ami->varvar_stack, strdup(n->strval));
+		kv_push(char *, ami->values_stack, strdup(n->strval));
+      	break;
     case AMI_NT_VARNAME:
-      if (array_get_index > 0) {
-	char *lastval = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-	ami_variable_t *arrayfrom = ami_get_variable(ami, lastval);
-	if (arrayfrom) {
-	  ami_variable_t *var = ami_variable_array_get_at_index(arrayfrom, array_get_index);
-	  ami_set_variable(ami, n->strval, ami_variable_copy(var));
-	} else {
-	  fprintf(stderr, "Could not fetch our array to the global variable!\n");
-	}
-	free(lastval);
-      } else {
-	globalvar = ami_get_variable(ami, n->strval);
-	tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-	if (!tmp_str) {
-	  fprintf(stderr, "Error: no such value for '%s'\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
-	  exit(1);
-	}
-	if (!globalvar) {
-	  globalvar = ami_variable_new_string(tmp_str);
-	} else {
-	  ami_variable_set_string(globalvar, tmp_str);
-	}
-	ami_set_variable(ami, n->strval, globalvar);
-	free(tmp_str);
-      }
-      array_get_index = 0;
-      break;
+		if (array_get_index > 0) {
+			char *lastval = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+			ami_variable_t *arrayfrom = ami_get_variable(ami, lastval);
+			if (arrayfrom) {
+	  			ami_variable_t *var = ami_variable_array_get_at_index(arrayfrom, array_get_index);
+	  			ami_set_variable(ami, n->strval, ami_variable_copy(var));
+			} else {
+	  			fprintf(stderr, "Could not fetch our array to the global variable!\n");
+			}
+			free(lastval);
+      	} else {
+			globalvar = ami_get_variable(ami, n->strval);
+			tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+			if (!tmp_str) {
+			fprintf(stderr, "Error: no such value for '%s'\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
+			exit(1);
+			}
+	
+			char *varvar = NULL;
+			int is_varvar = 0;
+
+			for (int i=1; i <= kv_size(ami->varvar_stack); i++) {
+				varvar = kv_A(ami->varvar_stack, kv_size(ami->varvar_stack)-i);
+				if (strcmp(varvar, tmp_str) == 0) {
+					is_varvar = 1;
+					break;
+				}
+			}
+
+			if (!globalvar) {
+				if (is_varvar) {
+					globalvar = ami_variable_new_variable(tmp_str);
+				} else {
+					globalvar = ami_variable_new_string(tmp_str);
+				}
+			} else {
+				if (is_varvar) {
+					ami_variable_set_variable(globalvar, tmp_str);
+				} else {
+					ami_variable_set_string(globalvar, tmp_str);
+				}
+			}
+			ami_set_variable(ami, n->strval, globalvar);
+			free(tmp_str);
+      	}
+
+      	array_get_index = 0;
+      	break;
     case AMI_NT_LOCALVARNAME:
       if (array_get_index > 0) {
 	char *lastval = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);

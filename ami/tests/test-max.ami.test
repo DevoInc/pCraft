@@ -67,10 +67,10 @@ action want
 AMI_VAR_STR
 	[len:10] mylocalvar
 [3] $localfromglobal
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:10] $globalvar
 [4] $fromanotherlocal
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:9] $localvar
 [5] $myvar
 AMI_VAR_INT

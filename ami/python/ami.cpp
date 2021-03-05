@@ -38,6 +38,9 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata
 	ami_variable_t *var = (ami_variable_t *)kh_value(pami->_ami->variables, k);
 	switch(var->type) {
 	case AMI_VAR_STR:
+    action->variables[key] = var->strval;
+    break;
+  case AMI_VAR_VARIABLE:
 	  action->variables[key] = ami_get_nested_variable_as_str(pami->_ami, NULL, var->strval);
 	  break;
 	case AMI_VAR_INT:

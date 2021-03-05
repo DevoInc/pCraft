@@ -25,7 +25,7 @@ AMI_VAR_STR
 AMI_VAR_STR
 	[len:35] We add the global content:my global
 [3] $local
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:7] $global
 [4] $repeatvar
 AMI_VAR_STR

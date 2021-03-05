@@ -76,6 +76,7 @@ ami_t *ami_new(void)
   ami->global_counter = 0;
 
   ami->open_files = kh_init(fphash);
+  kv_init(ami->varvar_stack);
   
   return ami;
 }
@@ -369,6 +370,7 @@ void ami_close(ami_t *ami)
   
   kv_destroy(ami->references);
   kv_destroy(ami->values_stack);
+  kv_destroy(ami->varvar_stack);
 
   ami_erase_variables(ami);
   ami_erase_sleep_cursor(ami);

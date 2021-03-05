@@ -82,6 +82,7 @@ struct _ami_t {
   int current_repeat_block;
   size_t global_counter;
   khash_t(fphash) *open_files;
+  ami_kvec_t varvar_stack;
 };
 typedef struct _ami_t ami_t;
 
