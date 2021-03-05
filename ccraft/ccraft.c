@@ -34,12 +34,12 @@ void foreach_action(ami_action_t *action, void *u1, void *u2, void *u3)
   ami_field_action_t *field_action;
   khint_t k;
 
-  int sleep_cursor = (int) current_t + (int)action->sleep_cursor + action->sleep;
+  int sleep_cursor = (int) current_t + (int)action->sleep_cursor + (int)action->sleep;
   
   avro_value_t variables_value;
   avro_value_t fset;
   avro_value_t freplace;
-	  
+  
   avro_value_iface_t  *event_class = avro_generic_class_from_schema(ccraft_schema);
   avro_value_t event;
   avro_generic_value_new(event_class, &event);
