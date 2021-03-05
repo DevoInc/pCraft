@@ -18,6 +18,13 @@ void foreach_action(ami_action_t *action, void *userdata1, void *userdata2, void
   /* printf("Running %s\n", action->name); */
 }
 
+void sleep_foreach_action(ami_action_t *action, void *userdata1, void *userdata2, void *userdata3)
+{
+  ami_t *ami = (ami_t *)userdata1;
+  printf("* Action name(%s)\n\tami->sleep_cursor(%f)\n\taction->sleep_cursor(%f)\n\taction->sleep(%f)\n", action->name, ami->sleep_cursor, action->sleep_cursor, action->sleep);
+ 
+}
+
 void quiet_foreach_action(ami_action_t *action, void *userdata1, void *userdata2, void *userdata3)
 {
   ami_field_action_t *field_action;
@@ -173,6 +180,17 @@ int quiet_debug(const char *amifile)
   return 0;
 }
 
+int sleep_debug(const char *amifile)
+{
+  ami_t *ami;
+  ami = ami_new();  
+  ami_set_action_callback(ami, sleep_foreach_action, ami, NULL, NULL);
+  ami_parse_file(ami, amifile);
+  ami_ast_walk_actions(ami);
+  ami_close(ami);
+  return 0;
+}
+
 
 int main(int argc, char **argv)
 {
@@ -180,7 +198,7 @@ int main(int argc, char **argv)
   int ret;
   
   if (argc < 2) {
-    fprintf(stderr, "Syntax: %s file.ami [--node|--ami|--simple|--break|--quiet]\n", argv[0]);
+    fprintf(stderr, "Syntax: %s file.ami [--node|--ami|--simple|--break|--quiet|--sleep]\n", argv[0]);
     return 1;
   }
 
@@ -190,6 +208,12 @@ int main(int argc, char **argv)
     }
   }
 
+  if (argc > 2) {
+    if (!strcmp("--sleep", argv[2])) {
+      return sleep_debug(argv[1]);
+    }
+  }
+  
   if (argc > 2) {
     if (!strcmp("--quiet", argv[2])) {
       return quiet_debug(argv[1]);

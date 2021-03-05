@@ -879,7 +879,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       if (!action) {
 	fprintf(stderr, "Error: Cannot use \"sleep fromgroup\" outside of an action!\n");
 	exit(1);
-      }      
+      }
       action->sleep += ami_get_new_sleep_cursor(ami, n->strval);
       break;
     case AMI_NT_ARRAYVAR:
