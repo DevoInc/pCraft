@@ -17,7 +17,7 @@ class LogPlugin(LogContext):
     def validate_keys(self, kvdict):
         pass
         
-    def template_to_log(self, packet):
+    def packet_to_log(self, packet):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))        
         variables = {}
         variables["sequence"] = str(self.seq)
@@ -44,18 +44,48 @@ class LogPlugin(LogContext):
         
         return event
 
-    def is_request(self, packet):
-        if packet.dns.flags == "0x00000100":
-            return True
+    def db_to_log(self, frame_time, kvdict):
+        variables = {}
+        variables["sequence"] = str(self.seq)
+        try:
+            variables["src_ip_addr"] = kvdict["$ip-src"]
+        except:
+            pass
 
-        return False
+        try:
+            variables["src_port_number"] = kvdict["$port-src"]
+        except:
+            pass
+
+        try:
+            variables["dns_query_name"] = kvdict["$domain"]
+        except:
+            pass
+
+        try:
+            variables["dns_query_type"] = kvdict["$dns-query-type"]
+        except:
+            pass
+
+        try:
+            variables["dns_query_class"] = kvdict["$dns-query-class"]
+        except:
+            pass
         
+        event = self.retrieve_template("isc.named", "query", variables)        
+        event = frame_time.strftime(event)
+        
+        return event
+    
     def run(self, cap, packet, pktid, layer):
         # fields = layer.field_names
         # for field in fields:
         #     print("%s -> %s" % (field, layer.get_field_value(field)))
 
         if self.is_request(packet):
-            self.named_log_fp.write(self.template_to_log(packet))
-            self.seq += 1
-        
+            self.named_log_fp.write(self.packet_to_log(packet))
+            self.seq += 1        
+
+    def run_ccraft(self, event, kvdict):
+        frame_time = datetime.fromtimestamp(int(event["time"]))
+        self.named_log_fp.write(self.db_to_log(frame_time, kvdict))

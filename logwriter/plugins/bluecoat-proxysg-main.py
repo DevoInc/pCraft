@@ -34,7 +34,7 @@ class LogPlugin(LogContext):
     def validate_keys(self, kvdict):
         pass
         
-    def template_to_log(self, packet):
+    def packet_to_log(self, packet):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
 
         self.faup_ctx.decode(packet.http.request_full_uri)
@@ -56,6 +56,80 @@ class LogPlugin(LogContext):
             pass            
         variables["dst_port_number"] = packet.tcp.dstport
         variables["event_duration"] = str(random.randrange(20,1000))
+        domain = self.faup_ctx.get_domain()
+        variables["url_hostname"] = domain
+        variables["url_path"] = self.faup_ctx.get_resource_path()
+        if variables["url_path"] == None:
+            variables["url_path"] = "-"
+        variables["url_query"] = self.faup_ctx.get_query_string()
+        if variables["url_query"] == None:
+            variables["url_query"] = "-"
+        category = ""
+        try:
+            cat = self.domains[domain]
+            category = self.catmap[cat]
+        except:
+            category = "Unclassified"            
+        variables["url_category"] = category
+        
+        event = self.retrieve_template("bluecoat.proxysg", "main", variables)        
+        event = frame_time.strftime(event)
+
+        return event
+
+    def db_to_log(self, frame_time, kvdict):
+#        print(str(kvdict))
+        if not "$domain" in kvdict:
+            raise ValueError("Error, bluecoat proxysg requires a domain variable to be set")
+        
+        protocol = "http"
+        try:
+            protocol = kvdict["$protocol"]
+        except:
+            pass
+
+        uri = "/"
+        try:
+            uri = kvdict["$uri"]
+        except:
+            pass
+        
+        try:
+            full_uri = protocol + "://" + kvdict["$domain"] + uri
+        except:
+            pass
+        
+        self.faup_ctx.decode(full_uri)
+        
+        variables = {}
+        try:
+            variables["http_referer_original"] = kvdict["$referer"]
+        except:
+            pass
+        try:
+            variables["http_user_agent_original"] = kvdict["$user-agent"]
+        except:
+            pass
+
+        try:
+            variables["src_ip_addr"] = kvdict["$ip-src"]
+        except:
+            pass
+        try:
+            variables["dst_ip_addr"] = kvdict["$ip-dst"]
+        except:
+            pass        
+        try:
+            variables["http-request-method"] = kvdict["$method"]
+        except:
+            pass
+
+        try:
+            variables["dst_port_number"] = kvdict["$port-dst"]
+        except:
+            pass        
+        variables["event_duration"] = str(random.randrange(20,1000))
+        
         variables["url_hostname"] = self.faup_ctx.get_domain()
         variables["url_path"] = self.faup_ctx.get_resource_path()
         if variables["url_path"] == None:
@@ -75,7 +149,7 @@ class LogPlugin(LogContext):
         event = frame_time.strftime(event)
 
         return event
-        
+    
     def is_request(self, layer):
         try:
             method = layer.request_method
@@ -93,5 +167,8 @@ class LogPlugin(LogContext):
                     # for field in fields:
                     #     print("%s -> %s" % (field, layer.get_field_value(field)))
                     
-                    self.bluecoat_fp.write(self.template_to_log(packet))
+                    self.bluecoat_fp.write(self.packet_to_log(packet))
             
+    def run_ccraft(self, event, kvdict):
+        frame_time = datetime.fromtimestamp(int(event["time"]))
+        self.bluecoat_fp.write(self.db_to_log(frame_time, kvdict))

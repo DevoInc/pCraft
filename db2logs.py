@@ -17,12 +17,17 @@ SCHEMA = """{
     "name": "event",
     "fields": [
         {"name": "time", "type": "int", "default": "0"},
+        {"name": "action", "type": "string", "default": "Void"},
         {"name": "exec", "type": "string", "default": "Void"},
         {"name": "variables", "type": {"type": "map", "name": "var", "values": "string"}},
         {"name": "fset", "type": {"type": "map", "values": "string"}},
         {"name": "freplace", "type": {"type": "map", "values": "string"}}
         ]
 }"""
+
+logplugin_action_map = { "DNSConnection": ["named"],
+                         "HTTPConnection": ["bluecoat-proxysg-main", "zscaler-access"]                         
+}
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
@@ -41,13 +46,22 @@ if __name__ == "__main__":
     for event in reader:
         # print(str(event))
         # {'time': 1614504320, 'exec': 'Void', 'variables': {'$domain': 'haute-voltige.io', '$index': '1', '$var': '1234'}, 'fset': {'myfield': 'abcd'}, 'freplace': {}}
-        kvdict = event["fset"]
+        kvdict = event["fset"]        
+        
+        if event["action"] == "Controller":
+            plugin_name = []
+            plugin_name.append(event["variables"]["$log_plugin"])
+            for plugin in plugin_name:
+                if "-v" in sys.argv:
+                    writer.loaded_plugins[plugin].validate_keys(kvdict)
 
-        plugin_name = event["variables"]["$log_plugin"]
+                writer.loaded_plugins[plugin].run_ccraft(event, kvdict)
+        else:
+            plugin_name = logplugin_action_map[event["exec"]]            
+            for plugin in plugin_name:
+                if "-v" in sys.argv:
+                    writer.loaded_plugins[plugin].validate_keys(event["variables"])
 
-        if "-v" in sys.argv:
-            writer.loaded_plugins[plugin_name].validate_keys(kvdict)
-
-        writer.loaded_plugins[plugin_name].run_ccraft(event, kvdict)
+                writer.loaded_plugins[plugin].run_ccraft(event, event["variables"])
         
     reader.close()

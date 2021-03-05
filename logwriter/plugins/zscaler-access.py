@@ -139,7 +139,7 @@ class LogPlugin(LogContext):
     def validate_keys(self, kvdict):
         pass
         
-    def template_to_log(self, packet):    
+    def packet_to_log(self, packet):    
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))        
 
         self.faup_ctx.decode(packet.http.request_full_uri)
@@ -196,6 +196,96 @@ class LogPlugin(LogContext):
         
         return event
         
+    def db_to_log(self, frame_time, kvdict):    
+        if not "$domain" in kvdict:
+            raise ValueError("Error, bluecoat proxysg requires a domain variable to be set")
+
+        protocol = "http"
+        try:
+            protocol = kvdict["$protocol"]
+        except:
+            pass
+
+        uri = "/"
+        try:
+            uri = kvdict["$uri"]
+        except:
+            pass
+        
+        try:
+            full_uri = protocol + "://" + kvdict["$domain"] + uri
+        except:
+            pass
+
+        
+        self.faup_ctx.decode(full_uri)
+        scheme = self.faup_ctx.get_scheme()
+        proto = scheme.upper()
+        if proto == "HTTPS":
+            proto = "SSL"
+
+        variables = {}
+
+        try:
+            variables["clientpublicip"] = kvdict["$ip-src"]
+        except:
+            pass
+        
+        variables["event-id"] = str(self.event_id)
+        try:
+            variables["clientip"] = kvdict["$ip-src"]
+        except:
+            pass
+        try:
+            variables["serverip"] = kvdict["$ip-dst"]
+        except:
+            pass
+        
+        variables["protocol"] = proto
+        variables["requestsize"] = str(len(full_uri) + 242) # say 242 is about the header size
+        try:
+            variables["refererurl"] = kvdict["$referer"]
+        except:
+            pass
+
+        try:
+            variables["useragent"] = kvdict["$user-agent"]
+        except:
+            pass
+
+        try:
+            variables["user"] = kvdict["$user"]
+        except:
+            pass
+
+        try:
+            variables["url"] = full_uri
+        except:
+            pass
+        
+        variables["hostname"] = self.faup_ctx.get_host()
+        category = ""
+        domain = self.faup_ctx.get_domain()
+        try:
+            cat = self.domains[domain]
+            category = self.catmap[cat]
+        except:
+            category = "Unclassified"            
+        variables["urlcategory"] = category
+
+        supercategory = ""
+        try:
+            supercategory = self.supercatmap[category]
+        except:
+            supercategory = "User-Defined"            
+        variables["urlsupercategory"] = supercategory
+        variables["urlclass"] = supercategory
+
+        event = self.retrieve_template("zscaler", "proxy", variables)
+        event = frame_time.strftime(event)
+        
+        return event
+        
     def is_request(self, layer):
         try:
             method = layer.request_method
@@ -214,5 +304,8 @@ class LogPlugin(LogContext):
                     # fields = layer.field_names
                     # for field in fields:
                     #     print("%s -> %s" % (field, layer.get_field_value(field)))                    
-                    self.logfp.write(self.template_to_log(packet))
-            
+                    self.logfp.write(self.packet_to_log(packet))
+                        
+    def run_ccraft(self, event, kvdict):
+        frame_time = datetime.fromtimestamp(int(event["time"]))
+        self.logfp.write(self.db_to_log(frame_time, kvdict))
