@@ -1,0 +1,42 @@
+key,default_value
+src_ip_addr,10.10.10.120
+dst_mime_type,text/html
+cs_auth_group,-
+http_request_body_bytes,918
+url_category,Marketing Site
+url_hostname,blobs.example.com
+dst_ip_addr,10.12.32.5
+http_request_method,GET
+cs_uri_extension,html
+url_path,/
+dst_port_number,80
+url_query,-
+network_application_protocol,tcp
+http_user_agent_original,"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0"
+user_name,-
+dnslookup_time,0
+duration,0
+rs_status,0
+rs_version,-
+dvc_action,TCP_TUNNELED
+s_ip,192.168.0.42
+s_sitename,http.proxy
+s_supplier_ip,10.12.32.4
+s_supplier_name,10.23.4.3
+http_response_body_bytes,539
+event_result,OBSERVED
+http_status_code,200
+event_duration,342
+x_bluecoat_appliance_name,10.147.160.40 - DRTASG01
+x_bluecoat_appliance_primary_address,10.147.160.40
+x_bluecoat_application_name,unavailable
+x_bluecoat_application_operation,unavailable
+x_bluecoat_proxy_primary_address,10.147.160.40
+x_bluecoat_transaction_uuid,cffee43870b520f1-000000009990133e-000000005d91fca5
+x_exception_id,-
+x_virus_id,-
+c_url,tcp://blobs.example.com:443/
+http_referer_original,-
+x_forwarded_for,10.10.10.120
+src_ip_addr,192.168.0.23
+srcport,23556
