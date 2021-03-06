@@ -160,6 +160,7 @@ TRUE true
 FALSE false
 GROUP group
 FROMGROUP fromgroup
+SKIPREPEAT skip_repeat
 
 %%
 
@@ -266,7 +267,7 @@ FROMGROUP fromgroup
 		}
 
 
-
+{SKIPREPEAT} { return TOK_SKIPREPEAT; }
 {FROMGROUP} { return TOK_FROMGROUP; }
 {GROUP} { return TOK_GROUP; }
 {SLEEP} { return TOK_SLEEP; }
