@@ -48,7 +48,7 @@ if __name__ == "__main__":
         # {'time': 1614504320, 'exec': 'Void', 'variables': {'$domain': 'haute-voltige.io', '$index': '1', '$var': '1234'}, 'fset': {'myfield': 'abcd'}, 'freplace': {}}
         kvdict = event["fset"]        
         
-        if event["action"] == "Controller":
+        if event["exec"] == "Controller":
             plugin_name = []
             plugin_name.append(event["variables"]["$log_plugin"])
             for plugin in plugin_name:
