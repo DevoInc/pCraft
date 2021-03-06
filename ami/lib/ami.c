@@ -544,7 +544,7 @@ char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_val
   retvar = ami_get_variable(ami, var_value);
   if (!retvar) {
     if (node) {
-      fprintf(stderr, "Cannot get value for variable %s at line %d\n", var_value, node->lineno);
+      fprintf(stderr, "Cannot get value for variable %s at %s:%d\n", var_value, node->filename, node->lineno);
     } else {
       fprintf(stderr, "Cannot get value for variable %s\n", var_value);
     }
