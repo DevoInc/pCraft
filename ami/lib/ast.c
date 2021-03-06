@@ -160,7 +160,6 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       for (size_t i = 1; i <= index; i++) {
 	ami_variable_set_int(tmp_var, i);
 	ami_set_variable(ami, n->strval, tmp_var);
-	
 	walk_node(ami, n->next, i, 1);
       }
       break;
@@ -427,9 +426,17 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 					       0x80ffffff, 0xc0ffffff, 0xe0ffffff, 0xf0ffffff, 0xf8ffffff,
 					       0xfcffffff, 0xfeffffff, 0xffffffff};
 	char *ipaddr_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
-	char *ipnum_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);	
+	char *ipnum_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	ami_variable_t *ipaddr_v = ami_get_variable(ami, ipaddr_s);
+	if (!ipaddr_v) {
+	  fprintf(stderr, "%s:%d No such variable %s\n", n->filename, n->lineno, ipaddr_s);
+	  exit(1);
+	}
 	ami_variable_t *ipnum_v = ami_get_variable(ami, ipnum_s);
+	if (!ipaddr_v) {
+	  fprintf(stderr, "%s:%d No such variable %s\n", n->filename, n->lineno, ipnum_s);
+	  exit(1);
+	}
 	char *ipaddr = ami_variable_to_string(ipaddr_v);
 	int ipn = 1;
 	if (ipnum_v) {
