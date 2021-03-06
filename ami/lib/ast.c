@@ -152,7 +152,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       /* ami->current_repeat_block++; */
       tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
       index = (int)strtod(tmp_str, NULL);
-      
+      if (ami->skip_repeat) {
+	index = 1;
+      }
       tmp_var = ami_variable_new();
       for (size_t i = 1; i <= index; i++) {
 	ami_variable_set_int(tmp_var, i);
@@ -932,9 +934,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     } // switch(n->type)
 
     if (n->right) {
-      if (!ami->skip_repeat) {
 	walk_node(ami, n->right, -1, 1);
-      }
     }
   } // For loop
 
