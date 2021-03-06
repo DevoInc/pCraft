@@ -19,8 +19,6 @@ class LogPlugin(LogContext):
         pass
 
     def template_to_log(self, frame_time, kvdict):
-        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
-
         event = self.retrieve_template("mcafee.email-gateway.cef0", "default", kvdict)
         event = frame_time.strftime(event)
 
