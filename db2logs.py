@@ -60,7 +60,10 @@ if __name__ == "__main__":
                 else:
                     print("No such plugin %s for action %s" % (plugin, event["action"]))
         else:
-            plugin_name = logplugin_action_map[event["exec"]]            
+            try:
+                plugin_name = logplugin_action_map[event["exec"]]
+            except KeyError:
+                print("No such plugin %s for action %s" % (event["exec"], event["action"]))
             for plugin in plugin_name:
                 if plugin in writer.loaded_plugins:
                     if "-v" in sys.argv:
