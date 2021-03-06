@@ -208,7 +208,7 @@ reference: REFERENCE string {
     printf("[parse.y](reference: REFERENCE STRING):%s\n", $2);
   }  
   /* kv_push(char *, ami->references, ref); */
-  ami_node_create(&ami->root_node, get_lineno(scanner), AMI_NT_REFERENCE, $2, 0, 0, 0);
+  ami_node_create(ami, &ami->root_node, get_lineno(scanner), AMI_NT_REFERENCE, $2, 0, 0, 0);
   
   free($2);
 }
@@ -218,7 +218,7 @@ tag: TAG string {
   if (ami->debug) {
     printf("[parse.y](tag: TAG STRING):%s\n", $2);
   }
-  ami_node_create(&ami->root_node, get_lineno(scanner), AMI_NT_TAG, $2, 0, 0, 0);
+  ami_node_create(ami, &ami->root_node, get_lineno(scanner), AMI_NT_TAG, $2, 0, 0, 0);
 
   free($2);
 }
@@ -247,7 +247,7 @@ variable: GVARIABLE EQUAL varset {
     printf("[parse.y] variable: GVARIABLE(%s) EQUAL varset\n", $1);
   }
 
-   /* ami_node_create(&ami->root_node, AMI_NT_VARNAME, $1, 0); */
+   /* ami_node_create(ami, &ami->root_node, AMI_NT_VARNAME, $1, 0); */
   ami_append_item(ami, get_lineno(scanner), AMI_NT_VARNAME, $1, 0, 0, 0);
   
   free($1);
@@ -412,7 +412,7 @@ action: ACTION WORD OPENSECTION {
   ami->_action_block_id = ami->_opened_sections;
 
   ami_append_item(ami, get_lineno(scanner), AMI_NT_ACTION, $2, 0, 0, 0);
-  /* ami_node_create(&ami->root_node, AMI_NT_ACTION, $2, 0); */
+  /* ami_node_create(ami, &ami->root_node, AMI_NT_ACTION, $2, 0); */
   
   free($2);
 }

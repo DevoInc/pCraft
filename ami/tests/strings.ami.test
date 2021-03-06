@@ -1,31 +1,34 @@
 ami_version 1
 +++++++
 * Global Variables:
-[0] $simple
+[0] $__amifile__
+AMI_VAR_STR
+	[len:20] ../tests/strings.ami
+[1] $simple
 AMI_VAR_STR
 	[len:6] simple
-[1] $verbatimsub
+[2] $verbatimsub
 AMI_VAR_STR
 	[len:122] This is not a simple
 verbatim string here.
 We can use variable substitution,
 such as escape:escaped "str" or simple:simple
-[2] $verbatim2
+[3] $verbatim2
 AMI_VAR_STR
 	[len:23] verbatim "other" string
-[3] $verbatim
+[4] $verbatim
 AMI_VAR_STR
 	[len:42] verbatim 
 string
 $simple
 on multiple lines
-[4] $harder
+[5] $harder
 AMI_VAR_STR
 	[len:18] harder than simple
-[5] $escape3
+[6] $escape3
 AMI_VAR_STR
 	[len:27] This is an "escaped" string
-[6] $escaped
+[7] $escaped
 AMI_VAR_STR
 	[len:13] escaped "str"
 

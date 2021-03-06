@@ -507,9 +507,9 @@ void ami_append_item(ami_t *ami, int lineno, ami_node_type_t type, char *strval,
 {
   /* printf("\tnode type:%s\n", ami_node_names[type]); */
   if (ami->_repeat_block_id > 0) {
-    ami_node_create(&ami->current_node, lineno, type, strval, intval, fval, 0);
+    ami_node_create(ami, &ami->current_node, lineno, type, strval, intval, fval, 0);
   } else {
-    ami_node_create(&ami->root_node, lineno, type, strval, intval, fval, 0);
+    ami_node_create(ami, &ami->root_node, lineno, type, strval, intval, fval, 0);
     ami->current_node = NULL;
   }
 }
@@ -517,9 +517,9 @@ void ami_append_item(ami_t *ami, int lineno, ami_node_type_t type, char *strval,
 void ami_append_repeat(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
 {
   if (ami->current_node) {
-    ami->current_node = ami_node_create_right(&ami->current_node, lineno, type, strval, intval, fval, 0);
+    ami->current_node = ami_node_create_right(ami, &ami->current_node, lineno, type, strval, intval, fval, 0);
   } else {
-    ami->current_node = ami_node_create_right(&ami->root_node, lineno, type, strval, intval, fval, 0);
+    ami->current_node = ami_node_create_right(ami, &ami->root_node, lineno, type, strval, intval, fval, 0);
   }
 }
 

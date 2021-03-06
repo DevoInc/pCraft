@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <ami/tree.h>
+#include <ami/ami.h>
 
 ami_node_t *ami_node_new(void)
 {
@@ -12,7 +12,8 @@ ami_node_t *ami_node_new(void)
     fprintf(stderr, "Cannot allocate ami_node_t!\n");
     return NULL;
   }
-  
+
+  node->filename = NULL;
   node->strval = NULL;
   node->lineno = 0;
   node->is_verbatim = 0;
@@ -312,10 +313,11 @@ ami_node_t *ami_node_append_right(ami_node_t *nodedst, ami_node_t *nodesrc)
 }
 
 
-ami_node_t *ami_node_create(ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
+ami_node_t *ami_node_create(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
 {
   ami_node_t *node = ami_node_new();
 
+  node->filename = ami->file;
   node->lineno = lineno;
   node->type = type;
   if (strval) {
@@ -329,10 +331,11 @@ ami_node_t *ami_node_create(ami_node_t **root, int lineno, ami_node_type_t type,
   return node;
 }
 
-ami_node_t *ami_node_create_right(ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
+ami_node_t *ami_node_create_right(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
 {
   ami_node_t *node = ami_node_new();
 
+  node->filename = ami->file;
   node->lineno = lineno;
   node->type = type;
   if (strval) {

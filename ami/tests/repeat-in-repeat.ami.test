@@ -79,7 +79,10 @@ second repeat
 [0] $i1
 AMI_VAR_INT
 	2
-[1] $i2
+[1] $__amifile__
+AMI_VAR_STR
+	[len:29] ../tests/repeat-in-repeat.ami
+[2] $i2
 AMI_VAR_INT
 	4
 

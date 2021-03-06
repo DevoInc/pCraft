@@ -5,13 +5,16 @@ ami_version 1
 * Field Actions:
 +++++++
 * Global Variables:
-[0] $b64string
-AMI_VAR_STR
-	[len:33] This is a base64 string: SGVsbG8=
-[1] $fromfunc
+[0] $fromfunc
 AMI_VAR_STR
 	[len:8] SGVsbG8=
-[2] $empty_string
+[1] $b64string
+AMI_VAR_STR
+	[len:33] This is a base64 string: SGVsbG8=
+[2] $__amifile__
+AMI_VAR_STR
+	[len:22] ../tests/mixedvars.ami
+[3] $empty_string
 AMI_VAR_STR
 	[len:0] 
 

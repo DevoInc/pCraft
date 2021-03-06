@@ -100,10 +100,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   
   urandom = fopen("/dev/urandom", "r");
  
-  
   for (n = node; n; n = n->next) {
 
     ami_global_counter_incr(ami); // used for better random numbers
+    ami_set_variable_string(ami, "$__amifile__", n->filename);
+
     
     if ((n->strval) && (!n->is_verbatim)) {
       if ((n->type == AMI_NT_VARVALSTR) || (n->type == AMI_NT_MESSAGE)) {
