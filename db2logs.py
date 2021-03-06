@@ -52,16 +52,23 @@ if __name__ == "__main__":
             plugin_name = []
             plugin_name.append(event["variables"]["$log_plugin"])
             for plugin in plugin_name:
-                if "-v" in sys.argv:
-                    writer.loaded_plugins[plugin].validate_keys(kvdict)
+                if plugin in writer.loaded_plugins:
+                    if "-v" in sys.argv:
+                        writer.loaded_plugins[plugin].validate_keys(kvdict)
 
-                writer.loaded_plugins[plugin].run_ccraft(event, kvdict)
+                    writer.loaded_plugins[plugin].run_ccraft(event, kvdict)
+                else:
+                    print("No such plugin %s for action %s" % (plugin, event["action"]))
         else:
             plugin_name = logplugin_action_map[event["exec"]]            
             for plugin in plugin_name:
-                if "-v" in sys.argv:
-                    writer.loaded_plugins[plugin].validate_keys(event["variables"])
+                if plugin in writer.loaded_plugins:
+                    if "-v" in sys.argv:
+                        writer.loaded_plugins[plugin].validate_keys(event["variables"])
 
-                writer.loaded_plugins[plugin].run_ccraft(event, event["variables"])
+                    writer.loaded_plugins[plugin].run_ccraft(event, event["variables"])
+                else:
+                    print("No such plugin %s for action %s" % (plugin, event["action"]))
+                    
         
     reader.close()
