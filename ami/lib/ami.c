@@ -122,6 +122,33 @@ int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var)
   return 0;
 }
 
+int ami_set_variable_string(ami_t *ami, const char *key, char *strval)
+{
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->variables) return 1;  
+
+  ami_variable_t *var;
+  var = ami_variable_new();
+  if (!var) return 1;
+
+  ami_variable_set_string(var, strval);
+  
+  k = kh_put(varhash, ami->variables, key, &absent);
+  if (absent) {
+    kh_key(ami->variables, k) = strdup(key);
+    kh_value(ami->variables, k) = var;
+  } else {
+    /* ami_variable_free(kh_value(ami->variables, k)); */
+    kh_value(ami->variables, k) = var;
+    return 1;
+  }
+  
+  return 0;
+}
+
 int ami_set_variable_int(ami_t *ami, const char *varkey, int ival)
 {
   ami_variable_t *var;
@@ -426,7 +453,7 @@ int ami_parse_file(ami_t *ami, const char *file)
 
 
 	ami->file = strdup(file);
-	
+
 	if (ami_yylex_init(&scanner) != 0) {
 		fprintf(stderr, "Error initializing yylex\n");
 		return 1;

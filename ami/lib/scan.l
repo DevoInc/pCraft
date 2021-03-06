@@ -240,6 +240,8 @@ SKIPREPEAT skip_repeat
 		includes[includes_index++] = YY_CURRENT_BUFFER;
 
 		realfile = strdup(filename);
+                // The includedfile is realfile
+                ami->file = strdup(filename);
 
 		yyin = fopen(realfile, "r");
 		if (!yyin) {

@@ -34,6 +34,7 @@ struct _ami_field_action_t {
 typedef struct _ami_field_action_t ami_field_action_t;
   
 struct _ami_action_t {
+  char *filename;
   char *name;
   khash_t(varhash) *variables;
   ami_field_action_t *field_actions;

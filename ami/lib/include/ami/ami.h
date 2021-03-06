@@ -99,6 +99,7 @@ void ami_debug(ami_t *ami);
 int ami_erase_variable(ami_t *ami, char *varkey);  
 int ami_variable_exists(ami_t *ami, const char *key);
 int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var);
+int ami_set_variable_string(ami_t *ami, const char *key, char *strval);
 int ami_replace_variable(ami_t *ami, const char *key, ami_variable_t *var);
 ami_variable_t *ami_get_variable(ami_t *ami, const char *key);
 ami_variable_t *ami_fetch_variable(ami_t *ami, const char *key);  

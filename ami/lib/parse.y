@@ -21,6 +21,8 @@ typedef void *yyscan_t;
   void ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...);
   int get_lineno(yyscan_t scanner);
 
+  static char *current_file = NULL;
+
 }
 
 %code top
@@ -718,7 +720,11 @@ ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...)
 {
   (void) scanner;
 
-  fprintf(stderr, "AMI Syntax error with line %d or just above: ", ami_yyget_lineno());
+  if (ami) {
+    fprintf(stderr, "AMI Syntax error at %s:%d or just above: ", ami->file, ami_yyget_lineno());
+  } else {
+    fprintf(stderr, "AMI Syntax error line %d: ",  ami_yyget_lineno());
+  }
   
   va_list args;
   va_start(args, msg);
