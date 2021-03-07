@@ -119,10 +119,75 @@ class LogPlugin(LogContext):
         self.log_fp.write(event)
     
     def run(self, cap, packet, pktid, layer):
-
         if hasattr(packet, 'tcp'):
             if str(packet.tcp.flags) == "0x00000002" or str(packet.tcp.flags) =="0x00000012": # We only write TCP-SYN
                 self.execute(cap, packet, pktid, layer)
         else:
             self.execute(cap, packet, pktid, layer)
 
+    def run_ccraft(self, event, kvdict):
+        if self.first:
+            header = self.retrieve_template_header("paloalto.firewall", "traffic")
+            if header:
+                self.log_fp.write(header)
+                self.first = False
+                
+        event_time = str(int(event["time"]))
+        frame_time = datetime.fromtimestamp(int(event_time))
+        variables = {
+            "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
+            "Threat/Content_Type": self.get_threat_type(),
+            "Generate_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
+            "Source_address": None,
+            "Destination_address": None,
+            "Time_Logged": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
+            "Source_Port": None,
+            "Destination_Port": None,
+            "IP_Protocol": None,
+            "URL/Filename": None,
+            "Direction": "client-to-server",
+            "Sequence_Number": random.randint(1, 65536),
+            "Source_Country": None,
+            "Destination_Country": None,
+            "url_idx": random.randint(1, 99),                        
+        }
+        try:
+            variables["Source_address"] = kvdict["$ip-src"]
+        except:
+            pass
+        try:
+            variables["Destination_address"] = kvdict["$ip-dst"]
+        except:
+            pass
+        try:
+            variables["Source_Port"] = kvdict["$port-src"]
+        except:
+            pass
+        try:
+            variables["Destination_Port"] = kvdict["$port-dst"]
+        except:
+            pass
+        try:
+            variables["Source_Country"] = self.get_country_from_ip(kvdict["$ip-src"])
+        except:
+            pass
+        try:
+            variables["Destination_Country"] = self.get_country_from_ip(kvdict["$ip-src"])
+        except:
+            pass
+        try:
+            variables["URL/Filename"] = self.get_country_from_ip(kvdict["$uri"])
+        except:
+            pass
+
+        print(str(event))
+        
+        variables["IP_Protocol"] = "tcp"
+        if event["exec"] == "DNSConnection":
+            variables["IP_Protocol"] = "udp"
+        
+        event = self.retrieve_template("paloalto.firewall", "traffic", variables)
+        
+        event = frame_time.strftime(event)
+        
+        self.log_fp.write(event)

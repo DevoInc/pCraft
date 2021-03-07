@@ -76,9 +76,9 @@ class LogPlugin(LogContext):
         try:
             variables["dstport"] = kvdict["$port-dst"]
         except:
-            if event["action"] == "DNSConnection":
+            if event["exec"] == "DNSConnection":
                 variables["dstport"] = "53"
-            if event["action"] == "HTTPConnection":
+            if event["exec"] == "HTTPConnection":
                 variables["dstport"] = "80"
         
 

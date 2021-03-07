@@ -34,8 +34,7 @@ logplugin_action_map = { "DNSConnection": ["named"],
 #                         "Controller": "endpoint",
 # }
 
-#network_plugins = ["netflow", "paloalto-firewall"]
-network_plugins = ["netflow"]
+network_plugins = ["netflow", "paloalto-firewall"]
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
