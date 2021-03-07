@@ -76,6 +76,7 @@ ami_t *ami_new(void)
   ami->global_counter = 0;
 
   ami->open_files = kh_init(fphash);
+  ami->membuf = kh_init(strhash);
   
   return ami;
 }
@@ -209,7 +210,7 @@ FILE *ami_get_open_file(ami_t *ami, const char *filename)
 {
   khint_t k;
 
-  k = kh_get(varhash, ami->open_files, filename);
+  k = kh_get(fphash, ami->open_files, filename);
   int is_missing = (k == kh_end(ami->open_files));
   if (is_missing) return NULL;
   FILE *fp = kh_value(ami->open_files, k);
@@ -230,6 +231,37 @@ int ami_set_open_file(ami_t *ami, const char *filename, FILE *fp) {
     kh_value(ami->open_files, k) = fp;
   } else {
     kh_value(ami->open_files, k) = fp;
+    return 1;
+  }
+  
+  return 0;
+}
+
+char *ami_get_membuf(ami_t *ami, const char *bufname)
+{
+  khint_t k;
+  
+  k = kh_get(strhash, ami->membuf, bufname);
+  int is_missing = (k == kh_end(ami->membuf));
+  if (is_missing) return NULL;
+  char *retval = kh_value(ami->membuf, k);
+  
+  return retval;
+}
+
+int ami_set_membuf(ami_t *ami, const char *bufname, char *buffer) {
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->membuf) return 1;  
+
+  k = kh_put(strhash, ami->membuf, bufname, &absent);
+  if (absent) {
+    kh_key(ami->membuf, k) = strdup(bufname);
+    kh_value(ami->membuf, k) = buffer;
+  } else {
+    kh_value(ami->membuf, k) = buffer;
     return 1;
   }
   

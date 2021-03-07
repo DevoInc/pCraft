@@ -82,6 +82,7 @@ struct _ami_t {
   int current_repeat_block;
   size_t global_counter;
   khash_t(fphash) *open_files;
+  khash_t(strhash) *membuf;
 };
 typedef struct _ami_t ami_t;
 
@@ -114,7 +115,9 @@ int ami_append_sleep_cursor(ami_t *ami, const char *group, float cursor);
 float ami_get_new_sleep_cursor(ami_t *ami, const char *group);
 FILE *ami_get_open_file(ami_t *ami, const char *filename);
 int ami_set_open_file(ami_t *ami, const char *filename, FILE *fp);
-  
+char *ami_get_membuf(ami_t *ami, const char *bufname);
+int ami_set_membuf(ami_t *ami, const char *bufname, char *buffer);
+
 #ifdef __cplusplus
 }
 #endif
