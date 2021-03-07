@@ -38,9 +38,8 @@ class LogPlugin(LogContext):
         pass
         
     def run(self, cap, packet, pktid, layer):
-
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
-        generate_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)) - 8)
+        generate_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
         
         kvdict = {
             "srcip": packet.ip.src,
@@ -58,3 +57,41 @@ class LogPlugin(LogContext):
         event = frame_time.strftime(event)
         
         self.log_fp.write(event)
+
+    def run_ccraft(self, event, kvdict):
+        event_time = str(int(event["time"]))
+        variables = {}
+        try:
+            variables["srcip"] = kvdict["$ip-src"]
+        except:
+            pass
+        try:
+            variables["dstip"] = kvdict["$ip-dst"]
+        except:
+            pass
+        try:
+            variables["srcport"] = kvdict["$port-src"]
+        except:
+            pass
+        try:
+            variables["dstport"] = kvdict["$port-dst"]
+        except:
+            if event["action"] == "DNSConnection":
+                variables["dstport"] = "53"
+            if event["action"] == "HTTPConnection":
+                variables["dstport"] = "80"
+        
+
+        variables["headerdate"] = event_time + "000"
+        variables["firstdate"] = event_time + "000"
+        variables["lastdate"] = event_time + "000"
+        variables["bytes"] = str(random.randint(108, 5000))
+        variables["flowseq"] = self.get_flowseq()
+
+        event = self.retrieve_template("netflow", "v9", variables)
+
+        frame_time = datetime.fromtimestamp(int(event_time))
+        event = frame_time.strftime(event)
+        
+        self.log_fp.write(event)
+        

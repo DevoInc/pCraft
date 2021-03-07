@@ -29,6 +29,14 @@ logplugin_action_map = { "DNSConnection": ["named"],
                          "HTTPConnection": ["bluecoat-proxysg-main", "zscaler-access"]                         
 }
 
+# action_category_map = { "DNSConnection": "network",
+#                         "HTTPConnection": "network",
+#                         "Controller": "endpoint",
+# }
+
+#network_plugins = ["netflow", "paloalto-firewall"]
+network_plugins = ["netflow"]
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Syntax: %s ccraft.db output_directory [-fv]" % sys.argv[0])
@@ -62,6 +70,8 @@ if __name__ == "__main__":
         else:
             try:
                 plugin_name = logplugin_action_map[event["exec"]]
+                for net in network_plugins:
+                    plugin_name.append(net)
             except KeyError:
                 print("No such plugin %s for action %s" % (event["exec"], event["action"]))
             for plugin in plugin_name:
