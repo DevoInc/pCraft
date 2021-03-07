@@ -24,4 +24,6 @@ mcafee_hostdomain,av.local
 mcafee_macaddress,32:32:fe:32:32:44
 mcafee_uuid,8e748500-ffe4-94b6-8394-a0045c5bbb439
 mcafee_username,root
-
+mcafee_reason_id,206
+mcafee_spam_score,0.4
+mcafee_spam_threshold_score,3.8
