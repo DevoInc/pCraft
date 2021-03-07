@@ -14,7 +14,8 @@ event_type = sys.argv[2]
     
 tb = TemplateBuilder()
 
-print("Template keys are: %s" % str(tb.get_template_keys(template, event_type)))
+if "-k" in sys.argv:
+    print("Template keys are: %s" % str(tb.get_template_keys(template, event_type)))
 
 if tb.check_coverage(template, event_type):
     event = tb.get_event(template, event_type, None)
