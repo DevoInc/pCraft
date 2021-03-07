@@ -55,7 +55,7 @@ class LogPlugin(LogContext):
         try:
             variables["src_port_number"] = kvdict["$port-src"]
         except:
-            pass
+            variables["src_port_number"] = random.randint(4096, 65534)
 
         try:
             variables["dns_query_name"] = kvdict["$domain"]
