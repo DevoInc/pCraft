@@ -76,6 +76,12 @@ class LogPlugin(LogContext):
         event = frame_time.strftime(event)
         
         return event
+
+    def is_request(self, packet):
+        if packet.dns.flags == "0x00000100":
+            return True
+
+        return False
     
     def run(self, cap, packet, pktid, layer):
         # fields = layer.field_names
