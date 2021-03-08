@@ -76,10 +76,113 @@ ami_t *ami_new(void)
   ami->global_counter = 0;
 
   ami->open_files = kh_init(fphash);
-  ami->membuf = kh_init(strhash);
+  ami->membuf = kh_init(charpphash);
+
+  ami->array_header = kh_init(voidptrhash);
+  ami->array = kh_init(voidptrhash);
+
+  ami->total_fields  = kh_init(inthash);
+  ami->total_lines   = kh_init(inthash);
+  ami->length_fields = kh_init(inthash);
   
   return ami;
 }
+
+khash_t(inthash) *ami_array_get_header(ami_t *ami, char *arrayname)
+{
+  khint_t k;
+
+  k = kh_get(varhash, ami->array_header, arrayname);
+  int is_missing = (k == kh_end(ami->array_header));
+  if (is_missing) return NULL;
+  khash_t(inthash) *array = kh_value(ami->array_header, k);
+  
+  return array;  
+}
+
+void ami_array_set_header(ami_t *ami, char *arrayname, int column, char *name)
+{
+  /* khint_t k; */
+  /* khint_t k2; */
+  int absent;
+  khint_t k;
+  khash_t(inthash) *header = ami_array_get_header(ami, arrayname);
+  if (header) {
+    k = kh_put(inthash, header, name, &absent);
+    if (absent) {
+      kh_key(header, k) = strdup(name);
+      kh_value(header, k) = column;
+    } else {
+      kh_value(header, k) = column;
+    }
+  } else {
+    header = kh_init(inthash);
+    k = kh_put(inthash, header, name, &absent);
+    kh_key(header, k) = strdup(name);
+    kh_value(header, k) = column;    
+  }
+
+  k = kh_put(inthash, ami->array_header, arrayname, &absent);
+  if (absent) {
+    kh_key(ami->array_header, k) = strdup(arrayname);
+    kh_value(ami->array_header, k) = column;
+  } else {
+    kh_value(ami->array_header, k) = column;
+  }
+  /* k = kh_get(voidptrhash, ami->array_header, arrayname); */
+  /* int is_missing = (k == kh_end(ami->array_header)); */
+  /* if (is_missing) { */
+  /*   header = kh_init(inthash); */
+  /*   k2 = kh_put(inthash, header, strdup(name)); */
+  /*   kh_value(header, k2) = column; */
+
+  /*   kh_key(ami->array_header, k) = strdup(arrayname); */
+  /*   kh_value(ami->array_header, k) = header; */
+  /* } else { */
+  /*   header = kv_value(ami->array_header, k); */
+  /*   k2 = kh_get(voidptrhash, header, name); */
+  /*   int header_missing = (k2 == kh_end(header)); */
+  /*   if (header_missing) { */
+  /*     k2 = kh_put(inthash, header, strdup(name)); */
+  /*     kh_value(header, k2) = column; */
+  /*   } else { */
+  /*     kh_value(header, k2) = column;       */
+  /*   } */
+  /* } */
+}
+
+
+int ami_array_get_header_pos(ami_t *ami, char *arrayname, char *name)
+{
+  khint_t k;
+
+  khash_t(inthash) *header = ami_array_get_header(ami, arrayname);
+  if (header) {
+    k = kh_get(inthash, header, name);
+    int is_missing = (k == kh_end(header));
+    if (is_missing) return -1;
+    int retval = kh_value(header, k);
+    return retval;
+  } else {
+    fprintf(stderr, "Error, no such array '%s'!\n", arrayname);
+    return -1;
+  }
+  
+  return -1;
+}
+
+void ami_array_set_value(ami_t *ami, char *arrayname, int line, int column, char *value)
+{
+  ami_kvec_t values_stack;
+  kv_init(ami->values_stack); 
+
+}
+
+char *ami_array_get_value(ami_t *ami, char *arrayname, int line, int column)
+{
+
+}
+
 
 void ami_global_counter_incr(ami_t *ami) {
   ami->global_counter++;
@@ -237,26 +340,119 @@ int ami_set_open_file(ami_t *ami, const char *filename, FILE *fp) {
   return 0;
 }
 
-char *ami_get_membuf(ami_t *ami, const char *bufname)
+int ami_get_lengthfields(ami_t *ami, const char *bufname)
 {
   khint_t k;
   
-  k = kh_get(strhash, ami->membuf, bufname);
-  int is_missing = (k == kh_end(ami->membuf));
-  if (is_missing) return NULL;
-  char *retval = kh_value(ami->membuf, k);
+  k = kh_get(inthash, ami->length_fields, bufname);
+  int is_missing = (k == kh_end(ami->length_fields));
+  if (is_missing) return -1;
+  int retval = kh_value(ami->length_fields, k);
   
   return retval;
 }
 
-int ami_set_membuf(ami_t *ami, const char *bufname, char *buffer) {
+int ami_set_lengthfields(ami_t *ami, const char *bufname, int length) {
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->length_fields) return 1;  
+
+  k = kh_put(inthash, ami->length_fields, bufname, &absent);
+  if (absent) {
+    kh_key(ami->length_fields, k) = strdup(bufname);
+    kh_value(ami->length_fields, k) = length;
+  } else {
+    kh_value(ami->length_fields, k) = length;
+    return 1;
+  }
+  
+  return 0;
+}
+
+int ami_get_totallines(ami_t *ami, const char *bufname)
+{
+  khint_t k;
+  
+  k = kh_get(inthash, ami->total_lines, bufname);
+  int is_missing = (k == kh_end(ami->total_lines));
+  if (is_missing) return -1;
+  int retval = kh_value(ami->total_lines, k);
+  
+  return retval;
+}
+
+int ami_set_totallines(ami_t *ami, const char *bufname, int length) {
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->total_lines) return 1;  
+
+  k = kh_put(inthash, ami->total_lines, bufname, &absent);
+  if (absent) {
+    kh_key(ami->total_lines, k) = strdup(bufname);
+    kh_value(ami->total_lines, k) = length;
+  } else {
+    kh_value(ami->total_lines, k) = length;
+    return 1;
+  }
+  
+  return 0;
+}
+
+int ami_get_totalfields(ami_t *ami, const char *bufname)
+{
+  khint_t k;
+  
+  k = kh_get(inthash, ami->total_fields, bufname);
+  int is_missing = (k == kh_end(ami->total_fields));
+  if (is_missing) return -1;
+  int retval = kh_value(ami->total_fields, k);
+  
+  return retval;
+}
+
+int ami_set_totalfields(ami_t *ami, const char *bufname, int length) {
+  int absent;
+  khint_t k;
+  
+  if (!ami) return 1;
+  if (!ami->total_fields) return 1;  
+
+  k = kh_put(inthash, ami->total_fields, bufname, &absent);
+  if (absent) {
+    kh_key(ami->total_fields, k) = strdup(bufname);
+    kh_value(ami->total_fields, k) = length;
+  } else {
+    kh_value(ami->total_fields, k) = length;
+    return 1;
+  }
+  
+  return 0;
+}
+
+char **ami_get_membuf(ami_t *ami, const char *bufname)
+{
+  khint_t k;
+  
+  k = kh_get(charpphash, ami->membuf, bufname);
+  int is_missing = (k == kh_end(ami->membuf));
+  if (is_missing) return NULL;
+  char **retval = kh_value(ami->membuf, k);
+  
+  return retval;
+}
+
+int ami_set_membuf(ami_t *ami, const char *bufname, char **buffer) {
   int absent;
   khint_t k;
   
   if (!ami) return 1;
   if (!ami->membuf) return 1;  
 
-  k = kh_put(strhash, ami->membuf, bufname, &absent);
+  k = kh_put(charpphash, ami->membuf, bufname, &absent);
   if (absent) {
     kh_key(ami->membuf, k) = strdup(bufname);
     kh_value(ami->membuf, k) = buffer;

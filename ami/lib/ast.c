@@ -468,7 +468,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	mask = strtok(NULL, "\0");
 	if (!mask) {
-	  fprintf(stderr, "Could not get mask from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
+	  fprintf(stderr, "[%s:%d] Could not get mask from %s\n", node->filename, node->lineno, kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
 	  exit(1);
 	}
 	mask_int = (int)strtod(mask, NULL);
