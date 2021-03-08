@@ -214,13 +214,14 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 			exit(1);
 			}
 	
-			char *varvar = NULL;
+			char *varvar;
 			int is_varvar = 0;
 
 			for (int i=1; i <= kv_size(ami->varvar_stack); i++) {
 				varvar = kv_A(ami->varvar_stack, kv_size(ami->varvar_stack)-i);
 				if (strcmp(varvar, tmp_str) == 0) {
 					is_varvar = 1;
+					free(varvar);
 					break;
 				}
 			}

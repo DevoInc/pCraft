@@ -21,22 +21,25 @@ AMI_VAR_STR
 [1] $multiple
 AMI_VAR_STR
 	[len:34] The local: local global: my global
-[2] $substituted
+[2] $string
+AMI_VAR_STR
+	[len:23] $this_is_not_a_variable
+[3] $substituted
 AMI_VAR_STR
 	[len:35] We add the global content:my global
-[3] $local
+[4] $local
 AMI_VAR_VARIABLE
 	[len:7] $global
-[4] $repeatvar
+[5] $repeatvar
 AMI_VAR_STR
 	[len:6] repeat
-[5] $reallocal
+[6] $reallocal
 AMI_VAR_STR
 	[len:5] local
-[6] $global
+[7] $global
 AMI_VAR_STR
 	[len:9] my global
-[7] $index
+[8] $index
 AMI_VAR_INT
 	2
 
