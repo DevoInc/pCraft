@@ -396,7 +396,7 @@ closesection: CLOSESECTION {
   
   ami->_opened_sections--;
   if (ami->_opened_sections < 0) {
-    ami_yyerror(scanner, NULL, "Section closed was never opened\n");
+    ami_yyerror(scanner, ami, "Section closed was never opened\n");
     exit(1);
   }
   
