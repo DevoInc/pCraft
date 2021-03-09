@@ -133,6 +133,17 @@ Ami is the language defined to help generating data correctly. It offers a way t
 
 \subsection{Time}
 
+Timing is generated at the time the program is being run. So if it is Feb 23rd 2021 10:13pm UTC (1614118380 in epoch), the packets and logs will be written at this exact date and time... unless defined otherwise.
+
+One way to define this is to add ``start\_time'' in the AMI file header.
+
+\begin{lstlisting}[caption={Setting start time},captionpos=b]
+  av 1
+  start_time 1614118380
+\end{lstlisting}
+
+
+
 \subsection{Loops}
 
 
