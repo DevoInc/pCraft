@@ -76,6 +76,12 @@ Available Plugins
 The Plugins documentation is generated from themselves: [Plugins Documentation][plugins]
 
 
+List of Similar Projects
+------------------------
+
+[https://tshark.dev/packetcraft/scripting/scripted_gen/](https://tshark.dev/packetcraft/scripting/scripted_gen/)
+
+
 [scenario]: doc/scenario.md
 [plugins]: doc/plugins.md
 [ami]: ami/doc/ami-guide.txt
