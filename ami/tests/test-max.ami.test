@@ -67,13 +67,10 @@ action want
 AMI_VAR_STR
 	[len:10] mylocalvar
 [3] $localfromglobal
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:10] $globalvar
-[4] $__amifile__
-AMI_VAR_STR
-	[len:21] ../tests/test-max.ami
-[5] $fromanotherlocal
-AMI_VAR_STR
+[4] $fromanotherlocal
+AMI_VAR_VARIABLE
 	[len:9] $localvar
 [6] $myvar
 AMI_VAR_INT

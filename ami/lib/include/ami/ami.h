@@ -85,6 +85,7 @@ struct _ami_t {
   int current_repeat_block;
   size_t global_counter;
   khash_t(fphash) *open_files;
+  ami_kvec_t varvar_stack;
   khash_t(charpphash) *membuf;
   khash_t(inthash) *total_fields;
   khash_t(inthash) *total_lines;
