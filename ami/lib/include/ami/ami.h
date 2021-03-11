@@ -24,6 +24,9 @@ extern "C" {
 KHASH_MAP_INIT_STR(strhash, char *)
 KHASH_MAP_INIT_STR(floathash, float)
 KHASH_MAP_INIT_STR(fphash, FILE *)
+KHASH_MAP_INIT_STR(voidptrhash, void *)
+KHASH_MAP_INIT_STR(inthash, int)
+KHASH_MAP_INIT_STR(charpphash, char **)
 
 struct _ami_kvec_t {
   size_t n;
@@ -83,6 +86,12 @@ struct _ami_t {
   size_t global_counter;
   khash_t(fphash) *open_files;
   ami_kvec_t varvar_stack;
+  khash_t(charpphash) *membuf;
+  khash_t(inthash) *total_fields;
+  khash_t(inthash) *total_lines;
+  khash_t(inthash) *length_fields;
+  khash_t(voidptrhash) *array_header;
+  khash_t(voidptrhash) *array;
 };
 typedef struct _ami_t ami_t;
 
@@ -100,6 +109,7 @@ void ami_debug(ami_t *ami);
 int ami_erase_variable(ami_t *ami, char *varkey);  
 int ami_variable_exists(ami_t *ami, const char *key);
 int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var);
+int ami_set_variable_string(ami_t *ami, const char *key, char *strval);
 int ami_replace_variable(ami_t *ami, const char *key, ami_variable_t *var);
 ami_variable_t *ami_get_variable(ami_t *ami, const char *key);
 ami_variable_t *ami_fetch_variable(ami_t *ami, const char *key);  
@@ -114,6 +124,19 @@ int ami_append_sleep_cursor(ami_t *ami, const char *group, float cursor);
 float ami_get_new_sleep_cursor(ami_t *ami, const char *group);
 FILE *ami_get_open_file(ami_t *ami, const char *filename);
 int ami_set_open_file(ami_t *ami, const char *filename, FILE *fp);
+int ami_get_lengthfields(ami_t *ami, const char *bufname);
+int ami_set_lengthfields(ami_t *ami, const char *bufname, int length);
+int ami_get_totallines(ami_t *ami, const char *bufname);
+int ami_set_totallines(ami_t *ami, const char *bufname, int length);
+int ami_get_totalfields(ami_t *ami, const char *bufname);
+int ami_set_totalfields(ami_t *ami, const char *bufname, int length);
+char **ami_get_membuf(ami_t *ami, const char *bufname);
+int ami_set_membuf(ami_t *ami, const char *bufname, char **buffer);
+void ami_array_set_header(ami_t *ami, char *arrayname, int column, char *name);
+int ami_array_get_header_pos(ami_t *ami, char *arrayname, char *name);
+void ami_array_set_value(ami_t *ami, char *arrayname, int line, int column, char *value);
+char *ami_array_get_value(ami_t *ami, char *arrayname, int line, int column);
+
   
 #ifdef __cplusplus
 }

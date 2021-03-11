@@ -37,3 +37,7 @@ add_test(API_Variables apivars)
 add_executable(sleepcursor sleepcursor.c)
 target_link_libraries(sleepcursor ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
 add_test(Sleep_Cursor sleepcursor)
+
+add_executable(csvarray csvarray.c)
+target_link_libraries(csvarray ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
+add_test(CSVarray csvarray)

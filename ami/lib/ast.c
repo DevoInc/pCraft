@@ -100,10 +100,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   
   urandom = fopen("/dev/urandom", "r");
  
-  
   for (n = node; n; n = n->next) {
 
     ami_global_counter_incr(ami); // used for better random numbers
+    ami_set_variable_string(ami, "$__amifile__", n->filename);
+
     
     if ((n->strval) && (!n->is_verbatim)) {
       if ((n->type == AMI_NT_VARVALSTR) || (n->type == AMI_NT_MESSAGE)) {
@@ -152,12 +153,13 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       /* ami->current_repeat_block++; */
       tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
       index = (int)strtod(tmp_str, NULL);
-      
+      if (ami->skip_repeat) {
+	index = 1;
+      }
       tmp_var = ami_variable_new();
       for (size_t i = 1; i <= index; i++) {
 	ami_variable_set_int(tmp_var, i);
 	ami_set_variable(ami, n->strval, tmp_var);
-	
 	walk_node(ami, n->next, i, 1);
       }
       break;
@@ -447,9 +449,17 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 					       0x80ffffff, 0xc0ffffff, 0xe0ffffff, 0xf0ffffff, 0xf8ffffff,
 					       0xfcffffff, 0xfeffffff, 0xffffffff};
 	char *ipaddr_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
-	char *ipnum_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);	
+	char *ipnum_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	ami_variable_t *ipaddr_v = ami_get_variable(ami, ipaddr_s);
+	if (!ipaddr_v) {
+	  fprintf(stderr, "%s:%d No such variable %s\n", n->filename, n->lineno, ipaddr_s);
+	  exit(1);
+	}
 	ami_variable_t *ipnum_v = ami_get_variable(ami, ipnum_s);
+	if (!ipaddr_v) {
+	  fprintf(stderr, "%s:%d No such variable %s\n", n->filename, n->lineno, ipnum_s);
+	  exit(1);
+	}
 	char *ipaddr = ami_variable_to_string(ipaddr_v);
 	int ipn = 1;
 	if (ipnum_v) {
@@ -481,7 +491,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	mask = strtok(NULL, "\0");
 	if (!mask) {
-	  fprintf(stderr, "Could not get mask from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
+	  fprintf(stderr, "[%s:%d] Could not get mask from %s\n", node->filename, node->lineno, kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
 	  exit(1);
 	}
 	mask_int = (int)strtod(mask, NULL);
@@ -878,7 +888,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	kv_push(char *, ami->values_stack, "replace");// So we know we have a replace to perform
 	/* printf("We are going to REPLACE!\n"); */
       } else {
-      	fprintf(stderr, "Unhandled function:[%s]\n", n->strval);
+	fprintf(stderr, "[%s:%d] Unhandled function:[%s]\n", n->filename, n->lineno, n->strval);
 	kv_push(char *, ami->values_stack, n->strval);
       }
       varpos = 0;
@@ -955,9 +965,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     } // switch(n->type)
 
     if (n->right) {
-      if (!ami->skip_repeat) {
 	walk_node(ami, n->right, -1, 1);
-      }
     }
   } // For loop
 

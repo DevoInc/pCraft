@@ -29,6 +29,13 @@ logplugin_action_map = { "DNSConnection": ["named"],
                          "HTTPConnection": ["bluecoat-proxysg-main", "zscaler-access"]                         
 }
 
+# action_category_map = { "DNSConnection": "network",
+#                         "HTTPConnection": "network",
+#                         "Controller": "endpoint",
+# }
+
+network_plugins = ["netflow", "paloalto-firewall"]
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("Syntax: %s ccraft.db output_directory [-fv]" % sys.argv[0])
@@ -48,20 +55,32 @@ if __name__ == "__main__":
         # {'time': 1614504320, 'exec': 'Void', 'variables': {'$domain': 'haute-voltige.io', '$index': '1', '$var': '1234'}, 'fset': {'myfield': 'abcd'}, 'freplace': {}}
         kvdict = event["fset"]        
         
-        if event["action"] == "Controller":
+        if event["exec"] == "Controller":
             plugin_name = []
             plugin_name.append(event["variables"]["$log_plugin"])
             for plugin in plugin_name:
-                if "-v" in sys.argv:
-                    writer.loaded_plugins[plugin].validate_keys(kvdict)
+                if plugin in writer.loaded_plugins:
+                    if "-v" in sys.argv:
+                        writer.loaded_plugins[plugin].validate_keys(kvdict)
 
-                writer.loaded_plugins[plugin].run_ccraft(event, kvdict)
+                    writer.loaded_plugins[plugin].run_ccraft(event, kvdict)
+                else:
+                    print("No such plugin %s for action %s" % (plugin, event["action"]))
         else:
-            plugin_name = logplugin_action_map[event["exec"]]            
+            try:
+                plugin_name = logplugin_action_map[event["exec"]]
+                for net in network_plugins:
+                    plugin_name.append(net)
+            except KeyError:
+                print("No such plugin %s for action %s" % (event["exec"], event["action"]))
             for plugin in plugin_name:
-                if "-v" in sys.argv:
-                    writer.loaded_plugins[plugin].validate_keys(event["variables"])
+                if plugin in writer.loaded_plugins:
+                    if "-v" in sys.argv:
+                        writer.loaded_plugins[plugin].validate_keys(event["variables"])
 
-                writer.loaded_plugins[plugin].run_ccraft(event, event["variables"])
+                    writer.loaded_plugins[plugin].run_ccraft(event, event["variables"])
+                else:
+                    print("No such plugin %s for action %s" % (plugin, event["action"]))
+                    
         
     reader.close()

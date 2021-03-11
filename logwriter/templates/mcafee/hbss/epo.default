@@ -1,0 +1,13 @@
+key,default_value
+analyzer,BEG007
+mcafee_dat_version,
+mcafee_analyzer_version,
+event_id,1119
+severity,1
+analyzer_detection_method,
+mcafee_threat_name,_
+mcafee_threat_type,
+mcafee_threat_category,ops.update.end
+mcafee_threat_action,none
+mcafee_threat_severity,4
+

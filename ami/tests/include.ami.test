@@ -9,4 +9,7 @@ ami_version 1
 * Field Actions:
 +++++++
 * Global Variables:
+[0] $__amifile__
+AMI_VAR_STR
+	[len:19] ../tests/second.sal
 

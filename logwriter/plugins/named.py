@@ -55,7 +55,7 @@ class LogPlugin(LogContext):
         try:
             variables["src_port_number"] = kvdict["$port-src"]
         except:
-            pass
+            variables["src_port_number"] = random.randint(4096, 65534)
 
         try:
             variables["dns_query_name"] = kvdict["$domain"]
@@ -76,6 +76,12 @@ class LogPlugin(LogContext):
         event = frame_time.strftime(event)
         
         return event
+
+    def is_request(self, packet):
+        if packet.dns.flags == "0x00000100":
+            return True
+
+        return False
     
     def run(self, cap, packet, pktid, layer):
         # fields = layer.field_names

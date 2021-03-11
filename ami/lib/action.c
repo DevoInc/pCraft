@@ -16,6 +16,7 @@ ami_action_t *ami_action_new()
     return NULL;
   }
 
+  action->filename = NULL;
   action->name = NULL;
   action->exec = NULL;
   kv_init(action->replace_key);
@@ -27,6 +28,12 @@ ami_action_t *ami_action_new()
   action->sleep = 0;
   
   return action;
+}
+
+void ami_action_set_filename(ami_t *ami, ami_action_t *action, char *filename)
+{
+  action->filename = filename;
+  ami_set_variable_string(ami, "$__amifile__", ami->file);
 }
 
 char *ami_action_get_name(ami_action_t *action)

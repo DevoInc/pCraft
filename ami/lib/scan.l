@@ -160,6 +160,7 @@ TRUE true
 FALSE false
 GROUP group
 FROMGROUP fromgroup
+SKIPREPEAT skip_repeat
 
 %%
 
@@ -239,6 +240,8 @@ FROMGROUP fromgroup
 		includes[includes_index++] = YY_CURRENT_BUFFER;
 
 		realfile = strdup(filename);
+                // The includedfile is realfile
+                ami->file = strdup(filename);
 
 		yyin = fopen(realfile, "r");
 		if (!yyin) {
@@ -266,7 +269,7 @@ FROMGROUP fromgroup
 		}
 
 
-
+{SKIPREPEAT} { return TOK_SKIPREPEAT; }
 {FROMGROUP} { return TOK_FROMGROUP; }
 {GROUP} { return TOK_GROUP; }
 {SLEEP} { return TOK_SLEEP; }

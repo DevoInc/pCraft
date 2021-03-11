@@ -89,5 +89,6 @@ class LogPlugin(LogContext):
         return event
 
     def run(self, cap, packet, pktid, layer):
+        return # disabling for now
         self.log_fp.write(self.template_to_log(packet))
         

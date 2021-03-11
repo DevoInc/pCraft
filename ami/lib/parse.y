@@ -21,6 +21,8 @@ typedef void *yyscan_t;
   void ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...);
   int get_lineno(yyscan_t scanner);
 
+  static char *current_file = NULL;
+
 }
 
 %code top
@@ -206,7 +208,7 @@ reference: REFERENCE string {
     printf("[parse.y](reference: REFERENCE STRING):%s\n", $2);
   }  
   /* kv_push(char *, ami->references, ref); */
-  ami_node_create(&ami->root_node, get_lineno(scanner), AMI_NT_REFERENCE, $2, 0, 0, 0);
+  ami_node_create(ami, &ami->root_node, get_lineno(scanner), AMI_NT_REFERENCE, $2, 0, 0, 0);
   
   free($2);
 }
@@ -216,7 +218,7 @@ tag: TAG string {
   if (ami->debug) {
     printf("[parse.y](tag: TAG STRING):%s\n", $2);
   }
-  ami_node_create(&ami->root_node, get_lineno(scanner), AMI_NT_TAG, $2, 0, 0, 0);
+  ami_node_create(ami, &ami->root_node, get_lineno(scanner), AMI_NT_TAG, $2, 0, 0, 0);
 
   free($2);
 }
@@ -245,7 +247,7 @@ variable: GVARIABLE EQUAL varset {
     printf("[parse.y] variable: GVARIABLE(%s) EQUAL varset\n", $1);
   }
 
-   /* ami_node_create(&ami->root_node, AMI_NT_VARNAME, $1, 0); */
+   /* ami_node_create(ami, &ami->root_node, AMI_NT_VARNAME, $1, 0); */
   ami_append_item(ami, get_lineno(scanner), AMI_NT_VARNAME, $1, 0, 0, 0);
   
   free($1);
@@ -394,7 +396,7 @@ closesection: CLOSESECTION {
   
   ami->_opened_sections--;
   if (ami->_opened_sections < 0) {
-    ami_yyerror(scanner, NULL, "Section closed was never opened\n");
+    ami_yyerror(scanner, ami, "Section closed was never opened\n");
     exit(1);
   }
   
@@ -410,7 +412,7 @@ action: ACTION WORD OPENSECTION {
   ami->_action_block_id = ami->_opened_sections;
 
   ami_append_item(ami, get_lineno(scanner), AMI_NT_ACTION, $2, 0, 0, 0);
-  /* ami_node_create(&ami->root_node, AMI_NT_ACTION, $2, 0); */
+  /* ami_node_create(ami, &ami->root_node, AMI_NT_ACTION, $2, 0); */
   
   free($2);
 }
@@ -718,7 +720,11 @@ ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...)
 {
   (void) scanner;
 
-  fprintf(stderr, "AMI Syntax error with line %d or just above: ", ami_yyget_lineno());
+  if (ami) {
+    fprintf(stderr, "AMI Syntax error at %s:%d or just above: ", ami->file, ami_yyget_lineno());
+  } else {
+    fprintf(stderr, "AMI Syntax error line %d: ",  ami_yyget_lineno());
+  }
   
   va_list args;
   va_start(args, msg);

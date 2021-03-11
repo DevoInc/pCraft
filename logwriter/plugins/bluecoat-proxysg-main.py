@@ -72,8 +72,14 @@ class LogPlugin(LogContext):
         except:
             category = "Unclassified"            
         variables["url_category"] = category
+
+        event_name = "main"
+        try:
+            event_name = variables["event_name"]
+        except:
+            pass
         
-        event = self.retrieve_template("bluecoat.proxysg", "main", variables)        
+        event = self.retrieve_template("bluecoat.proxysg", event_name, variables)        
         event = frame_time.strftime(event)
 
         return event
@@ -150,8 +156,14 @@ class LogPlugin(LogContext):
         except:
             category = "Unclassified"            
         variables["url_category"] = category
-        
-        event = self.retrieve_template("bluecoat.proxysg", "main", variables)        
+
+
+        event_name = "main"
+        try:
+            event_name = variables["event_name"]
+        except:
+            pass        
+        event = self.retrieve_template("bluecoat.proxysg", event_name, variables)        
         event = frame_time.strftime(event)
 
         return event

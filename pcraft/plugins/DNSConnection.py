@@ -1,3 +1,5 @@
+import random
+
 from scapy.all import Ether, IP, UDP, DNS, DNSQR, DNSRR
 from pcraft.PluginsContext import PluginsContext
 from . import _utils as utils
@@ -44,11 +46,13 @@ dnsconnect:
         self.set_value_or_default(action, "ip-src", self.random_client_ip.get())
         self.set_value_or_default(action, "ip-dst", self.random_server_ip.get())
         self.set_value_or_default(action, "resolver", "1.1.1.1")
-        # self.set_value_or_default(action, "domain", "example.com") # Default is never applied since it is a requirement
+        self.set_value_or_default(action, "port-src", str(random.randint(4096, 65534))) 
+        self.set_value_or_default(action, "port-dst", "53")
+       # self.set_value_or_default(action, "domain", "example.com") # Default is never applied since it is a requirement
 
-        query = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("resolver")) / UDP(sport=4096,dport=53)/DNS(rd=1, qd=DNSQR(qname=self.getvar("domain")))
+        query = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("resolver")) / UDP(sport=int(self.getvar("port-src")),dport=int(self.getvar("port-dst")))/DNS(rd=1, qd=DNSQR(qname=self.getvar("domain")))
         self.plugins_data.AddPacket(action, query)
-        resp = Ether() / IP(dst=self.getvar("ip-src"),src=self.getvar("resolver")) / UDP(sport=53,dport=4096)/DNS(id=query[DNS].id, qr=1, qd=query[DNS].qd, an=DNSRR(rrname=query[DNS].qd.qname, rdata=self.getvar("ip-dst")))
+        resp = Ether() / IP(dst=self.getvar("ip-src"),src=self.getvar("resolver")) / UDP(sport=int(self.getvar("port-dst")),dport=int(self.getvar("port-src")))/DNS(id=query[DNS].id, qr=1, qd=query[DNS].qd, an=DNSRR(rrname=query[DNS].qd.qname, rdata=self.getvar("ip-dst")))
         self.plugins_data.AddPacket(action, resp)
 
         return self.plugins_data
