@@ -36,9 +36,15 @@ importphishing:
     def __init__(self, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
         self.last_packet_time = 0
+        self.reset_time()
+
+    def reset_time(self):
+        self.last_packet_time = 0
         self.sleep_cursor = 0.0
         
     def run(self, ami, action):
+        self.reset_time()
+
         amifile = ami.GetFilePath()
         amipath = os.path.dirname(os.path.realpath(amifile))
         pcap_in = os.path.join(amipath, action.Variables()["$filename"])

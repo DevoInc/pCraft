@@ -15,7 +15,8 @@ class PluginsData(object):
         else:
             self.packet_time = self.current_time - self.ami.GetSleepCursor()
 
-        self.outpcap = PcapWriter(pcapout, append=True, sync=True)
+        self.outpcap = PcapWriter(pcapout, append=True, sync=True)        
+        self.outpcap_endpoint = PcapWriter("endpoint_" + pcapout, append=True, sync=True)
         self.packets_counter = 0
         self.writing_errors = 0
         
@@ -32,7 +33,22 @@ class PluginsData(object):
         except:
             self.writing_errors += 1
 #        self.pcap.append(pkt)
+
+    def AddEndpointPacket(self, action, pkt):
+        self.packets_counter += 1
+
+        # print("Packet Time:%d" % int(self.packet_time))
+        # print("Action Sleep Cursor:%d" % int(action.GetSleepCursor()))
         
+        pkt.time = self.packet_time + action.GetSleepCursor()
+        
+        try:
+            self.outpcap_endpoint.write(pkt)
+        except:
+            self.writing_errors += 1
+#        self.pcap.append(pkt)
+
+
     def _set(self, key, value):
         self.args[key] = value
 
