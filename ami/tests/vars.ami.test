@@ -21,14 +21,14 @@ AMI_VAR_STR
 [1] $multiple
 AMI_VAR_STR
 	[len:34] The local: local global: my global
-[2] $__amifile__
+[2] $string
 AMI_VAR_STR
-	[len:17] ../tests/vars.ami
+	[len:23] $this_is_not_a_variable
 [3] $substituted
 AMI_VAR_STR
 	[len:35] We add the global content:my global
 [4] $local
-AMI_VAR_STR
+AMI_VAR_VARIABLE
 	[len:7] $global
 [5] $repeatvar
 AMI_VAR_STR

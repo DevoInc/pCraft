@@ -34,18 +34,21 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata
   if (pami->_ami->variables) {
     for (k = 0; k < kh_end(pami->_ami->variables); ++k) {
       if (kh_exist(pami->_ami->variables, k)) {
-	const char *key = kh_key(pami->_ami->variables, k);
-	ami_variable_t *var = (ami_variable_t *)kh_value(pami->_ami->variables, k);
-	switch(var->type) {
-	case AMI_VAR_STR:
-	  action->variables[key] = ami_get_nested_variable_as_str(pami->_ami, NULL, var->strval);
-	  break;
-	case AMI_VAR_INT:
-	  char *tmpstr;
-	  asprintf(&tmpstr, "%d", var->ival);
-	  action->variables[key] = tmpstr;
-	  break;
-	}
+	      const char *key = kh_key(pami->_ami->variables, k);
+	      ami_variable_t *var = (ami_variable_t *)kh_value(pami->_ami->variables, k);
+	      switch(var->type) {
+	        case AMI_VAR_STR:
+            action->variables[key] = var->strval;
+            break;
+          case AMI_VAR_VARIABLE:
+	          action->variables[key] = ami_get_nested_variable_as_str(pami->_ami, NULL, var->strval);
+	          break;
+	        case AMI_VAR_INT:
+            char *tmpstr;
+            asprintf(&tmpstr, "%d", var->ival);
+            action->variables[key] = tmpstr;
+            break;
+	      }
       }
     }
   }
