@@ -118,8 +118,8 @@ class LogPlugin(LogContext):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
         generate_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)) - 8)
 
-        bytessent = random.int(256, 83942)
-        bytesreceived = random.int(10, 1204323)
+        bytessent = random.randint(256, 83942)
+        bytesreceived = random.randint(10, 1204323)
         
         kvdict = {
             "Session_ID": random.randint(124, 950432),
