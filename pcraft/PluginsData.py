@@ -22,6 +22,9 @@ class PluginsData(object):
     def AddPacket(self, action, pkt):
         self.packets_counter += 1
 
+        print("Packet Time:%d" % int(self.packet_time))
+        print("Action Sleep Cursor:%d" % int(action.GetSleepCursor()))
+        
         pkt.time = self.packet_time + action.GetSleepCursor()
         
         try:

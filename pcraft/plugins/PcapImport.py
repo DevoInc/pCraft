@@ -35,6 +35,8 @@ importphishing:
         
     def __init__(self, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
+        self.last_packet_time = 0
+        self.sleep_cursor = 0.0
         
     def run(self, ami, action):
         amifile = ami.GetFilePath()
@@ -57,7 +59,19 @@ importphishing:
         last_packet = None
         seq = 0
         for packet in packets:
-            packet.time = time.time()
+            packet_time = int(packet.time)
+            sleep_delta = 0
+            
+            if packet_time > self.last_packet_time:
+                # print("%s > %s" % (packet_time, self.last_packet_time))
+                if self.last_packet_time != 0:
+                    sleep_delta = packet_time - self.last_packet_time
+                self.last_packet_time = packet_time
+
+            self.sleep_cursor += float(sleep_delta)
+            # print("New sleep cursor:%f" % new_sleep_cursor)
+            action.SetSleepCursor(self.sleep_cursor)
+                
             if CookedLinux in packet:
                 packet = Ether() / packet.payload
                         

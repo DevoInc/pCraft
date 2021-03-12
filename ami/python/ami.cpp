@@ -150,6 +150,6 @@ PYBIND11_MODULE(pyami, m) {
       .def("Name", &Action::get_name)
       .def("Exec", &Action::get_exec)
       .def("GetRepeatIndex", &Action::GetRepeatIndex)
-      .def("GetSleepCursor", &Action::GetSleepCursor);
-
+      .def("GetSleepCursor", &Action::GetSleepCursor)
+      .def("SetSleepCursor", &Action::SetSleepCursor);
 }

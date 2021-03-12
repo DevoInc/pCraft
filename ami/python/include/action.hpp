@@ -19,6 +19,7 @@ public:
   std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> field_actions;
   std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> get_field_actions(void) { return field_actions; };
   float GetSleepCursor(void) { return sleep_cursor; };
+  void SetSleepCursor(float new_sleep_cursor) { sleep_cursor = new_sleep_cursor;};
   float sleep_cursor;
   size_t GetRepeatIndex(void) { return repeat_index; };
   size_t repeat_index;
