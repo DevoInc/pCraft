@@ -117,8 +117,12 @@ class LogPlugin(LogContext):
         
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
         generate_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)) - 8)
+
+        bytessent = random.int(256, 83942)
+        bytesreceived = random.int(10, 1204323)
         
         kvdict = {
+            "Session_ID": random.randint(124, 950432),
             "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Threat/Content_Type": self.get_threat_type(),
             "Generate_Time": generate_time.strftime("%Y/%m/%d %H:%M:%S"),
@@ -131,9 +135,12 @@ class LogPlugin(LogContext):
             "URL/Filename": self.get_url_filename(packet),
             "Direction": self.get_direction(packet),
             "Sequence_Number": self.get_seqid(packet),
-            "Source_Country": self.get_country_from_ip(packet.ip.src),
-            "Destination_Country": self.get_country_from_ip(packet.ip.dst),
-            "url_idx": random.randint(1, 99),                        
+            "Source_Location": self.get_country_from_ip(packet.ip.src),
+            "Destination_Location": self.get_country_from_ip(packet.ip.dst),
+            "url_idx": random.randint(1, 99),
+            "Bytes": bytessent + bytesreceived,
+            "Bytes_Sent": bytessent,
+            "Bytes_Received": bytesreceived,
         }
         self.session_id += 1
 
