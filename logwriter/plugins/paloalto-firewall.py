@@ -110,7 +110,7 @@ class LogPlugin(LogContext):
 
     def execute(self, cap, packet, pktid, layer):
         if self.first:
-            header = self.retrieve_template_header("paloalto.firewall", "traffic")
+            header = self.retrieve_template_header("paloalto.firewall.traffic", "9")
             if header:
                 self.log_fp.write(header)
                 self.first = False
@@ -144,7 +144,7 @@ class LogPlugin(LogContext):
         }
         self.session_id += 1
 
-        event = self.retrieve_template("paloalto.firewall", "traffic", kvdict)
+        event = self.retrieve_template("paloalto.firewall.traffic", "9", kvdict)
         event = frame_time.strftime(event)
         
         self.log_fp.write(event)
@@ -158,7 +158,7 @@ class LogPlugin(LogContext):
 
     def run_ccraft(self, event, kvdict):
         if self.first:
-            header = self.retrieve_template_header("paloalto.firewall", "traffic")
+            header = self.retrieve_template_header("paloalto.firewall.traffic", "9")
             if header:
                 self.log_fp.write(header)
                 self.first = False
