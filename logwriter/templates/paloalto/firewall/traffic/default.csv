@@ -4,7 +4,7 @@ Domain,0
 Receive_Time,2021-02-23T22:13:00
 Serial_Number,429304
 Type,TRAFFIC
-Threat/Content_Type,start
+Threat/Content_Type,end
 Generated_Time,2021-02-23T22:13:00
 Source_Address,192.168.204.2
 Destination_Address,216.105.38.15
