@@ -60,10 +60,14 @@ class LogPlugin(LogContext):
 
     def get_threat_type(self):
         number = random.randint(0, 10)
-        if number <= 9:
-            return "spyware"
-        else:
-            return "vulnerability"
+        if number <= 7:
+            return "end"
+        else if number == 8:
+            return "deny"
+        else if number == 9:
+            return "drop"
+        else if number == 10:
+            return "start"
 
     def get_dstport(self, packet):
         if hasattr(packet, 'tcp'):
