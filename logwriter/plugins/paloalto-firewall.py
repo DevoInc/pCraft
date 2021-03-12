@@ -1,3 +1,4 @@
+# Reference: https://docs.paloaltonetworks.com/pan-os/9-1/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/traffic-log-fields.html
 from IPy import IP
 import random
 from datetime import datetime
@@ -6,6 +7,29 @@ import geoip2.database
 import os
 
 from logwriter.LogContext import LogContext
+
+
+flags_mapping = { "0x80000000": "session has a packet capture (PCAP)",
+                  "0x40000000": "option is enabled to allow a client to use multiple paths to connect to a destination host",
+                  "0x20000000": "file is submitted to WildFire for a verdict",
+                  "0x10000000": "enterprise credential submission by end user detected",
+                  "0x08000000": "source for the flow is an allow list and not subject to recon protection",
+                  "0x02000000": "IPv6 session",
+                  "0x01000000": "SSL session is decrypted (SSL Proxy)",
+                  "0x00800000": "session is denied via URL filtering",
+                  "0x00400000": "session has a NAT translation performed",
+                  "0x00200000": "user information for the session was captured through Captive Portal",
+                  "0x00100000": "application traffic is on a non-standard destination port",
+                  "0x00080000": "X-Forwarded-For value from a proxy is in the source user field",
+                  "0x00040000": "log corresponds to a transaction within a http proxy session (Proxy Transaction)",
+                  "0x00020000": "Client to Server flow is subject to policy based forwarding",
+                  "0x00010000": "Server to Client flow is subject to policy based forwarding",
+                  "0x00008000": "session is a container page access (Container Page)",
+                  "0x00002000": "session has a temporary match on a rule for implicit application dependency handling. Available in PAN-OS 5.0.0 and above.",
+                  "0x00000800": "symmetric return is used to forward traffic for this session",
+                  "0x00000400": "decrypted traffic is being sent out clear text through a mirror port",
+                  "0x00000100": "payload of the outer tunnel is being inspected"
+                 }
 
 class LogPlugin(LogContext):
     name = "paloalto_firewall"
@@ -180,7 +204,7 @@ class LogPlugin(LogContext):
         except:
             pass
 
-        print(str(event))
+        # print(str(event))
         
         variables["IP_Protocol"] = "tcp"
         if event["exec"] == "DNSConnection":
