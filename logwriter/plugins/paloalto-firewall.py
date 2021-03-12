@@ -58,7 +58,7 @@ class LogPlugin(LogContext):
             response = self.reader.country(ip)
             return response.country.names["en"]
         except:
-            return ip
+            return "Internal Networks"
 
     def get_threat_type(self):
         number = random.randint(0, 10)

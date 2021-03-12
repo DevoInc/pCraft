@@ -35,7 +35,7 @@ Bytes_Received,830
 Packets,5
 Start_Time,2021-02-23T22:13:00
 Elapsed_Time,22
-Category,unknown
+Category,any
 Sequence_Number,0
 Action_Flags,0xa000000000000000
 Source_Location,192.168.204.2
