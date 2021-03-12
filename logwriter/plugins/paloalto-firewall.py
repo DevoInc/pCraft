@@ -64,11 +64,11 @@ class LogPlugin(LogContext):
         number = random.randint(0, 10)
         if number <= 7:
             return "end"
-        else if number == 8:
+        elif number == 8:
             return "deny"
-        else if number == 9:
+        elif number == 9:
             return "drop"
-        else if number == 10:
+        elif number == 10:
             return "start"
 
     def get_dstport(self, packet):
@@ -172,7 +172,7 @@ class LogPlugin(LogContext):
         event_time = str(int(event["time"]))
         frame_time = datetime.fromtimestamp(int(event_time))
         variables = {
-            "Flags": random_flag[random.randint(0, len(random_flag)],
+            "Flags": random_flag[random.randint(0, len(random_flag))],
             "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Threat/Content_Type": self.get_threat_type(),
             "Generate_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
