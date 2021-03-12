@@ -31,6 +31,8 @@ flags_mapping = { "0x80000000": "session has a packet capture (PCAP)",
                   "0x00000100": "payload of the outer tunnel is being inspected"
                  }
 
+random_flag = ["0x80000000", "0x40000000", "0x20000000", "0x10000000", "0x08000000", "0x00008000", "0x00000400"]
+
 class LogPlugin(LogContext):
     name = "paloalto_firewall"
     active_layer = "ip"
@@ -170,6 +172,7 @@ class LogPlugin(LogContext):
         event_time = str(int(event["time"]))
         frame_time = datetime.fromtimestamp(int(event_time))
         variables = {
+            "Flags": random_flag[random.randint(0, len(random_flag)],
             "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Threat/Content_Type": self.get_threat_type(),
             "Generate_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
