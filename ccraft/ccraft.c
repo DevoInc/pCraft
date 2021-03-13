@@ -68,8 +68,11 @@ void foreach_action(ami_action_t *action, void *u1, void *u2, void *u3)
   	  ami_variable_t *var = (ami_variable_t *)kh_value(ami->variables, k);
   	  /* ami_variable_debug(var); */
   	  switch(var->type) {
-  	  case AMI_VAR_STR:
+	  case AMI_VAR_VARIABLE:
   	    tmpstr = ami_get_nested_variable_as_str(ami, NULL, var->strval);
+	    break;
+  	  case AMI_VAR_STR:
+  	    tmpstr = strdup(var->strval);
   	    break;
   	  case AMI_VAR_INT:
   	    asprintf(&tmpstr, "%d", var->ival);
