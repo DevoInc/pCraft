@@ -155,14 +155,18 @@ int main(int argc, char **argv)
   retval = ami_parse_file(ami, argv[1]);
 
   if (ami->start_time > 0) {
-    printf("Start Time: ");
-    t = gmtime((const time_t *)&ami->start_time);
-    printf("%d-%s", 1900 + t->tm_year, t->tm_mon+1 < 10 ? "0" : "");
-    printf("%d-%s%d ", t->tm_mon+1, t->tm_mday < 10 ? "0" : "",  t->tm_mday);
-    printf("%d:%d:%d\n", t->tm_hour, t->tm_min, t->tm_sec);
-    current_t = mktime(t);
-    current_t -= ami->sleep_cursor;
-    /* printf("current_t = %ld\n", current_t); */
+    time_t start_time = (int)ami->start_time;
+    t = gmtime((const time_t *)&start_time);
+    if (t) {
+      printf("Start Time: ");
+      printf("%d-%s", 1900 + t->tm_year, t->tm_mon+1 < 10 ? "0" : "");
+      printf("%d-%s%d ", t->tm_mon+1, t->tm_mday < 10 ? "0" : "",  t->tm_mday);
+      printf("%s%d:%s%d:%s%d\n", t->tm_hour < 10 ? "0": "", t->tm_hour, t->tm_min < 10 ? "0": "", t->tm_min, t->tm_sec < 10 ? "0" : "", t->tm_sec);
+      current_t = mktime(t);
+      current_t -= ami->sleep_cursor;
+    } else {
+      fprintf(stderr, "No time could be extracted!\n");
+    }
   } else {
     printf("Start Time: None\n");
     current_t = time(NULL);
