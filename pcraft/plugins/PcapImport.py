@@ -37,10 +37,11 @@ importphishing:
         super().__init__(app, session, plugins_data)
         self.last_packet_time = 0
         self.reset_time()
+        self.sleep_cursor = 0.0
 
     def reset_time(self):
         self.last_packet_time = 0
-        self.sleep_cursor = 0.0
+        # self.sleep_cursor = 0.0
         
     def run(self, ami, action):
         self.reset_time()
