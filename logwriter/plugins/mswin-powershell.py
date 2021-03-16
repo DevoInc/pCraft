@@ -1,6 +1,8 @@
 import random
 from datetime import datetime
 import uuid
+import sys
+import time
 
 from logwriter.LogContext import LogContext
 
@@ -25,6 +27,11 @@ class LogPlugin(LogContext):
             log_flavor = kvdict["log_flavor"]
         except:
             log_flavor = "logstash14"
+
+        try:
+            kvdict["agent_name"] = kvdict["agent_hostname"]
+        except:
+            pass
         
         event = self.retrieve_template("microsoft.windows.powershell.%s" % (log_flavor), kvdict["event_id"], kvdict)
         event = frame_time.strftime(event)

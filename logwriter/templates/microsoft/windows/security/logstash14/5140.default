@@ -1,5 +1,4 @@
 key,default_value
-@timestamp,"2019-03-19T00:02:04.226Z"
 @metadata_beat,"winlogbeat"
 @metadata_type,"_doc"
 @metadata_version,"7.9.3"
@@ -8,7 +7,6 @@ event_kind,"event"
 event_code,"5140"
 event_provider,"Microsoft-Windows-Security-Auditing"
 event_action,"File Share"
-event_created,"2021-01-21T07:11:58.190Z"
 host_name,"WIN-77LTAPHIQ1R.example.corp"
 log_file_path,"C:\\scratch\\attacks\\EVTX-ATTACK-SAMPLES\\Lateral Movement\\LM_ScheduledTask_ATSVC_target_host.evtx"
 log_level,"information"

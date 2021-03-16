@@ -8,6 +8,7 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/random.h>
 
 #include <sys/socket.h> 
 #include <netinet/in.h>
@@ -97,6 +98,10 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   FILE *urandom;
   unsigned int seed;
   size_t seedret;
+
+  ssize_t retrand;
+  
+  retrand = getrandom(&seed, sizeof(unsigned int), GRND_NONBLOCK);
   
   urandom = fopen("/dev/urandom", "r");
  
@@ -709,6 +714,13 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       } else if (!strcmp("uuid.v4", n->strval)) { // random
 	uuid_t uuid;
 	char retstr[37];
+
+	/* seedret = fread(&seed, sizeof(unsigned int), 1, urandom); */
+	/* if (!seedret) { */
+	/*   fprintf(stderr, "Error reading /dev/urandom!\n"); */
+	/* } */
+	/* srand((unsigned int)seed); */
+	
 	uuid_generate_random(uuid);
 	uuid_unparse_lower(uuid, retstr);
 	kv_push(char *, ami->values_stack, strdup((char *)retstr));
