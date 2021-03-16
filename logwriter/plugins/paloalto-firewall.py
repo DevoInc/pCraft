@@ -172,7 +172,7 @@ class LogPlugin(LogContext):
         event_time = str(int(event["time"]))
         frame_time = datetime.fromtimestamp(int(event_time))
         variables = {
-            "Flags": random_flag[random.randint(0, len(random_flag))],
+            "Flags": random_flag[random.randint(0, len(random_flag)-1)],
             "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Threat/Content_Type": self.get_threat_type(),
             "Generate_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),

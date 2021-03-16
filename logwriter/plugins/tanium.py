@@ -58,8 +58,12 @@ class LogPlugin(LogContext):
 
     def run(self, cap, packet, pktid, kvdict):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
-        
-        flow = kvdict["processflow"]
+
+        try:
+            flow = kvdict["processflow"]
+        except:
+            flow = "calc.exe"
+            
         allrefs = []
         for item in flow.split(";"):
             tf = TaniumFile(item)
@@ -77,7 +81,11 @@ class LogPlugin(LogContext):
     def run_ccraft(self, event, kvdict):
         frame_time = datetime.fromtimestamp(int(event["time"]))
         
-        flow = kvdict["processflow"]
+        try:
+            flow = kvdict["processflow"]
+        except:
+            flow = "calc.exe"
+
         allrefs = []
         for item in flow.split(";"):
             tf = TaniumFile(item)
