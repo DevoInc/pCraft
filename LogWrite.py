@@ -19,20 +19,21 @@ class LogWrite(object):
         if self.pcap_file:
             self.cap = pyshark.FileCapture(self.pcap_file)
 
-        try:
-            os.makedirs(self.output_dir)
-        except FileExistsError:
-            if force_mkdir:
-                shutil.rmtree(self.output_dir)
-                os.makedirs(self.output_dir)
-            else:
-                print("Error: Cannot make directory %s: Directory already exists!" % self.output_dir)
-                self.has_error = True
-                return
-        except:
-            print("Error: Cannot make directory %s" % self.output_dir)
-            self.has_error = True
-            return
+        if output_dir:
+	        try:
+	            os.makedirs(self.output_dir)
+	        except FileExistsError:
+	            if force_mkdir:
+	                shutil.rmtree(self.output_dir)
+	                os.makedirs(self.output_dir)
+	            else:
+	                print("Error: Cannot make directory %s: Directory already exists!" % self.output_dir)
+	                self.has_error = True
+	                return
+	        except:
+	            print("Error: Cannot make directory %s" % self.output_dir)
+	            self.has_error = True
+	            return
 
         # self.loaded_plugins = self.load_plugins(os.path.join(os.path.dirname(__file__), "logwriter", "plugins"), self.output_dir)
         self.loaded_plugins = self.load_plugins(os.path.join("logwriter", "plugins"), self.output_dir)

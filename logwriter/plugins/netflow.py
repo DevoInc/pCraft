@@ -95,3 +95,42 @@ class LogPlugin(LogContext):
         
         self.log_fp.write(event)
         
+    def run_buffer(self, action, event_time, kvdict):
+        action_exec = action.Exec()
+        
+        event_time = str(event_time)
+        variables = {}
+        try:
+            variables["srcip"] = kvdict["$ip-src"]
+        except:
+            pass
+        try:
+            variables["dstip"] = kvdict["$ip-dst"]
+        except:
+            pass
+        try:
+            variables["srcport"] = kvdict["$port-src"]
+        except:
+            pass
+        try:
+            variables["dstport"] = kvdict["$port-dst"]
+        except:
+            if action_exec == "DNSConnection":
+                variables["dstport"] = "53"
+            if action_exec == "HTTPConnection":
+                variables["dstport"] = "80"
+        
+
+        variables["headerdate"] = event_time + "000"
+        variables["firstdate"] = event_time + "000"
+        variables["lastdate"] = event_time + "000"
+        variables["bytes"] = str(random.randint(108, 5000))
+        variables["flowseq"] = self.get_flowseq()
+
+        event = self.retrieve_template("netflow", "v9", variables)
+
+        frame_time = datetime.fromtimestamp(int(event_time))
+        event = frame_time.strftime(event)
+        
+        return event
+        

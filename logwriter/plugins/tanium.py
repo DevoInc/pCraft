@@ -91,3 +91,26 @@ class LogPlugin(LogContext):
         kvdict["properties"] = tanium_properties
         
         self.log_fp.write(self.template_to_log(frame_time, kvdict))
+
+        
+    def run_buffer(self, action, event_time, kvdict):        
+        frame_time = datetime.fromtimestamp(event_time)
+
+        try:
+            flow = kvdict["processflow"]
+        except:
+            flow = "cmd.exe"
+        allrefs = []
+        for item in flow.split(";"):
+            tf = TaniumFile(item)
+            try:
+                allrefs.append(TaniumProcess(allrefs[-1], tf))
+            except IndexError:
+                allrefs.append(TaniumProcess(None, tf))
+                
+        tanium_properties = allrefs[-1].jsonize()
+
+        kvdict["properties"] = tanium_properties        
+        
+        return self.template_to_log(frame_time, kvdict)
+        

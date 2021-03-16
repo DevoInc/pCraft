@@ -37,8 +37,7 @@ class LogPlugin(LogContext):
         if hasattr(packet, 'udp'):
             return packet.udp.srcport
     
-    def template_to_log(self, packet):
-        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))        
+    def template_to_log(self, frame_time, packet):
         variables = {
             "flags": packet.ntp.flags,
             "flags_li": packet.ntp.flags_li,
@@ -89,6 +88,11 @@ class LogPlugin(LogContext):
         return event
 
     def run(self, cap, packet, pktid, layer):
-        return # disabling for now
-        self.log_fp.write(self.template_to_log(packet))
+    #    return # disabling for now
+        frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
+        self.log_fp.write(self.template_to_log(frame_time, packet))
+        
+    def run_buffer(self, action, event_time, kvdict):        
+        frame_time = datetime.fromtimestamp(event_time)
+        return self.db_to_log(frame_time, kvdict)
         

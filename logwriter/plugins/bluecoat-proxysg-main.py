@@ -190,3 +190,9 @@ class LogPlugin(LogContext):
     def run_ccraft(self, event, kvdict):
         frame_time = datetime.fromtimestamp(int(event["time"]))
         self.bluecoat_fp.write(self.db_to_log(frame_time, kvdict))
+
+    def run_buffer(self, action, event_time, kvdict):        
+        frame_time = datetime.fromtimestamp(event_time)
+        return self.db_to_log(frame_time, kvdict)
+        
+        

@@ -17,15 +17,18 @@ class LogContext(object):
         self.logfile = None
         
     def openlog(self, filename):
-        self.logfile = os.path.join(self.outpath, filename)
-        self.fp = open(self.logfile, "w")
-        return self.fp
+        if self.outpath:
+            self.logfile = os.path.join(self.outpath, filename)
+            self.fp = open(self.logfile, "w")
+            return self.fp
+        return None
     
     def closelog(self):
-        self.fp.close()
-        size = os.stat(self.logfile).st_size
-        if size == 0:
-            os.unlink(self.logfile)
+        if self.outpath:
+            self.fp.close()
+            size = os.stat(self.logfile).st_size
+            if size == 0:
+                os.unlink(self.logfile)
 
     def do_validate_keys(self, event_type, event, kvdict):
         keys = self.retrieve_template_keys(event_type, kvdict["event_id"])

@@ -9,8 +9,6 @@ import avro.schema
 from avro.datafile import DataFileReader
 from avro.io import DatumReader
 
-from LogWrite import LogWrite, LogRewrite
-
 
 SCHEMA = """{
     "type": "record",

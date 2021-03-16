@@ -36,3 +36,7 @@ class LogPlugin(LogContext):
         frame_time = datetime.fromtimestamp(int(event["time"]))
         self.log_fp.write(self.template_to_log(frame_time, kvdict))
         
+    def run_buffer(self, action, event_time, kvdict):        
+        frame_time = datetime.fromtimestamp(event_time)
+        return self.db_to_log(frame_time, kvdict)
+        
