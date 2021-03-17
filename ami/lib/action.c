@@ -26,6 +26,7 @@ ami_action_t *ami_action_new()
   action->sleep_cursor = 0;
   action->repeat_index = 0;
   action->sleep = 0;
+  action->sleep_group = kh_init(sleephash);
   
   return action;
 }
@@ -92,16 +93,16 @@ void ami_action_debug(ami_t *ami, ami_action_t *action)
   } else { printf("no action variable!\n");}
   size_t n_array = kv_size(action->replace_key);
   if (n_array > 0) {
-    for (size_t i = 0; i< n_array; i++) {
-      char *key = kv_A(action->replace_key, i);
-      char *value = kv_A(action->replace_val, i);      
-      if (strlen(value) > 0) {
-	if (value[0] == '$') {
-	  value = ami_get_variable(ami, value);
-	}		    
-      }
-      printf("action replace %s with %s\n", key, value);
-    }
+    /* for (size_t i = 0; i< n_array; i++) { */
+    /*   char *key = kv_A(action->replace_key, i); */
+    /*   char *value = kv_A(action->replace_val, i);       */
+    /*   if (strlen(value) > 0) { */
+    /* 	if (value[0] == '$') { */
+    /* 	  value = ami_get_variable(ami, value); */
+    /* 	}		     */
+    /*   } */
+    /*   printf("action replace %s with %s\n", key, value); */
+    /* } */
   }
 }
 
@@ -257,3 +258,38 @@ void ami_field_action_debug(ami_action_t *action)
   }
 }
 
+float ami_action_get_sleep_group(ami_action_t *action, const char *group)
+{
+  khint_t k;
+
+  if (!action) return -1;
+  if (!action->sleep_group) return -1;  
+  
+  k = kh_get(sleephash, action->sleep_group, group);
+  int is_missing = (k == kh_end(action->sleep_group));
+  if (is_missing) return -1;
+  float val = kh_value(action->sleep_group, k);
+  
+  return val;
+}
+
+int ami_action_sleep_group_incr(ami_action_t *action, const char *group, float incr)
+{
+  int absent;
+  khint_t k;
+
+  if (!action) return 1;
+  if (!action->sleep_group) return 1;  
+
+  k = kh_put(sleephash, action->sleep_group, group, &absent);
+  if (absent) {
+    kh_key(action->sleep_group, k) = strdup(group);
+    kh_value(action->sleep_group, k) = incr;
+  } else {
+    float prev = kh_value(action->sleep_group, k);
+    float prev_incr = prev + incr;
+    kh_value(action->sleep_group, k) = prev_incr;
+  }
+
+  return 0;
+}

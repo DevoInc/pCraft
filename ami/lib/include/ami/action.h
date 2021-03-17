@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-
+KHASH_MAP_INIT_STR(sleephash, float)
 KHASH_MAP_INIT_STR(actionhash, char *)
 
 typedef struct _ami_t ami_t;
@@ -45,6 +45,7 @@ struct _ami_action_t {
   float sleep_cursor;
   size_t repeat_index;
   float sleep;
+  khash_t(sleephash) *sleep_group;  
 };
 typedef struct _ami_action_t ami_action_t;
 
@@ -65,8 +66,9 @@ char *ami_action_get_replacement_value_at_pos(ami_action_t *action, int pos);
 ami_field_action_t *ami_field_action_new(void);
 ami_field_action_t *ami_field_action_append(ami_field_action_t *dst, ami_field_action_t *src);
 int ami_action_set_variable(ami_action_t *action, const char *key, ami_variable_t *var);
-ami_variable_t *ami_action_get_newvariable(ami_action_t *action, const char *key);  
-void ami_field_action_debug(ami_action_t *action);
+ami_variable_t *ami_action_get_newvariable(ami_action_t *action, const char *key); void ami_field_action_debug(ami_action_t *action);
+float ami_action_get_sleep_group(ami_action_t *action, const char *group);
+int ami_action_sleep_group_incr(ami_action_t *action, const char *group, float incr);  
   
 #ifdef __cplusplus
 }

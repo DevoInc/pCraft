@@ -30,25 +30,34 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata
   action->repeat_index = amiaction->repeat_index;
   
   // ami_action_debug(pami->_ami, amiaction);
-
+  if (amiaction->sleep_group) {
+    for (k = 0; k < kh_end(amiaction->sleep_group); ++k) {
+      if (kh_exist(amiaction->sleep_group, k)) {
+	const char *key = kh_key(amiaction->sleep_group, k);
+	float val = (float)kh_value(amiaction->sleep_group, k);
+	action->sleep_group[key] = val;
+      }
+    }
+  }
+  
   if (pami->_ami->variables) {
     for (k = 0; k < kh_end(pami->_ami->variables); ++k) {
       if (kh_exist(pami->_ami->variables, k)) {
-	      const char *key = kh_key(pami->_ami->variables, k);
-	      ami_variable_t *var = (ami_variable_t *)kh_value(pami->_ami->variables, k);
-	      switch(var->type) {
-	        case AMI_VAR_STR:
-            action->variables[key] = var->strval;
-            break;
-          case AMI_VAR_VARIABLE:
-	          action->variables[key] = ami_get_nested_variable_as_str(pami->_ami, NULL, var->strval);
-	          break;
-	        case AMI_VAR_INT:
-            char *tmpstr;
-            asprintf(&tmpstr, "%d", var->ival);
-            action->variables[key] = tmpstr;
-            break;
-	      }
+	const char *key = kh_key(pami->_ami->variables, k);
+	ami_variable_t *var = (ami_variable_t *)kh_value(pami->_ami->variables, k);
+	switch(var->type) {
+	case AMI_VAR_STR:
+	  action->variables[key] = var->strval;
+	  break;
+	case AMI_VAR_VARIABLE:
+	  action->variables[key] = ami_get_nested_variable_as_str(pami->_ami, NULL, var->strval);
+	  break;
+	case AMI_VAR_INT:
+	  char *tmpstr;
+	  asprintf(&tmpstr, "%d", var->ival);
+	  action->variables[key] = tmpstr;
+	  break;
+	}
       }
     }
   }
@@ -150,6 +159,7 @@ PYBIND11_MODULE(pyami, m) {
       .def("Name", &Action::get_name)
       .def("Exec", &Action::get_exec)
       .def("GetRepeatIndex", &Action::GetRepeatIndex)
+      .def("GetSleepGroup", &Action::get_sleep_group)
       .def("GetSleepCursor", &Action::GetSleepCursor)
       .def("SetSleepCursor", &Action::SetSleepCursor);
 }

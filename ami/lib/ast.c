@@ -75,7 +75,7 @@ static char *_replace_strval_from_variables(ami_t *ami, char *strval) {
 static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 {
   ami_node_t *n;
-  ami_action_t *action;
+  ami_action_t *action = NULL;
   int index = 0;
   char *stack_str = NULL; // Keeping the last value
   int stack_int = 0;
@@ -84,7 +84,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   /* static char *csv_args[4] = { NULL, NULL, NULL, NULL }; // For now, we only have the CSV function */
   kvec_t(char *) values_stack;
   static int varpos = 0;  
-  ami_field_action_t *field_action;
+  ami_field_action_t *field_action = NULL;
   char *replaced_var = NULL;
   int repeat_n = 0;
   size_t array_values_len = 0;
@@ -921,7 +921,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       if (n->strval) { // We have strval? = we have a group
 	char *groupval = _replace_strval_from_variables(ami, n->strval);
 	if (!groupval) {
-	  printf("This is n->strval:%s\n", n->strval);
+	  printf("No such groupval with from n->strval:%s\n", n->strval);
 	}
 	ami_append_sleep_cursor(ami, groupval, tmp_float);
       } else { // No strval, so this is going to the "_global" group
@@ -935,7 +935,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       }
       if (n->strval) {
       	char *groupval = _replace_strval_from_variables(ami, n->strval);
-	action->sleep += ami_get_new_sleep_cursor(ami, groupval);
+	float sleep_group_cursor = ami_get_new_sleep_cursor(ami, groupval);
+	action->sleep += sleep_group_cursor;
+	ami_action_sleep_group_incr(action, groupval, sleep_group_cursor);
       } else {
 	fprintf(stderr, "Error, no group found!\n");
 	exit(1);

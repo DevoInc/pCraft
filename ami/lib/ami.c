@@ -100,7 +100,7 @@ khash_t(inthash) *ami_array_get_header(ami_t *ami, char *arrayname)
   if (is_missing) return NULL;
   khash_t(inthash) *array = kh_value(ami->array_header, k);
   
-  return array;  
+  return array;
 }
 
 void ami_array_set_header(ami_t *ami, char *arrayname, int column, char *name)
@@ -799,6 +799,10 @@ int ami_get_nested_variable_as_int(ami_t *ami, char *var_value)
   }
 
   retvar = ami_get_variable(ami, var_value);
+  if (!retvar) {
+    fprintf(stderr, "[%s:%d] Cannot get variable %s\n", ami->file, ami->current_line, var_value);
+    return NULL;
+  }
   
   return retvar->ival;
 }
