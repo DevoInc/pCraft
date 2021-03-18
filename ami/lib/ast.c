@@ -929,20 +929,21 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       }      
       break;
     case AMI_NT_SLEEP_FROMGROUP:
-      if (!action) {
-	fprintf(stderr, "Error: Cannot use \"sleep fromgroup\" outside of an action!\n");
-	exit(1);
+      if (!ami->ignore_group_sleep) {
+	if (!action) {
+	  fprintf(stderr, "Error: Cannot use \"sleep fromgroup\" outside of an action!\n");
+	  exit(1);
+	}
+	if (n->strval) {
+	  char *groupval = _replace_strval_from_variables(ami, n->strval);
+	  float sleep_group_cursor = ami_get_new_sleep_cursor(ami, groupval);
+	  action->sleep += sleep_group_cursor;
+	  ami_action_sleep_group_incr(action, groupval, sleep_group_cursor);
+	} else {
+	  fprintf(stderr, "Error, no group found!\n");
+	  exit(1);
+	}
       }
-      if (n->strval) {
-      	char *groupval = _replace_strval_from_variables(ami, n->strval);
-	float sleep_group_cursor = ami_get_new_sleep_cursor(ami, groupval);
-	action->sleep += sleep_group_cursor;
-	ami_action_sleep_group_incr(action, groupval, sleep_group_cursor);
-      } else {
-	fprintf(stderr, "Error, no group found!\n");
-	exit(1);
-      }
-
       break;
     case AMI_NT_ARRAYVAR:
       /* printf("We set the values for our array. We have %d values\n", n->intval); */

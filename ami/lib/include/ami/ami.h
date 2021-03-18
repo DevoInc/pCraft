@@ -54,6 +54,7 @@ struct _ami_t {
   int _opened_sections;
   int _is_verbatim_string;
   int skip_repeat;
+  int ignore_group_sleep;
   int debug;
   int version;
   int start_time;

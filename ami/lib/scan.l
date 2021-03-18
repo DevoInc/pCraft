@@ -161,6 +161,7 @@ FALSE false
 GROUP group
 FROMGROUP fromgroup
 SKIPREPEAT skip_repeat
+IGNOREGROUPSLEEP ignore_group_sleep
 
 %%
 
@@ -268,7 +269,7 @@ SKIPREPEAT skip_repeat
 		  }
 		}
 
-
+{IGNOREGROUPSLEEP} { return TOK_IGNOREGROUPSLEEP; }
 {SKIPREPEAT} { return TOK_SKIPREPEAT; }
 {FROMGROUP} { return TOK_FROMGROUP; }
 {GROUP} { return TOK_GROUP; }

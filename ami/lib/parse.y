@@ -92,6 +92,7 @@ typedef void *yyscan_t;
 %token GROUP
 %token FROMGROUP
 %token SKIPREPEAT
+%token IGNOREGROUPSLEEP
 
 %left PLUS MINUS
 
@@ -126,6 +127,7 @@ input:
        | input function
        | input keywords_as_argname
        | input skiprepeat
+       | input ignoregroupsleep
        | input debugon
        | input debugoff
        | input exit
@@ -610,6 +612,11 @@ keyword_field: FIELD EQUAL varset {
 
 skiprepeat: SKIPREPEAT {
   ami->skip_repeat = 1;
+}
+;
+
+ignoregroupsleep: IGNOREGROUPSLEEP {
+  ami->ignore_group_sleep = 1;
 }
 ;
 
