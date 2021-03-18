@@ -1,5 +1,4 @@
 key,default_value
-@timestamp,"%Y-%m-%dT%H:%M:%S.000Z"
 @metadata_beat,"winlogbeat"
 @metadata_type,"_doc"
 @metadata_version,"7.9.3"
@@ -28,7 +27,6 @@ winlog_event_data_Path,"C:\\Users\\Public\\execps.ps1"
 winlog_event_data_MessageNumber,"1"
 winlog_event_data_MessageTotal,"1"
 winlog_provider_name,"Microsoft-Windows-PowerShell"
-event_created,"%Y-%m-%dT%H:%M:%S.000Z"
 event_kind,"event"
 event_code,"4104"
 event_provider,"Microsoft-Windows-PowerShell"
