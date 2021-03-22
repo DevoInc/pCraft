@@ -182,7 +182,6 @@ char *ami_csvread_get_field_at_line(ami_t *ami, char *file, int index, char *fie
     /* 
      * </PREPROCESSING>
      */
-
     ami_set_totalfields(ami, file, phelp->total_fields);
     ami_set_totallines(ami, file, phelp->total_lines);
     ami_set_lengthfields(ami, file, phelp->length_fields);
@@ -209,14 +208,23 @@ char *ami_csvread_get_field_at_line(ami_t *ami, char *file, int index, char *fie
     membuf = phelp->array;
   }
 
-  index++;
+  /* index++; */
 
   int fieldpos = ami_get_csvfield_pos(ami, file, field);
+
+  int total_lines = ami_get_totallines(ami, file);
+  if (index >= total_lines) {
+    fprintf(stderr, "Error, the csv file %s has only %d lines. Cannot read line %d\n", file, total_lines, index+1);
+    retfield = strdup("");
+    goto end;
+  }
   
   int want = index * ami_get_lengthfields(ami, file) + fieldpos;
   if (want > ami_get_totalfields(ami, file)) {
     fprintf(stderr, "Error reading file %s, line %d. Line number exceeded! Requested %d\n", file, index, want);
   }
+
+  /* printf("want:%d\n", want); */
   
   retfield = strdup(membuf[want]);
 
