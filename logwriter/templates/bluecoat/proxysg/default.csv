@@ -15,6 +15,7 @@ user_name,-
 url_category,Marketing Site
 dst_mime_type,text/html
 event_result,PROXIED
+src_port_number,8495
 dst_port_number,80
 dst_ip_addr,216.105.38.15
 http_referer_original,-
