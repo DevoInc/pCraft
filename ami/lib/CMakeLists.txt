@@ -16,7 +16,7 @@ set(AMI_SOURCES
   strutil.c
   tree.c  
   variable.c
-  
+
   crypto/md5.c
   crypto/rot-13.c
   crypto/sha1.c

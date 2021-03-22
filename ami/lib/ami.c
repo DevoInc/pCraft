@@ -81,6 +81,7 @@ ami_t *ami_new(void)
   kv_init(ami->varvar_stack);
 
   ami->membuf = kh_init(charpphash);
+  /* ami->fields = kh_init(fieldshash); */
 
   ami->array_header = kh_init(voidptrhash);
   ami->array = kh_init(voidptrhash);
@@ -88,6 +89,8 @@ ami_t *ami_new(void)
   ami->total_fields  = kh_init(inthash);
   ami->total_lines   = kh_init(inthash);
   ami->length_fields = kh_init(inthash);
+
+  ami->csvfiles = NULL;
   
   return ami;
 }
@@ -623,13 +626,19 @@ void ami_close(ami_t *ami)
   ami_node_t *n;
   khint_t k;
 
+  csvfield_t *field_item, *tmp_field, *fields = NULL;
+  csvfiles_t *file_item, *tmp_file, *files = NULL;
+  
   if (!ami) return;
   if (ami->file) free(ami->file);
   
   kv_destroy(ami->references);
   kv_destroy(ami->values_stack);
   kv_destroy(ami->varvar_stack);
-
+  /* kv_destroy(ami->membuf); */
+  /* kv_destroy(ami->array_header); */
+  /* kv_destroy(ami->array); */
+  
   ami_erase_variables(ami);
   ami_erase_sleep_cursor(ami);
   ami_erase_open_files(ami);
@@ -640,6 +649,21 @@ void ami_close(ami_t *ami)
 
   kh_destroy(varhash, ami->variables);
   kh_destroy(varhash, ami->open_files);
+
+  HASH_ITER(hh, ami->csvfiles, file_item, tmp_file) {
+    HASH_ITER(hh, file_item->csvfields, field_item, tmp_field) {
+      free(field_item->name);
+      HASH_DEL(file_item->csvfields, field_item);
+      free(field_item);
+    }
+    free(file_item->filename);
+    HASH_DEL(ami->csvfiles, file_item);
+    free(file_item);
+  }
+  
+  /* kv_destroy(ami->total_fields); */
+  /* kv_destroy(ami->total_lines); */
+  /* kv_destroy(ami->length_fields); */
   
   free(ami);
 }
@@ -802,7 +826,7 @@ int ami_get_nested_variable_as_int(ami_t *ami, char *var_value)
   retvar = ami_get_variable(ami, var_value);
   if (!retvar) {
     fprintf(stderr, "[%s:%d] Cannot get variable %s\n", ami->file, ami->current_line, var_value);
-    return NULL;
+    return -1;
   }
   
   return retvar->ival;
@@ -850,4 +874,82 @@ float ami_get_new_sleep_cursor(ami_t *ami, const char *group)
   
   return sleepcursor;
 }
+
+int ami_add_csvfield(ami_t *ami, const char *csvfile, const char *fieldname, int fieldpos)
+{
+  csvfield_t *field_item, *tmp_field, *fields = NULL;
+  csvfiles_t *file_item, *tmp_file, *files = NULL;
+
+  HASH_FIND_STR(ami->csvfiles, csvfile, file_item);
+  if (file_item) {
+    /* printf("File already exists\n", csvfile); */
+    field_item = malloc(sizeof(csvfield_t));
+    if (!field_item) {
+      fprintf(stderr, "Could not allocate field!\n");
+      return -1;
+    }
+    field_item->pos = fieldpos;
+    field_item->name = strdup(fieldname);
+    /* printf("ADDING Field %s\n", fieldname); */
+    HASH_ADD_KEYPTR(hh, file_item->csvfields, field_item->name, strlen(field_item->name), field_item);
+  } else {
+    /* printf("Files %s does not exists\n", csvfile); */
+    field_item = malloc(sizeof(csvfield_t));
+    if (!field_item) {
+      fprintf(stderr, "Could not allocate field!\n");
+      return -1;
+    }
+    field_item->pos = fieldpos;
+    field_item->name = strdup(fieldname);
+    /* printf("ADDING Field %s\n", fieldname); */
+    HASH_ADD_KEYPTR(hh, fields, field_item->name, strlen(field_item->name), field_item);
+
+    file_item = malloc(sizeof(csvfiles_t));
+    if (!file_item) {
+      fprintf(stderr, "Could not allocate cvs file!\n");
+      return -1;
+    }
+    file_item->filename = strdup(csvfile);
+    file_item->csvfields = fields;
+    HASH_ADD_KEYPTR(hh, ami->csvfiles, file_item->filename, strlen(file_item->filename), file_item);
+
+    /* HASH_FIND_STR(ami->csvfiles, csvfile, file_item); */
+    /* if (file_item) { */
+    /*   HASH_ITER(hh, ami->csvfiles, tmp_file, file_item) { */
+    /* 	printf("file name :%s\n", tmp_file->filename); */
+    /* 	  HASH_ITER(hh, tmp_file->csvfields, tmp_field, field_item) { */
+    /* 	    printf("field name:%s and pos:%d\n", tmp_field->name, tmp_field->pos); */
+    /* 	  } */
+    /*   } */
+    /* } */
+  
+    
+  }
+  
+  return 0;
+}
+
+int ami_get_csvfield_pos(ami_t *ami, const char *csvfile, const char *fieldname)
+{
+  csvfield_t *fld, *tmpfld, *field = NULL;
+  csvfiles_t *f, *tmpf, *file = NULL;
+
+  HASH_FIND_STR(ami->csvfiles, csvfile, f);
+  if (f) {
+    HASH_FIND_STR(f->csvfields, fieldname, fld);
+    if (fld) {
+      /* printf("Found field!\n"); */
+      return fld->pos;
+    } else {
+      fprintf(stderr, "No such field %s\n", fieldname);
+      return -1;
+    }
+  } else {
+    fprintf(stderr, "No such file %s to get csv field from\n", csvfile);
+    return -1;
+  }
+  
+  return -1;
+}
+
 

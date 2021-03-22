@@ -41,3 +41,7 @@ add_test(Sleep_Cursor sleepcursor)
 add_executable(csvarray csvarray.c)
 target_link_libraries(csvarray ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
 add_test(CSVarray csvarray)
+
+add_executable(csvfields csvfields.c)
+target_link_libraries(csvfields ${AMI_LIBRARY} ${CMAKE_DL_LIBS})
+add_test(CSVfields csvfields)

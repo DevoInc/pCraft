@@ -9,15 +9,32 @@
 #include "action.h"
 #include "tree.h"
 #include "variable.h"
+#include "csvread.h"
 
 #include "khash.h"
 #include "kvec.h"
 
+#include "uthash.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+struct _csvfield_t {
+  const char *name;
+  int pos;
+  UT_hash_handle hh;
+};
+typedef struct _csvfield_t csvfield_t;
+
+struct _csvfiles_t {
+  const char *filename;
+  csvfield_t *csvfields;
+  UT_hash_handle hh;  
+};
+typedef struct _csvfiles_t csvfiles_t;
+  
+  
 #define MAX_VARIABLES 1
 #define MAX_NESTED_REPEAT 16
   
@@ -27,7 +44,8 @@ KHASH_MAP_INIT_STR(fphash, FILE *)
 KHASH_MAP_INIT_STR(voidptrhash, void *)
 KHASH_MAP_INIT_STR(inthash, int)
 KHASH_MAP_INIT_STR(charpphash, char **)
-
+/* KHASH_MAP_INIT_STR(fieldshash, inthash) */
+  
 struct _ami_kvec_t {
   size_t n;
   size_t m;
@@ -35,6 +53,7 @@ struct _ami_kvec_t {
 };
 typedef struct _ami_kvec_t ami_kvec_t;
 
+  
 enum _ami_error_t {
 	NO_ERROR,
         NO_VERSION,
@@ -88,11 +107,15 @@ struct _ami_t {
   khash_t(fphash) *open_files;
   ami_kvec_t varvar_stack;
   khash_t(charpphash) *membuf;
+  /* khash_t(fieldshash) *fields; */
+  
   khash_t(inthash) *total_fields;
   khash_t(inthash) *total_lines;
   khash_t(inthash) *length_fields;
   khash_t(voidptrhash) *array_header;
   khash_t(voidptrhash) *array;
+
+  csvfiles_t *csvfiles;
 };
 typedef struct _ami_t ami_t;
 
@@ -138,6 +161,8 @@ int ami_array_get_header_pos(ami_t *ami, char *arrayname, char *name);
 void ami_array_set_value(ami_t *ami, char *arrayname, int line, int column, char *value);
 char *ami_array_get_value(ami_t *ami, char *arrayname, int line, int column);
 
+int ami_add_csvfield(ami_t *ami, const char *csvfile, const char *fieldname, int fieldpos);  
+int ami_get_csvfield_pos(ami_t *ami, const char *csvfile, const char *fieldname);
   
 #ifdef __cplusplus
 }

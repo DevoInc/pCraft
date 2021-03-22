@@ -12,11 +12,14 @@
 
 KHASH_MAP_INIT_STR(fieldhash, int)
 
-struct _parse_helper_t {  
+struct _parse_helper_t {
+  ami_t *ami;
+  char *filename;
   int has_header;
   int index;
   char *field;
   ami_kvec_t fields;
+  khash_t(fieldhash) *fpos;  
   int current_line;
   int current_field;
   int total_fields;
@@ -38,11 +41,7 @@ void on_new_field_prepare(void *s, size_t i, void *userdata)
   }
 
   if (phelp->total_lines == 0) {
-    /* We have out first line here. This is our header. */
-    if (!strcmp(phelp->field, s)) {
-      /* printf("field pos for %s is %d\n", s, phelp->total_fields); */
-      phelp->field_pos = phelp->total_fields;
-    }
+    ami_add_csvfield(phelp->ami, phelp->filename, s, phelp->total_fields); 
   }
   
   phelp->total_fields++;
@@ -61,7 +60,6 @@ void new_field_array(void *s, size_t i, void *userdata)
 {
   parse_helper_t *phelp = (parse_helper_t *)userdata;
 
-  /* printf("%d:%s\n", phelp->field_incr, s); */
   phelp->array[phelp->field_incr] = strdup(s);
   
   phelp->field_incr++;
@@ -74,6 +72,9 @@ void new_line_array(int c, void *userdata)
 
 void on_new_field(void *s, size_t i, void *userdata)
 {
+
+  printf("ON NEW FIELD\n");
+  
   parse_helper_t *phelp = (parse_helper_t *)userdata;
   if (!phelp) {
     fprintf(stderr, "Error reading field helper!");
@@ -131,7 +132,10 @@ char *ami_csvread_get_field_at_line(ami_t *ami, char *file, int index, char *fie
     return NULL;
   }
 
+  phelp->ami = ami;
+  phelp->filename = file;
   phelp->has_header = has_header;
+  phelp->fpos = kh_init(fieldhash);
   phelp->index = index;
   phelp->field = field;
   phelp->field_pos = -1;
@@ -206,10 +210,14 @@ char *ami_csvread_get_field_at_line(ami_t *ami, char *file, int index, char *fie
   }
 
   index++;
-  int want = index * ami_get_lengthfields(ami, file) + phelp->field_pos;
+
+  int fieldpos = ami_get_csvfield_pos(ami, file, field);
+  
+  int want = index * ami_get_lengthfields(ami, file) + fieldpos;
   if (want > ami_get_totalfields(ami, file)) {
     fprintf(stderr, "Error reading file %s, line %d. Line number exceeded! Requested %d\n", file, index, want);
   }
+  
   retfield = strdup(membuf[want]);
 
   return retfield;
