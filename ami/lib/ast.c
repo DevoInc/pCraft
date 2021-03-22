@@ -247,7 +247,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 				}
 			}
 			ami_set_variable(ami, n->strval, globalvar);
-			free(tmp_str);
+			/* free(tmp_str); there was an issue with ip.gethostbyname; FIXME*/
       	}
 
       	array_get_index = 0;
