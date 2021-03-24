@@ -852,7 +852,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 			}
 		} else {
 			csvline = atoi(line_val_stack);
-			fprintf(stderr, "csvline: %d\n", csvline);
+			/* fprintf(stderr, "csvline: %d\n", csvline); */
 		}
 
 		if (csvline == 0) {

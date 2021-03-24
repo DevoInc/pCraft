@@ -225,8 +225,12 @@ char *ami_csvread_get_field_at_line(ami_t *ami, char *file, int index, char *fie
   }
 
   /* printf("want:%d\n", want); */
-  
-  retfield = strdup(membuf[want]);
+  char *mbuf = membuf[want];
+  if (!mbuf) {
+    fprintf(stderr, "Unable to read csv value from file %s line %d\n");
+    exit(1);
+  }
+  retfield = strdup(mbuf);
 
   return retfield;
   
