@@ -47,14 +47,14 @@ if __name__ == "__main__":
         print("Error. Exiting.")
         sys.exit(1)
 
-    global_variables = {}
+    # global_variables = {}
         
     reader = DataFileReader(open(ccraftfile, "rb"), DatumReader())
     for event in reader:
         # print(str(event))
         # {'time': 1614504320, 'exec': 'Void', 'variables': {'$domain': 'haute-voltige.io', '$index': '1', '$var': '1234'}, 'fset': {'myfield': 'abcd'}, 'freplace': {}}
         kvdict = event["fset"]        
-        global_variables.update(event["variables"])
+        # global_variables.update(event["variables"])
         
         if event["exec"] == "Controller":
             plugin_name = []
@@ -84,7 +84,8 @@ if __name__ == "__main__":
                     if "-v" in sys.argv:
                         writer.loaded_plugins[plugin].validate_keys(event["variables"])
 
-                    writer.loaded_plugins[plugin].run_ccraft(event, global_variables)
+                    # writer.loaded_plugins[plugin].run_ccraft(event, global_variables)
+                    writer.loaded_plugins[plugin].run_ccraft(event, event["variables"])
                 else:
                     print("No such plugin %s for action %s" % (plugin, event["action"]))
                     
