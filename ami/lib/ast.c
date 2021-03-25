@@ -435,8 +435,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	
 	he = gethostbyname(hostname);
 	if (!he) {
-	  fprintf(stderr, "Could not resolve '%s'\n", hostname);
-	  exit(1);
+	  fprintf(stderr, "Could not resolve '%s'. Faking with 172.16.23.42 instead.\n", hostname);
+	  ipstr[0] = '1'; ipstr[1] = '7'; ipstr[2] = '2'; ipstr[3] = '.'; ipstr[4] = '1'; ipstr[5] = '6';
+	  ipstr[6] = '.'; ipstr[7] = '2'; ipstr[8] = '3'; ipstr[9] = '.'; ipstr[10] = '4'; ipstr[11] = '2';
+	  ipstr[12] = '\0'; 
+	  goto pushit;
 	}
 
 	if (inet_ntop(AF_INET, (const void *)he->h_addr_list[0], ipstr, sizeof(ipstr)) == NULL) {
@@ -444,6 +447,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	  exit(1);
 	}
 
+      pushit:
 	kv_push(char *, ami->values_stack, ipstr);	
       } else if (!strcmp("ip.cidr",n->strval)) {
 	static const uint32_t cidr_table[] = { 0x00000000, 0x00000080, 0x000000c0, 0x000000e0, 0x000000f0,
