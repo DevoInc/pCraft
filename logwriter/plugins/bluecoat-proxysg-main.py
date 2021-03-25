@@ -84,10 +84,10 @@ class LogPlugin(LogContext):
 
         return event
 
-    def db_to_log(self, frame_time, kvdict):
+    def db_to_log(self, obj, frame_time, kvdict):
 #        print(str(kvdict))
         if not "$domain" in kvdict:
-            raise ValueError("Error, bluecoat proxysg requires a domain variable to be set")
+            raise ValueError("Error, bluecoat proxysg requires a domain variable to be set for %s" % str(obj))
         
         protocol = "http"
         try:
@@ -189,10 +189,10 @@ class LogPlugin(LogContext):
             
     def run_ccraft(self, event, kvdict):
         frame_time = datetime.fromtimestamp(int(event["time"]))
-        self.bluecoat_fp.write(self.db_to_log(frame_time, kvdict))
+        self.bluecoat_fp.write(self.db_to_log(event, frame_time, kvdict))
 
     def run_buffer(self, action, event_time, kvdict):        
         frame_time = datetime.fromtimestamp(event_time)
-        return self.db_to_log(frame_time, kvdict)
+        return self.db_to_log(action, frame_time, kvdict)
         
         

@@ -46,16 +46,24 @@ if __name__ == "__main__":
     if writer.has_error:
         print("Error. Exiting.")
         sys.exit(1)
-   
+
+    global_variables = {}
+        
     reader = DataFileReader(open(ccraftfile, "rb"), DatumReader())
     for event in reader:
         # print(str(event))
         # {'time': 1614504320, 'exec': 'Void', 'variables': {'$domain': 'haute-voltige.io', '$index': '1', '$var': '1234'}, 'fset': {'myfield': 'abcd'}, 'freplace': {}}
         kvdict = event["fset"]        
+        global_variables.update(event["variables"])
         
         if event["exec"] == "Controller":
             plugin_name = []
-            plugin_name.append(event["variables"]["$log_plugin"])
+            try:
+                plugin_name.append(event["variables"]["$log_plugin"])
+            except:
+                print("Warning: $log_plugin variable not found in action '%s'. Using mswin-security" % event["action"])
+                plugin_name.append("mswin-security")
+
             for plugin in plugin_name:
                 if plugin in writer.loaded_plugins:
                     if "-v" in sys.argv:
@@ -76,7 +84,7 @@ if __name__ == "__main__":
                     if "-v" in sys.argv:
                         writer.loaded_plugins[plugin].validate_keys(event["variables"])
 
-                    writer.loaded_plugins[plugin].run_ccraft(event, event["variables"])
+                    writer.loaded_plugins[plugin].run_ccraft(event, global_variables)
                 else:
                     print("No such plugin %s for action %s" % (plugin, event["action"]))
                     
