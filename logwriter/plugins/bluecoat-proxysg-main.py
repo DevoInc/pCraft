@@ -23,9 +23,10 @@ class LogPlugin(LogContext):
 }
         self.domains = {}
         for line in blacklist_fp.readlines():
-            line = str(line)
+            line = str(line)[:-3]
             cat, domain = line.split(":")
-            self.domains[domain] = cat
+            # print("Adding domain '%s' to cat '%s'" % (domain, cat))
+            self.domains[domain] = str(cat[2:])
         blacklist_fp.close()
         
     def __del__(self):
@@ -66,6 +67,7 @@ class LogPlugin(LogContext):
         if variables["url_query"] == None:
             variables["url_query"] = "-"
         category = ""
+
         try:
             cat = self.domains[domain]
             category = self.catmap[cat]
