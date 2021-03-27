@@ -25,8 +25,9 @@ class LogPlugin(LogContext):
         for line in blacklist_fp.readlines():
             line = str(line)[:-3]
             cat, domain = line.split(":")
-            # print("Adding domain '%s' to cat '%s'" % (domain, cat))
-            self.domains[domain] = str(cat[2:])
+            cat = str(cat[2:])
+#            print("Adding domain '%s' to cat '%s'" % (domain, cat))
+            self.domains[domain] = cat
         blacklist_fp.close()
         
     def __del__(self):
@@ -143,8 +144,9 @@ class LogPlugin(LogContext):
         except:
             pass        
         variables["event_duration"] = str(random.randrange(20,1000))
-        
-        variables["url_hostname"] = self.faup_ctx.get_domain()
+
+        domain = self.faup_ctx.get_domain()
+        variables["url_hostname"] = domain
         variables["url_path"] = self.faup_ctx.get_resource_path()
         if variables["url_path"] == None:
             variables["url_path"] = "-"
@@ -152,6 +154,7 @@ class LogPlugin(LogContext):
         if variables["url_query"] == None:
             variables["url_query"] = "-"
         category = ""
+
         try:
             cat = self.domains[domain]
             category = self.catmap[cat]
