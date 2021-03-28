@@ -5,3 +5,4 @@ src_port_number,13042
 dns_query_name,www.example.com
 dns_query_type,A
 dns_query_class,IN
+resolver,1.1.1.1
