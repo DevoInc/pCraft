@@ -24,8 +24,8 @@ max_ttl,63
 tos,0
 d,0
 icmp_type,0
-sa,12956
-da,64530
+sa,2
+da,2
 sm,25
 dm,26
 replication_factor,0
