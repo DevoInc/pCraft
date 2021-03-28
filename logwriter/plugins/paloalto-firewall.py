@@ -126,6 +126,9 @@ class LogPlugin(LogContext):
 
         bytessent = random.randint(256, 83942)
         bytesreceived = random.randint(10, 1204323)
+
+        packetssent = random.randint(5, 1356)
+        packetsreceived = random.randint(5, 1356)
         
         kvdict = {
             "Session_ID": random.randint(124, 950432),
@@ -147,6 +150,10 @@ class LogPlugin(LogContext):
             "Bytes": bytessent + bytesreceived,
             "Bytes_Sent": bytessent,
             "Bytes_Received": bytesreceived,
+            "Packets": packetssent + packetsreceived,
+            "Packets_Sent": packetssent,
+            "Packets_Received": packetsreceived,
+
         }
         self.session_id += 1
 
@@ -168,6 +175,13 @@ class LogPlugin(LogContext):
             if header:
                 self.log_fp.write(header)
                 self.first = False
+
+        bytessent = random.randint(256, 83942)
+        bytesreceived = random.randint(10, 1204323)
+
+        packetssent = random.randint(5, 1356)
+        packetsreceived = random.randint(5, 1356)
+
                 
         event_time = str(int(event["time"]))
         frame_time = datetime.fromtimestamp(int(event_time))
@@ -187,7 +201,13 @@ class LogPlugin(LogContext):
             "Sequence_Number": random.randint(1, 65536),
             "Source_Country": None,
             "Destination_Country": None,
-            "url_idx": random.randint(1, 99),                        
+            "url_idx": random.randint(1, 99),
+            "Bytes": bytessent + bytesreceived,
+            "Bytes_Sent": bytessent,
+            "Bytes_Received": bytesreceived,
+            "Packets": packetssent + packetsreceived,
+            "Packets_Sent": packetssent,
+            "Packets_Received": packetsreceived,
         }
         try:
             variables["Source_address"] = kvdict["$ip-src"]
