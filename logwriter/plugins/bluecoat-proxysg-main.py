@@ -142,8 +142,18 @@ class LogPlugin(LogContext):
         try:
             variables["dst_port_number"] = kvdict["$port-dst"]
         except:
-            pass        
+            pass
+        
         variables["event_duration"] = str(random.randrange(20,1000))
+        try:
+            variables["event_duration"] = kvdict["$resptime"]
+        except:
+            pass
+
+        try:
+            variables["http_status_code"] = kvdict["$statuscode"]
+        except:
+            pass
 
         domain = self.faup_ctx.get_domain()
         variables["url_hostname"] = domain
