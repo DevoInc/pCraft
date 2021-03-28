@@ -71,6 +71,10 @@ class LogPlugin(LogContext):
             variables["dns_query_class"] = kvdict["$dns-query-class"]
         except:
             pass
+        try:
+            variables["resolver"] = kvdict["$resolver"]
+        except:
+            pass
         
         event = self.retrieve_template("isc.named", "query", variables)        
         event = frame_time.strftime(event)
