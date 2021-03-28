@@ -17,6 +17,7 @@ add_test(strings.ami ${AMITEST} strings.ami)
 add_test(include.ami ${AMITEST} include.ami)
 add_test(repeat-in-repeat.ami ${AMITEST} repeat-in-repeat.ami)
 add_test(braces.ami ${AMITEST} braces.ami)
+add_test(slice.ami ${AMITEST} slice.ami)
 
 add_executable(aminewclose ami-new-close.c)
 target_link_libraries(aminewclose ${AMI_LIBRARY} ${CMAKE_DL_LIBS})

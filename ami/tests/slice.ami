@@ -1,0 +1,18 @@
+av 1
+
+slice_run 2
+slice_div 10
+
+repeat 100 as $index {
+    message "repeat 100 index: ${index}"
+    action f {
+	exec Void
+    }
+}
+
+repeat 200 as $index {
+    message "repeat 200 index: ${index}"
+    action f {
+	exec Void
+    }
+}

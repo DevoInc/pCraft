@@ -1,0 +1,164 @@
+ami_version 1
+We start at 11 until 20
+repeat 100 index: 11
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(11)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 12
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(12)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 13
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(13)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 14
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(14)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 15
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(15)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 16
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(16)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 17
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(17)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 18
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(18)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 19
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(19)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 20
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(20)
+* Local Variables:
+* Field Actions:
+repeat 100 index: 20
+We start at 21 until 40
+repeat 200 index: 21
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(21)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 22
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(22)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 23
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(23)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 24
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(24)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 25
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(25)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 26
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(26)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 27
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(27)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 28
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(28)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 29
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(29)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 30
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(30)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 31
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(31)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 32
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(32)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 33
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(33)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 34
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(34)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 35
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(35)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 36
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(36)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 37
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(37)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 38
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(38)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 39
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(39)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 40
+------------------------
+* Action name(f) exec(Void) ami->sleep_cursor(0.000000); sleep_cursor(0.000000) repeat_index(40)
+* Local Variables:
+* Field Actions:
+repeat 200 index: 40
++++++++
+* Global Variables:
+[0] $__amifile__
+AMI_VAR_STR
+	[len:14] test-slice.ami
+[1] $index
+AMI_VAR_INT
+	40
+
