@@ -80,6 +80,14 @@ class LogPlugin(LogContext):
                 variables["dstport"] = "53"
             if event["exec"] == "HTTPConnection":
                 variables["dstport"] = "80"
+        try:
+            variables["nexthop"] = kvdict["$nexthop"]
+        except:
+            pass
+        try:
+            variables["bnh"] = kvdict["$bnh"]
+        except:
+            pass
         
 
         variables["headerdate"] = event_time + "000"
