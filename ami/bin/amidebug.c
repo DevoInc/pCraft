@@ -119,6 +119,9 @@ void simple_print_global_variables(ami_t *ami)
     for (k = 0; k < kh_end(ami->variables); ++k)
       if (kh_exist(ami->variables, k)) {
   	char *key = (char *)kh_key(ami->variables, k);
+	if (!strcmp(key, "$__amifile__")) {
+	  continue;
+	}
 	printf("[%d] %s\n", count, key);
   	ami_variable_t *value = (ami_variable_t *)kh_value(ami->variables, k);
 	ami_variable_debug(value);

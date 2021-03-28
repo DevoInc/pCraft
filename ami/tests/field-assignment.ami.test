@@ -6,7 +6,4 @@ ami_version 1
     field:CommandLine;action:set;left:;right:foo
 +++++++
 * Global Variables:
-[0] $__amifile__
-AMI_VAR_STR
-	[len:29] ../tests/field-assignment.ami
 

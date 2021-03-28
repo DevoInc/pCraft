@@ -72,19 +72,19 @@ AMI_VAR_VARIABLE
 [4] $fromanotherlocal
 AMI_VAR_VARIABLE
 	[len:9] $localvar
-[6] $myvar
+[5] $myvar
 AMI_VAR_INT
 	3
-[7] $counter
+[6] $counter
 AMI_VAR_INT
 	2
-[8] $rc4var
+[7] $rc4var
 AMI_VAR_STR
 	[len:28] 6da20ca7f0c0145973f1da06b53f
-[9] $b64e
+[8] $b64e
 AMI_VAR_STR
 	[len:36] UGxlYXNlIGVuY29kZSB0aGlzIHN0cmluZw==
-[10] $uuidv5
+[9] $uuidv5
 AMI_VAR_STR
 	[len:36] 7f4bdf58-ba65-5b32-9a12-3265f2c20d83
 
