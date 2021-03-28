@@ -156,7 +156,7 @@ class LogPlugin(LogContext):
         category = ""
 
         try:
-            variables["url_category"] = kvdict["classification"]
+            variables["url_category"] = kvdict["$classification"]
         except:        
             try:
                 cat = self.domains[domain]
