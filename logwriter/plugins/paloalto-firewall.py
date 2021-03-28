@@ -224,7 +224,7 @@ class LogPlugin(LogContext):
         if event["exec"] == "DNSConnection":
             variables["IP_Protocol"] = "udp"
         
-        bufevent = self.retrieve_template("paloalto.firewall", "traffic", variables)
+        bufevent = self.retrieve_template("paloalto.firewall.traffic", "9", variables)
         
         bufevent = frame_time.strftime(bufevent)
         
@@ -289,7 +289,7 @@ class LogPlugin(LogContext):
         if action_exec == "DNSConnection":
             variables["IP_Protocol"] = "udp"
         
-        bufevent = self.retrieve_template("paloalto.firewall", "traffic", variables)
+        bufevent = self.retrieve_template("paloalto.firewall.traffic", "9", variables)
         bufevent = frame_time.strftime(bufevent)
         
         return bufevent
