@@ -162,6 +162,8 @@ GROUP group
 FROMGROUP fromgroup
 SKIPREPEAT skip_repeat
 IGNOREGROUPSLEEP ignore_group_sleep
+SLICEDIVIDER slice_div
+SLICERUN slice_run
 
 %%
 
@@ -269,6 +271,8 @@ IGNOREGROUPSLEEP ignore_group_sleep
 		  }
 		}
 
+{SLICEDIVIDER} { return TOK_SLICEDIVIDER; }
+{SLICERUN} { return TOK_SLICERUN; }
 {IGNOREGROUPSLEEP} { return TOK_IGNOREGROUPSLEEP; }
 {SKIPREPEAT} { return TOK_SKIPREPEAT; }
 {FROMGROUP} { return TOK_FROMGROUP; }

@@ -93,6 +93,8 @@ typedef void *yyscan_t;
 %token FROMGROUP
 %token SKIPREPEAT
 %token IGNOREGROUPSLEEP
+%token SLICEDIVIDER
+%token SLICERUN
 
 %left PLUS MINUS
 
@@ -128,6 +130,8 @@ input:
        | input keywords_as_argname
        | input skiprepeat
        | input ignoregroupsleep
+       | input set_slice_div
+       | input set_slice_run
        | input debugon
        | input debugoff
        | input exit
@@ -617,6 +621,16 @@ skiprepeat: SKIPREPEAT {
 
 ignoregroupsleep: IGNOREGROUPSLEEP {
   ami->ignore_group_sleep = 1;
+}
+;
+
+set_slice_div: SLICEDIVIDER INTEGER {
+  ami->slice_divider = $2;
+}
+;
+
+set_slice_run: SLICERUN INTEGER {
+  ami->slice_to_run = $2;
 }
 ;
 
