@@ -100,6 +100,10 @@ ami_t *ami_new(void)
 
 void ami_set_slice(ami_t *ami, int slice_to_run, int slice_divider)
 {
+  if (slice_to_run > slice_divider) {
+    fprintf(stderr, "Cannot run a slice (%d) that is greater than the number of dividers (%d)\n", slice_to_run, slice_divider);
+    exit(1);
+  }
   ami->slice_divider = slice_divider;
   ami->slice_to_run = slice_to_run;
 }

@@ -173,8 +173,8 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	  fprintf(stderr, "We should run a slice, however the divider has not been set. Exiting.");
 	  exit(1);
 	} else {
-	  tmp_size = ((int)index / ami->slice_divider) * ami->slice_to_run;
-	  sliced_index = tmp_size + ((int)index / ami->slice_divider);
+	  tmp_size = ((int)index / ami->slice_divider) * (ami->slice_to_run - 1) + 1;
+	  sliced_index = tmp_size + ((int)index / ami->slice_divider) - 1;
 	  printf("We start at %d until %d\n", tmp_size, sliced_index);
 	}
       }
