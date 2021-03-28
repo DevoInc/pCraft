@@ -116,12 +116,16 @@ struct _ami_t {
   khash_t(voidptrhash) *array;
 
   csvfiles_t *csvfiles;
+
+  int slice_divider;
+  int slice_to_run;
 };
 typedef struct _ami_t ami_t;
 
 typedef int (*foreach_action_cb)(ami_t *ami, ami_action_t *action, void *user_data);
 
 ami_t *ami_new(void);
+void ami_set_slice(ami_t *ami, int slice_to_run, int slice_divider);
 void ami_global_counter_incr(ami_t *ami);  
 int ami_parse_file(ami_t *ami, const char *file);
 void ami_set_message_callback(ami_t *ami, print_message_cb message_cb);

@@ -100,6 +100,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   size_t seedret;
 
   ssize_t retrand;
+
+  size_t tmp_size = 1;
+  int    sliced_index = 0;
   
   retrand = getrandom(&seed, sizeof(unsigned int), GRND_NONBLOCK);
   
@@ -161,8 +164,22 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       if (ami->skip_repeat) {
 	index = 1;
       }
+
+      tmp_size = 1;
+      sliced_index = index;
+      
+      if (ami->slice_to_run > 0) {
+	if (!ami->slice_divider) {
+	  fprintf(stderr, "We should run a slice, however the divider has not been set. Exiting.");
+	  exit(1);
+	} else {
+	  tmp_size = ((int)index / ami->slice_divider) * ami->slice_to_run;
+	  sliced_index = tmp_size + ((int)index / ami->slice_divider);
+	  printf("We start at %d until %d\n", tmp_size, sliced_index);
+	}
+      }
       tmp_var = ami_variable_new();
-      for (size_t i = 1; i <= index; i++) {
+      for (size_t i = tmp_size; i <= sliced_index; i++) {
 	ami_variable_set_int(tmp_var, i);
 	ami_set_variable(ami, n->strval, tmp_var);
 	walk_node(ami, n->next, i, 1);

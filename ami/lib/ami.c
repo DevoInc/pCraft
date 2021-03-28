@@ -91,8 +91,17 @@ ami_t *ami_new(void)
   ami->length_fields = kh_init(inthash);
 
   ami->csvfiles = NULL;
+
+  ami->slice_divider = 0;
+  ami->slice_to_run = 0;
   
   return ami;
+}
+
+void ami_set_slice(ami_t *ami, int slice_to_run, int slice_divider)
+{
+  ami->slice_divider = slice_divider;
+  ami->slice_to_run = slice_to_run;
 }
 
 khash_t(inthash) *ami_array_get_header(ami_t *ami, char *arrayname)

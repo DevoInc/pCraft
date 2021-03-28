@@ -130,12 +130,23 @@ int main(int argc, char **argv)
   char *dbname;
   int retval;
 
-  action_counter = 0;
+  int number_of_slices = 0;
+  int this_slice = 0;
   
+  action_counter = 0;
+
+        /* index = (int)strtod(tmp_str, NULL); */
+
   if (argc < 3) {
-    fprintf(stderr, "Syntax: %s file.ami file.db\n", argv[0]);
+    fprintf(stderr, "Syntax: %s file.ami file.db [number_of_slices] [this_slice]\n", argv[0]);
     return -1;
   }
+  if (argc == 5) {
+    printf("Setting slices\n");
+    number_of_slices = (int)strtod(argv[3], NULL);
+    this_slice = (int)strtod(argv[4], NULL);
+  }
+  
   if (avro_schema_from_json_literal(CCRAFT_SCHEMA, &ccraft_schema)) {
     fprintf(stderr, "Unable to parse ccraft schema\n");
     fprintf(stderr, "Error was %s\n", avro_strerror());
@@ -152,6 +163,8 @@ int main(int argc, char **argv)
   }  
 
   ami = ami_new();
+  ami_set_slice(ami, this_slice, number_of_slices);
+  
   retval = ami_parse_file(ami, argv[1]);
 
   if (ami->start_time > 0) {
