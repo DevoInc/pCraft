@@ -156,11 +156,14 @@ class LogPlugin(LogContext):
         category = ""
 
         try:
-            cat = self.domains[domain]
-            category = self.catmap[cat]
-        except:
-            category = "Unclassified"            
-        variables["url_category"] = category
+            variables["url_category"] = kvdict["classification"]
+        except:        
+            try:
+                cat = self.domains[domain]
+                category = self.catmap[cat]
+            except:
+                category = "Unclassified"            
+            variables["url_category"] = category
 
 
         event_name = "main"
