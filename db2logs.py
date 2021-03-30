@@ -33,6 +33,7 @@ logplugin_action_map = { "DNSConnection": ["named"],
 # }
 
 network_plugins = ["netflow", "paloalto-firewall"]
+# network_plugins = []
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
@@ -75,8 +76,9 @@ if __name__ == "__main__":
         else:
             try:
                 plugin_name = logplugin_action_map[event["exec"]]
-                for net in network_plugins:
-                    plugin_name.append(net)
+                if event["exec"] == "HTTPConnection":
+                    for net in network_plugins:
+                        plugin_name.append(net)
             except KeyError:
                 print("No such plugin %s for action %s" % (event["exec"], event["action"]))
             for plugin in plugin_name:

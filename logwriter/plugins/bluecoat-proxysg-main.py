@@ -112,6 +112,10 @@ class LogPlugin(LogContext):
         self.faup_ctx.decode(full_uri)
         
         variables = {}
+
+        variables["http_response_body_bytes"] = str(random.randint(230, 4096))
+        variables["http_request_body_bytes"] = str(random.randint(20, 2048))
+        
         try:
             variables["http_referer_original"] = kvdict["$referer"]
         except:
