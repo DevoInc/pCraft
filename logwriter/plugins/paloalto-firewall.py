@@ -135,8 +135,8 @@ class LogPlugin(LogContext):
             "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Threat/Content_Type": self.get_threat_type(),
             "Generate_Time": generate_time.strftime("%Y/%m/%d %H:%M:%S"),
-            "Source_address": packet.ip.src,
-            "Destination_address": packet.ip.dst,
+            "Source_Address": packet.ip.src,
+            "Destination_Address": packet.ip.dst,
             "Time_Logged": generate_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Source_Port": self.get_srcport(packet),
             "Destination_Port": self.get_dstport(packet),
@@ -190,8 +190,8 @@ class LogPlugin(LogContext):
             "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Threat/Content_Type": self.get_threat_type(),
             "Generate_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
-            "Source_address": None,
-            "Destination_address": None,
+            "Source_Address": None,
+            "Destination_Address": None,
             "Time_Logged": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Source_Port": None,
             "Destination_Port": None,
@@ -210,11 +210,11 @@ class LogPlugin(LogContext):
             "Packets_Received": packetsreceived,
         }
         try:
-            variables["Source_address"] = kvdict["$ip-src"]
+            variables["Source_Address"] = kvdict["$ip-src"]
         except:
             pass
         try:
-            variables["Destination_address"] = kvdict["$ip-dst"]
+            variables["Destination_Address"] = kvdict["$ip-dst"]
         except:
             pass
         try:
@@ -261,8 +261,8 @@ class LogPlugin(LogContext):
             "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Threat/Content_Type": self.get_threat_type(),
             "Generate_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
-            "Source_address": None,
-            "Destination_address": None,
+            "Source_Address": None,
+            "Destination_Address": None,
             "Time_Logged": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Source_Port": None,
             "Destination_Port": None,
@@ -275,11 +275,11 @@ class LogPlugin(LogContext):
             "url_idx": random.randint(1, 99),                        
         }
         try:
-            variables["Source_address"] = kvdict["$ip-src"]
+            variables["Source_Address"] = kvdict["$ip-src"]
         except:
             pass
         try:
-            variables["Destination_address"] = kvdict["$ip-dst"]
+            variables["Destination_Address"] = kvdict["$ip-dst"]
         except:
             pass
         try:
