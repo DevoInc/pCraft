@@ -49,9 +49,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # global_variables = {}
-        
+
+    write_few_network = 0
     reader = DataFileReader(open(ccraftfile, "rb"), DatumReader())
     for event in reader:
+        write_few_network += 1
         # print(str(event))
         # {'time': 1614504320, 'exec': 'Void', 'variables': {'$domain': 'haute-voltige.io', '$index': '1', '$var': '1234'}, 'fset': {'myfield': 'abcd'}, 'freplace': {}}
         kvdict = event["fset"]        
@@ -77,8 +79,9 @@ if __name__ == "__main__":
             try:
                 plugin_name = logplugin_action_map[event["exec"]]
                 if event["exec"] == "HTTPConnection":
-                    for net in network_plugins:
-                        plugin_name.append(net)
+                    if write_few_network % 100  == 0:
+                        for net in network_plugins:
+                            plugin_name.append(net)
             except KeyError:
                 print("No such plugin %s for action %s" % (event["exec"], event["action"]))
             for plugin in plugin_name:
