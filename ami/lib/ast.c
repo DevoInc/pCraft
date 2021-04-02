@@ -474,8 +474,10 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 					       0x000fffff, 0x00f8ffff, 0x00fcffff, 0x00feffff, 0x00ffffff,
 					       0x80ffffff, 0xc0ffffff, 0xe0ffffff, 0xf0ffffff, 0xf8ffffff,
 					       0xfcffffff, 0xfeffffff, 0xffffffff};
-	char *ipaddr_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
-	char *ipnum_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
+	char *ipaddr_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-3);
+	char *ipnum_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+	int network = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
+
 	ami_variable_t *ipaddr_v = ami_get_variable(ami, ipaddr_s);
 	if (!ipaddr_v) {
 	  fprintf(stderr, "%s:%d No such variable %s\n", n->filename, n->lineno, ipaddr_s);
@@ -503,6 +505,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *ip, *mask;
 	int mask_int;
 	int counter;
+	struct in_addr out;
 
 	if (!ipaddr) {
 	  fprintf(stderr, "No such IP Address from %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2));
@@ -545,31 +548,31 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
 	counter = 0;
 	for (addr_iter.s_addr = out_network.s_addr; addr_iter.s_addr <= out_broadcast.s_addr; addr_iter.s_addr++) {
-	  struct in_addr out;
-	  out.s_addr = ntohl(addr_iter.s_addr);
+	  out.s_addr = ntohl(addr_iter.s_addr);	    
 	  if (inet_ntop(AF_INET, (const void *)&out, ret_network, sizeof(ret_network)) == NULL) {
-	    fprintf(stderr, "Cannot convert IP address %s: %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2), strerror(errno));
+	    fprintf(stderr, "Cannot convert IP address %s: %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-3), strerror(errno));
 	    exit(1);
 	  }
-
 	  if (counter == ipn) {
-	    break;
+	    char quad4 = addr_iter.s_addr;
+	    if (network) {
+	      out.s_addr = ntohl(addr_iter.s_addr);	    
+	      break;
+	    } else {
+	      if ((quad4 == 0x00000000)||(quad4 == 0xffffffff)) {
+		/* printf("%s is a network or broadcast address\n", ret_network); */
+		addr_iter.s_addr++;
+		ipn++;
+	      } else {
+		out.s_addr = ntohl(addr_iter.s_addr);	    
+		break;
+	      }
+	    }
 	  }
 	  
 	  counter++;
 	}
 
-	/* if (inet_ntop(AF_INET, (const void *)&out_network, ret_network, sizeof(ret_network)) == NULL) { */
-	/*   fprintf(stderr, "Cannot convert IP address %s: %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2), strerror(errno)); */
-	/*   exit(1); */
-	/* } */
-	/* if (inet_ntop(AF_INET, (const void *)&out_broadcast, ret_broadcast, sizeof(ret_broadcast)) == NULL) { */
-	/*   fprintf(stderr, "Cannot convert IP address %s: %s\n", kv_A(ami->values_stack, kv_size(ami->values_stack)-2), strerror(errno)); */
-	/*   exit(1); */
-	/* } */
-
-	/* printf("Network return:%s, broadcast:%s\n", ret_network, ret_broadcast); */
-	
 	kv_push(char *, ami->values_stack, strdup(ret_network));
       } else if (!strcmp("crypto.md5", n->strval)) {
 	const char *strbuf = ami_get_nested_variable_as_str(ami, n,kv_A(ami->values_stack, kv_size(ami->values_stack)-1));
