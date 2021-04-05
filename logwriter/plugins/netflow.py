@@ -72,7 +72,7 @@ class LogPlugin(LogContext):
         try:
             variables["srcport"] = kvdict["$port-src"]
         except:
-            pass
+            variables["srcport"] = str(random.randint(5000, 65530))
         try:
             variables["dstport"] = kvdict["$port-dst"]
         except:
