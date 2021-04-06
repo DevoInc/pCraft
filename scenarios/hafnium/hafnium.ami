@@ -130,7 +130,7 @@ action megaxfer {
 sleep 100
 
 repeat 100 as $index {
-    $data = base64.encode(string.random(128))
+    $data = base64.encode(random.string(128))
     
     action http {
 	$method = "POST"
