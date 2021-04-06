@@ -58,6 +58,13 @@ class LogPlugin(LogContext):
             pass            
         variables["src_port_number"] = packet.tcp.srcport
         variables["dst_port_number"] = packet.tcp.dstport
+
+        protocol = "http"
+        if str(packet.tcp.dstport) == "443" or str(packet.tcp.dstport) =="8443":
+            protocol = "https"
+        
+        variables["network_application_protocol"] = protocol
+
         variables["event_duration"] = str(random.randrange(20,1000))
         domain = self.faup_ctx.get_domain()
         variables["url_hostname"] = domain
@@ -98,6 +105,14 @@ class LogPlugin(LogContext):
         except:
             pass
 
+        portdst = 80
+        try:
+            portdst = kvdict["$port-dst"]
+            if portdst == 443 or portdst == 8443:
+                protocol = "https"
+        except:
+            pass
+        
         uri = "/"
         try:
             uri = kvdict["$uri"]
@@ -147,6 +162,7 @@ class LogPlugin(LogContext):
             variables["dst_port_number"] = kvdict["$port-dst"]
         except:
             pass
+        variables["network_application_protocol"] = protocol
         
         variables["event_duration"] = str(random.randrange(20,1000))
         try:

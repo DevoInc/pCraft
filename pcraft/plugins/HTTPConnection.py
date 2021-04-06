@@ -39,6 +39,7 @@ httpconnect:
         self.set_value_or_default(action, "ip-dst", "0.0.0.0")
         self.set_value_or_default(action, "domain", "www.example.com")
         self.set_value_or_default(action, "port-src", random.randint(4096,65534))
+        self.set_value_or_default(action, "port-dst", 80)
         self.set_value_or_default(action, "method", "GET") 
         self.set_value_or_default(action, "user", "") 
         self.set_value_or_default(action, "user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Pcraft/0.0.7") 
@@ -53,7 +54,7 @@ httpconnect:
 
         
         # print("port src:%s" % self.getvar("port-src"))
-        utils.append_tcp_three_way_handshake(self.session, action, self.plugins_data, self.getvar("port-src"))
+        utils.append_tcp_three_way_handshake(self.session, action, self.plugins_data, int(self.getvar("port-src")), int(self.getvar("port-dst")))
 
         # print(action.Variables())
         # print("HTTP Method:%s" % self.getvar("method"))
@@ -111,7 +112,7 @@ httpconnect:
             content=self.getvar("resp-content")) 
         
         # httpget_string = "POST /g.php HTTP/1.1\r\nAccept: */*\r\nUser-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; InfoPath.1)\r\nHost:" + self.plugins_data._get("domain") + "\r\nContent-Length:122\r\nConnection: Keep-Alive\r\nCache-Control: no-cache\r\n\r\n" + str(os.urandom(122))
-        httpreq1 = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("ip-dst")) / TCP(sport=self.getvar("port-src"),dport=80, flags="P""A") / httpreq_string
+        httpreq1 = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("ip-dst")) / TCP(sport=int(self.getvar("port-src")), dport=int(self.getvar("port-dst")), flags="P""A") / httpreq_string
 
         self.session.append_to_session(httpreq1)
         httpreq1 = self.session.fix_seq_ack(httpreq1)    
@@ -120,13 +121,13 @@ httpconnect:
 
         # self.session.append_to_session(httpreq1)
         
-        ack = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("ip-dst")) / TCP(sport=80, dport=self.getvar("port-src"), flags="A")
+        ack = Ether() / IP(src=self.getvar("ip-src"),dst=self.getvar("ip-dst")) / TCP(sport=int(self.getvar("port-dst")), dport=int(self.getvar("port-src")), flags="A")
 
         self.session.append_to_session(ack)
         ack = self.session.fix_seq_ack(ack)
         self.plugins_data.AddPacket(action, ack)
         
-        httpreq2 = Ether() / IP(src=self.getvar("ip-dst"),dst=self.getvar("ip-src")) / TCP(sport=80,dport=self.getvar("port-src"), flags="P""A") / httpresp_string
+        httpreq2 = Ether() / IP(src=self.getvar("ip-dst"),dst=self.getvar("ip-src")) / TCP(sport=int(self.getvar("port-dst")),dport=int(self.getvar("port-src")), flags="P""A") / httpresp_string
 
         self.session.append_to_session(httpreq2)
         httpreq2 = self.session.fix_seq_ack(httpreq2)
