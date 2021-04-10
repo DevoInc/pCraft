@@ -7,6 +7,9 @@ reference "https://blog.talosintelligence.com/2021/03/hafnium-update.html"
 reference "https://www.volexity.com/blog/2021/03/02/active-exploitation-of-microsoft-exchange-zero-day-vulnerabilities/"
 revision 1
 
+start_time 1614063600 # 7 AM Tuesday Feb 23th 2021 UTC
+
+
 # A Random IP from the dmoains given in the list
 # $attacker_ip = "203.99.24.214"
 $rand-ip = random.int(1, 17)
