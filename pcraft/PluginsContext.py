@@ -31,7 +31,8 @@ class PluginsContext(object):
             value = default
                 
         self.plugins_data._set(key, value)
-
+        return value
+        
     def check_required(self, script, required_keys):
         found_in_script=False
         found_in_plugins_data=False
