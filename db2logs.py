@@ -9,6 +9,8 @@ import avro.schema
 from avro.datafile import DataFileReader
 from avro.io import DatumReader
 
+from pcraft.Plugins import *
+
 
 SCHEMA = """{
     "type": "record",
@@ -42,7 +44,11 @@ if __name__ == "__main__":
 
     ccraftfile = sys.argv[1]
     outdir = sys.argv[2]
-        
+
+
+    plugins_loader = Plugins(ami=None, pcap_out=None, app=None, loadfunc=None)
+    pcraft_plugins = plugins_loader.get_loaded_plugins()
+    
     writer = LogWrite(None, outdir, "-f" in sys.argv)
     if writer.has_error:
         print("Error. Exiting.")
@@ -86,8 +92,12 @@ if __name__ == "__main__":
                     if "-v" in sys.argv:
                         writer.loaded_plugins[plugin].validate_keys(event["variables"])
 
-                    # writer.loaded_plugins[plugin].run_ccraft(event, global_variables)
-                    writer.loaded_plugins[plugin].run_ccraft(event, event["variables"])
+                    # The variables for network are filled, in case they do not exist. This is a problem
+                    # we do not have with pcap as we always have ip/port-src and ip/port-dst
+                    event_vars = event["variables"]
+                    pcraft_plugins[event["exec"]].set_network_variables(event_vars, event=event)
+                    # print(event_vars)
+                    writer.loaded_plugins[plugin].run_ccraft(event, event_vars)
                 else:
                     print("No such plugin %s for action %s" % (plugin, event["action"]))
                     

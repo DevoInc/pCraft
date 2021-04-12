@@ -42,24 +42,30 @@ dnsconnect:
         self.random_server_ip = utils.getRandomIP("10.0.0.0/8", ipfail="172.17.42.42")
         self.session = session
 
-    def variable(self, varname):
+    def variable(self, varname, event=None):
         var = self.getvar(varname)
         if var:
             return var
-        if varname == "ip-src":
+        if varname == "$ip-src":
             return self.random_client_ip.get()
-        elif varname == "ip-dst":
+        elif varname == "$ip-dst":
             return self.random_client_ip.get()
-        elif varname == "resolver":
+        elif varname == "$protocol":
+            return "udp"
+        elif varname == "$resolver":
             return "1.1.1.1"
-        elif varname == "port-src":
+        elif varname == "$port-src":
             return str(random.randint(4096, 65534))
-        elif varname == "port-dst":
+        elif varname == "$port-dst":
             return "53"
 
         print("Warning: unknown variable %s!" % varname)
         return None
-        
+
+    # def set_network_variables(self, vardict, event=None):
+    #     if not "port-src" in vardict:
+    #         vardict["port-src"] = self.variable("port-src", event)
+    
     def run(self, ami, action):
         self.set_value_or_default(action, "ip-src", self.random_client_ip.get())
         self.set_value_or_default(action, "ip-dst", self.random_server_ip.get())

@@ -34,27 +34,37 @@ httpconnect:
         self.random_client_ip = utils.getRandomIP("192.168.0.0/16", ipfail="172.16.42.42")
         self.session = session
         
-    def variable(self, varname):
+    def variable(self, varname, event=None):
         var = self.getvar(varname)
         if var:
             return var
-        if varname == "ip-src":
+        if varname == "$ip-src":
             return self.random_client_ip.get()
-        elif varname == "ip-dst":
+        elif varname == "$ip-dst":
             return self.random_client_ip.get()
-        elif varname == "domain":
+        elif varname == "$protocol":
+            return "tcp"
+        elif varname == "$domain":
             return "www.example.com"
-        elif varname == "port-src":
+        elif varname == "$port-src":
             return str(random.randint(4096, 65534))
-        elif varname == "port-dst":
+        elif varname == "$port-dst":
+            has_ssl=False
+            try:
+                ssl = int(event["variables"]["$ssl"])
+                if ssl == 1:
+                    return "443"
+            except:
+                pass
+                
             return "80"
-        elif varname == "method":
+        elif varname == "$method":
             return "GET"
-        elif varname == "user":
+        elif varname == "$user":
             return ""
-        elif varname == "user-agent":
+        elif varname == "$user-agent":
             return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Pcraft/0.0.7"
-        elif varname == "uri":
+        elif varname == "$uri":
             return "/"
 
         print("Warning: unknown variable %s!" % varname)

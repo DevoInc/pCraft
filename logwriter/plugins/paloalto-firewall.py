@@ -140,7 +140,7 @@ class LogPlugin(LogContext):
             "Time_Logged": generate_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Source_Port": self.get_srcport(packet),
             "Destination_Port": self.get_dstport(packet),
-            "IP_Protocol": self.get_protocol(packet),
+            "Protocol": self.get_protocol(packet),
             "URL/Filename": self.get_url_filename(packet),
             "Direction": self.get_direction(packet),
             "Sequence_Number": self.get_seqid(packet),
@@ -195,7 +195,7 @@ class LogPlugin(LogContext):
             "Time_Logged": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Source_Port": None,
             "Destination_Port": None,
-            "IP_Protocol": None,
+            "Protocol": None,
             "URL/Filename": None,
             "Direction": "client-to-server",
             "Sequence_Number": random.randint(1, 65536),
@@ -239,10 +239,11 @@ class LogPlugin(LogContext):
             pass
 
         # print(str(event))
-        
-        variables["IP_Protocol"] = "tcp"
-        if event["exec"] == "DNSConnection":
-            variables["IP_Protocol"] = "udp"
+
+        try:
+            variables["Protocol"] = kvdict["$protocol"]
+        except:
+            pass
         
         bufevent = self.retrieve_template("paloalto.firewall.traffic", "9", variables)
         
@@ -266,7 +267,7 @@ class LogPlugin(LogContext):
             "Time_Logged": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
             "Source_Port": None,
             "Destination_Port": None,
-            "IP_Protocol": None,
+            "Protocol": None,
             "URL/Filename": None,
             "Direction": "client-to-server",
             "Sequence_Number": random.randint(1, 65536),

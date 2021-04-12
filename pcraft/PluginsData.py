@@ -9,14 +9,16 @@ class PluginsData(object):
         self.ami = ami
 
         # print("Start time:" + time.ctime(int(self.ami.GetStartTime())))
-        
-        if self.ami.GetStartTime() > 0:            
-            self.packet_time = self.ami.GetStartTime()
-        else:
-            self.packet_time = self.current_time - self.ami.GetSleepCursor()
 
-        self.outpcap = PcapWriter(pcapout, append=True, sync=True)        
-        self.outpcap_endpoint = PcapWriter("endpoint_" + pcapout, append=True, sync=True)
+        if ami:
+            if self.ami.GetStartTime() > 0:            
+                self.packet_time = self.ami.GetStartTime()
+            else:
+                self.packet_time = self.current_time - self.ami.GetSleepCursor()
+
+        if pcapout:
+            self.outpcap = PcapWriter(pcapout, append=True, sync=True)        
+            self.outpcap_endpoint = PcapWriter("endpoint_" + pcapout, append=True, sync=True)
         self.packets_counter = 0
         self.writing_errors = 0
         

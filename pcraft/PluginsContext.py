@@ -57,3 +57,20 @@ class PluginsContext(object):
         for k, v in script.items():
             if not k.startswith("_"):
                 self.setvar(k, v)
+
+    def variable(self, varname, event=None):
+        print("the variable function should not be called from PluginsContext!")
+        pass
+                
+    def set_network_variables(self, vardict, event=None):
+        if not "$port-src" in vardict:
+            vardict["$port-src"] = self.variable("$port-src", event)
+        if not "$port-dst" in vardict:
+            vardict["$port-dst"] = self.variable("$port-dst", event)
+        if not "$ip-src" in vardict:
+            vardict["$ip-src"] = self.variable("$ip-src", event)
+        if not "$ip-dst" in vardict:
+            vardict["$ip-dst"] = self.variable("$ip-dst", event)
+        if not "$protocol" in vardict:
+            vardict["$protocol"] = self.variable("$protocol", event)
+        

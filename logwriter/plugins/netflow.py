@@ -76,10 +76,7 @@ class LogPlugin(LogContext):
         try:
             variables["dstport"] = kvdict["$port-dst"]
         except:
-            if event["exec"] == "DNSConnection":
-                variables["dstport"] = "53"
-            if event["exec"] == "HTTPConnection":
-                variables["dstport"] = "80"
+            variables["dstport"] = str(random.randint(5000, 65530))            
         try:
             variables["nexthop"] = kvdict["$nexthop"]
         except:
@@ -123,12 +120,22 @@ class LogPlugin(LogContext):
         try:
             variables["dstport"] = kvdict["$port-dst"]
         except:
-            if action_exec == "DNSConnection":
-                variables["dstport"] = "53"
-            if action_exec == "HTTPConnection":
-                variables["dstport"] = "80"
-        
+            variables["dstport"] = str(random.randint(5000, 65530))
 
+        try:
+            proto = kvdict["$protocol"]
+            proto_n = 0
+            if proto == "tcp":
+                proto_n = 6                
+            elif proto == "udp":
+                proto_n = 17
+            elif proto == "icmp":
+                proto_n = 1
+                
+            variables["proto"] = str(proto_n)
+        except:
+            pass
+            
         variables["headerdate"] = event_time + "000"
         variables["firstdate"] = event_time + "000"
         variables["lastdate"] = event_time + "000"
