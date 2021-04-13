@@ -266,6 +266,8 @@ SLICERUN slice_run
 		  } else {
 			  // free(filenames[includes_index + 1]);
 			  filename = filenames[includes_index];
+                          free(ami->file);
+                          ami->file = strdup(filename);
 			  ami_yy_delete_buffer(YY_CURRENT_BUFFER, yyscanner);
 			  ami_yy_switch_to_buffer(includes[includes_index], yyscanner);
 		  }
