@@ -38,6 +38,7 @@ enum _ami_node_type_t {
        AMI_NT_SLEEP_FROMGROUP,
        AMI_NT_ARRAYVAR, // $var = []
        AMI_NT_ARRAYGET, // $var[1]
+       AMI_NT_DELETE,
 };
 typedef enum _ami_node_type_t ami_node_type_t;
 
@@ -107,6 +108,7 @@ static const char *ami_node_names[] = {
        "AMI_NT_SLEEP_FROMGROUP",
        "AMI_NT_ARRAYVAR",
        "AMI_NT_ARRAYGET",
+       "AMI_NT_DELETE",
 };
 
 ami_tree_t *ami_tree_new(void);

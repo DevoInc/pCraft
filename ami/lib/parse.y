@@ -95,6 +95,7 @@ typedef void *yyscan_t;
 %token IGNOREGROUPSLEEP
 %token SLICEDIVIDER
 %token SLICERUN
+%token DELETE
 
 %left PLUS MINUS
 
@@ -142,6 +143,7 @@ input:
        | input array_item
        | input expression_int
        | input expression_float
+       | input delete
        ;
 
 
@@ -733,6 +735,13 @@ expression_float: FLOAT { $$ = $1; }
           | expression_float PLUS expression_float { $$ = $1 + $3; }
           | expression_float MINUS expression_float { $$ = $1 - $3; }
 ;
+
+delete: DELETE GVARIABLE {
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_DELETE, $2, 0, 0, 0);
+  free($2);
+ }
+;
+
 %%
 
 

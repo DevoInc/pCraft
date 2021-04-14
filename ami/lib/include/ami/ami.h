@@ -140,6 +140,7 @@ int ami_set_variable(ami_t *ami, const char *key, ami_variable_t *var);
 int ami_set_variable_string(ami_t *ami, const char *key, char *strval);
 int ami_replace_variable(ami_t *ami, const char *key, ami_variable_t *var);
 ami_variable_t *ami_get_variable(ami_t *ami, const char *key);
+int ami_delete_variable(ami_t *ami, const char *key);
 ami_variable_t *ami_fetch_variable(ami_t *ami, const char *key);  
 void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata1, void *userdata2, void *userdata3);
 void ami_ast_tree_debug(ami_t *ami);

@@ -121,6 +121,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
     }
 
     switch(n->type) {
+    case AMI_NT_DELETE:
+      ami_delete_variable(ami, n->strval);      
+      break;
     case AMI_NT_REFERENCE:
       kv_push(char *, ami->references, n->strval);      
       break;
@@ -216,9 +219,9 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       /* kv_a(char *, ami->values_stack, strdup(n->strval)); */
       break;
     case AMI_NT_VARVAR:
-		kv_push(char *, ami->varvar_stack, strdup(n->strval));
-		kv_push(char *, ami->values_stack, strdup(n->strval));
-      	break;
+      kv_push(char *, ami->varvar_stack, strdup(n->strval));
+      kv_push(char *, ami->values_stack, strdup(n->strval));
+      break;
     case AMI_NT_VARNAME:
 		if (array_get_index > 0) {
 			char *lastval = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);

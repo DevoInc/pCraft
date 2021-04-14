@@ -164,6 +164,7 @@ SKIPREPEAT skip_repeat
 IGNOREGROUPSLEEP ignore_group_sleep
 SLICEDIVIDER slice_div
 SLICERUN slice_run
+DELETE delete
 
 %%
 
@@ -273,6 +274,7 @@ SLICERUN slice_run
 		  }
 		}
 
+{DELETE} { return TOK_DELETE; }
 {SLICEDIVIDER} { return TOK_SLICEDIVIDER; }
 {SLICERUN} { return TOK_SLICERUN; }
 {IGNOREGROUPSLEEP} { return TOK_IGNOREGROUPSLEEP; }

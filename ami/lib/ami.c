@@ -329,6 +329,19 @@ ami_variable_t *ami_get_variable(ami_t *ami, const char *key)
   return var;
 }
 
+int ami_delete_variable(ami_t *ami, const char *key)
+{
+  khint_t k;
+
+  k = kh_get(varhash, ami->variables, key);
+  int is_missing = (k == kh_end(ami->variables));
+  if (is_missing) return -1;
+
+  kh_del(varhash, ami->variables, k);
+    
+  return 0;
+}
+
 FILE *ami_get_open_file(ami_t *ami, const char *filename)
 {
   khint_t k;
