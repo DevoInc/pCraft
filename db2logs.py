@@ -71,6 +71,7 @@ if __name__ == "__main__":
                 print("Warning: $log_plugin variable not found in action '%s'. Using mswin-security" % event["action"])
                 plugin_name.append("mswin-security")
 
+            # print("Controller Length of plugins: " + str(len(plugin_name)))
             for plugin in plugin_name:
                 if plugin in writer.loaded_plugins:
                     if "-v" in sys.argv:
@@ -84,9 +85,12 @@ if __name__ == "__main__":
             try:
                 plugin_name = logplugin_action_map[event["exec"]]
                 for net in network_plugins:
-                    plugin_name.append(net)
+                    if net not in plugin_name:
+                        plugin_name.append(net)
             except KeyError:
                 print("No such plugin %s for action %s" % (event["exec"], event["action"]))
+            # print("Length of plugins: " + str(len(plugin_name)))
+            # print(str(plugin_name))
             for plugin in plugin_name:
                 if plugin in writer.loaded_plugins:
                     if "-v" in sys.argv:
