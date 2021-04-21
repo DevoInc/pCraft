@@ -13,14 +13,13 @@ random_flag = ["0x80000000", "0x40000000", "0x20000000", "0x10000000", "0x080000
 
 class LogPlugin(LogContext):
     name = "paloalto_threat"
-    active_layer = "ip"
+    active_layer = "no-active-layer"
 
     def __init__(self, outpath):
         super().__init__(outpath)
         self.log_fp = self.openlog("paloalto_threat.log")
-        header = self.retrieve_template_header("paloalto.firewall.traffic", "9")
-        if header:
-            self.log_fp.write(header)
+        self.header = self.retrieve_template_header("paloalto.firewall.traffic", "9")
+        self.first = True
         
         geodb = "GeoLite2-Country.mmdb"
         self.reader = geoip2.database.Reader(os.path.join(os.path.dirname(__file__),geodb))
@@ -40,20 +39,29 @@ class LogPlugin(LogContext):
     def validate_keys(self, kvdict):
         self.do_validate_keys("paloalto.firewall.threat", "9", kvdict)
 
-    def template_to_log(self, frame_time, kvdict):
-        if not "Sequence_Number" in kvdict:
-            kvdict["Sequence_Number"] = str(random.randint(1, 65536))
-        if not "Receive_Time" in kvdict:
-            kvdict["Receive_Time"] = frame_time.strftime("%Y/%m/%d %H:%M:%S")
-        if not "Generate_Time" in kvdict:
-            kvdict["Generate_Time"] = frame_time.strftime("%Y/%m/%d %H:%M:%S")
-        if not "Time_Logged" in kvdict:
-            kvdict["Time_Logged"] = frame_time.strftime("%Y/%m/%d %H:%M:%S")
-        if not "Sequence_Number" in kvdict:
-            kvdict["Sequence_Number"] = str(random.randint(1, 65536))
-        if not "Session_ID" in kvdict:
-            kvdict["Session_ID"] = str(self.session_id)
-            
+    def template_to_log(self, frame_time, kvdict, layer=None):
+        if not layer:
+            if not "Sequence_Number" in kvdict:
+                kvdict["Sequence_Number"] = str(random.randint(1, 65536))
+            if not "Receive_Time" in kvdict:
+                kvdict["Receive_Time"] = frame_time.strftime("%Y/%m/%d %H:%M:%S")
+            if not "Generate_Time" in kvdict:
+                kvdict["Generate_Time"] = frame_time.strftime("%Y/%m/%d %H:%M:%S")
+            if not "Time_Logged" in kvdict:
+                kvdict["Time_Logged"] = frame_time.strftime("%Y/%m/%d %H:%M:%S")
+            if not "Sequence_Number" in kvdict:
+                kvdict["Sequence_Number"] = str(random.randint(1, 65536))
+            if not "Session_ID" in kvdict:
+                kvdict["Session_ID"] = str(self.session_id)
+        else:
+            kvdict = {
+                "Sequence_Number": str(random.randint(1, 65536)),
+                "Receive_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
+                "Generate_Time": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
+                "Time_Logged": frame_time.strftime("%Y/%m/%d %H:%M:%S"),
+                "Session_ID": str(self.session_id)
+            }
+                
         event = self.retrieve_template("paloalto.firewall.threat", "9", kvdict)
         event = frame_time.strftime(event)
 
@@ -61,9 +69,14 @@ class LogPlugin(LogContext):
         
         self.log_fp.write(event)
     
-    def run(self, cap, packet, pktid, kvdict):
+    def run(self, cap, packet, pktid, layer):
+        if self.first:
+            if self.header:
+                self.log_fp.write(header)
+            self.first = False
+
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
-        self.template_to_log(frame_time, kvdict)
+        self.template_to_log(frame_time, None, layer=layer)
 
     def run_ccraft(self, event, kvdict):
         frame_time = datetime.fromtimestamp(int(event["time"]))
