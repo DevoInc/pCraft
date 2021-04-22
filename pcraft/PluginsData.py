@@ -28,8 +28,8 @@ class PluginsData(object):
         # print("Packet Time:%d" % int(self.packet_time))
         # print("Action Sleep Cursor:%d" % int(action.GetSleepCursor()))
         
-        # pkt.time = self.packet_time + action.GetSleepCursor()
-        pkt.time = self.packet_time + self.ami.GetSleepCursor() + action.GetSleepCursor()
+        pkt.time = self.packet_time + action.GetSleepCursor()
+        # pkt.time = self.packet_time + self.ami.GetSleepCursor() + action.GetSleepCursor()
         
         try:
             self.outpcap.write(pkt)
@@ -43,8 +43,8 @@ class PluginsData(object):
         # print("Packet Time:%d" % int(self.packet_time))
         # print("Action Sleep Cursor:%d" % int(action.GetSleepCursor()))
         
-        # pkt.time = self.packet_time + action.GetSleepCursor()
-        pkt.time = self.packet_time + self.ami.GetSleepCursor() + action.GetSleepCursor()
+        pkt.time = self.packet_time + action.GetSleepCursor()
+        # pkt.time = self.packet_time + self.ami.GetSleepCursor() + action.GetSleepCursor()
         
         try:
             self.outpcap_endpoint.write(pkt)
