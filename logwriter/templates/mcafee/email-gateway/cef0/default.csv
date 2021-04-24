@@ -10,7 +10,7 @@ mcafee_duser,printer
 mcafee_filepath,svchost.exe
 mcafee_fileid,934
 mcafee_fsize,2048
-mcafee_rt,
+mcafee_rt,%Y:%m:%d %H:%M:%S.000
 mcafee_email_attachments,
 mcafee_email_subject,
 mcafee_originalsubject,I love you

@@ -51,7 +51,10 @@ class LogPlugin(LogContext):
         pass
         
     def template_to_log(self, frame_time, kvdict):
-        event = self.retrieve_template("tanium", kvdict["event_id"], kvdict)
+        try:
+            event = self.retrieve_template("tanium", kvdict["event_id"], kvdict)
+        except:
+            event = self.retrieve_template("tanium", "threats", kvdict)
         event = frame_time.strftime(event)
 
         return event
