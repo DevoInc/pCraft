@@ -24,7 +24,10 @@ class LogPlugin(LogContext):
             log_flavor = "logstash14"
         
         event = self.retrieve_template("fidelis.cef0", "default", kvdict)
-        event = frame_time.strftime(event)
+        try:
+            event = frame_time.strftime(event)
+        except:
+            pass
 
         return event
 
