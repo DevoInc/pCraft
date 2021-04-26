@@ -1,0 +1,356 @@
+category_external,severity,application,signature_name,signature_id
+vulnerability,medium,FTP,Login Brute Force Attempt,40001
+vulnerability,medium,DNS,Spoofing Cache Record Attempt,40003
+vulnerability,medium,SMB,User Password Brute-force Attempt,40004
+vulnerability,medium,LDAP,User Login Brute-force Attempt,40005
+vulnerability,medium,HTTP,User Authentication Brute-force Attempt,40006
+vulnerability,medium,MAIL,User Login Brute-force Attempt,40007
+vulnerability,medium,MY SQL,Authentication Brute-force Attempt,40008
+vulnerability,medium,TELNET,Authentication Brute-force Attempt,40009
+vulnerability,medium,Microsoft SQL Server,User Authentication Brute-force Attempt,40010
+vulnerability,medium,Postgres Database,User Authentication Brute-force Attempt,40011
+vulnerability,medium,Oracle Database,User Authentication Brute-force Attempt,40012
+vulnerability,medium,Sybase Database,User Authentication Brute-force Attempt,40013
+vulnerability,medium,DB2 Database,User Authentication Brute-force Attempt,40014
+vulnerability,medium,SSH,User Authentication Brute-force Attempt,40015
+vulnerability,medium,SIP INVITE,Method Request Flood Attempt,40016
+vulnerability,medium,VPN,PAN BOX SSL VPN Authentication Brute-force Attempt,40017
+vulnerability,medium,HTTP,Apache Denial of Service Attempt,40018
+vulnerability,medium,HTTP,IIS Denial of Service Attempt,40019
+vulnerability,medium,Digium Asterisk IAX2,Call Number Exhaustion Attempt,40020
+vulnerability,medium,MS-RDP,MS Remote Desktop Connect Attempt,40021
+vulnerability,medium,HTTP,Microsoft ASP.Net Information Leak Brute-force Attempt,40022
+vulnerability,medium,SIP,SIP Register Request Attempt,40023
+vulnerability,medium,SIP,SIP Bye Message Brute-force Attack,40028
+vulnerability,medium,HTTP,HTTP NTLM Authentication Brute-force Attack,40030
+vulnerability,medium,HTTP,HTTP Unauthorized Brute-force Attack,40031
+vulnerability,medium,HTTP,HOIC Tool Brute Force Attack,40032
+vulnerability,medium,DNS,ANY Queries Brute-force DOS Attack,40033
+vulnerability,medium,SMB,Microsoft Windows SMB NTLM Authentication Lack of Entropy Vulnerability,40034
+vulnerability,medium,MYSQL,MySQL COM_CHANGE_USER Brute-force Attempt,40036
+vulnerability,medium,SCADA,SCADA Password Crack Brute Force Attack,40037
+vulnerability,medium,TLS,OpenSSL TLS Heartbeat Brute Force - Heartbleed,40039
+vulnerability,medium,DNS,DGA NXDOMAIN response found,40040
+vulnerability,medium,HTTP,WordPress Login Brute Force Attempt,40044
+vulnerability,medium,HTTP,HTTP Request Brute Force Attack,40059
+vulnerability,medium,SMB,Windows SMB SMBLoris Denial-of-Service Vulnerability,40078
+vulnerability,medium,DNS,DNS Tunnel Data Exfiltration Traffic Brute Force,40087
+vulnerability,medium,HTTP,Torshammer HTTP DoS Attack Brute Force Detection,40093
+vulnerability,medium,HTTP,Slowloris HTTP Flooding Denial-of-Service Brute Force Attempt Detection,40094
+vulnerability,medium,Cisco Adaptive Security Appliance Software,Cisco Adaptive Security Appliance Software Denial-of-Service Brute Force Vulnerability,40097
+vulnerability,medium,WordPress,WordPress Load Script Denial-of-Service Brute Force Vulnerability,40098
+vulnerability,medium,CirCarLife SCADA,CirCarLife SCADA Brute Force Attempt Detection,40101
+vulnerability,medium,Yourls,Yourls Improper Authentication Brute Force Vulnerability,40106
+vulnerability,medium,Compal CH7465LG,Compal CH7465LG Improper Input Validation Brute-Force Attempt Detection,40109
+vulnerability,medium,Craft CMS,Craft CMS Improper Authentication Brute-Force Attempt Detection,40111
+vulnerability,medium,Prima Systems FlexAir,Prima Systems FlexAir Backup Database Download Brute-Force Attempt Detection,401malware,critical,Mobile,MOONSHINE Android Malware Kit Command and Control Traffic Detection,85446
+vulnerability,medium,HTTP,Malicious User-Agent in HTTP Traffic Detection,85473
+vulnerability,high,HTTP,Nexus Yum Repository Plugin Remote Code Execution Vulnerability,56630
+vulnerability,medium,HTTP,Google Chrome Popup Blocker Security Bypass Vulnerability,56658
+vulnerability,critical,HTTP,Tecrail Responsive FileManager Server-Side Request Forgery Vulnerability,56692
+vulnerability,high,HTTP,Microsoft Jet Database Engine Remote Code Execution Vulnerability,56710
+vulnerability,critical,HTTP,HP Intelligent Management Center Command Injection Vulnerability,56722
+vulnerability,critical,HTTP,HP Intelligent Management Center Memory Corruption Vulnerability,56723
+vulnerability,high,HTTP,Atlassian Jira Customer Context Filter Path Traversal Vulnerability,56744
+vulnerability,high,HTTP,E-Cology OA SQL Injection Vulnerability,56778
+vulnerability,medium,HTTP,ASUS RT-N10 Repeater Command Injection Vulnerability,56810
+vulnerability,critical,HTTP,Joomla! Component Raffle Factory SQL Injection Vulnerability,56814
+vulnerability,high,HTTP,KDE KConfig Code Execution Vulnerability,56819
+vulnerability,high,HTTP,Trend Micro Email Encryption Gateway Unvalidated Software Update Vulnerability,56820
+vulnerability,medium,HTTP,Microsoft Office Sharepoint XSS Vulnerability,56823
+vulnerability,critical,HTTP,IBM Operational Decision Manager XML External Entity Injection Vulnerability,56824
+vulnerability,critical,HTTP,Cisco IOS XE WebUI Privileged Command Injection Vulnerability,56827
+vulnerability,medium,HTTP,vBulletin SQL Injection Vulnerability,56828
+vulnerability,critical,HTTP,Cyberark Password Vault Web Access Remote Code Execution Vulnerability,56831
+vulnerability,high,HTTP,Cybelsoft ThinVNC Authentication Bypass Vulnerability,56834
+vulnerability,critical,HTTP,Kibana Timelion Remote Code Execution Vulnerabilitiy,56835
+vulnerability,critical,HTTP,Joomla! Component PrayerCenter SQL Injection Vulnerability,56836
+vulnerability,critical,HTTP,Oracle Tarantella Enterprise Directory Traversal Vulnerability,56840
+vulnerability,high,HTTP,Oracle Tarantella Enterprise Privilege Escalation Vulnerability,56845
+vulnerability,critical,HTTP,Total.js CMS Remote Code Execution Vulnerability,56848
+vulnerability,high,HTTP,Zoho ManageEngine Applications Manager MASRequestProcessor serverID SQL Injection Vulnerability,56849
+vulnerability,medium,HTTP,HTTP SQL Injection Attempt,30514
+vulnerability,medium,HTTP,MySQL Create Function Buffer Overflow Vulnerability,30657
+vulnerability,high,HTTP,Microsoft MDAC SoftwareDistribution.WebControl ActiveX Code execution Vulnerability,30725
+vulnerability,medium,HTTP,Apache apr-util IPv6 URI Parsing Vulnerability,31012
+vulnerability,critical,HTTP,CA BrightStor ARCserve Backup Universal Agent Buffer Overflow Vulnerability,31586
+vulnerability,high,HTTP,eIQnetworks Enterprise Security Analyzer Topology Server Buffer Overflow Vulnerability,32271
+vulnerability,high,HTTP,Mozilla Firefox Multiple Unspecified Vulnerabilities,32575
+vulnerability,high,HTTP,HTTP Cross Site Scripting Attempt,32658
+vulnerability,medium,HTTP,HTTP SQL Injection Attempt,36239
+vulnerability,critical,HTTP,Android Stagefright Library Overflow Vulnerability,38193
+vulnerability,critical,HTTP,Wordpress Timing Side Channel Denial-Of-Service Vulnerability,39337
+vulnerability,critical,HTTP,Adobe Reader Memory Corruption Vulnerability,40440
+vulnerability,critical,HTTP,Acrobat Reader Memory Corruption Vulnerability,40453
+vulnerability,critical,HTTP,Adobe Reader Memory Corruption Vulnerability,40457
+vulnerability,critical,HTTP,Android JavascriptInterface Code Execution Vulnerability,40462
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40464
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40465
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40466
+vulnerability,high,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40467
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40468
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40469
+vulnerability,high,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40470
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40472
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40474
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40475
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40480
+vulnerability,high,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40481
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40482
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40489
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40490
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40492
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40496
+vulnerability,critical,HTTP,Microsoft Scripting Engine Information Disclosure Vulnerability,40502
+vulnerability,critical,HTTP,PHP Fileinfo Call Stack Exhaustion Denial-of-Service Vulnerability,40504
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40505
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40508
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40509
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40511
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40512
+vulnerability,high,HTTP,Microsoft Scripting Engine Information Disclosure Vulnerability,40518
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40569
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40570
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40571
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40576
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40577
+vulnerability,high,HTTP,Microsoft Windows Desktop Bridge Elevation Of Privilege Vulnerability,40585
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40591
+vulnerability,high,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40597
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40605
+vulnerability,high,HTTP,Microsoft Excel Remote Code Execution Vulnerability,40610
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40618
+vulnerability,critical,HTTP,Microsoft Windows Vbscript Engine Remote Code Execution Vulnerability,40623
+vulnerability,critical,HTTP,uTorrent Remote Code Execution Vulnerability,40634
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40642
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40643
+vulnerability,critical,HTTP,Microsoft Browser Memory Corruption Vulnerability,40645
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40677
+vulnerability,high,HTTP,Adobe Acrobat Web Capture Engine Memory Corruption Vulnerability,40690
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40694
+vulnerability,critical,HTTP,Microsoft Scripting Engine Memory Corruption Vulnerability,40763
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40896
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40898
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40908
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40917
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40924
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40925
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40926
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40929
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40932
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40941
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40942
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40944
+vulnerability,high,HTTP,Adobe Acrobat Memory Corruption Vulnerability,40958
+vulnerability,high,HTTP,Adobe Acrobat Memory Corruption Vulnerability,40959
+vulnerability,critical,HTTP,Microsoft Internet Explorer Memory Corruption Vulnerability,40986
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40990
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,40991
+vulnerability,high,HTTP,Apache Santuario XML Security for Java DTD Denial-of-Service Vulnerability,54080
+vulnerability,high,HTTP,SpringSource Spring Framework SourceHttpMessageConverter XXE Information Disclosure Vulnerability,54187
+vulnerability,high,HTTP,Microsoft XML Core Services Integer Truncation Memory Corruption Vulnerability,54196
+vulnerability,high,HTTP,Oracle Java Security Slider Feature Bypass Vulnerability,54217
+vulnerability,high,HTTP,Oracle Java JPEGImageWriter Memory Corruption Vulnerability,54282
+vulnerability,high,HTTP,Novell iPrint Client ActiveX Control Stack Overflow Vulnerability,54330
+vulnerability,critical,HTTP,Microsoft Internet Explorer Internet Explorer Insecure Library Loading Vulnerability,54391
+vulnerability,critical,HTTP,Malicious JavaScript Detection,54433
+vulnerability,high,HTTP,Protocol Evasion Application Detection,54462
+vulnerability,critical,HTTP,VBScript Remote Code Execution Vulnerability,54549
+vulnerability,critical,HTTP,Microsoft VBScript Memory Corruption Vulnerability,54552
+vulnerability,high,HTTP,RabbitMQ Web Management CSRF Vulnerability,54646
+vulnerability,critical,HTTP,CA Multiple Products ActiveX Control ListCtrl AddColumn Buffer Overflow Vulnerability,54703
+vulnerability,high,HTTP,Clipbucket Arbitrary PHP Code Execution Vulnerability,54876
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,55485
+vulnerability,medium,HTTP,Sierra Wireless AirLink ES450 SNMPD Hard-coded Credentials Vulnerability,55983
+vulnerability,high,HTTP,Jackson-Databind Insecure Deserialization Vulnerability,56129
+vulnerability,critical,HTTP,Adobe Flash Player Memory Corruption Vulnerability,56471
+vulnerability,medium,HTTP,BACnet Stack 0.8.6 Denial-of-Service Vulnerability,56536
+vulnerability,critical,HTTP,Cobalt Strike Beacon Command and Control Traffic Detection,85350
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85386
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85388
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85389
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85391
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85393
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85396
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85398
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85400
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85402
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85403
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85404
+vulnerability,informational,HTTP,Trojan.Gafgyt Command and Control Traffic Detection,85405
+vulnerability,informational,HTTP,Trojan.Zegost Command and Control Traffic,85407
+vulnerability,critical,HTTP,NetWire RAT Command and Control Traffic Detection,85447
+vulnerability,critical,HTTP,Pony Command and Control Traffic Detection,85448
+vulnerability,critical,HTTP,JackFruit Command and Control Traffic Detection,85449
+vulnerability,critical,HTTP,MuddyWater Command and Control Traffic Detection,85450
+vulnerability,critical,HTTP,AZORult Command and Control Traffic Detection,85457
+vulnerability,critical,HTTP,Amadey Botnet Command and Control Traffic Detection,85458
+vulnerability,critical,HTTP,MasterMana Command and Control Traffic Detection,85459
+vulnerability,critical,HTTP,MasterMana Command and Control Traffic Detection,85460
+vulnerability,medium,HTTP,Generic Trojan Command and Control Traffic Detection,85461
+vulnerability,critical,HTTP,Casbaneiro Command and Control Traffic Detection,85467
+vulnerability,medium,HTTP,X.509 Extensions Channel Command and Control Traffic Detection,18019
+vulnerability,critical,HTTP,Wells Fargo Phishing Site Detection,80060
+vulnerability,critical,HTTP,NBC Phishing Site Detection,80061
+vulnerability,critical,HTTP,Microsoft Phishing Site Detection,80062
+vulnerability,critical,HTTP,Gmail Phishing Site Detection,80063
+vulnerability,critical,HTTP,AOL Phishing Site Detection,80064
+vulnerability,critical,HTTP,PayPal Phishing Site Detection,80065
+vulnerability,critical,HTTP,Fifth Third Bank Phishing Site Detection,80066
+vulnerability,critical,HTTP,Webshell.PHP.tennc.Chinese_Hackers Command And Control Traffic Detection,83087
+vulnerability,critical,HTTP,Webshell.PHP.xl7dev.Silic_Group_Hacker_Army Command And Control Traffic Detection,83088
+vulnerability,critical,HTTP,Webshell.PHP.Johntroony.SimShell_1.0 Command And Control Traffic Detection,83089
+vulnerability,critical,HTTP,Webshell.PHP.tennc.b374k_2.1 Command And Control Traffic Detection,83090
+vulnerability,critical,HTTP,Webshell.PHP.JohnTroony.aZRaiLPhp_v1.0 Command And Control Traffic Detection,83091
+vulnerability,critical,HTTP,Webshell.PHP.mattiasgeniar.b374k_2.2 Command And Control Traffic Detection,83092
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.Chinese_Hackers Command And Control Traffic Detection,83093
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.F4ckTeam Command And Control Traffic Detection,83094
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.Mysql_BackDoor Command And Control Traffic Detection,83095
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.b1u3b0y Command and Control Traffic,83097
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.ExpDoor.com Command and Control Traffic,83098
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.MetalSoft_Hackers_Team_1.1 Command and Control Traffic,83099
+vulnerability,critical,HTTP,Webshell.PHP.tennc.sky_oot Command and Control Traffic,83100
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.interactive Command and Control Traffic,83101
+vulnerability,critical,HTTP,Webshell.PHP.tennc.Deface_Keeper_0.2 Command and Control Traffic,83102
+vulnerability,critical,HTTP,Webshell.PHP.JohnTroony.NTDaddy_v1.9 Command and Control Traffic,83103
+vulnerability,critical,HTTP,Webshell.PHP.xl7dev.oTTo Command and Control Traffic,83104
+vulnerability,critical,HTTP,Webshell.PHP.xl7dev.interactive Command and Control Traffic,83105
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.interactive Command and Control Traffic,83108
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.interactive Command and Control Traffic,83109
+vulnerability,critical,HTTP,Webshell.PHP.tennc.C37_Shell_v1.1 Command and Control Traffic,83110
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.interactive Command and Control Traffic,83111
+vulnerability,critical,HTTP,Webshell.PHP.bartblaze.GaZa Command and Control Traffic,83112
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.egy_spider Command and Control Traffic,83113
+vulnerability,critical,HTTP,Webshell.PHP.bartblaze.RevSlideR_2015 Command and Control Traffic,83114
+vulnerability,critical,HTTP,Webshell.PHP.bartblaze.INDRAJITH_SHELL_v.2.0 Command and Control Traffic,83117
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.devilzShell Command and Control Traffic,83118
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.Kacak_FSO_1.0 Command and Control Traffic,83119
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.Devil_shell_v2.0 Command and Control Traffic,83120
+vulnerability,critical,HTTP,Webshell.PHP.mattiasgeniar.Rebels_Mailer Command and Control Traffic,83121
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.Mauritania_Attacker_and_Virusa_Worm Command and Control Traffic,83122
+vulnerability,critical,HTTP,Webshell.PHP.tdifg.Mexican_WebShell_PHP Command and Control Traffic,83123
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.interactive Command and Control Traffic,83124
+vulnerability,critical,HTTP,Webshell.PHP.mattiasgeniar.Pro_Mailer_V2 Command and Control Traffic,83125
+vulnerability,critical,HTTP,Webshell.PHP.mattiasgeniar.team_p Command and Control Traffic,83126
+vulnerability,critical,HTTP,Webshell.PHP.tennc.MumaSec Command and Control Traffic,83127
+vulnerability,critical,HTTP,Webshell.PHP.tennc.Shor7cut Command and Control Traffic,83128
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.iMHaBiRLiGi Command and Control Traffic,83129
+vulnerability,critical,HTTP,Webshell.PHP.tdifg.interactive Command and Control Traffic,83134
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.interactive Command and Control Traffic,83135
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.mOon Command and Control Traffic,83136
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.h4ckcity Command and Control Traffic,83137
+vulnerability,critical,HTTP,Webshell.PHP.bartblaze.Peterson Command and Control Traffic,83138
+vulnerability,critical,HTTP,Webshell.PHP.tennc.sai Command and Control Traffic,83139
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.backdoor Command and Control Traffic,83140
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.Symlink_Sa_2.0 Command and Control Traffic,83141
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.interactive Command and Control Traffic,83142
+vulnerability,critical,HTTP,Webshell.PHP.JohnTroony.b374k Command and Control Traffic,83143
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.jalanG Command and Control Traffic,83144
+vulnerability,critical,HTTP,Webshell.PHP.xl7dev.BnS_Shell Command and Control Traffic,83145
+vulnerability,critical,HTTP,Webshell.PHP.bartblaze.E404 Command and Control Traffic,83146
+vulnerability,critical,HTTP,Webshell.PHP.tennc.interactive Command and Control Traffic,83147
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.interactive Command and Control Traffic,83148
+vulnerability,critical,HTTP,Webshell.PHP.bartblaze.PentaSec Command and Control Traffic,83149
+vulnerability,critical,HTTP,Webshell.PHP.JohnTroony.KA_uShell Command and Control Traffic,83150
+vulnerability,critical,HTTP,Webshell.PHP.tdifg.interactive Command and Control Traffic,83151
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.uploader Command and Control Traffic,83152
+vulnerability,critical,HTTP,Webshell.PHP.JohnTroony.Cyber_Shell_v_1.0 Command and Control Traffic,83153
+vulnerability,critical,HTTP,Webshell.PHP.JohnTroony.lama_shell_v_3.0 Command and Control Traffic,83154
+vulnerability,critical,HTTP,Webshell.PHP.mattiasgeniar.interactive Command and Control Traffic,83155
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.c99madshell_v_3.0 Command and Control Traffic,83157
+vulnerability,critical,HTTP,Webshell.PHP.tanjiti.PHP_Shell_offender Command and Control Traffic,83160
+vulnerability,critical,HTTP,Webshell.PHP.mattiasgeniar.interactive Command and Control Traffic,83161
+vulnerability,critical,HTTP,Webshell.PHP.tdifg.interactive Command and Control Traffic,83162
+vulnerability,critical,HTTP,Webshell.PHP.tennc.interactive Command and Control Traffic,83164
+vulnerability,critical,HTTP,Webshell.PHP.ysrc.MSSQL_Cracker Command and Control Traffic,83165
+vulnerability,critical,HTTP,Webshell.ASP.ysrc.hididi Command and Control Traffic,83166
+vulnerability,critical,HTTP,Webshell.ASPX.ysrc.ASPXSpy Command and Control Traffic,83167
+vulnerability,critical,HTTP,Webshell.ASPX.ysrc.ASPXSpy Command and Control Traffic,83168
+vulnerability,critical,HTTP,Webshell.ASP.ysrc.F4ckTeam Command and Control Traffic,83169
+vulnerability,critical,HTTP,Webshell.ASP.ysrc.hackyong Command and Control Traffic,83170
+vulnerability,critical,HTTP,Webshell.ASP.ysrc.F4ckTeam Command and Control Traffic,83171
+vulnerability,critical,HTTP,Webshell.ASPX.ysrc.interactive Command and Control Traffic,83172
+vulnerability,critical,HTTP,Webshell.ASP.tanjiti.zehiriv Command and Control Traffic,83173
+vulnerability,critical,HTTP,Webshell.ASP.tdifg.interactive Command and Control Traffic,83174
+vulnerability,critical,HTTP,Webshell.ASP.ysrc.interactive Command and Control Traffic,83175
+vulnerability,critical,HTTP,Webshell.ASP.ysrc.black_skull Command and Control Traffic,83176
+vulnerability,critical,HTTP,Webshell.ASP.git.80sec Command and Control Traffic,83177
+vulnerability,critical,HTTP,NetWire RAT Downloader Traffic Detection,85106
+vulnerability,critical,HTTP,Apple Phishing Site Detection,85123
+vulnerability,critical,HTTP,Apple Phishing Site Detection,85124
+vulnerability,critical,HTTP,Paypal Phishing Site Detection,85125
+vulnerability,critical,HTTP,Telekom Phishing Site Detection,85164
+vulnerability,critical,HTTP,WhatsApp Phishing Site Detection,85166
+vulnerability,critical,HTTP,Chase Phishing Site Detection,85167
+vulnerability,critical,HTTP,Paypal Phishing Site Detection,85168
+vulnerability,critical,HTTP,Chartered Phishing Site Detection,85233
+vulnerability,critical,HTTP,PostFinance Phishing Site Detection,85234
+vulnerability,critical,HTTP,Xfinity Phishing Site Detection,85235
+vulnerability,critical,HTTP,Microsoft Phishing Site Detection,85257
+vulnerability,critical,HTTP,DHL Phishing Site Detection,85258
+vulnerability,critical,HTTP,BMO Phishing Site Detection,85259
+vulnerability,critical,HTTP,ICS Phishing Site Detection,85260
+vulnerability,critical,HTTP,BMO Phishing Site Detection,85261
+vulnerability,critical,HTTP,NetWire RAT Command and Control Traffic Detection,85307
+vulnerability,critical,HTTP,Cobalt Strike Command and Control Traffic Detection,11001
+vulnerability,critical,HTTP,Compal CH7465LG Improper Input Validation Brute-Force Attempt Detection,40109
+vulnerability,critical,HTTP,Microsoft Internet Explorer Memory Corruption Vulnerability,56579
+vulnerability,critical,HTTP,Microsoft Internet Explorer Memory Corruption Vulnerability,56580
+vulnerability,critical,HTTP,Microsoft Internet Explorer Use-After-Free Vulnerability,56581
+vulnerability,critical,HTTP,Mozilla Firefox WebIDL Implementation Privilege Escalation Vulnerability,56582
+vulnerability,high,HTTP,Advantech WebAccess SCADA webeye ActiveX ip_addr Parameter Buffer Overflow Vulnerability,56584
+vulnerability,critical,HTTP,Microsoft Internet Explorer Memory Corruption Vulnerability,56593
+vulnerability,high,HTTP,Microsoft Office Bad Index Remote Code Execution Vulnerability,56603
+vulnerability,high,HTTP,Squid Proxy Digest Authentication Denial-of-Service Vulnerability,56617
+vulnerability,critical,HTTP,SaltStack Salt SQL Injection Vulnerability,56666
+vulnerability,high,HTTP,D-Link Routers Remote Command Execution Vulnerability,56669
+vulnerability,critical,HTTP,WhatsApp Remote Code Execution Vulnerability,56670
+vulnerability,high,HTTP,Advantech WebAccess SCADA Bwgetval Arbitrary File Deletion Vulnerability,56671
+vulnerability,critical,HTTP,Cisco Smart Switch Remote Code Execution Vulnerability,56672
+vulnerability,high,HTTP,phpIPAM SQL Injection Vulnerability,56675
+vulnerability,medium,HTTP,Eclipse Mosquitto MQTT SUBSCRIBE Topic Stack Overflow Vulnerability,56676
+vulnerability,high,HTTP,NPMJS Gitlabhook Remote Command Injection Vulnerability,56679
+vulnerability,high,HTTP,File Sharing Wizard Buffer Overflow Vulnerability,56680
+vulnerability,critical,HTTP,Apache Karaf XML External Entity Injection Vulnerability,56687
+vulnerability,high,HTTP,Cisco RV110W OS Remote Command Injection Vulnerability,56690
+vulnerability,critical,HTTP,Eaton Intelligent Power Manager File Inclusion Vulnerability,56691
+vulnerability,medium,HTTP,Metasploit VxWorks WDB Agent Scanner Detection,56693
+vulnerability,critical,HTTP,Sapplica Sentrifugo SQL Injection Vulnerability,56695
+vulnerability,high,HTTP,Microsoft Jet Database Engine Remote Code Execution Vulnerability,56697
+vulnerability,critical,HTTP,Joomla! Social Factory SQL Injection Vulnerability,56698
+vulnerability,critical,HTTP,CWJoomla Multiple Products SQL Injection Vulnerability,56703
+vulnerability,critical,HTTP,Compal CH7465LG Improper Input Validation Vulnerability,56704
+vulnerability,informational,HTTP,Compal CH7465LG Improper Input Validation Attempt,56705
+vulnerability,critical,HTTP,LibreNMS Command Execution Vulnerability,56707
+vulnerability,critical,HTTP,Joomla Article Factory Manager SQL Injection Vulnerability,56708
+vulnerability,high,HTTP,Harbor Project Privilege Escalation Vulnerability,56709
+vulnerability,critical,HTTP,Joomla Jobs Factory SQL Injection Vulnerability,56711
+vulnerability,critical,HTTP,Joomla AlphaIndex Dictionaries Component SQL Injection Vulnerability,56715
+vulnerability,critical,HTTP,CMS ISWEB 3.5.3 SQL Injection Vulnerability,56716
+vulnerability,critical,HTTP,ZLDNN DNNArticle Information Disclosure Vulnerability,56717
+vulnerability,high,HTTP,Drupal Avatar Uploader Information Disclosure Vulnerability,56720
+vulnerability,critical,HTTP,E-Negosyo System SQL Injection Vulnerability,56721
+vulnerability,high,HTTP,Microsoft Jet Database Engine Remote Code Execution Vulnerability,56725
+vulnerability,high,HTTP,Adobe Reader Memory Corruption Vulnerability,56726
+vulnerability,critical,HTTP,Joomla Swap Factory SQL Injection Vulnerability,56731
+vulnerability,high,HTTP,Redis HyperLogLog hllCount Stack Buffer Overflow Vulnerability,56745
+vulnerability,critical,HTTP,Cisco IOS XE WebUI Command Injection Vulnerability Vulnerability,56784
+vulnerability,critical,HTTP,Socomec DIRIS A-40 Information Disclosure Vulnerability,56803
+vulnerability,high,HTTP,HP Intelligent Management Center Code Execution Vulnerability,56804
+vulnerability,high,HTTP,Jenkins Script Security Plugin Sandbox Bypass Vulnerability,56805
+vulnerability,high,HTTP,Microsoft Jet Database Engine Remote Code Execution Vulnerability,56808
+vulnerability,critical,HTTP,vBulletin Remote Code Execution Vulnerability,56809
+vulnerability,critical,HTTP,HPE Intelligent Management Center AMF3 Externalizable Deserialization Vulnerability,56813
+vulnerability,critical,HTTP,Pulse Secure Platform Stack-Based Buffer Overflow Vulnerability,56816
+vulnerability,high,HTTP,Microsoft Windows HTTP2 Data Dribble Denial-of-Service Vulnerability,56817
+vulnerability,high,HTTP,Apple Safari for Windows and Internet Explorer Combined Code Execution Vulnerability,31606
+vulnerability,high,HTTP,FortiOS Cookie Parser Buffer Overflow Vulnerability,38767
+vulnerability,low,HTTP,Suspicious HTTP Evasion Found,39868
+vulnerability,critical,HTTP,Oracle WebLogic Server Java Deserialization Vulnerability,40781
+vulnerability,critical,HTTP,Oracle WebLogic Server Java Deserialization Vulnerability,40799
+vulnerability,critical,HTTP,Microsoft SMB Client Response Parsing Vulnerability,54503
+vulnerability,critical,HTTP,Microsoft Internet Explorer Use-After-Free Vulnerability,55807
+vulnerability,high,HTTP,Apache Solr Remote Code Execution Vulnerability,56245
+vulnerability,critical,HTTP,vBulletin Remote Code Execution Vulnerability,56632
+vulnerability,critical,HTTP,Adobe Reader Memory Corruption Vulnerability,33344
+vulnerability,high,HTTP,Mozilla Firefox SharedWorker MessagePort Handing Memory Corruption Vulnerability,36856
