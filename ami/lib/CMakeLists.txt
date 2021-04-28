@@ -11,6 +11,7 @@ set(AMI_SOURCES
   base64.c
   ami.c
   ast.c
+  astnode.c
   csvread.c
   rc4.c
   strutil.c
