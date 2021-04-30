@@ -20,9 +20,13 @@ class LogPlugin(LogContext):
         # self.do_validate_keys("mcafee.hbss", "agent", kvdict)
         
     def template_to_log(self, frame_time, kvdict):
+        if "mcafee_agent_guid" in kvdict:
+            if kvdict["mcafee_agent_guid"][0] != "{":
+                kvdict["mcafee_agent_guid"] = "{" + kvdict["mcafee_agent_guid"] + "}"
+        
         event = self.retrieve_template("mcafee.hbss", "agent", kvdict)
         event = frame_time.strftime(event)
-
+        
         return event
 
     def run(self, cap, packet, pktid, kvdict):
