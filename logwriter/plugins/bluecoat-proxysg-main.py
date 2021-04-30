@@ -53,7 +53,7 @@ class LogPlugin(LogContext):
         variables["src_ip_addr"] = packet.ip.src
         variables["dst_ip_addr"] = packet.ip.dst
         try:
-            variables["http-request-method"] = packet.http.request_method
+            variables["http_request_method"] = packet.http.request_method
         except AttributeError:
             pass            
         variables["src_port_number"] = packet.tcp.srcport
@@ -149,7 +149,7 @@ class LogPlugin(LogContext):
         except:
             pass        
         try:
-            variables["http-request-method"] = kvdict["$method"]
+            variables["http_request_method"] = kvdict["$method"]
         except:
             pass
 
@@ -196,7 +196,6 @@ class LogPlugin(LogContext):
             except:
                 category = "Unclassified"            
             variables["url_category"] = category
-
 
         event_name = "main"
         try:
