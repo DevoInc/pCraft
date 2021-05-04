@@ -102,7 +102,7 @@ class LogWrite(object):
 	                except KeyError:
 	                    self.layer_that_do_not_match_plugin += 1
 	    
-	            print("Layers that did not match a plugin: %d" % self.layer_that_do_not_match_plugin)
+            print("Layers that did not match a plugin: %d" % self.layer_that_do_not_match_plugin)
         except:
             print("E", end="")
                 
