@@ -36,7 +36,7 @@ dnsconnect:
 """
         return helpstr
 
-    def __init__(self, app, session, plugins_data):
+    def __init__(self, ami, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
         self.random_client_ip = utils.getRandomIP("192.168.0.0/16", ipfail="172.16.42.42")
         self.random_server_ip = utils.getRandomIP("10.0.0.0/8", ipfail="172.17.42.42")

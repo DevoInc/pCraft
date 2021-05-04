@@ -3,7 +3,7 @@ from pcraft.PluginsContext import PluginsContext
 class PCraftPlugin(PluginsContext):
     name = "MakeVariables"
     
-    def __init__(self, app, session, plugins_data):
+    def __init__(self, ami, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
 
     def help(self):

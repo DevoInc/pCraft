@@ -33,11 +33,12 @@ importphishing:
 """
         return helpstr
         
-    def __init__(self, app, session, plugins_data):
+    def __init__(self, ami, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
         self.last_packet_time = 0
         self.reset_time()
         self.sleep_cursor = 0.0
+        self.is_first = True
 
     def reset_time(self):
         self.last_packet_time = 0
@@ -45,6 +46,13 @@ importphishing:
         
     def run(self, ami, action):
         self.reset_time()
+        append_sleep = 0
+        first_time = 0
+        if self.is_first:
+            first_time = action.GetSleepCursor()
+            self.is_first = False
+        else:
+            append_sleep = action.GetSleepCursor() - first_time
 
         amifile = ami.GetFilePath()
         amipath = os.path.dirname(os.path.realpath(amifile))
@@ -77,8 +85,8 @@ importphishing:
 
             self.sleep_cursor += float(sleep_delta)
             # print("New sleep cursor:%f" % new_sleep_cursor)
-            action.SetSleepCursor(self.sleep_cursor)
-                
+            action.SetSleepCursor(self.sleep_cursor + append_sleep)
+            
             if CookedLinux in packet:
                 packet = Ether() / packet.payload
                         

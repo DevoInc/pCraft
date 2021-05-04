@@ -35,12 +35,13 @@ class Plugins:
             import_plugin = "pcraft" + import_plugin[len(self.instdir):]
 #            print("importing plugin %s" % import_plugin)
             module = importlib.import_module(import_plugin)
-            try:
-                dp = module.PCraftPlugin(self.app, self.session, self.plugins_data)
-                self.loaded_plugins[plugin_name] = dp
+            # try:
+            # print("Loading plugin:%s" % plugin_name)
+            dp = module.PCraftPlugin(ami, self.app, self.session, self.plugins_data)
+            self.loaded_plugins[plugin_name] = dp
 #                print("Loaded plugin:%s\n" % plugin_name)
-            except:
-                print("Could not load plugin:%s" % plugin_name)
+            # except:
+            #     print("Could not load plugin:%s" % plugin_name)
 
             #            dp.run()
             #self.loaded_plugins[plugin_name] = dp

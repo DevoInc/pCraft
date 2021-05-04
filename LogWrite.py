@@ -65,44 +65,47 @@ class LogWrite(object):
     def process(self):
         #cap.set_debug()
 
-        pktid=0
-        for pkt in self.cap:
-            # Controller from pcraft, to call plugins such as EDR
-            # When PCAP is not enough...
-            # This is cheating, we make sure our pcap has ip source and destination of 10.10.10.10 and port source and destination of 666
-            # Then, we get the plugin in the URI and the data from the User Agent field.
-            # TODO: Must be fixed by using pcap-ng ASAP
-            # print(pkt)
-            if hasattr(pkt, 'http'):
-                # print("This packet is http")
-                if pkt.tcp.dstport == "666" and pkt.tcp.srcport == "666" and pkt.ip.src == "10.10.10.10" and pkt.ip.dst == "10.10.10.10":
-                    # print("This is a controller packet")
-                    # The plugin name comes from the URI
-                    plugin = pkt.http.request_uri[1:].lower()
-                    # The key=values comes from the User Agent
-                    keysvalues = pkt.http.get_field_value('user_agent')
-                    kvdict = dict(re.findall(r"(\S+)=('''.*?'''|\S+)", keysvalues))
-                    for k,v in kvdict.items():
-                        kvdict[k] = v.strip("'")
-
-                    self.loaded_plugins[plugin].validate_keys(kvdict)
-                        
-                    self.loaded_plugins[plugin].run(self.cap, pkt, pktid, kvdict)
-                    continue
+        try:
+            pktid=0
+            for pkt in self.cap:
+	            # Controller from pcraft, to call plugins such as EDR
+	            # When PCAP is not enough...
+	            # This is cheating, we make sure our pcap has ip source and destination of 10.10.10.10 and port source and destination of 666
+	            # Then, we get the plugin in the URI and the data from the User Agent field.
+	            # TODO: Must be fixed by using pcap-ng ASAP
+	            # print(pkt)
+	            if hasattr(pkt, 'http'):
+	                # print("This packet is http")
+	                if pkt.tcp.dstport == "666" and pkt.tcp.srcport == "666" and pkt.ip.src == "10.10.10.10" and pkt.ip.dst == "10.10.10.10":
+	                    # print("This is a controller packet")
+	                    # The plugin name comes from the URI
+	                    plugin = pkt.http.request_uri[1:].lower()
+	                    # The key=values comes from the User Agent
+	                    keysvalues = pkt.http.get_field_value('user_agent')
+	                    kvdict = dict(re.findall(r"(\S+)=('''.*?'''|\S+)", keysvalues))
+	                    for k,v in kvdict.items():
+	                        kvdict[k] = v.strip("'")
+	
+	                    self.loaded_plugins[plugin].validate_keys(kvdict)
+	                        
+	                    self.loaded_plugins[plugin].run(self.cap, pkt, pktid, kvdict)
+	                    continue
+	                
+	            for layer in pkt.layers:            
+	                layer_name = layer.layer_name
+	                try:
+	                    for p in self.plugins_by_layer[layer_name]:
+	    #                    try:
+	                        self.loaded_plugins[p].run(self.cap, pkt, pktid, layer)
+	                        # except:
+	                        #     print("x", end="")
+	                except KeyError:
+	                    self.layer_that_do_not_match_plugin += 1
+	    
+	            print("Layers that did not match a plugin: %d" % self.layer_that_do_not_match_plugin)
+        except:
+            print("E", end="")
                 
-            for layer in pkt.layers:            
-                layer_name = layer.layer_name
-                try:
-                    for p in self.plugins_by_layer[layer_name]:
-    #                    try:
-                        self.loaded_plugins[p].run(self.cap, pkt, pktid, layer)
-                        # except:
-                        #     print("x", end="")
-                except KeyError:
-                    self.layer_that_do_not_match_plugin += 1
-    
-        print("Layers that did not match a plugin: %d" % self.layer_that_do_not_match_plugin)
-
 class LogRewrite(object):
     def __init__(self, pcap_file, output_dir, config_ami):
         self.pcap_file = pcap_file
@@ -149,6 +152,6 @@ if __name__ == "__main__":
     if writer.has_error:
         print("Error. Exiting.")
         sys.exit(1)
-        
+
     writer.process()
     

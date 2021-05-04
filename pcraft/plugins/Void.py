@@ -6,7 +6,7 @@ class PCraftPlugin(PluginsContext):
     def help(self):
         return ""
 
-    def __init__(self, app, session, plugins_data):
+    def __init__(self, ami, app, session, plugins_data):
         super().__init__(app, session, plugins_data)
         
     def run(self, ami, action):

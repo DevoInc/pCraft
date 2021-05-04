@@ -150,6 +150,7 @@ PYBIND11_MODULE(pyami, m) {
       .def("GetReferences", &Ami::GetReferences)
       .def("GetTags", &Ami::GetTags)
       .def("GetSleepCursor", &Ami::GetSleepCursor)
+      .def("AppendSleepCursor", &Ami::AppendSleepCursor)
       .def("Debug", &Ami::Debug)
       .def("GetStartTime", &Ami::GetStartTime);    
     py::class_<Action>(m, "Action")
