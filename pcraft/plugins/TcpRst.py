@@ -34,14 +34,18 @@ rstack:
         self.session = session
         
     def run(self, ami, action):
-        port = int(self.getvar("port-dst"))
+        dstport = int(self.getvar("port-dst"))
+        try:
+            srcport = int(self.getvar("port-src"))
+        except:
+            srcport = random.randint(4096, 65534)
         
         # SYN
-        syn = Ether() / IP(src=self.getvar("ip-src"), dst=self.getvar("ip-dst")) / TCP(dport=port, flags="S")
+        syn = Ether() / IP(src=self.getvar("ip-src"), dst=self.getvar("ip-dst")) / TCP(dport=dstport, sport=srcport, flags="S")
         self.plugins_data.AddPacket(action, syn)
             
         # RST-ACK
-        rst_ack = Ether() / IP(src=self.getvar("ip-dst"), dst=self.getvar("ip-src")) / TCP(sport=port, dport=syn[TCP].sport, flags="R""A")
+        rst_ack = Ether() / IP(src=self.getvar("ip-dst"), dst=self.getvar("ip-src")) / TCP(sport=dstport, dport=syn[TCP].sport, flags="R""A")
         self.plugins_data.AddPacket(action, rst_ack)
             
         return self.plugins_data
