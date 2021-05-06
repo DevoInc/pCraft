@@ -141,8 +141,8 @@ if __name__ == "__main__":
         
     logstash14["winlog"]["computer_name"] = winevent["System"]["Computer"]
     logstash14["winlog"]["channel"] = winevent["System"]["Channel"]
-    logstash14["event_id"] = int(winevent["System"]["EventID"])
-    if logstash14["event_id"] == 4660:
+    logstash14["winlog"]["event_id"] = int(winevent["System"]["EventID"])
+    if logstash14["winlog"]["event_id"] == 4660:
         logstash14["message"] = "An object was deleted."
         
     logstash14["winlog"]["version"] = int(winevent["System"]["Version"])
