@@ -30,7 +30,11 @@ class TaniumProcess():
         self.ppid = random.randint(100, 20000)
         self.recorder_table_id = recorder_table_id
         self.recorder_unique_id = random.randint(100000, 900000)
-        self.start_time = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.localtime())
+        if  start_time:
+            # self.start_time = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.localtime())
+            self.start_time = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", start_time)
+        else:
+            self.start_time = "%Y-%m-%dT%H:%M:%S.000Z"
         self.user = "NT AUTHORITY\\SYSTEM"
 
     def jsonize(self):
