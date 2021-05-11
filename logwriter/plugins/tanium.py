@@ -81,7 +81,10 @@ class LogPlugin(LogContext):
                 
         tanium_properties = allrefs[-1].jsonize()
 
-        kvdict["properties"] = tanium_properties
+        if tanium_properties:
+            kvdict["properties"] = tanium_properties
+        else:
+            kvdict["properties"] = ""
         
         self.log_fp.write(self.template_to_log(frame_time, kvdict))
         
