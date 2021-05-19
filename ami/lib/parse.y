@@ -469,6 +469,16 @@ function: FUNCTIONNAME OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
   
   free($1);
 }
+| FUNCTIONNAME OPENPARENTHESIS CLOSEPARENTHESIS {
+  if (ami->debug) {
+    printf("[parse.y] function: FUNCTIONNAME(%s) OPENPARENTHESIS CLOSEPARENTHESIS\n", $1);
+  }
+
+  ami->arguments_count = 0;
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0);
+  
+  free($1);  
+}
 | WORD OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
   if (ami->debug) {
     printf("[parse.y] function: WORD(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
@@ -477,6 +487,16 @@ function: FUNCTIONNAME OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
   ami_append_item(ami, get_lineno(scanner), AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0);
 
   ami->arguments_count = 0;
+  
+  free($1);
+}
+| WORD OPENPARENTHESIS CLOSEPARENTHESIS {
+  if (ami->debug) {
+    printf("[parse.y] function: WORD(%s) OPENPARENTHESIS CLOSEPARENTHESIS\n", $1);
+  }
+
+  ami->arguments_count = 0;
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0);
   
   free($1);
 }

@@ -382,6 +382,21 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *data = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	char *b64 = base64url_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
+      } else if (!strcmp("printvars", n->strval)) {
+	if (ami->variables) {
+	  khint_t k;
+	  for (k = 0; k < kh_end(ami->variables); ++k)
+	    if (kh_exist(ami->variables, k)) {
+	      char *key = (char *)kh_key(ami->variables, k);
+	      ami_variable_t *value = (ami_variable_t *)kh_value(ami->variables, k);
+	      if (value->type == AMI_VAR_STR) {
+		printf("\033[0;33m%s\033[0m = \033[0;35m\"%s\"\033[0m\n", key, ami_variable_to_string(value));
+	      } else {
+		printf("\033[0;33m%s\033[0m = %s\n", key, ami_variable_to_string(value));
+	      }
+	      /* ami_variable_debug(value); */
+	    }
+	}      
       } else if (!strcmp("add", n->strval)) {
 	char *left_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
 	char *right_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);	
