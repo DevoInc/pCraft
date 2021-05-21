@@ -25,11 +25,17 @@ class TaniumProcess():
         self.file = _file
         self.args = _file.fullpath.split("\\")[-1]
         self.cwd = cwd
-        self.name = name
+        if name:
+            self.name = name
+        else:
+            self.name = _file.fullpath
         self.pid = random.randint(100, 20000)
-        self.ppid = random.randint(100, 20000)
+        if parent:
+            self.ppid = parent.pid
+        else: 
+            self.ppid = random.randint(100, 1000)
         self.recorder_table_id = recorder_table_id
-        self.recorder_unique_id = random.randint(100000, 900000)
+        self.recorder_unique_id = str(random.randint(100000000000, 900000000000))
         if  start_time:
             # self.start_time = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.localtime())
             self.start_time = time.strftime("%Y-%m-%dT%H:%M:%S.000Z", start_time)
