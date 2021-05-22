@@ -10,4 +10,11 @@ mcafee_threat_type,
 mcafee_threat_category,ops.update.end
 mcafee_threat_action,none
 mcafee_threat_severity,4
+mcafee_threat_eventid,1042
+mcafee_detected_UTC,%Y-%m-%dT%H:%M:%SZ
+mcafee_source_hostname,laptop1
+mcafee_source_processname,On-Demand Scan
+mcafee_target_hostname,laptop1
+mcafee_target_username,JSMITH\laptop1$
+mcafee_target_filename,C:\Users\Jsmith\p7-com.exe
 
