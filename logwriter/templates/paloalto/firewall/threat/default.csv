@@ -29,7 +29,7 @@ Flags,0x01000000
 Protocol,tcp
 Action,alert
 URL/Filename,docs.paloaltonetworks.com/pan-os/8-1/pan-os-admin/monitoring/use-syslog-for-monitoring/syslog-field-descriptions/threat-log-fields.html
-Threat_ID,(9999)
+Threat_ID,Threat detected(9999)
 Category,unknown
 Severity,low
 Direction,1
