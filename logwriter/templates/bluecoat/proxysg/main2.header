@@ -1,0 +1,1 @@
+#Fields: date time time-taken c-ip sc-status s-action sc-bytes cs-bytes cs-method cs-uri-scheme cs-host cs-uri-port cs-uri-path cs-uri-query cs-username cs-auth-group s-hierarchy s-supplier-name rs(Content-Type) cs(User-Agent) sc-filter-result cs-categories x-virus-id s-ip s-sitename r-ip

@@ -14,7 +14,8 @@ class LogPlugin(LogContext):
 
     def __init__(self, outpath):
         super().__init__(outpath)
-        self.bluecoat_fp = self.openlog("bluecoat_proxysg.log")
+        self.first = True
+        self.log_fp = self.openlog("bluecoat_proxysg.log")
         self.faup_ctx = Faup()
         blacklist_archive = zipfile.ZipFile(os.path.join(os.path.dirname(__file__), "blacklist.all.zip"))
         blacklist_fp = blacklist_archive.open("blacklist.all", "r")
@@ -35,7 +36,7 @@ class LogPlugin(LogContext):
 
     def validate_keys(self, kvdict):
         pass
-        
+
     def packet_to_log(self, packet):
         frame_time = datetime.fromtimestamp(int(float(packet.sniff_timestamp)))
 
@@ -48,34 +49,47 @@ class LogPlugin(LogContext):
             pass
         try:
             variables["http_user_agent_original"] = packet.http.user_agent
+            variables["cs(User-Agent)"] = packet.http.user_agent
         except AttributeError:
             pass
         variables["src_ip_addr"] = packet.ip.src
         variables["dst_ip_addr"] = packet.ip.dst
+        variables["c-ip"] = packet.ip.src
+        variables["s-ip"] = packet.ip.dst
         try:
             variables["http_request_method"] = packet.http.request_method
+            variables["cs-method"] = packet.http.request_method
         except AttributeError:
             pass            
         variables["src_port_number"] = packet.tcp.srcport
         variables["dst_port_number"] = packet.tcp.dstport
+        variables["cs-uri-port"] = packet.tcp.dstport
 
         protocol = "http"
         if str(packet.tcp.dstport) == "443" or str(packet.tcp.dstport) =="8443":
             protocol = "https"
         
         variables["network_application_protocol"] = protocol
+        variables["cs-uri-scheme"] = protocol
 
         variables["event_duration"] = str(random.randrange(20,1000))
+        variables["time-taken"] = variables["event_duration"]
         domain = self.faup_ctx.get_domain()
         variables["url_hostname"] = domain
+        variables["cs-host"] = domain
         variables["url_path"] = self.faup_ctx.get_resource_path()
         if variables["url_path"] == None:
             variables["url_path"] = "-"
+
+        variables["cs-uri-path"] =  variables["url_path"]
+
         variables["url_query"] = self.faup_ctx.get_query_string()
         if variables["url_query"] == None:
             variables["url_query"] = "-"
-        category = ""
 
+        variables["cs-uri-query"] = variables["url_query"]
+
+        category = ""
         try:
             cat = self.domains[domain]
             category = self.catmap[cat]
@@ -83,7 +97,9 @@ class LogPlugin(LogContext):
             category = "Unclassified"            
         variables["url_category"] = category
 
-        event_name = "main"
+        variables["cs-categories"] = category
+        
+        event_name = "main2"
         try:
             event_name = variables["event_name"]
         except:
@@ -137,19 +153,23 @@ class LogPlugin(LogContext):
             pass
         try:
             variables["http_user_agent_original"] = kvdict["$user-agent"]
+            variables["cs(User-Agent)"] = kvdict["$user-agent"]
         except:
             pass
 
         try:
             variables["src_ip_addr"] = kvdict["$ip-src"]
+            variables["c-ip"] = kvdict["$ip-src"]
         except:
             pass
         try:
             variables["dst_ip_addr"] = kvdict["$ip-dst"]
+            variables["s-ip"] = kvdict["$ip-dst"]
         except:
             pass        
         try:
             variables["http_request_method"] = kvdict["$method"]
+            variables["cs-method"] = kvdict["$method"]
         except:
             pass
 
@@ -160,33 +180,44 @@ class LogPlugin(LogContext):
 
         try:
             variables["dst_port_number"] = kvdict["$port-dst"]
+            variables["cs-uri-port"] = kvdict["$port-dst"]
         except:
             pass
         variables["network_application_protocol"] = protocol
+        variables["cs-uri-scheme"] = protocol
         
         variables["event_duration"] = str(random.randrange(20,1000))
+        variables["time-taken"] = str(random.randrange(20,1000))
+        
         try:
             if kvdict["$resptime"] != "":
                 variables["event_duration"] = kvdict["$resptime"]
+                variables["time-taken"] = kvdict["$resptime"]
         except:
             pass
 
         try:
             if kvdict["$statuscode"] != "":
                 variables["http_status_code"] = kvdict["$statuscode"]
+                variables["sc-status"] = kvdict["$statuscode"]
         except:
             pass
 
         domain = self.faup_ctx.get_domain()
         variables["url_hostname"] = domain
+        variables["cs-host"] = domain
         variables["url_path"] = self.faup_ctx.get_resource_path()
         if variables["url_path"] == None:
             variables["url_path"] = "-"
+        variables["cs-uri-path"] =  variables["url_path"]
+            
         variables["url_query"] = self.faup_ctx.get_query_string()
         if variables["url_query"] == None:
             variables["url_query"] = "-"
         category = ""
 
+        variables["cs-uri-query"] = variables["url_query"]
+        
         try:
             variables["url_category"] = kvdict["$classification"]
         except:        
@@ -197,7 +228,9 @@ class LogPlugin(LogContext):
                 category = "Unclassified"            
             variables["url_category"] = category
 
-        event_name = "main"
+        variables["cs-categories"] = variables["url_category"]
+
+        event_name = "main2"
         try:
             event_name = variables["event_name"]
         except:
@@ -217,20 +250,36 @@ class LogPlugin(LogContext):
         return False
 
     def run(self, cap, packet, pktid, layer):
+        # fields = layer.field_names
+        # for field in fields:
+        #     print("%s -> %s" % (field, layer.get_field_value(field)))
         if hasattr(packet, 'ip'):
             if hasattr(packet, 'http'):
                 if self.is_request(layer):
-                    # fields = layer.field_names
-                    # for field in fields:
-                    #     print("%s -> %s" % (field, layer.get_field_value(field)))
-                    
-                    self.bluecoat_fp.write(self.packet_to_log(packet))
+                    if self.first:
+                        header = self.retrieve_template_header("bluecoat.proxysg", "main2")
+                        if header:
+                            self.log_fp.write(header)
+                            self.first = False
+
+                    self.log_fp.write(self.packet_to_log(packet))
             
     def run_ccraft(self, event, kvdict):
+        if self.first:
+            header = self.retrieve_template_header("bluecoat.proxysg", "main2")
+            if header:
+                self.log_fp.write(header)
+                self.first = False
         frame_time = datetime.fromtimestamp(int(event["time"]))
-        self.bluecoat_fp.write(self.db_to_log(event, frame_time, kvdict))
+        self.log_fp.write(self.db_to_log(event, frame_time, kvdict))
 
-    def run_buffer(self, action, event_time, kvdict):        
+    def run_buffer(self, action, event_time, kvdict):
+        if self.first:
+            header = self.retrieve_template_header("bluecoat.proxysg", "main2")
+            if header:
+                self.log_fp.write(header)
+                self.first = False
+  
         frame_time = datetime.fromtimestamp(event_time)
         return self.db_to_log(action, frame_time, kvdict)
         
