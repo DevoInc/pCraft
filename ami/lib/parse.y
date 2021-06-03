@@ -52,8 +52,7 @@ typedef void *yyscan_t;
 %token <char *>STRING
 %token <char *>VERBATIM
 %token <char *>EVERYTHING
-%token <char *>GVARIABLE
-%token <char *>LVARIABLE
+%token <char *>VARIABLE
 %token <char *>LABEL
 %token <int>INTEGER
 %token <float>FLOAT
@@ -96,6 +95,7 @@ typedef void *yyscan_t;
 %token SLICEDIVIDER
 %token SLICERUN
 %token DELETE
+%token LOCAL
 
 %left PLUS MINUS
 
@@ -250,9 +250,9 @@ message: MESSAGE string {
 }
 ;
 
-variable: GVARIABLE EQUAL varset {
+variable: VARIABLE EQUAL varset {
   if (ami->debug) {
-    printf("[parse.y] variable: GVARIABLE(%s) EQUAL varset\n", $1);
+    printf("[parse.y] variable: VARIABLE(%s) EQUAL varset\n", $1);
   }
 
    /* ami_node_create(ami, &ami->root_node, AMI_NT_VARNAME, $1, 0); */
@@ -260,19 +260,11 @@ variable: GVARIABLE EQUAL varset {
   
   free($1);
  }
- | LVARIABLE EQUAL varset {
-   if (ami->debug) {
-    printf("[parse.y] variable: LVARIABLE(%s) EQUAL varset\n", $1);
-   }
+| LOCAL VARIABLE EQUAL varset {
+  
+   ami_append_item(ami, get_lineno(scanner), AMI_NT_LOCALVARNAME, $2, 0, 0, 0);
 
-   if (!ami->_action_block_id) {
-     fprintf(stderr, "Error with variable %s: it must be local to an action.\n", $1);
-     exit(1);
-   }
-
-   ami_append_item(ami, get_lineno(scanner), AMI_NT_LOCALVARNAME, $1, 0, 0, 0);
-
-  free($1);
+   free($2);
  }
 ;
 
@@ -306,9 +298,9 @@ variable_function: function {
 }
 ;
 
-variable_variable: GVARIABLE {
+variable_variable: VARIABLE {
     if (ami->debug) {
-      printf("[parse.y] variable_variable: GVARIABLE(%s)\n", $1);
+      printf("[parse.y] variable_variable: VARIABLE(%s)\n", $1);
     }
 
     
@@ -367,9 +359,9 @@ sleep_fromgroup: SLEEP FROMGROUP string {
 }
 ;
 
-repeat: REPEAT varset AS GVARIABLE OPENSECTION {
+repeat: REPEAT varset AS VARIABLE OPENSECTION {
   if (ami->debug) {
-    printf("[parse.y] repeat: REPEAT varset AS GVARIABLE(%s) OPENSECTION)\n", $4);
+    printf("[parse.y] repeat: REPEAT varset AS VARIABLE(%s) OPENSECTION)\n", $4);
   }
 
   ami->_opened_sections++;
@@ -585,9 +577,9 @@ function_argument_float: FLOAT {
 }
 ;
 
-function_argument_variable: GVARIABLE {
+function_argument_variable: VARIABLE {
   if (ami->debug) {
-    printf("[parse.y] function_argument_variable: GVARIABLE(%s)\n", $1);
+    printf("[parse.y] function_argument_variable: VARIABLE(%s)\n", $1);
   }
 
   ami->arguments_count++;
@@ -698,42 +690,25 @@ string: STRING {
  }
  ;
 
-array: GVARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
+array: VARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
   if (ami->debug) {
     printf("[parse.y] array[...]\n");
   }
 
   ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYVAR, $1, ami->arguments_count, 0, 0);
 
-  ami->arguments_count = 0;
-  
- }
-| LVARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
-  if (ami->debug) {
-    printf("[parse.y] array[...]\n");
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYVAR, $1, ami->arguments_count, 0, 0);
-  
   ami->arguments_count = 0;
   
  }
  ;
 
-array_item: GVARIABLE OPENBRACKET varset CLOSEBRACKET {
+array_item: VARIABLE OPENBRACKET varset CLOSEBRACKET {
   if (ami->debug) {
     printf("[parse.y] array_item[varset]\n");
   }
 
   ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYGET, $1, 0, 0, 0);
   
- }
-| LVARIABLE OPENBRACKET varset CLOSEBRACKET {
-  if (ami->debug) {
-    printf("[parse.y] array_item[varset]\n");
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYGET, $1, 0, 0, 0);  
  }
  ;
 
@@ -756,7 +731,7 @@ expression_float: FLOAT { $$ = $1; }
           | expression_float MINUS expression_float { $$ = $1 - $3; }
 ;
 
-delete: DELETE GVARIABLE {
+delete: DELETE VARIABLE {
   ami_append_item(ami, get_lineno(scanner), AMI_NT_DELETE, $2, 0, 0, 0);
   free($2);
  }

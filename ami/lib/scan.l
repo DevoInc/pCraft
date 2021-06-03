@@ -130,8 +130,7 @@ STRING (\"[^\"](\\.|\"\"|[^"\n])*\")|(\"\")
 %x VERBASUBSTITUTESTRING
 FLOAT [0-9\.]+
 INTEGER [0-9]+
-GVARIABLE $[a-zA-Z0-9\-_]+
-LVARIABLE _([a-zA-Z0-9\-_]+)
+VARIABLE $[a-zA-Z0-9\-_]+
 LABEL ^[a-zA-Z0-9][a-zA-Z0-9\-_]+:
 
 AMIVERSION ami_version
@@ -165,6 +164,7 @@ IGNOREGROUPSLEEP ignore_group_sleep
 SLICEDIVIDER slice_div
 SLICERUN slice_run
 DELETE delete
+LOCAL local
 
 %%
 
@@ -274,6 +274,7 @@ DELETE delete
 		  }
 		}
 
+{LOCAL} { return TOK_LOCAL; }
 {DELETE} { return TOK_DELETE; }
 {SLICEDIVIDER} { return TOK_SLICEDIVIDER; }
 {SLICERUN} { return TOK_SLICERUN; }
@@ -294,16 +295,10 @@ DELETE delete
 {TRUE} { yylval->TOK_INTEGER = 1; return TOK_INTEGER; }
 {FALSE} { yylval->TOK_INTEGER = 0; return TOK_INTEGER;}
 
-{GVARIABLE} {
-              yylval->TOK_GVARIABLE = strdup(yytext);
-              return TOK_GVARIABLE;
+{VARIABLE} {
+              yylval->TOK_VARIABLE = strdup(yytext);
+              return TOK_VARIABLE;
            }
-
-{LVARIABLE} {
-              yylval->TOK_LVARIABLE = strdup(yytext+1); // We skip the _ char
-              return TOK_LVARIABLE;
-           }
-
 
 {LABEL} {
               yylval->TOK_LABEL = strdup(yytext);
