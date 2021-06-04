@@ -387,8 +387,23 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	char *b64 = base64url_enc_malloc(data, strlen(data));
 	kv_push(char *, ami->values_stack, b64);	
       } else if (!strcmp("printvars", n->strval)) {
+	khint_t k;
+	if (ami->in_action) {
+	  if (action->variables) {
+	  for (k = 0; k < kh_end(action->variables); ++k)
+	    if (kh_exist(action->variables, k)) {
+	      char *key = (char *)kh_key(action->variables, k);
+	      ami_variable_t *value = (ami_variable_t *)kh_value(action->variables, k);
+	      if (value->type == AMI_VAR_STR) {
+		printf("\033[0;96mlocal\033[0m \033[0;33m%s\033[0m = \033[0;35m\"%s\"\033[0m\n", key, ami_variable_to_string(value));
+	      } else {
+		printf("\033[0;96mlocal\033[0m \033[0;33m%s\033[0m = %s\n", key, ami_variable_to_string(value));
+	      }
+	      /* ami_variable_debug(value); */
+	    }
+	  } // if (action->variables)
+	} // if (ami->in_action) {
 	if (ami->variables) {
-	  khint_t k;
 	  for (k = 0; k < kh_end(ami->variables); ++k)
 	    if (kh_exist(ami->variables, k)) {
 	      char *key = (char *)kh_key(ami->variables, k);
