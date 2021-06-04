@@ -234,6 +234,15 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	}
 	free(lastval);
       } else {
+	if (ami->in_action) {
+	  if (action->variables) {
+	    localvar = ami_action_get_variable(action, n->strval);
+	    if (localvar) {
+	      fprintf(stderr, "[line:%d] Error: cannot assign the global variable '%s' which was already local!\n", n->lineno, n->strval);
+	      exit(1);	  
+	    }
+	  }
+	}
 	globalvar = ami_get_variable(ami, n->strval);
 	tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	if (!tmp_str) {
@@ -288,6 +297,11 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	}
 	free(lastval);
       } else {
+	globalvar = ami_get_variable(ami, n->strval);
+	if (globalvar) {
+	  fprintf(stderr, "[line:%d] Error: cannot assign the local variable '%s' which was already global!\n", n->lineno, n->strval);
+	  exit(1);	  
+	}
 	localvar = ami_action_get_variable(action, n->strval);
 	tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
 	if (!tmp_str) {

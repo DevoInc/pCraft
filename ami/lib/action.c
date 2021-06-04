@@ -293,3 +293,33 @@ int ami_action_sleep_group_incr(ami_action_t *action, const char *group, float i
 
   return 0;
 }
+
+char *ami_action_get_nested_variable_as_str(ami_action_t *action, ami_node_t *node, char *var_value)
+{
+  ami_variable_t *retvar;
+
+  if (!var_value) {
+    fprintf(stderr, "Key is NULL! No Variable to extract!\n");
+    return "";
+  }
+
+  if (strlen(var_value) > 0) {
+    if (var_value[0] != '$') return var_value; // This is not a variable
+  } else {
+    fprintf(stderr, "Variable value for '%s' empty!\n", var_value);
+    ami_node_debug_current(node);
+    return "";
+    /* return NULL; */
+  }
+
+  retvar = ami_action_get_variable(action, var_value);
+  if (!retvar) {
+    if (node) {
+      fprintf(stderr, "Cannot get value for variable %s at %s:%d\n", var_value, node->filename, node->lineno);
+    } else {
+      fprintf(stderr, "Cannot get value for variable %s\n", var_value);
+    }
+    return NULL;
+  }
+  return retvar->strval;
+}

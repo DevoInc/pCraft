@@ -62,6 +62,29 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata
     }
   }
 
+  if (amiaction->variables) {
+    for (k = 0; k < kh_end(amiaction->variables); ++k) {
+      if (kh_exist(amiaction->variables, k)) {
+	const char *key = kh_key(amiaction->variables, k);
+	ami_variable_t *var = (ami_variable_t *)kh_value(amiaction->variables, k);
+	switch(var->type) {
+	case AMI_VAR_STR:
+	  action->variables[key] = var->strval;
+	  break;
+	case AMI_VAR_VARIABLE:
+	  action->variables[key] = ami_action_get_nested_variable_as_str(amiaction, NULL, var->strval);
+	  break;
+	case AMI_VAR_INT:
+	  char *tmpstr;
+	  asprintf(&tmpstr, "%d", var->ival);
+	  action->variables[key] = tmpstr;
+	  break;
+	}
+      }
+    }
+  }
+
+  
   for (field_action=amiaction->field_actions; field_action; field_action=field_action->next) {
     if (field_action->left) {
       action->field_actions[field_action->field][field_action->action][field_action->left] = field_action->right;
