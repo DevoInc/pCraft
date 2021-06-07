@@ -230,7 +230,9 @@ void ami_variable_debug(ami_variable_t *var)
 
 char *ami_variable_to_string(ami_variable_t *var)
 {
-  char *retstr;
+  char *retstr = NULL;
+  size_t retstr_size = 0;
+  ami_variable_t *varp;
   
   switch(var->type) {
   case AMI_VAR_INT:
@@ -246,6 +248,16 @@ char *ami_variable_to_string(ami_variable_t *var)
     break;
   case AMI_VAR_VARIABLE:
     return strdup(var->strval);
+    break;
+  case AMI_VAR_ARRAY:
+    retstr = "[";
+    for (varp=var->array; varp; varp=varp->array) {
+      asprintf(&retstr, "%s%s, ", retstr, varp->strval);
+    }
+    retstr_size = strlen(retstr);
+    retstr[retstr_size-2] = ']';
+    retstr[retstr_size-1] = '\0';
+    return retstr;    
     break;
   }
   return "None";

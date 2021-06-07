@@ -48,6 +48,7 @@ struct _ami_node_t {
   int lineno; // Holds the line where this was created to drop an error later.
   char *strval;
   int is_verbatim;
+  int is_local;
   int   intval;
   float fval;
   struct _ami_node_t *left;  
@@ -131,7 +132,7 @@ void ami_node_debug2(ami_node_t *node, int level);
 ami_node_t *ami_node_prepend(ami_node_t *nodedst, ami_node_t *nodesrc);
 ami_node_t *ami_node_append(ami_node_t *nodedst, ami_node_t *nodesrc);
 ami_node_t *ami_node_append_right(ami_node_t *nodedst, ami_node_t *nodesrc);
-ami_node_t *ami_node_create(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
-ami_node_t *ami_node_create_right(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string);
+ami_node_t *ami_node_create(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string, int is_local);
+ami_node_t *ami_node_create_right(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string, int is_local);
 
 #endif // _AMI_TREE_H_

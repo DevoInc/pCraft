@@ -17,6 +17,7 @@ ami_node_t *ami_node_new(void)
   node->strval = NULL;
   node->lineno = 0;
   node->is_verbatim = 0;
+  node->is_local = 0;
   node->intval = 0;
   node->fval = 0;
   node->left = NULL; // Points to the previous node
@@ -53,6 +54,7 @@ void ami_node_debug(ami_node_t *node)
   for (n = node; n; n = n->next) {
     printf("---------\n");
     printf("\ttype:%s\n", ami_node_names[n->type]);
+    printf("\tis_local:%d\n", n->is_local);
     if (n->strval) {
       printf("\tstrval:%s\n", n->strval);
     }
@@ -313,7 +315,7 @@ ami_node_t *ami_node_append_right(ami_node_t *nodedst, ami_node_t *nodesrc)
 }
 
 
-ami_node_t *ami_node_create(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
+ami_node_t *ami_node_create(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string, int is_local)
 {
   ami_node_t *node = ami_node_new();
 
@@ -325,13 +327,14 @@ ami_node_t *ami_node_create(ami_t *ami, ami_node_t **root, int lineno, ami_node_
   }
   node->intval = intval;
   node->fval = fval;
+  node->is_local = is_local;
 
   *root = ami_node_append(*root, node);
 
   return node;
 }
 
-ami_node_t *ami_node_create_right(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
+ami_node_t *ami_node_create_right(ami_t *ami, ami_node_t **root, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string, int is_local)
 {
   ami_node_t *node = ami_node_new();
 
@@ -343,6 +346,7 @@ ami_node_t *ami_node_create_right(ami_t *ami, ami_node_t **root, int lineno, ami
   }
   node->intval = intval;
   node->fval = fval;
+  node->is_local = is_local;
 
   *root = ami_node_append_right(*root, node);
 

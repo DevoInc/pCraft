@@ -786,23 +786,23 @@ void ami_set_action_callback(ami_t *ami, ami_action_cb action_cb, void *userdata
   ami->action_cb_userdata3 = userdata3;  
 }
 
-void ami_append_item(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
+void ami_append_item(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string, int is_local)
 {
   /* printf("\tnode type:%s\n", ami_node_names[type]); */
   if (ami->_repeat_block_id > 0) {
-    ami_node_create(ami, &ami->current_node, lineno, type, strval, intval, fval, 0);
+    ami_node_create(ami, &ami->current_node, lineno, type, strval, intval, fval, 0, is_local);
   } else {
-    ami_node_create(ami, &ami->root_node, lineno, type, strval, intval, fval, 0);
+    ami_node_create(ami, &ami->root_node, lineno, type, strval, intval, fval, 0, is_local);
     ami->current_node = NULL;
   }
 }
 
-void ami_append_repeat(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string)
+void ami_append_repeat(ami_t *ami, int lineno, ami_node_type_t type, char *strval, int intval, float fval, int is_verbatim_string, int is_local)
 {
   if (ami->current_node) {
-    ami->current_node = ami_node_create_right(ami, &ami->current_node, lineno, type, strval, intval, fval, 0);
+    ami->current_node = ami_node_create_right(ami, &ami->current_node, lineno, type, strval, intval, fval, 0, is_local);
   } else {
-    ami->current_node = ami_node_create_right(ami, &ami->root_node, lineno, type, strval, intval, fval, 0);
+    ami->current_node = ami_node_create_right(ami, &ami->root_node, lineno, type, strval, intval, fval, 0, is_local);
   }
 }
 
@@ -833,7 +833,8 @@ char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_val
     }
     return NULL;
   }
-  return retvar->strval;
+  
+  return ami_variable_to_string(retvar);
 }
 
 int ami_get_nested_variable_as_int(ami_t *ami, char *var_value)

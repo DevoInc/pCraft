@@ -80,6 +80,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
   char *stack_str = NULL; // Keeping the last value
   int stack_int = 0;
   char *tmp_str;
+  char *tmp_str2;
   float tmp_float;
   /* static char *csv_args[4] = { NULL, NULL, NULL, NULL }; // For now, we only have the CSV function */
   kvec_t(char *) values_stack;
@@ -1035,25 +1036,43 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
       	ami_variable_set_string(var, kv_A(ami->values_stack, kv_size(ami->values_stack)-i));
 	ami_variable_array_append(localvar, var);
       }
-      ami_action_set_variable(action, n->strval, ami_variable_copy(localvar));
+      
+      ami_set_variable(ami, n->strval, ami_variable_copy(localvar));
+      
       /* tmp_var = ami_action_get_newvariable(action, n->strval); */
       /* ami_variable_debug(localvar); */
       
       break;
     case AMI_NT_ARRAYGET:
-      /* array_get_index = n->intval; */
       tmp_str = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);
-      /* printf("str:%s\n", tmp_str); */
-      if (tmp_str) {
-	ami_variable_t *var = ami_action_get_variable(action, n->strval);
-	if (!var) {
-	  printf("Cannot get variable %s\n", n->strval);
-	}
-	ami_variable_debug(var);
+      tmp_str2 = ami_get_nested_variable_as_str(ami, n, tmp_str);
+      if (!tmp_str2) {
+	fprintf(stderr, "Could not get the value for '%s'\n", tmp_str);
+	exit(1);
       }
-      printf("Get from array:%s; variable name:%s\n", tmp_str, n->strval);
-      kv_push(char *, ami->values_stack, strdup(n->strval));
-      
+      if (tmp_str2) {
+	int array_index = (int)strtod(tmp_str2, NULL);
+	if (!n->is_local) {
+	  ami_variable_t *array = ami_get_variable(ami, n->strval);
+	  if (!array) {
+	    fprintf(stderr, "[line:%d] Cannot get variable %s\n", n->lineno, n->strval);
+	    exit(1);
+	  }
+	  ami_variable_t *var_index = ami_variable_array_get_at_index(array, array_index);
+	  if (!var_index) {
+	    fprintf(stderr, "[line:%d] Cannot get value from array %s at index %d\n", n->lineno, n->strval, array_index);
+	    exit(1);
+	  }
+	  char *var_str = ami_variable_to_string(var_index);
+	  kv_push(char *, ami->values_stack, var_str);
+	} else {
+	  fprintf(stderr, "Local arrays not handled yet!\n");
+	  /* kv_push(char *, ami->values_stack, strdup(n->strval));       */
+	}	
+      } else { // if (tmp_str2)
+	fprintf(stderr, "[line:%d] Cannot get variable %s\n", n->lineno, n->strval);	  
+	exit(1);	
+      }
       break;
     case AMI_NT_EXIT:
       exit(1);
