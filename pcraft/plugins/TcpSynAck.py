@@ -45,7 +45,7 @@ action synack {
         syn = Ether() / IP(src=self.getvar("ip-src"), dst=self.getvar("ip-dst")) / TCP(dport=dstport, sport=srcport, flags="S")
         self.plugins_data.AddPacket(action, syn)
             
-        # RST-ACK
+        # SYN-ACK
         syn_ack = Ether() / IP(src=self.getvar("ip-dst"), dst=self.getvar("ip-src")) / TCP(sport=dstport, dport=syn[TCP].sport, flags="S""A")
         self.plugins_data.AddPacket(action, syn_ack)
 
