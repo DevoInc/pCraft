@@ -99,7 +99,7 @@ Pcraft originally meant  ``Packet Crafter'', but now does much more! It is avail
 \hline
 \textbf{Date} & \textbf{Author} & \textbf{Description} \\
 \hline
-\today & Sebastien Tricaud & First version \\
+July 19, 2021 & Sebastien Tricaud & First version \\
 \hline
 \end{tabular}
 }
@@ -496,20 +496,20 @@ Ami handles loop to repeat a set of defined actions the wanted number of times. 
 \end{lstlisting}
 
 This would assign the \textbf{\$index} variable to the actual repeat count, so it could be use to print the repeat loop count like this:
-\begin{center}
-  repeat 10 as \$index {
-    message "Repeat counter: \$\{index\}"
+\begin{lstlisting}
+  repeat 10 as $index {
+    message "Repeat counter: ${index}"
     ...
   }
-\end{center}
+\end{lstlisting}
 
 or would be used to iterate through the values from a CSV, such as:
 
-\begin{center}
-  repeat 10 as \$index {
-    \$field = csv("file.csv", \$index, "username", true)
+\begin{lstlisting}
+  repeat 10 as $index {
+    $field = csv("file.csv", $index, "username", true)
   }
-\end{center}
+\end{lstlisting}
 
 \subsection{Time}
 
