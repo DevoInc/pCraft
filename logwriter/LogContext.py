@@ -14,21 +14,22 @@ class LogContext(object):
 
         self.client_public_ipv4 = "93.184.216.34"
         self.fp = None
-        self.logfile = None
+        self.logfiles = {}
         
     def openlog(self, filename):
         if self.outpath:
-            self.logfile = os.path.join(self.outpath, filename)
-            self.fp = open(self.logfile, "w")
-            return self.fp
+            logfilename = os.path.join(self.outpath, filename)
+            self.logfiles[logfilename] = open(logfilename, "w")
+            return self.logfiles[logfilename]
         return None
     
     def closelog(self):
         if self.outpath:
-            self.fp.close()
-            size = os.stat(self.logfile).st_size
-            if size == 0:
-                os.unlink(self.logfile)
+            for filename, filepointer in self.logfiles.items():
+                filepointer.close()
+                size = os.stat(filename).st_size
+                if size == 0:
+                    os.unlink(filename)
 
     def do_validate_keys(self, event_type, event, kvdict):
         keys = self.retrieve_template_keys(event_type, kvdict["event_id"])
