@@ -1,0 +1,15 @@
+key,default_value
+SpendingAlarm_Type,AWS::CloudWatch::Alarm
+AlarmDescription,"Alarm if AWS spending is over $"
+AlarmDescriptionRef,AlarmThreshold
+Namespace,AWS/Billing
+MetricName,EstimatedCharges
+Dimensions_Name,Currency
+Dimensions_Value,USD
+Statistic,Maximum
+Period,21600
+EvaluationPeriods,1
+Threshold_Ref,AlarmThreshold
+Threshold_ComparisonOperator,GreaterThanThreshold
+AlarmAction_Ref,BillingAlarmNotification
+InsufficientDataActions_Ref,BillingAlarmNotification
