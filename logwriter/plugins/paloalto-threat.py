@@ -22,8 +22,12 @@ class LogPlugin(LogContext):
         self.first = True
         
         geodb = "GeoLite2-Country.mmdb"
-        self.reader = geoip2.database.Reader(os.path.join(os.path.dirname(__file__),geodb))
-        
+        try:
+            self.reader = geoip2.database.Reader(os.path.join(os.path.dirname(__file__),geodb))
+        except FileNotFoundError:
+            self.reader = None
+            print("Please add GeoLite2-Country.mmdb in %s to have Country mapping support" % (os.path.dirname(__file__)))
+            
         self.session_id = 121423
         
     def __del__(self):
