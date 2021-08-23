@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ ! -e /home/pcraft/pcraft-src ]
+then
+    ln -s /opt/pcraft /home/pcraft/pcraft-src
+fi    
+tail -f /dev/null

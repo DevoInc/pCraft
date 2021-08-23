@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  pcraft:
+    build: ./pcraft
+    container_name: pcraft
+    volumes:
+      - ./volume:/home/
+      
