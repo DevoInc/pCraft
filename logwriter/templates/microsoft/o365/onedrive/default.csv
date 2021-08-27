@@ -9,7 +9,7 @@ Version,1
 ItemType,File
 WebId,f0475c29-3200-41e1-ae8a-e38078a3220f
 EventSource,SharePoint
-UserAgent,"Opera/9.46.(Windows 98; mg-MG) Presto/2.9.172 Version/10.00"
+UserAgent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0 
 SiteUrl,https://examcorp.sharepoint.com/Documents/
 Site,9a192384-6bf3-4fd1-88d4-638f39a14f86
 ObjectId,https://examcorp.sharepoint.com/Documents/TYRO3-gen.pptx
@@ -25,5 +25,5 @@ ApplicationDisplayName,"None"
 ApplicationId,"None"
 Operation,"FileModified"
 DoNotDistributeEvent,"True"
-ImplicitShare,"None"
+ImplicitShare,"Yes"
 CreationTime,"%Y-%m-%dT%H:%M:%S"
