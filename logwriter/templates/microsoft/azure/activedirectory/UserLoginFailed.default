@@ -1,0 +1,10 @@
+key,default_value
+ResultStatus,Failed
+LogonError,InvalidUserNameOrPassword
+ExtendedProperties_0_Name,UserAgent
+ExtendedProperties_0_Value,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+ExtendedProperties_1_Name,RequestType
+ExtendedProperties_1_Value,OAuth2:Token
+ExtendedProperties_2_Name,ResultStatusDetail
+ExtendedProperties_2_Value,UserError
+Operation,UserLoginFailed
