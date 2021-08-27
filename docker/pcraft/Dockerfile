@@ -26,4 +26,9 @@ RUN ldconfig
 RUN chown -R pcraft:pcraft /opt/pcraft
 USER pcraft
 WORKDIR /home/pcraft
+RUN mkdir -p /opt/pcraft/.emacs.d/ami
+RUN cp /opt/pcraft/ami/editors/emacs/ami-mode.el /opt/pcraft/.emacs.d/ami/
+RUN echo "(global-display-line-numbers-mode)" > /opt/pcraft/.emacs.d/init.el
+RUN echo "(add-to-list 'load-path \"/opt/pcraft/.emacs.d/ami/\")" >> /opt/pcraft/.emacs.d/init.el
+RUN echo "(load \"ami-mode\")" >> /opt/pcraft/.emacs.d/init.el
 ENTRYPOINT ["/runme.1st"]

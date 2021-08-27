@@ -3,4 +3,8 @@ if [ ! -e /home/pcraft/pcraft-src ]
 then
     ln -s /opt/pcraft /home/pcraft/pcraft-src
 fi    
+if [ ! -e /home/pcraft/.emacs.d ]
+then
+    ln -s /opt/pcraft/.emacs.d /home/pcraft/.emacs.d
+fi    
 tail -f /dev/null
