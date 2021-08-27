@@ -4,6 +4,10 @@ import json
 import pprint
 from flatten_json import flatten, unflatten
 
+if len(sys.argv) < 3:
+    print("Syntax: %s json-input defaultcsv-file template-file" % sys.argv[0])
+    sys.exit(1)
+
 template = open(sys.argv[3], "w")
 
 default_csv = open(sys.argv[2], "w")
