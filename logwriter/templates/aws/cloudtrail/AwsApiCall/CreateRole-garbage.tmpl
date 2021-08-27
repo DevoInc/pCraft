@@ -1,0 +1,81 @@
+{
+	"id": "AQAAAXZ0dwWw8YasKgAAAABBWFowZk8zdkFBQ05XckhoelBXNENBQUE",
+	"content": {
+		"timestamp": "2020-12-18T06:08:46.000Z",
+		"tags": [
+			"source:aws:cloudtrail"
+		],
+		"attributes": {
+			"eventID": "2cd2e43f-d850-4652-86f8-04ef97233e24",
+			"metadata": {
+				"awsregion": "us-east-1"
+			},
+			"aws_account": "...",
+			"eventSource": "iam.amazonaws.com",
+			"errorCode": "NoSuchEntityException",
+			"eventName": "CreateRole",
+			"http": {
+				"user_agent_details": {
+					"os": {
+						"family": "Linux"
+					},
+					"browser": {
+						"family": "aws-sdk-go",
+						"patch": "38",
+						"major": "1",
+						"minor": "25"
+					},
+					"device": {
+						"family": "Other",
+						"category": "Desktop"
+					}
+				},
+				"user_agent": "aws-sdk-go/1.25.38 (go1.13.15; linux; amd64)"
+			},
+			"userAgent": "aws-sdk-go/1.25.38 (go1.13.15; linux; amd64)",
+			"userIdentity": {
+				"accessKeyId": "ASIAVJ6....",
+				"sessionContext": {
+					"sessionIssuer": {
+						"principalId": "...",
+						"accountId": "...",
+						"type": "Role",
+						"arn": "arn:aws:iam::...:role/EKS-dev1-test-stage2-IamManagerController-IamRole-O0VKOJA39G2Y",
+						"userName": "EKS-dev1-test-stage2-IamManagerController-IamRole-O0VKOJA39G2Y"
+					},
+					"webIdFederationData": {
+						"federatedProvider": "arn:aws:iam::...:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/..."
+					},
+					"attributes": {
+						"mfaAuthenticated": "false",
+						"creationDate": "2020-12-18T05:47:25Z"
+					}
+				},
+				"accountId": "...",
+				"principalId": "...:1608270445319761940",
+				"type": "AssumedRole",
+				"arn": "arn:aws:sts::...:assumed-role/EKS-dev1-test-stage2-IamManagerController-IamRole-O0VKOJA39G2Y/1608270445319761940"
+			},
+			"eventType": "AwsApiCall",
+			"type": "aws:cloudtrail",
+			"eventCategory": "Management",
+			"eventVersion": "1.08",
+			"sourceIPAddress": "...",
+			"errorMessage": "Scope ARN: arn:aws:iam:::policy/EKS-dev1-test-stage2-IamManagerController-9GZSJTSP5T78-permissions-boundary does not exist or is not attachable.",
+			"requestParameters": {
+				"permissionsBoundary": "arn:aws:iam:::policy/EKS-dev1-test-stage2-IamManagerController-9GZSJTSP5T78-permissions-boundary",
+				"assumeRolePolicyDocument": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"sts:AssumeRoleWithWebIdentity\",\"Principal\":{\"Federated\":\"arn:aws:iam::...:oidc-provider/oidc.eks.us-west-2.amazonaws.com/id/...\"},\"Condition\":{\"StringEquals\":{\"oidc.eks.us-west-2.amazonaws.com/id/...\":\"system:serviceaccount:iam-manager-system:test-iam-service-account\"}}}]}",
+				"maxSessionDuration": 43200,
+				"roleName": "k8s-iam-manager-system",
+				"description": "#DO NOT DELETE#. Managed by iam-manager"
+			},
+			"readOnly": false,
+			"requestID": "428322e4-74fc-42fb-898f-ae847bb821c6",
+			"eventTime": "2020-12-18T06:08:46Z",
+			"recipientAccountId": "...",
+			"managementEvent": true,
+			"timestamp": "2020-12-18T06:08:46Z"
+		}
+	}
+}
+
