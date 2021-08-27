@@ -35,7 +35,7 @@ for k, v in flat_data.items():
     newdict[k] = "{{{%s}}}" % k
 
 tmpl = unflatten(newdict)
-template.write(json.dumps(tmpl))
+template.write(json.dumps(tmpl) + "\n")
 
 jsonfp.close()
 
