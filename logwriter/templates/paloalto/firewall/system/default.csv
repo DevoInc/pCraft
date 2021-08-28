@@ -1,0 +1,22 @@
+key,default_value
+FUTURE_USE,1
+Receive_Time,%Y/%m/%d %H:%M:%S
+Serial_Number,429304
+Type,SYSTEM
+Threat/Content_Type,general
+Generated_Time,%Y-%m-%dT%H:%M:%S
+Virtual_System,vsys1
+Event_ID,general
+Object,
+Module,general
+Severity,informational
+Description,"Connection to Update server: updates.paloaltonetworks.com completed successfully, initiated by 172.16.0.42"
+Sequence_Number,42
+Action_Flags,0x01
+Device_Group_Hierarchy_Level_1,0
+Device_Group_Hierarchy_Level_2,0
+Device_Group_Hierarchy_Level_3,0
+Device_Group_Hierarchy_Level_4,0
+Virtual_System_Name,vsys1
+Device_Name,DVC-007
+

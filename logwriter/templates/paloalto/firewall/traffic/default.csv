@@ -1,7 +1,7 @@
 key,default_value
 FUTURE_USE,1
 Domain,0
-Receive_Time,2021-02-23T22:13:00
+Receive_Time,%Y-%m-%dT%H:%M:%S
 Serial_Number,429304
 Type,TRAFFIC
 Threat/Content_Type,end
