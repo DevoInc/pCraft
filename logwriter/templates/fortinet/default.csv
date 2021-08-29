@@ -3,6 +3,7 @@ timestamp,%b %d, %Y @ %H:%M:%S.000
 date,%Y-%m-%d
 time,%H:%M:%S
 devname,SENSOR1
+devid,SENSOR-1007
 device_id,SENSOR-1007
 log_id,0073196548
 subtype,anomaly
@@ -12,6 +13,8 @@ src,172.16.0.42
 dst,93.184.216.34
 srcip,172.16.0.42
 dstip,93.184.216.34
+src_ip,172.16.0.42
+dst_ip,93.184.216.34
 src_int,port13
 dst_int,N/A
 serial,0
@@ -34,6 +37,7 @@ SN,928304895
 duration,142
 rule,42
 policyid,42
+policy_id,42
 app_type,N/A
 sent,242
 rcvd,0
@@ -47,12 +51,14 @@ tran_disp,noop
 logver,42
 level,notice
 eventtime,%s
+epoch,%s
 srcintf,eth0
 srcintfrole,lan
 dstintf,vlan1
 dstintfrole,lan
 poluuid,0501c23b-cbe7-4d60-af6c-b59abe9b3f1e
 sessionid,1945231670
+session_id,1945231670
 action,close
 policytype,policy
 dstcountry,United States
@@ -69,3 +75,9 @@ osversion,10
 mastersrcmac,c4:f3:b0:01:42:ff
 srcmac,c4:f3:b0:01:42:ff
 srcserver,0
+tz,UTC-8:00
+event_id,842
+profile,default
+voip_proto,sip
+kind,register
+dir,outbound

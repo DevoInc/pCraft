@@ -1,0 +1,9 @@
+key,default_value
+type,voip
+subtype,voip
+vd,RAS
+action,permit
+status,succeeded
+call_id,102034F@172.16.0.42
+from,sip:2987@172.16.0.42
+to,sip:2987@172.16.0.10
