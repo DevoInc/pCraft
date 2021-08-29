@@ -1,0 +1,6 @@
+key,default_value
+type,traffic
+subtype,forward
+pri,notice
+status,accept
+service,HTTPS
