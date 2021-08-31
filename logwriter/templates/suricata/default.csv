@@ -4,7 +4,7 @@ sig_gid,1
 sig_id,2024219
 sig_revision,2
 message,"ET EXPLOIT Possible ETERNALROMANCE MS17-010 Heap Spray"
-classification,Classification: A Network Trojan was detected
+classification,"Classification: A Network Trojan was detected"
 priority,1
 proto,TCP
 sip,10.99.99.8
