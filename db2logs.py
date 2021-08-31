@@ -25,7 +25,7 @@ SCHEMA = """{
         ]
 }"""
 
-logplugin_action_map = { "DNSConnection": ["named"],
+logplugin_action_map = { "DNSConnection": ["named", "crowdstrike-dnsrequest"],
                          "HTTPConnection": ["bluecoat-proxysg-main", "zscaler-access"]                         
 }
 
@@ -34,7 +34,7 @@ logplugin_action_map = { "DNSConnection": ["named"],
 #                         "Controller": "endpoint",
 # }
 
-network_plugins = ["netflow", "paloalto-firewall"]
+network_plugins = ["netflow", "paloalto-firewall", "fortinet-traffic", "aws-vpc-flow"]
 # network_plugins = []
 
 if __name__ == "__main__":

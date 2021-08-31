@@ -5,12 +5,12 @@ import os
 from logwriter.LogContext import LogContext
 
 class LogPlugin(LogContext):
-    name = "aws-vpc-flow"
+    name = "fortinet-traffic"
     active_layer = "ip"
 
     def __init__(self, outpath):
         super().__init__(outpath)
-        self.log_fp = self.openlog("aws-vpc_flow.log")
+        self.log_fp = self.openlog("fortinet_traffic.log")
                 
     def __del__(self):
         self.closelog()
@@ -51,24 +51,23 @@ class LogPlugin(LogContext):
 
         packetssent = random.randint(5, 1356)
         packetsreceived = random.randint(5, 1356)
+
+        duration = random.randint(10, 350)
         
         kvdict = {
-            "version": 2,
-            "account_id": random.randint(100000000000, 900000000000),
-            "interface": "eni-1234",
-            "ip_src": packet.ip.src,
-            "ip_dst": packet.ip.dst,
-            "port_src": self.get_srcport(packet),
-            "port_dst": self.get_dstport(packet),
-            "protocol": self.get_protocol(packet),
+            "src_int": "eni-1234",
+            "src": packet.ip.src,
+            "dst": packet.ip.dst,
+            "src_port": self.get_srcport(packet),
+            "dst_port": self.get_dstport(packet),
+            "proto": self.get_protocol(packet),
+            "sent_pkt": packetssent,
+            "rcvd_pkt": packetsreceived,
             "bytes": bytessent + bytesreceived,
-            "starttime": str(int(float(packet.sniff_timestamp))),
-            "endtime": str(int(float(packet.sniff_timestamp)) + random.randint(10, 1000)),
-            "action": "ACCEPT",
-            "status": "OK",
+            "duration": duration,
         }
 
-        event = self.retrieve_template("aws.vpc", "flow", kvdict)
+        event = self.retrieve_template("fortinet", "traffic", kvdict)
         event = frame_time.strftime(event)
         
         self.log_fp.write(event)
@@ -86,43 +85,42 @@ class LogPlugin(LogContext):
         event_time = str(int(event["time"]))
         frame_time = datetime.fromtimestamp(int(event_time))
         
+        duration = random.randint(10, 350)
+
         variables = {
-            "version": 2,
-            "account_id": random.randint(100000000000, 900000000000),
-            "interface": "eni-1234",
-            "ip_src": None,
-            "ip_dst": None,
-            "port_src": None,
-            "port_dst": None,
-            "protocol": None,
+            "src_int": "eni-1234",
+            "src": None,
+            "dst": None,
+            "src_port": None,
+            "dst_port": None,
+            "proto": None,
+            "sent_pkt": packetssent,
+            "rcvd_pkt": packetsreceived,
             "bytes": bytessent + bytesreceived,
-            "starttime": str(int(float(frame_time.timestamp()))),
-            "endtime": str(int(float(frame_time.timestamp())) + random.randint(10, 1000)),
-            "action": "ACCEPT",
-            "status": "OK",
+            "duration": duration,
         }
         try:
-            variables["ip_src"] = kvdict["$ip-src"]
+            variables["src"] = kvdict["$ip-src"]
         except:
             pass
         try:
-            variables["ip_dst"] = kvdict["$ip-dst"]
+            variables["dst"] = kvdict["$ip-dst"]
         except:
             pass
         try:
-            variables["port_src"] = kvdict["$port-src"]
+            variables["src_port"] = kvdict["$port-src"]
         except:
             pass
         try:
-            variables["port_dst"] = kvdict["$port-dst"]
+            variables["dst_port"] = kvdict["$port-dst"]
         except:
             pass
         try:
-            variables["protocol"] = self.get_protocol_str(kvdict["$protocol"])
+            variables["proto"] = self.get_protocol_str(kvdict["$protocol"])
         except:
             pass
         
-        event = self.retrieve_template("aws.vpc", "flow", variables)        
+        event = self.retrieve_template("fortinet", "traffic", variables)        
         bufevent = frame_time.strftime(event)
         
         self.log_fp.write(bufevent)

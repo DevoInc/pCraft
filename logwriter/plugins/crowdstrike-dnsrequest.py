@@ -48,8 +48,8 @@ class LogPlugin(LogContext):
         except:
             pass
 
-        variables["timestamp"] = int(frame_time)
-        variables["ContextTimeStamp"] = int(frame_time)
+        variables["timestamp"] = frame_time.timestamp()
+        variables["ContextTimeStamp"] = str(frame_time.timestamp()) + ".000"
         
         event = self.retrieve_template("crowdstrike", "DnsRequest", variables)        
         
