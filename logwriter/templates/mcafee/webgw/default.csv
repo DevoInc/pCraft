@@ -1,0 +1,14 @@
+key,default_value
+status,200
+method,GET
+url,http://www.example.com/index.html
+httpversion,HTTP/1.1
+category,Internet Services
+risk,Minimal Risk
+mime-type,text/html
+user-agent,"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0"
+ip-src,172.16.0.42
+user,edithroux
+virus,
+response-len,12373
+block,0
