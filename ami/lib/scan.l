@@ -95,6 +95,12 @@ char *escape_string(char *str) {
     memset(s, '\0', str_len - 1);
     read_pos = 1;
     for (pos = 0; pos < str_len - 2; pos++) {
+	if ((!pos) && (str[0] == '$')) { // We have a variable
+	    s[pos] = '$';
+	    pos++;
+	    read_pos++;
+	}
+	     
         if (pos == str_len - 2 - replace_count) {
 	    break;
 	}
@@ -131,6 +137,7 @@ STRING (\"[^\"](\\.|\"\"|[^"\n])*\")|(\"\")
 FLOAT [0-9\.]+
 INTEGER [0-9]+
 VARIABLE $[a-zA-Z0-9\-_]+
+VARIABLESTR $(\"[^\"](\\.|\"\"|[^"\n])*\")|(\"\")
 LABEL ^[a-zA-Z0-9][a-zA-Z0-9\-_]+:
 
 AMIVERSION ami_version
@@ -299,6 +306,10 @@ LOCAL local
               yylval->TOK_VARIABLE = strdup(yytext);
               return TOK_VARIABLE;
            }
+{VARIABLESTR} {
+           yylval->TOK_STRING = escape_string(yytext);
+           return TOK_VARIABLE;
+         }
 
 {LABEL} {
               yylval->TOK_LABEL = strdup(yytext);
