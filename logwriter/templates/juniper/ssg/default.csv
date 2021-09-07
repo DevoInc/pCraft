@@ -1,0 +1,20 @@
+key,default_value
+timestamp,%Y-%m-%d %H:%M:%S
+device_id,SSG550-Earth42
+notification,[Root]system-notification-00257(traffic)
+duration,0
+policy_id,2
+proto,17
+service,udp/port:5353
+src_zone,Untrust
+dst_zone,DMZ
+action,Permit
+action2,Deny
+sent,0
+rcvd,0
+src,172.16.0.42
+dst,93.184.216.34
+icmptype,8
+session_id,839020
+src_port,53021
+dst_port,5353
