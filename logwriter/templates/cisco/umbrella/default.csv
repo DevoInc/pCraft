@@ -1,0 +1,15 @@
+key,default_value
+timestamp,%Y-%m-%d %H:%M:%S
+orig_id,293017482
+identity,"Passive Monitor"
+identitytype,CDFW Tunnel Device
+flow,OUTBOUND
+protocol,17
+packetsize,42
+source_ip,172.16.0.42
+source_port,42596
+dest_ip,93.184.216.34
+dest_port,443
+datacenter,ams1.edc
+ruleid,12
+verdict,ALLOW
