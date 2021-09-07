@@ -1,0 +1,4 @@
+key,default_value
+originalEventTimestamp,"%Y-%m-%dT%H:%M:%S.0000000Z"
+time,"%Y-%m-%dT%H:%M:%S.0000000Z"
+properties_event_time,"%Y-%m-%dT%H:%M:%S.000Z"
