@@ -1,0 +1,11 @@
+key,default_value
+category,"ResourceUsageStats"
+operationName,"ResourceUsageStatsEvent"
+properties_SKU,"GeneralPurpose"
+properties_virtual_core_count,"8"
+properties_avg_cpu_percent,"0.488542"
+properties_reserved_storage_mb,"1048576"
+properties_storage_space_used_mb,"154672.000000"
+properties_io_requests,"2"
+properties_io_bytes_read,"0"
+properties_io_bytes_written,"7680"
