@@ -13,3 +13,12 @@ dest_port,443
 datacenter,ams1.edc
 ruleid,12
 verdict,ALLOW
+action,Allowed
+resolver,1.1.1.1
+ADusername,edith.roux
+ADsite,Bâle
+Network,CH
+query_type,"1 (A)"
+response_code,NOERROR
+domain,example.com
+categories,Chat,Social Networking,Allow list
