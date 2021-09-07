@@ -1,4 +1,6 @@
 #!/bin/bash
+sudo chown -R pcraft:pcraft /home/pcraft/
+
 if [ ! -e /home/pcraft/pcraft-src ]
 then
     ln -s /opt/pcraft /home/pcraft/pcraft-src
