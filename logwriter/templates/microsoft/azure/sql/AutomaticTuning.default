@@ -1,0 +1,10 @@
+key,default_value
+category,"AutomaticTuning"
+operationName,"AutomaticTuningSettingsSnapshotEvent"
+properties_OptionName,"FORCE_FALLBACK"
+properties_OptionDesiredState,"Default"
+properties_OptionActualState,"On"
+properties_OptionDisableReason,"Inherited from server"
+properties_IsDisabledBySystem,"0"
+properties_DatabaseDesiredMode,"Inherit"
+properties_DatabaseActualMode,"Auto"
