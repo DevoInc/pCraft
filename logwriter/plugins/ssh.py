@@ -28,11 +28,8 @@ class LogPlugin(LogContext):
     def run_ccraft(self, event, kvdict, logcall=None):
         frame_time = datetime.fromtimestamp(int(event["time"]))
 
-        print("Run ccraft for SSH! \o/")
-        
         if logcall:
             if logcall == "Auth.Login":
-                kvdict = {}
                 try:                    
                     kvdict["username"] = kvdict["$username"]
                 except:
