@@ -82,12 +82,14 @@ if __name__ == "__main__":
                     print("No such plugin %s for action %s" % (plugin, event["action"]))
         elif event["exec"] == "LogCall":
             for plugin in writer.loaded_plugins:
+                logcalls = None
                 try:
                     logcalls = writer.loaded_plugins[plugin].logcalls
+                except AttributeError:
+                    pass
+                if logcalls:
                     if event["variables"]["$call"] in logcalls:
                         writer.loaded_plugins[plugin].run_ccraft(event, event["variables"], logcall=event["variables"]["$call"])
-                except:
-                    pass
         else:
             plugin_name = []
             try:
