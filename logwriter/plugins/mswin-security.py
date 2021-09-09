@@ -7,6 +7,7 @@ from logwriter.LogContext import LogContext
 class LogPlugin(LogContext):
     name = "mswin_security"
     active_layer = "no-active-layer"
+    logcalls = ["Auth.Login"]
     
     def __init__(self, outpath):
         super().__init__(outpath)
@@ -44,8 +45,16 @@ class LogPlugin(LogContext):
         if log:
             self.log_fp.write(log)
 
-    def run_ccraft(self, event, kvdict):
+    def run_ccraft(self, event, kvdict, logcall=None):
         frame_time = datetime.fromtimestamp(int(event["time"]))
+
+        if logcall:
+            if logcall == "Auth.Login":
+                kvdict = {"event_id": "4624",
+                          "winlog_event_data_LogonGuid": uuid.uuid5(uuid.NAMESPACE_DNS, kvdict["$username"]),
+                          "winlog_event_data_SubjectUserName": kvdict["$username"],
+                          "winlog_event_data_TargetUserName": kvdict["$username"]}
+            
         log = self.template_to_log(frame_time, kvdict)
         if log:
             self.log_fp.write(log)

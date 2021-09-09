@@ -1,0 +1,9 @@
+av 1
+
+action auth {
+    $call = "Auth.Login"
+    $result = "Success"
+    $username = "magic"
+    
+    exec LogCall
+}

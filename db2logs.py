@@ -80,6 +80,14 @@ if __name__ == "__main__":
                     writer.loaded_plugins[plugin].run_ccraft(event, kvdict)
                 else:
                     print("No such plugin %s for action %s" % (plugin, event["action"]))
+        elif event["exec"] == "LogCall":
+            for plugin in writer.loaded_plugins:
+                try:
+                    logcalls = writer.loaded_plugins[plugin].logcalls
+                    if event["variables"]["$call"] in logcalls:
+                        writer.loaded_plugins[plugin].run_ccraft(event, event["variables"], logcall=event["variables"]["$call"])
+                except:
+                    pass
         else:
             plugin_name = []
             try:
