@@ -2,5 +2,12 @@ key,default_value
 msg,%b %d %H:%M:%S voidptr logw[1234]: This is a test message
 timestamp_rfc3164,%b %d %H:%M:%S
 hostname,voidptr
-procid,logw[1234]
+procid,1234
+systemdprocid,942
 msgid,This is a test message
+username,eroux
+srcip,172.16.0.42
+srcport,43921
+sha256,DtC42C++Caf3CbesT03ItJfueMaWWW3c4f3ofd34d9Kr
+sessionid,16932
+uid,0
