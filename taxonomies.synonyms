@@ -1,0 +1,11 @@
+pcraft:domain,crowdstrike:DomainName
+pcraft:ip-dst,fortinet:dst,fortinet:dst_ip,fortinet:dstip,corelight:resp_h,juniper:dst,paloalto:Destination address
+pcraft:ip-src,fortinet:src,fortinet:src_ip,fortinet:srcip,corelight:orig_h,juniper:src,paloalto:Source address
+pcraft:port-dst,fortinet:dst_port,fortinet:dstport,corelight:resp_p,juniper:dst_port
+pcraft:port-src,fortinet:src_port,fortinet:srcport,corelight:orig_p,juniper:src_port
+pcraft:filename,microsoft:o365:onedrive:SourceFileName
+pcraft:resolver,
+pcraft:user-agent,
+pcraft:uri,
+pcraft:method,
+duo:username,okta:credentials_userName,
