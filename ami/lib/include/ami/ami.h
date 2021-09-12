@@ -119,6 +119,8 @@ struct _ami_t {
 
   int slice_divider;
   int slice_to_run;
+
+  char *taxonomy;
 };
 typedef struct _ami_t ami_t;
 

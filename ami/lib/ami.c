@@ -94,6 +94,8 @@ ami_t *ami_new(void)
 
   ami->slice_divider = 0;
   ami->slice_to_run = 0;
+
+  ami->taxonomy = strdup("pcraft");
   
   return ami;
 }
@@ -657,6 +659,7 @@ void ami_close(ami_t *ami)
   
   if (!ami) return;
   if (ami->file) free(ami->file);
+  if (ami->taxonomy) free(ami->taxonomy);
   
   kv_destroy(ami->references);
   kv_destroy(ami->values_stack);

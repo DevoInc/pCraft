@@ -96,6 +96,7 @@ typedef void *yyscan_t;
 %token SLICERUN
 %token DELETE
 %token LOCAL
+%token TAXONOMY
 
 %left PLUS MINUS
 
@@ -144,6 +145,7 @@ input:
        | input expression_int
        | input expression_float
        | input delete
+       | input taxonomy
        ;
 
 
@@ -735,6 +737,13 @@ delete: DELETE VARIABLE {
   ami_append_item(ami, get_lineno(scanner), AMI_NT_DELETE, $2, 0, 0, 0, 0);
   free($2);
  }
+;
+
+taxonomy: TAXONOMY WORD {
+  free(ami->taxonomy);
+  ami->taxonomy = strdup($2);
+  free($2);
+}
 ;
 
 %%

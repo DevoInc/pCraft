@@ -175,7 +175,8 @@ PYBIND11_MODULE(pyami, m) {
       .def("GetSleepCursor", &Ami::GetSleepCursor)
       .def("AppendSleepCursor", &Ami::AppendSleepCursor)
       .def("Debug", &Ami::Debug)
-      .def("GetStartTime", &Ami::GetStartTime);    
+      .def("GetStartTime", &Ami::GetStartTime)
+      .def("GetTaxonomy", &Ami::GetTaxonomy);
     py::class_<Action>(m, "Action")
       .def(py::init<>())
       .def("Variables", &Action::get_variables)

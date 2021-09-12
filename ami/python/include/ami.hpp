@@ -27,6 +27,7 @@ public:
   float GetSleepCursor(void) { return _ami->sleep_cursor; };
   void AppendSleepCursor(float s) { _ami->sleep_cursor += s; };
   int GetStartTime(void) { return _ami->start_time; };
+  char *GetTaxonomy(void) { return _ami->taxonomy; };
 private:
   ami_t *_ami;
   static void foreach_action(ami_action_t *action, void *userdata1, void *userdata2, void *userdata3);  

@@ -172,6 +172,7 @@ SLICEDIVIDER slice_div
 SLICERUN slice_run
 DELETE delete
 LOCAL local
+TAXONOMY taxonomy
 
 %%
 
@@ -329,6 +330,10 @@ LOCAL local
            yylval->TOK_STRING = escape_string(yytext);
            return TOK_STRING;
          }
+
+{TAXONOMY} {
+               return TOK_TAXONOMY;
+           }
 
 [a-zA-Z0-9_\-:<>@]+ {
         yylval->TOK_WORD = strdup(yytext);
