@@ -1,0 +1,19 @@
+key,default_value
+id,9304892561829304637
+event_type,"Component Download Failure"
+event_type_id,0029318936
+group_guids_0,3f7b1348-0fa4-4de6-8f80-34c60e356470
+computer_connector_guid,90deb5e1-5a52-4f48-ba3d-079da58bb07f
+computer_hostname,myhost1
+computer_external_ip,93.184.216.34
+computer_active,True
+computer_network_addresses_0_ip,172.16.0.42
+computer_network_addresses_0_mac,de:ad:b3:3f:c4:fe
+computer_network_addresses_1_ip,172.16.0.11
+computer_network_addresses_1_mac,de:ad:b3:3f:10:15
+computer_links_computer,"https://api.amp.cisco.com/v1/computers/8eb30377-b042-4200-83b0-f9c3b0ffa0fa"
+computer_links_trajectory,"https://api.amp.cisco.com/v1/computers/8eb30377-b042-4200-83b0-f9c3b0ffa0fa/trajectory"
+computer_links_group,"https://api.amp.cisco.com/v1/groups/7bb12038-477c-405e-94fa-08f3db992ace"
+bp_data_ecx,"Http Error Code: 403"
+bp_data_package_manager_current_version,272
+bp_data_package_manager_pending_version,272

@@ -1,0 +1,23 @@
+key,default_value
+application,"Microsoft Internet Explorer"
+version,"11"
+file_filename,jscript9.dll
+file_identity_sha256,ec33592bb712d0d690d352c711f1337f12e2f303afd277d9603dedd86ca67b84
+cves_0_id,"CVE-2021-34480"
+cves_0_link,"https://nvd.nist.gov/vuln/detail/CVE-2021-34480"
+cves_0_cvss,"8.8"
+cves_1_id,"CVE-2021-34480"
+cves_1_link,"https://nvd.nist.gov/vuln/detail/CVE-2021-34480"
+cves_1_cvss,"8.8"
+latest_timestamp,"1631539106"
+latest_date,"%Y-%m-%dT%H:%M:%S%z"
+groups_0_name,Protect
+groups_0_description,"Protect Group"
+groups_0_guid,c95459af-7ef4-4304-be61-46b831d9d0f2
+computers_total_count,1
+computers_0_connector_guid,b0dc25fd-1ced-409d-82c7-1e47ee537bda
+computers_0_hostname,"Prod_AMP_Intel"
+computers_0_active,"True"
+computers_0_links_computer,https://api.amp.cisco.com/v1/computers/2c41afcf-d3fe-427d-af7d-dc1edaca6f4b
+computers_0_links_trajectory,https://api.amp.cisco.com/v1/computers/2c41afcf-d3fe-427d-af7d-dc1edaca6f4b
+computers_0_links_group,https://api.amp.cisco.com/v1/groups/cca5a4e0-8837-4abc-bcbe-b22f6c073233

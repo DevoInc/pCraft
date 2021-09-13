@@ -1,0 +1,21 @@
+key,default_value
+connector_guid,8eb30377-b042-4200-83b0-f9c3b0ffa0fa
+hostname,host1
+active,True
+links_computer,"https://api.amp.cisco.com/v1/computers/8eb30377-b042-4200-83b0-f9c3b0ffa0fa"
+links_trajectory,"https://api.amp.cisco.com/v1/computers/8eb30377-b042-4200-83b0-f9c3b0ffa0fa/trajectory"
+links_group,"https://api.amp.cisco.com/v1/groups/7bb12038-477c-405e-94fa-08f3db992ace"
+connector_version,"6.3.7.10441"
+operating_system,"Windows 7, SP 1.0"
+internal_ips_0,172.16.0.42
+external_ip,93.184.216.34
+group_guid,fd93340cccf0e7f2d0b67d8e96be806bcd12df4d23ff882d412c949c2e205504
+install_date,%Y-%m-%dT%H:%M:%SZ
+network_addresses_0_mac,de:ad:b3:3f:c4:fe
+network_addresses_0_ip,172.16.0.42
+policy_guid,1446fc79-be07-406f-a11a-c25c858799c8
+policy_name,"Audit"
+last_seen,%Y-%m-%dT%H:%M:%SZ
+faults,"[]"
+isolation_available,"False"
+isolation_status,"not_isolated"

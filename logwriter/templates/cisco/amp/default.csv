@@ -1,0 +1,5 @@
+key,default_value
+timestamp,1631539106
+timestamp_nanoseconds,000000000
+date,"%Y-%m-%dT%H:%M:%S%z"
+connector_guid,b0dc25fd-1ced-409d-82c7-1e47ee537bda
