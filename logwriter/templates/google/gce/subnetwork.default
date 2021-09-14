@@ -1,0 +1,19 @@
+key,default_value
+resource_type,"gce_subnetwork"
+jsonPayload_rule_details_source_range_0,"93.184.216.34/32"
+jsonPayload_rule_details_source_range_1,"204.68.111.106/32"
+jsonPayload_rule_details_source_range_2,"213.186.33.0/24"
+jsonPayload_rule_details_source_range_3,"0.0.0.0/0"
+jsonPayload_rule_details_target_tag_0,bastion-fw1
+jsonPayload_rule_details_reference,"network:default/firewall:bastion-fw1"
+jsonPayload_disposition,"ALLOWED"
+jsonPayload_connection_src_port,35291
+jsonPayload_connection_protocol,6
+jsonPayload_connection_dest_port,22
+jsonPayload_connection_dest_ip,10.123.0.42
+jsonPayload_connection_src_ip,93.184.216.34
+jsonPayload_instance_vm_name,bastion-fw1
+jsonPayload_vpc_vpc_name,"default"
+jsonPayload_vpc_subnetwork_name,"default"
+jsonPayload_remote_location_city,"Muflins"
+jsonPayload_remote_location_region,"Groville County"
