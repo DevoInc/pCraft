@@ -1,0 +1,9 @@
+key,default_value
+resource_type,"gce_instance"
+resource_labels_project_id,"multi-scan"
+resource_labels_zone,""
+resource_labels_instance_id,"gcp-redis"
+logName,"projects/multi-scan/logs/maintenance.googleapis.com%2Factivity_log"
+labels_is_completed,"false"
+labels_activity_type_name,"CloudRedisRolloutInProgress"
+labels_instance_id,"gcp-redis"

@@ -3,7 +3,7 @@ receiveTimestamp,%Y-%m-%dT%H:%M:%S.000000000Z
 timestamp,%Y-%m-%dT%H:%M:%S.000000000Z
 labels_authorization.k8s.io/decision,"allow"
 labels_authorization.k8s.io/reason,"RBAC: allowed by RoleBinding administrator:leaderelection/kube-system of Role administrator:leaderelection to ServiceAccount administrator/admin-manager"
-host,"None"
+host,None
 @timestamp,%Y-%m-%dT%H:%M:%S.000Z
 protoPayload_@type,"type.googleapis.com/google.cloud.audit.AuditLog"
 protoPayload_authenticationInfo_principalEmail,"system:serviceaccount:admin-manager:administrator"
@@ -16,15 +16,16 @@ protoPayload_authorizationInfo_0_resource,"core/v1/namespaces/kube-system/config
 protoPayload_authorizationInfo_0_permission,"io.k8s.core.v1.configmaps.update"
 protoPayload_requestMetadata_callerSuppliedUserAgent,"admintool/v0.0.0 (linux/amd64) kubernetes/$Format"
 protoPayload_requestMetadata_callerIp,"10.0.0.38"
-logName,"projects/yyyyy-ooo-074/logs/cloudaudit.googleapis.com%2Factivity"
+logName,"projects/yyyyy-ooo-007/logs/cloudaudit.googleapis.com%2Factivity"
 operation_last,"True"
 operation_producer,"k8s.io"
 operation_first,"True"
 operation_id,cb5158cd-8f3e-4a9b-b060-c204147fff97
 resource_type,"k8s_cluster"
-resource_labels_project_id,"yyyyy-ooo-074"
-resource_labels_location,"us-central1"
-resource_labels_cluster_name,"ooo-074"
+resource_labels_project_id,"yyyyy-ooo-007"
+resource_labels_location,"can-west3"
+labels_location,"can-west3"
+resource_labels_cluster_name,"ooo-007"
 @version,"1"
 insertId,cb5158cd-8f3e-4a9b-b060-c204147fff97
 actor_email,edithroux@gmail.com
