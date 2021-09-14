@@ -1,3 +1,4 @@
 File,Read,Write,Share,Flag
 Authentication|Auth,Login,Logout,Locked,API
 Network,Request,Reply,Email_send,Email_receive,API_call
+Threat,Detected,Block
