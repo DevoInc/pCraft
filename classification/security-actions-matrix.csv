@@ -1,4 +1,5 @@
-File,Read,Write,Share,Flag
+File,Read,Write,Share,Flag,Copy,Delete
 Authentication|Auth,Login,Logout,Locked,API
 Network,Request,Reply,Email_send,Email_receive,API_call
-Threat,Detected,Block
+Threat,Detect,Block
+Database,Read,Write
