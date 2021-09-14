@@ -46,4 +46,4 @@ id_time,%Y-%m-%dT%H:%M:%S.000Z
 id_uniqueQualifier,154752985320
 ipAddress,172.16.0.42
 kind,admin#reports#activity
-
+severity,NOTICE

@@ -1,0 +1,13 @@
+key,default_value
+resource_type,"project"
+operation_id,0
+jsonPayload_@type,"type.googleapis.com/google.cloud.audit.TransparencyLog"
+jsonPayload_product_0,"Cloud Identity and Access Management"
+jsonPayload_reason_0_detail,"Case Number: 93847106"
+jsonPayload_reason_0_type,"CUSTOMER_INITIATED_SUPPORT"
+jsonPayload_location_principalOfficeCountry,"US"
+jsonPayload_location_principalPhysicalLocationCountry,"US"
+jsonPayload_location_principalEmployingEntity,"Google LLC"
+jsonPayload_accesses_0_resourceName,"//iam.googleapis.com/projects/907856341267/serviceAccounts"
+jsonPayload_accesses_0_methodName,"List"
+logName,"projects/gotham-007-907856341267/logs/cloudaudit.googleapis.com%2Faccess_transparency"
