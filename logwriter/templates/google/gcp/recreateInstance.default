@@ -8,3 +8,4 @@ severity,"INFO"
 logName,"projects/devbox-007/logs/cloudaudit.googleapis.com%2Fsystem_event"
 operation_producer,"compute.instances.repair.recreateInstance"
 resource_type,"gce_instance"
+resource_labels_zone,can-west3-b
