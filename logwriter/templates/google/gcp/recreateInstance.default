@@ -1,0 +1,10 @@
+key,default_value
+protoPayload_resourceName,"projects/gotham-007/zones/can-west3-b/instances/aef-default-20210913t224207-stv0"
+protoPayload_serviceName,"compute.googleapis.com"
+protoPayload_request_@type,"type.googleapis.com/compute.instances.repair.recreateInstance"
+protoPayload_methodName,"compute.instances.repair.recreateInstance"
+protoPayload_status_message,"Instance Group Manager 'projects/gotham-007/zones/can-west3-b/instances/aef-default-20210913t224207-00' initiated recreateInstance on instance 'projects/gotham-007/zones/can-west3-b/instances/aef-default-20210913t224207-stv0'. Reason: instance doesn't exist."
+severity,"INFO"
+logName,"projects/devbox-007/logs/cloudaudit.googleapis.com%2Fsystem_event"
+operation_producer,"compute.instances.repair.recreateInstance"
+resource_type,"gce_instance"
