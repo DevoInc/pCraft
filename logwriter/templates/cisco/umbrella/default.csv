@@ -21,4 +21,24 @@ Network,CH
 query_type,"1 (A)"
 response_code,NOERROR
 domain,example.com
-categories,Chat,Social Networking,Allow list
+categories,"Chat,Social Networking,Allow list"
+computername,proxyhost1
+user-agent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+url,http://www.example.com/index.html
+verdict,ALLOWED
+identities,"ActiveDirectoryUserName,ADSite,Network"
+internalip,172.16.0.42
+externalip,93.184.216.34
+dest-ip,204.68.111.106
+content-type,
+referer,
+statuscode,200
+request-size,242
+response-size,1337
+response-bodysize,
+sha,
+avdetection,
+amp-disposition,
+amp-malwarename,
+amp-score,
+identitytype,
