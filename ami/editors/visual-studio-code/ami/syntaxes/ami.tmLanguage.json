@@ -1,0 +1,32 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "ami",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.ami",
+				"match": "\\b(av|st|revision|author|shortdesc|description|reference|tag|message|repeat|include)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.ami",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.ami",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.ami"
+}

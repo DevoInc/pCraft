@@ -1,0 +1,25 @@
+{
+    "name": "ami",
+    "displayName": "ami",
+    "description": "AMI Language support",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.60.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "ami",
+            "aliases": ["ami", "ami"],
+            "extensions": [".ami"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "ami",
+            "scopeName": "source.ami",
+            "path": "./syntaxes/ami.tmLanguage.json"
+        }]
+    }
+}
