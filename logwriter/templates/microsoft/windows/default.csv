@@ -1,0 +1,13 @@
+key,default_value
+timestamp,%m/%d/%Y %H:%M:%S %p
+thread_id,42AF
+packet_id,00000000CBEF381A
+proto,UDP
+dst-ip,93.184.216.34
+xid,caf3
+response_code,NOERROR
+query_type,"A     "
+opcode,Q
+flagshex,0001
+flags,"  D "
+query,(6)www(9)example(3)com(0)
