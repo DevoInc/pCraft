@@ -26,7 +26,8 @@ SCHEMA = """{
 }"""
 
 logplugin_action_map = { "DNSConnection": ["named", "crowdstrike-dnsrequest"],
-                         "HTTPConnection": ["bluecoat-proxysg-main", "zscaler-access"]                         
+                         "HTTPConnection": ["bluecoat-proxysg-main", "zscaler-access"],
+                         "TcpSynAck": [],
 }
 
 # action_category_map = { "DNSConnection": "network",

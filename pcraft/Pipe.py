@@ -1,4 +1,6 @@
 import io
+import sys
+import json
 
 import avro.schema
 
@@ -9,7 +11,8 @@ SCHEMA = """{
     "type": "record",
     "name": "pcraftpipe",
     "fields": [
-        {"name": "time",      "type": ["int", "null"], "default": "0"},
+        {"name": "time",      "type": ["float", "null"], "default": "0"},
+        {"name": "is_pcapng", "type": ["boolean", "null"], "default": false},
         {"name": "strmap",    "type": [{"type": "map", "values": "string"}, "null"]},
         {"name": "intmap",    "type": [{"type": "map", "values": "int"}, "null"]},
         {"name": "bytesmap",  "type": [{"type": "map", "values": "bytes"}, "null"]},
@@ -23,26 +26,30 @@ SCHEMA = """{
 
 
 class PcraftPipe(object):
-    # pipe = PcraftPipe()
-    # rawdata = pipe.test_write()
-    # print(pipe.read(rawdata))
-
     def __init__(self):
         self.schema = avro.schema.parse(SCHEMA)
         self.reader = avro.io.DatumReader(self.schema)
         self.writer = avro.io.DatumWriter(self.schema)
 
+    def decode_stdin(self):
+        data = sys.stdin.buffer.read()
+        raw_data = self.read(data)
+        return raw_data
+        
     def read(self, binbuf):
         bytes_reader = io.BytesIO(binbuf)
         decoder = avro.io.BinaryDecoder(bytes_reader)
-        return self.reader.read(decoder)
-
+        return self.reader.read(decoder)    
+    
     def write(self, data):
         bytes_writer = io.BytesIO()
         encoder = avro.io.BinaryEncoder(bytes_writer)
         self.writer.write(data, encoder)
         raw_bytes = bytes_writer.getvalue()
         return raw_bytes
+
+    def encode_stdout(self, data):
+        sys.stdout.buffer.write(self.write(data))
     
     def test_write(self):
         data = {"pcapout": [], "strmap": {"hello": "dolly"}}
