@@ -3,7 +3,6 @@ import sys
 import os
 import pprint
 import subprocess
-import envoy
 import io
 import base64
 import time
@@ -14,6 +13,9 @@ from pcraft.PackageManager import PackageManager
 from pcraft.Pipe import PcraftPipe
 from pcraft.utils import *
 from pcraft import io as PcraftIO
+from pcraft.Sessionizer import *
+
+from scapy.all import *
 
 PCAP_CONF = "pcap.conf"
 LOG_CONF = "log.conf"
@@ -25,6 +27,7 @@ class PcraftExec(object):
         self.pcapout = pcapout
         self.pkg = pkg
         self.current_time = time.time()
+        self.session = Session()
         
         self.ami = pyami.Ami()
         try:
@@ -74,9 +77,28 @@ class PcraftExec(object):
             print("stdout write for package '%s' not serialized properly." % (pkg_name))
             return
 
+        try:
+            debugstr = stdoutdec["strmap"]["debug"] 
+            print("DEBUG>>>")
+            print(debugstr)
+            print("<<<<<<")
+        except:
+            pass
+                    
         if self.pcapout:
             for pkt in stdoutdec["pcapout"]:
-                self.pcap_fp.write(pkt)
+                # We rebuild the packet because packets building can come from anything.
+                # We just see a buffer. We need to have a proper session, and the correct time.
+                scapy_pkt = Ether(pkt[16:])
+                # scapy_pkt.show()
+                if scapy_pkt.haslayer(TCP): # Fix the session
+                    self.session.append_to_session(scapy_pkt)
+                    new_scapy_pkt = self.session.fix_seq_ack(scapy_pkt)
+                    pkt = PcraftIO.raw_packet_from_scapy(new_scapy_pkt)
+                # We fix the time
+                # TODO: Fix time here
+
+                self.pcap_fp.write(pkt)                
                 self.pcap_fp.flush()
         
         process.stdin.close()

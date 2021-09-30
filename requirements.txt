@@ -9,4 +9,3 @@ geoip2
 pyfaup
 pypcapkit[PyShark]
 pystache
-envoy
