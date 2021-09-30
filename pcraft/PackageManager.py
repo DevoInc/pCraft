@@ -46,11 +46,14 @@ class PackageManager(object):
         
     def build_config(self):
         for pkgname, pkgdata in self.packages.items():
+            self.packages[pkgname]["config"] = {}
+            
             for conf in self._foreach_config_file(os.path.join(pkgdata["dirpath"], "conf")):
                 if self.debug:
                     print("Reading configuration file: " + str(conf))
                 parsed_conf = configparser.ConfigParser()
                 conf_filename = pathlib.PurePosixPath(conf).name
+                self.packages[pkgname]["config"][conf_filename] = {}
                     
                 try:
                     parsed_conf.read(conf)
@@ -61,12 +64,13 @@ class PackageManager(object):
                     if conf_filename == PCAP_CONF:
                         self.actions_pkg_map[section] = pkgname
                     
-                    for k, v in parsed_conf[section].items():                            
-                        self.packages[pkgname]["config"] = {}
-                        self.packages[pkgname]["config"][conf_filename] = {}
-                        self.packages[pkgname]["config"][conf_filename][section] = {}
-                        self.packages[pkgname]["config"][conf_filename][section][k] = v
-                                            
+                    for k, v in parsed_conf[section].items():
+                        try:
+                            self.packages[pkgname]["config"][conf_filename][section][k] = v
+                        except KeyError:
+                            self.packages[pkgname]["config"][conf_filename][section] = {}
+                            self.packages[pkgname]["config"][conf_filename][section][k] = v
+                            
     def get_config(self, pkgname):
         return self.packages[pkgname]["config"]
 

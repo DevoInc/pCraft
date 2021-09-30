@@ -102,11 +102,11 @@ class PcraftExec(object):
 
         try:
             for k, v in stdoutdec["strmap"].items():
-                print("k:%s v:%s" % (k, v))
+                # print("k:%s v:%s" % (k, v))
                 if k in strmap:
                     pass
                 else:
-                    print("%s is not in the strmap" % k)
+                    # print("%s is not in the strmap" % k)
                     self.variables_built_by_plugins[k] = v
         except:
             pass
