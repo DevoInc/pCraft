@@ -23,6 +23,6 @@ dns_response.time = data["time"]
 pkt2 = PcraftIO.raw_packet_from_scapy(dns_response)
 pcapout.append(pkt2)
 
-outdata = {"pcapout": pcapout}
+outdata = {"pcapout": pcapout, "strmap": defaults.get_built_variables()}
 PcraftIO.put_stdout(outdata)
 

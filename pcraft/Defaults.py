@@ -14,6 +14,10 @@ class PcraftDefaults(object):
     def __init__(self, stdin_data, service=None):
         self.stdin_data = stdin_data
         self.service = service
+        self.built_variables = {}
+
+    def get_built_variables(self):
+        return self.built_variables
         
     def get_variable_or_none(self, varname):
         try:
@@ -25,51 +29,70 @@ class PcraftDefaults(object):
         return self.stdin_data["strmap"][varname]
         
     def get_variable(self, varname):
+        got_default = False
+        retval = ""
         try:
-            return self.stdin_data["strmap"][varname]
+            try:
+                return self.stdin_data["strmap"][varname]
+            except:
+                return self.built_variables[varname]
         except:
             if varname == "ip-src":
-                return get_random_client_ip()
+                got_default = True
+                retval = get_random_client_ip()
             if varname == "ip-dst":
-                return get_random_server_ip()
+                got_default = True
+                retval = get_random_server_ip()
             if varname == "port-src":
-                return get_random_ephemeral_port()
+                got_default = True
+                retval = get_random_ephemeral_port()
             if varname == "resolver":
-                return "1.1.1.1"
+                got_default = True
+                retval = "1.1.1.1"
             if varname == "port-dst":
+                got_default = True
                 if self.service == "dns":
-                    return "53"
+                    retval = "53"
                 elif self.service == "http":
-                    return "80"
+                    retval = "80"
                 elif self.service == "https":
-                    return "443"
+                    retval = "443"
                 else:
-                    return "80"
+                    retval = "80"
             if varname == "protocol":
+                got_default = True
+                retval = "tcp"
                 if self.service == "dns":
-                    return "udp"
-                if self.service == "http":
-                    return "tcp"
-                if self.service == "https":
-                    return "tcp"
-                return "tcp"
+                    retval = "udp"
             
             if varname == "method":
-                return "GET"
+                got_default = True
+                retval = "GET"
             if varname == "user-agent":
-                return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Pcraft/0.0.7"
+                got_default = True
+                retval = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:42.0) Gecko/20100101 Pcraft/0.0.7"
             if varname == "uri":
-                return "/"
+                got_default = True
+                retval = "/"
             if varname == "resp-httpver":
-                return "HTTP/1.1"
+                got_default = True
+                retval = "HTTP/1.1"
             if varname == "resp-code":
-                return "200 OK"
+                got_default = True
+                retval = "200 OK"
             if varname == "resp-server":
-                return "nginx"
+                got_default = True
+                retval = "nginx"
             if varname == "resp-content-type":
-                return "text/html"
+                got_default = True
+                retval = "text/html"
             if varname == "resp-content":
-                return "<html><body>Hello, you!</body></html>"
+                got_default = True
+                retval = "<html><body>Hello, you!</body></html>"
+
+        if got_default:
+            self.built_variables[varname] = retval
+            return retval
 
         return None
             

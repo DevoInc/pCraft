@@ -28,6 +28,7 @@ class PcraftExec(object):
         self.pkg = pkg
         self.current_time = time.time()
         self.session = Session()
+        self.variables_built_by_plugins = {}
         
         self.ami = pyami.Ami()
         try:
@@ -61,8 +62,22 @@ class PcraftExec(object):
     def action_handler(self, action, userdata):
         pkg_name = self.pkg.get_pkgname_from_action(action.Exec())
         strmap = {}
+        for k, v in self.variables_built_by_plugins.items():
+            strmap[k] = v
+        #
+        # We do not want to carry the variable for source/dest port if created by plugins outsite of the plugin
+        # However keeping the default source/dest ip is helpful!
+        #
+        try:
+            del strmap["port-src"]
+            del strmap["port-dst"]
+        except:
+            pass
+            
         for k, v in action.Variables().items():
             strmap[k[1:]] = v
+
+        # print(str(strmap))
             
         pipedata = {"time": self.start_time + action.GetSleepCursor(), "pcapout": [], "strmap": strmap}
         raw = self.pipe.write(pipedata)
@@ -84,7 +99,18 @@ class PcraftExec(object):
             print("<<<<<<")
         except:
             pass
-                    
+
+        try:
+            for k, v in stdoutdec["strmap"].items():
+                print("k:%s v:%s" % (k, v))
+                if k in strmap:
+                    pass
+                else:
+                    print("%s is not in the strmap" % k)
+                    self.variables_built_by_plugins[k] = v
+        except:
+            pass
+            
         if self.pcapout:
             for pkt in stdoutdec["pcapout"]:
                 # We rebuild the packet because packets building can come from anything.

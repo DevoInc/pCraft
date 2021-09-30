@@ -113,7 +113,7 @@ http_response = Ether() / IP(src=defaults.get_variable("ip-dst"),dst=defaults.ge
 pkt = PcraftIO.raw_packet_from_scapy(http_response)
 pcapout.append(pkt)
 
-outdata = {"pcapout": pcapout}
+outdata = {"pcapout": pcapout, "strmap": defaults.get_built_variables()}
 # outdata = {"pcapout": pcapout, "strmap": {"debug": httpreq_string}}
 PcraftIO.put_stdout(outdata)
 
