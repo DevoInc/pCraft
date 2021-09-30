@@ -1,0 +1,5 @@
+av 1
+
+action ping {
+    exec Ping
+}
