@@ -21,32 +21,51 @@ PcapNg::PcapNg(void) {
 PcapNg::~PcapNg(void) {
 }
 
-int PcapNg::OpenFile(char *file)
+int PcapNg::OpenFile(const char *pathname, const char *mode)
 {
   unsigned char *buffer;
   size_t buffer_size;
 
-  _fp = fopen(file, "wb");
+  if (!strcmp(mode, "w")) {
+    _fp = fopen(pathname, "wb");
+    if (!_fp) {
+      fprintf(stderr, "Could not open file '%s' for writing!\n", pathname);
+      return -1;
+    }
+    
+    buffer_size = cpcapng_section_header_block_size();
+    buffer = (unsigned char *)malloc(buffer_size);
+    cpcapng_section_header_block_write(buffer);
+    fwrite(buffer, buffer_size, 1, _fp);
+    free(buffer);
 
-  buffer_size = cpcapng_section_header_block_size();
-  buffer = (unsigned char *)malloc(buffer_size);
-  cpcapng_section_header_block_write(buffer);
-  fwrite(buffer, buffer_size, 1, _fp);
-  free(buffer);
-
-  buffer_size = cpcapng_interface_description_block_size();
-  buffer = (unsigned char *)malloc(buffer_size);
-  cpcapng_interface_description_block_write(0, buffer);
-  fwrite(buffer, buffer_size, 1, _fp);
-  free(buffer);
+    buffer_size = cpcapng_interface_description_block_size();
+    buffer = (unsigned char *)malloc(buffer_size);
+    cpcapng_interface_description_block_write(0, buffer);
+    fwrite(buffer, buffer_size, 1, _fp);
+    free(buffer);
   
-  return 0;
+    return 0;
+  }
+
+  if (!strcmp(mode, "r")) {
+    _fp = fopen(pathname, "rb");
+    if (!_fp) {
+      fprintf(stderr, "Could not open file '%s' for reading!\n", pathname);
+      return -1;
+    }
+    return 0;
+  }
+
+  fprintf(stderr, "Error opening file '%s' with mode '%s'. Supported modes are 'r' or 'w'.", pathname, mode);
+  return -1;
 }
 
 int PcapNg::CloseFile(void)
 {
   fflush(_fp);
   fclose(_fp);
+  return 0;
 }
 
 int PcapNg::WritePacket(py::bytes data, const std::string &comment)  
@@ -62,6 +81,8 @@ int PcapNg::WritePacket(py::bytes data, const std::string &comment)
   buffer = (unsigned char *)malloc(buffer_size);
   cpcapng_enhanced_packet_block_write(data_bytes, data_len, buffer);
   fwrite(buffer, buffer_size, 1, _fp);
+
+  return 0;
 }
 
 int PcapNg::WriteCustom(uint32_t pen, py::bytes data, const std::string &comment)  
@@ -77,6 +98,8 @@ int PcapNg::WriteCustom(uint32_t pen, py::bytes data, const std::string &comment
   buffer = (unsigned char *)malloc(buffer_size);
   cpcapng_custom_data_block_write(pen, data_bytes, data_len, buffer);
   fwrite(buffer, buffer_size, 1, _fp);
+
+  return 0;
 }
 
 PYBIND11_MODULE(pycapng, m) {

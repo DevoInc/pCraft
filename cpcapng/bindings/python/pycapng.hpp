@@ -11,7 +11,7 @@ class PcapNg {
 public:
   PcapNg(void);
   ~PcapNg(void);
-  int OpenFile(char *file);
+  int OpenFile(const char *pathname, const char *mode);
   int CloseFile(void);
   int WritePacket(py::bytes data, const std::string &comment);
   int WriteCustom(uint32_t pen, py::bytes data, const std::string &comment);
