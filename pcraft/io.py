@@ -13,6 +13,8 @@ def raw_packet_from_scapy(scapy_pkt):
         writer.write(scapy_pkt)
         writer.flush()
         return fd.getvalue()[24:]
+        # return fd.getvalue()[54:]
+        # return fd.getvalue()
     
 def get_stdin():
     return pp.decode_stdin()

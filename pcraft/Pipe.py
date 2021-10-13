@@ -19,7 +19,8 @@ SCHEMA = """{
         {"name": "longmap",   "type": [{"type": "map", "values": "long"}, "null"]},
         {"name": "floatmap",  "type": [{"type": "map", "values": "float"}, "null"]},
         {"name": "doublemap", "type": [{"type": "map", "values": "double"}, "null"]},
-        {"name": "pcapout",   "type": [{"type": "array", "items": "bytes"}, "null"]}
+        {"name": "pcapout",   "type": [{"type": "array", "items": "bytes"}, "null"]},
+        {"name": "dataout",   "type": [{"type": "array", "items": "bytes"}, "null"]}
         ]
 }"""
 
