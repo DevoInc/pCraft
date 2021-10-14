@@ -7,6 +7,7 @@ import io
 import base64
 import time
 import shutil
+import pyshark
 
 import pyami
 import pycapng
@@ -28,24 +29,12 @@ PCAPNG_CUSTOM_PEN = 58353
 class PcraftExec(object):
     def __init__(self, pkg, amifile, pcapout=None, outdir=None, force_mkdir=False):
         self.has_error = False
-        self.output_dir = outdir
-        try:
-            os.makedirs(self.output_dir)
-        except FileExistsError:
-            if force_mkdir:
-                shutil.rmtree(self.output_dir)
-                os.makedirs(self.output_dir)
-            else:
-                print("Error: Cannot make directory %s: Directory already exists!" % self.output_dir)
-                self.has_error = True
-                return
-        except:
-            print("Error: Cannot make directory %s" % self.output_dir)
-            self.has_error = True
-            return
-
+        self.output_dir = self.build_outputdir(outdir, force_mkdir=force_mkdir)
+        
+        self.packet_id = 0
         self.amifile = amifile
         self.pcapout = pcapout
+        self.pcap_shark = None
         self.pkg = pkg
         self.current_time = time.time()
         self.session = Session()
@@ -54,7 +43,8 @@ class PcraftExec(object):
         self.pcapng = pycapng.PcapNG()
         self.ami = pyami.Ami()
         try:
-            os.remove(pcapout)
+            if pcapout:
+                os.remove(pcapout)
         except FileNotFoundError:
             pass
 
@@ -79,6 +69,26 @@ class PcraftExec(object):
     def __del__(self):
         pass
     
+    def build_outputdir(self, outdir=None, force_mkdir=False):
+        if not outdir:
+            return None
+        try:
+            os.makedirs(outdir)
+        except FileExistsError:
+            if force_mkdir:
+                shutil.rmtree(outdir)
+                os.makedirs(outdir)
+            else:
+                print("Error: Cannot make directory %s: Directory already exists!" % outdir)
+                self.has_error = True
+                sys.exit(1)
+        except:
+            print("Error: Cannot make directory %s" % self.output_dir)
+            self.has_error = True
+            sys.exit(1)
+
+        return outdir
+        
     def _close_pcap_file(self):
         if self.pcapout:
             self.pcapng.CloseFile()
@@ -123,9 +133,9 @@ class PcraftExec(object):
 
         try:
             debugstr = stdoutdec["strmap"]["debug"] 
-            print("DEBUG>>>")
-            print(debugstr)
-            print("<<<<<<")
+            # print("DEBUG>>>")
+            # print(debugstr)
+            # print("<<<<<<")
         except:
             pass
 
@@ -166,9 +176,31 @@ class PcraftExec(object):
                 
         process.stdin.close()
 
+    def _logwrite_network(self):
+        if not self.pcap_shark:
+            self.pcap_shark = pyshark.FileCapture(self.pcapout)
+
+        for pkt in self.pcap_shark:
+            self.packet_id += 1
+
+            for layer in pkt.layers:
+                layer_name = layer.layer_name
+                print("Searching plugin to match layer: %s" % layer_name)
+            
+    def _logwrite_non_network(self):
+        pass
+
     def logwrite(self):
-        print("Writing logs from pcap file: %s to directory %s" % (self.pcapout, self.output_dir))
+        print("Writing logs from pcap file '%s' to directory '%s'..." % (self.pcapout, self.output_dir))
         self.pcapfp = self.pcapng.OpenFile(self.pcapout, "r")
+        # First we write the network stuff with pyshark
+        # Similar to how packets are seen by wireshark
+        self._logwrite_network()
+
+        # Next we write the non-network events
+        # which are encoded in custom data blocks
+        self._logwrite_non_network()
+
         
 if __name__ == "__main__":
     if len(sys.argv) < 4:
