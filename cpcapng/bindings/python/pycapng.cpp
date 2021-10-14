@@ -107,7 +107,14 @@ int PcapNG::foreach_packet_cb(uint32_t block_counter, uint32_t block_type, uint3
 {
   py::object cb_func = *(py::object *)userdata;
 
-  cb_func(block_counter, block_type, block_total_length, data);
+  uint32_t start_offset = cpcapng_custom_data_block_start_offset();
+  uint32_t data_length = cpcapng_custom_data_block_data_length(block_total_length);
+  
+  int padded = cpcapng_padded_count(&data[start_offset], data_length);
+
+  // FIXME: We just send the data but we will need to make this an object where we can retrieve the pen etc.
+  cb_func(block_counter, block_type, block_total_length, py::bytes((const char *)&data[start_offset],
+								   data_length - padded));
 
   return 0;
 }

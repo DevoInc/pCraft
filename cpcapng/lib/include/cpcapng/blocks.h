@@ -123,7 +123,9 @@ pcapng_enhanced_packet_block_light_t *cpcapng_enhanced_packet_block_read(unsigne
 size_t cpcapng_custom_data_block_write(const uint32_t pen, const unsigned char *data, const size_t data_len, unsigned char *outbuf);
 size_t cpcapng_custom_data_block_size(const size_t data_len);
 pcapng_custom_data_block_light_t *cpcapng_custom_data_block_read(unsigned char *inbuf, size_t inbuf_len);
-
+uint32_t cpcapng_custom_data_block_start_offset(void);
+uint32_t cpcapng_custom_data_block_data_length(uint32_t block_total_length);
+  
 #ifdef __cplusplus
 }
 #endif

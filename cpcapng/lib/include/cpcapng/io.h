@@ -16,6 +16,8 @@ int cpcapng_fp_read(FILE *fp, foreach_pcapng_block_cb pcapng_block_cb, void *use
 int cpcapng_file_read(char *filename, foreach_pcapng_block_cb pcapng_block_cb, void *userdata);
 int cpcapng_file_read_debug(char *filename);
 
+int cpcapng_padded_count(unsigned char *data, uint32_t data_len);
+  
 #ifdef __cplusplus
 }
 #endif

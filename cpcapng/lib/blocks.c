@@ -126,6 +126,7 @@ size_t cpcapng_custom_data_block_write(const uint32_t pen, const unsigned char *
 
 	block_total_length = cpcapng_custom_data_block_size(data_len);
 
+	memset(outbuf, 0, block_total_length);
 	cb = (pcapng_custom_data_block_t *)outbuf;
 	cb->block_type = PCAPNG_CUSTOM_DATA_BLOCK;
 	cb->block_total_length = block_total_length;
@@ -136,6 +137,15 @@ size_t cpcapng_custom_data_block_write(const uint32_t pen, const unsigned char *
 	final_length = (uint32_t *) (outbuf + block_total_length - BLOCK_TOTAL_LENGTH_SIZE);
 	*final_length = block_total_length;
 
+#ifdef DEBUG
+	uint32_t i;
+	printf("Custom Packet Hex output:\n");
+	for (i = 0; i < data_len; i++) {
+	  printf("%02X", data[i]);
+	}
+	printf("\n");
+#endif // DEBUG	
+	
 	return block_total_length;
 }
 
@@ -148,6 +158,22 @@ size_t cpcapng_custom_data_block_size(const size_t data_len)
 	padding = padded_len - data_len;
 
 	return sizeof(pcapng_custom_data_block_t) + data_len + padding + BLOCK_TOTAL_LENGTH_SIZE;
+}
+
+uint32_t cpcapng_custom_data_block_start_offset(void)
+{
+  return sizeof(pcapng_custom_data_block_light_t);
+}
+
+uint32_t cpcapng_custom_data_block_data_length(uint32_t block_total_length)
+{
+  uint32_t retlen = block_total_length;
+  retlen -= BLOCK_TOTAL_LENGTH_SIZE; // The First one.
+  retlen -= sizeof(uint32_t); // The block type
+  retlen -= cpcapng_custom_data_block_start_offset();
+  retlen -= BLOCK_TOTAL_LENGTH_SIZE; // The last one.
+
+  return retlen;
 }
 
 pcapng_custom_data_block_light_t *cpcapng_custom_data_block_read(unsigned char *inbuf, size_t inbuf_len)

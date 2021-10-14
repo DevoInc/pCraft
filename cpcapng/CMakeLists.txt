@@ -1,6 +1,10 @@
 cmake_minimum_required (VERSION 3.4)
 project (cpcapng)
 
+
+# add_definitions(-DDEBUG=1)
+
+
 if(${CMAKE_CURRENT_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_BINARY_DIR})
 message(FATAL_ERROR "CMake generation is not allowed within the source directory!
 Remove the CMakeCache.txt file and try again from another folder, e.g.:

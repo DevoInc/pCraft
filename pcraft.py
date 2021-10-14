@@ -51,7 +51,7 @@ class PcraftExec(object):
         self.session = Session()
         self.variables_built_by_plugins = {}
 
-        self.pcapng = pycapng.PcapNg()
+        self.pcapng = pycapng.PcapNG()
         self.ami = pyami.Ami()
         try:
             os.remove(pcapout)

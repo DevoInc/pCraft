@@ -104,3 +104,14 @@ int cpcapng_file_read_debug(char *filename)
   return cpcapng_file_read(filename, foreach_pcapng_block, NULL);
 }
 
+int cpcapng_padded_count(unsigned char *data, uint32_t data_len)
+{
+  uint32_t i;
+  int retpad = 0;
+  
+  for (i = 0; i < 4; i++) {
+    if (data[data_len-i] == 0) { retpad++; };    
+  }
+
+  return retpad;
+}
