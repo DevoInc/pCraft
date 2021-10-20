@@ -14,6 +14,7 @@ from .TemplateBuilder import TemplateBuilder
 PCAP_CONF = "pcap.conf"
 LOG_CONF = "log.conf"
 DEPENDENCIES_CONF = "dependencies.conf"
+ACTIONS_CONF = "actions.conf"
 
 class PackageManager(object):
     def __init__(self, pkgpath=None):
@@ -24,9 +25,12 @@ class PackageManager(object):
             if self.debug:
                 print("Packages dir: %s" % self.pkgdir)
 
-        # map between package name and actions
+        # map between package name and actions (plugin to call)
         self.actions_pkg_map = {}
-                
+
+        # map between package name and log actions (Auth.all -> WindowsSecurity etc.)
+        self.log_actions_pkg_map = {}
+
         self.packages = {}
         for p in pathlib.Path(self.pkgdir).iterdir():
             if not p.is_dir():
@@ -66,7 +70,14 @@ class PackageManager(object):
                 for section in parsed_conf.sections():
                     if conf_filename == PCAP_CONF:
                         self.actions_pkg_map[section] = pkgname
-                    
+
+                    if conf_filename == ACTIONS_CONF:
+                        try:
+                            self.log_actions_pkg_map[section].append(pkgname)
+                        except:
+                            self.log_actions_pkg_map[section] = []
+                            self.log_actions_pkg_map[section].append(pkgname)                        
+                        
                     for k, v in parsed_conf[section].items():
                         try:
                             self.packages[pkgname]["config"][conf_filename][section][k] = v
@@ -83,6 +94,9 @@ class PackageManager(object):
     # exists in "mydns".
     def get_pkgname_from_action(self, action_plugin):
         return self.actions_pkg_map[action_plugin]
+
+    def get_pkgnames_from_log_action(self, log_action):
+        return self.log_actions_pkg_map[log_action]
     
     def load_templates(self):
         for pkgname, pkgdata in self.packages.items():

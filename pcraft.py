@@ -110,8 +110,12 @@ class PcraftExec(object):
         return processes
 
     def action_handler(self, action, userdata):
-        pkg_name = self.pkg.get_pkgname_from_action(action.Exec())
-        strmap = {}
+        if action.Exec().startswith("LogAction:"):
+            pkg_name = "LogAction"
+        else:
+            pkg_name = self.pkg.get_pkgname_from_action(action.Exec())
+            
+        strmap = {"__exec__": action.Exec()}
         for k, v in self.variables_built_by_plugins.items():
             strmap[k] = v
         #
@@ -131,7 +135,10 @@ class PcraftExec(object):
             
         pipedata = {"time": self.start_time + action.GetSleepCursor(), "pcapout": [], "strmap": strmap}
         raw = self.pipe.write(pipedata)
-        cmd = self._get_pcap_process_to_execute(pkg_name, action.Exec())
+        if pkg_name == "LogAction":            
+            cmd = self._get_pcap_process_to_execute(pkg_name, "LogAction")
+        else:
+            cmd = self._get_pcap_process_to_execute(pkg_name, action.Exec())            
 
         process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env={"PYTHONPATH":"./"})
         process.stdin.write(raw)
@@ -204,41 +211,51 @@ class PcraftExec(object):
         # print(data)
         if block_type == pycapng.CUSTOM_DATA_BLOCK:
             jsondata = json.loads(data)
-            pkg_name = self.pkg.get_pkgname_from_action(jsondata["__exec__"])
+            packages_to_execute = []
+            if jsondata["__exec__"].startswith("LogAction:"):
+                log_action = jsondata["__exec__"][10:]
+                packages_to_execute = self.pkg.get_pkgnames_from_log_action(log_action)
+                print(packages_to_execute)
+                print("^^^^^^^^^^^^^^^^^^")
+            else:
+                packages_to_execute.append(self.pkg.get_pkgname_from_action(jsondata["__exec__"]))
 
-            strmap = {}
-            for k, v in jsondata.items():
-                strmap[k] = v
+            for execpkg in packages_to_execute:
+                pkg_name = execpkg
+
+                strmap = {}
+                for k, v in jsondata.items():
+                    strmap[k] = v
             
-            # Get packet timestamp
-            timestamp = 0
+                # Get packet timestamp
+                timestamp = 0
 
-            processes = self._get_log_processes_to_execute(pkg_name)
+                processes = self._get_log_processes_to_execute(pkg_name)
             
-            # conf example: {'bin': 'logwrite.py', 'logfile': 'windows_security.log', 'template': 'microsoft.windows.security.logstash14', '__basedir__': '/home/sebastien/pcraft-ng/pkg/enabled/WindowsSecurity/bin'}
-            for p, conf in processes.items():
-                if conf["logfile"] in self.file_pointers:
-                    pass # Shall we do something? I guess not
-                else:
-                    self.file_pointers[conf["logfile"]] = open(os.path.join(self.output_dir, conf["logfile"]), "wb")
+                # conf example: {'bin': 'logwrite.py', 'logfile': 'windows_security.log', 'template': 'microsoft.windows.security.logstash14', '__basedir__': '/home/sebastien/pcraft-ng/pkg/enabled/WindowsSecurity/bin'}
+                for p, conf in processes.items():
+                    if conf["logfile"] in self.file_pointers:
+                        pass # Shall we do something? I guess not
+                    else:
+                        self.file_pointers[conf["logfile"]] = open(os.path.join(self.output_dir, conf["logfile"]), "wb")
 
-                cmd = os.path.join(conf["__basedir__"], conf["bin"])
-                templates = self.pkg.get_templates(pkg_name)
-                # Select the template from the configuration
-                template = []                
-                for tmpl in templates:
-                    if tmpl["eventtype"] == conf["template"]:
-                        template.append(tmpl)
+                    cmd = os.path.join(conf["__basedir__"], conf["bin"])
+                    templates = self.pkg.get_templates(pkg_name)
+                    # Select the template from the configuration
+                    template = []                
+                    for tmpl in templates:
+                        if tmpl["eventtype"] == conf["template"]:
+                            template.append(tmpl)
 
-                # pprint.pprint(template)
+                    # pprint.pprint(template)
                         
-                pipedata = {"time": self.start_time + timestamp, "templates": template, "strmap": strmap}
-                raw = self.pipe.write(pipedata)
+                    pipedata = {"time": self.start_time + timestamp, "templates": template, "strmap": strmap}
+                    raw = self.pipe.write(pipedata)
 
-                process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env={"PYTHONPATH":"./"})
-                process.stdin.write(raw)
-                pstdout = process.communicate()[0]
-                self.file_pointers[conf["logfile"]].write(pstdout)
+                    process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env={"PYTHONPATH":"./"})
+                    process.stdin.write(raw)
+                    pstdout = process.communicate()[0]
+                    self.file_pointers[conf["logfile"]].write(pstdout)
                 # print("stdout: %s" % pstdout)
                 # pprint.pprint(pstdout)
                 

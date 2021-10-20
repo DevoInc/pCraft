@@ -335,7 +335,7 @@ TAXONOMY taxonomy
                return TOK_TAXONOMY;
            }
 
-[a-zA-Z0-9_\-:<>@]+ {
+[a-zA-Z0-9\._\-:<>@]+ {
         yylval->TOK_WORD = strdup(yytext);
 	return TOK_WORD;
 }
