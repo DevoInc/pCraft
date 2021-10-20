@@ -9,7 +9,7 @@ data = PcraftIO.get_stdin()
 
 template = data["templates"][0]
 valuesdict = data["strmap"]
-event = template_get_event(template, "4611", valuesdict)
+event = template_get_event(template, valuesdict["event_id"], valuesdict)
 
 print(str(event))
 

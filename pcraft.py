@@ -24,6 +24,7 @@ from scapy.all import *
 PCAP_CONF = "pcap.conf"
 LOG_CONF = "log.conf"
 DEPENDENCIES_CONF = "dependencies.conf"
+ACTIONS_CONF = "actions.conf"
 
 PCAPNG_CUSTOM_PEN = 58353
 
@@ -109,6 +110,11 @@ class PcraftExec(object):
             processes[process] = conf
         return processes
 
+    def _get_log_actions_config(self, pkgname):
+        processes = {}
+        packages = self.pkg.get_packages()
+        return packages[pkgname]['config'][ACTIONS_CONF]
+    
     def action_handler(self, action, userdata):
         if action.Exec().startswith("LogAction:"):
             pkg_name = "LogAction"
@@ -207,16 +213,35 @@ class PcraftExec(object):
                 # print("Searching plugin to match layer: %s" % layer_name)
 
 
+    def _handle_non_network_packets_command(self, pkg_name, conf, timestamp, strmap):
+        cmd = os.path.join(conf["__basedir__"], conf["bin"])
+        templates = self.pkg.get_templates(pkg_name)
+        # Select the template from the configuration
+        template = []                
+        for tmpl in templates:
+            if tmpl["eventtype"] == conf["template"]:
+                template.append(tmpl)
+    
+        # pprint.pprint(template)
+            
+        pipedata = {"time": self.start_time + timestamp, "templates": template, "strmap": strmap}
+        raw = self.pipe.write(pipedata)
+    
+        process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env={"PYTHONPATH":"./"})
+        process.stdin.write(raw)
+        pstdout = process.communicate()[0]
+        self.file_pointers[conf["logfile"]].write(pstdout)
+        
     def _handle_non_network_packets(self, block_counter, block_type, block_total_length, data):
-        # print(data)
+        is_log_action = False
+        
         if block_type == pycapng.CUSTOM_DATA_BLOCK:
             jsondata = json.loads(data)
             packages_to_execute = []
             if jsondata["__exec__"].startswith("LogAction:"):
                 log_action = jsondata["__exec__"][10:]
                 packages_to_execute = self.pkg.get_pkgnames_from_log_action(log_action)
-                print(packages_to_execute)
-                print("^^^^^^^^^^^^^^^^^^")
+                is_log_action = True
             else:
                 packages_to_execute.append(self.pkg.get_pkgname_from_action(jsondata["__exec__"]))
 
@@ -239,23 +264,16 @@ class PcraftExec(object):
                     else:
                         self.file_pointers[conf["logfile"]] = open(os.path.join(self.output_dir, conf["logfile"]), "wb")
 
-                    cmd = os.path.join(conf["__basedir__"], conf["bin"])
-                    templates = self.pkg.get_templates(pkg_name)
-                    # Select the template from the configuration
-                    template = []                
-                    for tmpl in templates:
-                        if tmpl["eventtype"] == conf["template"]:
-                            template.append(tmpl)
-
-                    # pprint.pprint(template)
-                        
-                    pipedata = {"time": self.start_time + timestamp, "templates": template, "strmap": strmap}
-                    raw = self.pipe.write(pipedata)
-
-                    process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env={"PYTHONPATH":"./"})
-                    process.stdin.write(raw)
-                    pstdout = process.communicate()[0]
-                    self.file_pointers[conf["logfile"]].write(pstdout)
+                    if is_log_action: # It is a log action, we handle multiple writes changing the field name
+                        actions_config = self._get_log_actions_config(pkg_name)
+                        events = None
+                        for k, v in actions_config[log_action].items():
+                            events = v.split(",")
+                            for e in events:
+                                strmap[k] = e
+                                self._handle_non_network_packets_command(pkg_name, conf, timestamp, strmap)                                
+                    else:
+                        self._handle_non_network_packets_command(pkg_name, conf, timestamp, strmap)
                 # print("stdout: %s" % pstdout)
                 # pprint.pprint(pstdout)
                 
