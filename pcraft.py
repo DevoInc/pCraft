@@ -8,6 +8,7 @@ import base64
 import time
 import shutil
 import pyshark
+import json
 
 import pyami
 import pycapng
@@ -39,7 +40,8 @@ class PcraftExec(object):
         self.current_time = time.time()
         self.session = Session()
         self.variables_built_by_plugins = {}
-
+        self.file_pointers = {}
+        
         self.pcapng = pycapng.PcapNG()
         self.ami = pyami.Ami()
         try:
@@ -67,7 +69,8 @@ class PcraftExec(object):
         self.logwrite()
         
     def __del__(self):
-        pass
+        for k, v in self.file_pointers.items():
+            v.close()
     
     def build_outputdir(self, outdir=None, force_mkdir=False):
         if not outdir:
@@ -97,7 +100,15 @@ class PcraftExec(object):
         packages = self.pkg.get_packages()
         cmd = os.path.join(packages[pkgname]['dirpath'], "bin" ,packages[pkgname]['config'][PCAP_CONF][action_exec]['bin'])
         return cmd
-        
+
+    def _get_log_processes_to_execute(self, pkgname):
+        processes = {}
+        packages = self.pkg.get_packages()
+        for process, conf in packages[pkgname]['config'][LOG_CONF].items():
+            conf["__basedir__"] = os.path.join(packages[pkgname]['dirpath'], "bin")
+            processes[process] = conf
+        return processes
+
     def action_handler(self, action, userdata):
         pkg_name = self.pkg.get_pkgname_from_action(action.Exec())
         strmap = {}
@@ -168,6 +179,7 @@ class PcraftExec(object):
 	            # We fix the time
 	            # TODO: Fix time here
                     pkt = PcraftIO.raw_packet_from_scapy(scapy_pkt)
+                    pkt = pkt[2:] # FIXME: This is a hack because I cannot slice the scapy packet properly in the PcraftIO.raw_packet_from_scapy function.
                     self.pcapng.WritePacket(pkt, "")
 
             if stdoutdec["dataout"]:
@@ -185,10 +197,53 @@ class PcraftExec(object):
 
             for layer in pkt.layers:
                 layer_name = layer.layer_name
-                print("Searching plugin to match layer: %s" % layer_name)
+                # print("Searching plugin to match layer: %s" % layer_name)
+
+
+    def _handle_non_network_packets(self, block_counter, block_type, block_total_length, data):
+        # print(data)
+        if block_type == pycapng.CUSTOM_DATA_BLOCK:
+            jsondata = json.loads(data)
+            pkg_name = self.pkg.get_pkgname_from_action(jsondata["__exec__"])
+
+            strmap = {}
+            for k, v in jsondata.items():
+                strmap[k] = v
             
+            # Get packet timestamp
+            timestamp = 0
+
+            processes = self._get_log_processes_to_execute(pkg_name)
+            
+            # conf example: {'bin': 'logwrite.py', 'logfile': 'windows_security.log', 'template': 'microsoft.windows.security.logstash14', '__basedir__': '/home/sebastien/pcraft-ng/pkg/enabled/WindowsSecurity/bin'}
+            for p, conf in processes.items():
+                if conf["logfile"] in self.file_pointers:
+                    pass # Shall we do something? I guess not
+                else:
+                    self.file_pointers[conf["logfile"]] = open(os.path.join(self.output_dir, conf["logfile"]), "wb")
+
+                cmd = os.path.join(conf["__basedir__"], conf["bin"])
+                templates = self.pkg.get_templates(pkg_name)
+                # Select the template from the configuration
+                template = []                
+                for tmpl in templates:
+                    if tmpl["eventtype"] == conf["template"]:
+                        template.append(tmpl)
+
+                # pprint.pprint(template)
+                        
+                pipedata = {"time": self.start_time + timestamp, "templates": template, "strmap": strmap}
+                raw = self.pipe.write(pipedata)
+
+                process = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env={"PYTHONPATH":"./"})
+                process.stdin.write(raw)
+                pstdout = process.communicate()[0]
+                self.file_pointers[conf["logfile"]].write(pstdout)
+                # print("stdout: %s" % pstdout)
+                # pprint.pprint(pstdout)
+                
     def _logwrite_non_network(self):
-        pass
+        self.pcapng.ForeachPacket(self._handle_non_network_packets)
 
     def logwrite(self):
         print("Writing logs from pcap file '%s' to directory '%s'..." % (self.pcapout, self.output_dir))
@@ -201,6 +256,7 @@ class PcraftExec(object):
         # which are encoded in custom data blocks
         self._logwrite_non_network()
 
+        self.pcapng.CloseFile()
         
 if __name__ == "__main__":
     if len(sys.argv) < 4:
@@ -208,7 +264,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     pkg = PackageManager()
-    pprint.pprint(pkg.get_packages())
+    # pprint.pprint(pkg.get_packages())
 
     # print(">>>>>>")
     # print(pkg.get_pkgname_from_action("DNSConnection"))

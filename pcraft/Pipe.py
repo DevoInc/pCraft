@@ -6,6 +6,7 @@ import avro.schema
 
 from avro.datafile import DataFileReader
 from avro.io import DatumReader
+import avro.schema
 
 SCHEMA = """{
     "type": "record",
@@ -14,17 +15,27 @@ SCHEMA = """{
         {"name": "time",      "type": ["float", "null"], "default": "0"},
         {"name": "is_pcapng", "type": ["boolean", "null"], "default": false},
         {"name": "strmap",    "type": [{"type": "map", "values": "string"}, "null"]},
-        {"name": "intmap",    "type": [{"type": "map", "values": "int"}, "null"]},
-        {"name": "bytesmap",  "type": [{"type": "map", "values": "bytes"}, "null"]},
-        {"name": "longmap",   "type": [{"type": "map", "values": "long"}, "null"]},
-        {"name": "floatmap",  "type": [{"type": "map", "values": "float"}, "null"]},
+        {"name": "intmap",    "type": [{"type": "map", "values": "int"},    "null"]},
+        {"name": "bytesmap",  "type": [{"type": "map", "values": "bytes"},  "null"]},
+        {"name": "longmap",   "type": [{"type": "map", "values": "long"},   "null"]},
+        {"name": "floatmap",  "type": [{"type": "map", "values": "float"},  "null"]},
         {"name": "doublemap", "type": [{"type": "map", "values": "double"}, "null"]},
         {"name": "pcapout",   "type": [{"type": "array", "items": "bytes"}, "null"]},
-        {"name": "dataout",   "type": [{"type": "array", "items": "bytes"}, "null"]}
+        {"name": "dataout",   "type": [{"type": "array", "items": "bytes"}, "null"]},
+        {"name": "templates", "type": [{
+                "type": "array",
+                "items": {
+                  "name": "templates_record",
+                  "type": "record",
+                  "fields": [
+                    {"name": "eventtype", "type": "string"},
+                    {"name": "files", "type": [{"type": "map", "values": "string"}, "null"]}
+                  ]
+                }
+              }, "null"]
+            }
         ]
 }"""
-
-
 
 class PcraftPipe(object):
     def __init__(self):

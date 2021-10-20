@@ -12,7 +12,8 @@ def raw_packet_from_scapy(scapy_pkt):
     with PcapWriter(fd, sync=True) as writer:
         writer.write(scapy_pkt)
         writer.flush()
-        return fd.getvalue()[24:]
+        # return fd.getvalue()[24:]
+        return fd.getvalue()[38:]
         # return fd.getvalue()[54:]
         # return fd.getvalue()
     

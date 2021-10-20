@@ -2,6 +2,8 @@ import pathlib
 import os
 import configparser
 
+from .TemplateBuilder import TemplateBuilder
+
 #
 # A package is simply a directory which contains
 # * The package name
@@ -34,6 +36,7 @@ class PackageManager(object):
             self.packages[package_name]["dirpath"] = str(p)
 
         self.build_config()
+        self.load_templates()
         
     def get_packages(self):
         return self.packages
@@ -81,4 +84,13 @@ class PackageManager(object):
     def get_pkgname_from_action(self, action_plugin):
         return self.actions_pkg_map[action_plugin]
     
+    def load_templates(self):
+        for pkgname, pkgdata in self.packages.items():
+            templates_dir = os.path.join(pkgdata["dirpath"], "templates")
+
+            tb = TemplateBuilder(templates_dir)
+            self.packages[pkgname]["templates"] = tb.get_templates()
+            
+    def get_templates(self, pkgname):
+        return self.packages[pkgname]["templates"]
     
