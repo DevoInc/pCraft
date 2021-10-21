@@ -42,7 +42,7 @@ class PcraftExec(object):
         self.session = Session()
         self.variables_built_by_plugins = {}
         self.file_pointers = {}
-        
+
         self.pcapng = pycapng.PcapNG()
         self.ami = pyami.Ami()
         try:
@@ -51,6 +51,11 @@ class PcraftExec(object):
         except FileNotFoundError:
             pass
 
+        self.ami_cache = amifile + "c"
+        print("Building cache to %s" % self.ami_cache)
+        self.ami.Cache(amifile, self.ami_cache)
+        print("done building cache")
+        
         if self.pcapout:
             self.pcapng.OpenFile(self.pcapout, "w")
             # self.pcap_fp = open(self.pcapout, "wb")

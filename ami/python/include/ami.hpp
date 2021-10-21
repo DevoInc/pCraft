@@ -8,6 +8,7 @@
 
 #include <ami/ami.h>
 #include <ami/action.h>
+#include <ami/cache.h>
 
 #include <action.hpp>
 

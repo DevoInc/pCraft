@@ -3,6 +3,11 @@
 
 #include <avro.h>
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define QUICKSTOP_CODEC "deflate"
 
 avro_schema_t ami_cache_schema;
@@ -24,5 +29,9 @@ const char AMI_CACHE_SCHEMA[] =
 }";
 
 int ami_cache_build(const char *amifile, const char *amicache);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _AMI_CACHE_H_
