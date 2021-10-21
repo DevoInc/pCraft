@@ -17,6 +17,7 @@ endif()
 
 include(GNUInstallDirs)
 enable_testing()
+include(FindPkgConfig)
 
 if (APPLE)
       set(CMAKE_MACOSX_RPATH ON)
@@ -30,6 +31,8 @@ find_package(libcsv REQUIRED)
 find_package(Python COMPONENTS Interpreter Development)
 find_package(pybind11 REQUIRED)
 find_package(LibUUID REQUIRED)
+
+pkg_check_modules(AVRO avro-c)
 
 message("Flex found:" ${FLEX_FOUND})
 message("Flex executable:" ${FLEX_EXECUTABLE})
