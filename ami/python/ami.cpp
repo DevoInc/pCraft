@@ -3,6 +3,7 @@
 #include <ami/ami.h>
 #include <ami/action.h>
 #include <ami/ast.h>
+#include <ami/cache.h>
 
 #include <ami/khash.h>
 
@@ -162,11 +163,16 @@ std::vector<std::string> Ami::GetTags(void) {
   return tags;
 }
 
+int Ami::Cache(std::string amifile, std::string cachefile)
+{
+  return ami_cache_build(amifile.c_str(), cachefile.c_str());
+}
 
 PYBIND11_MODULE(pyami, m) {
     m.doc() = "AMI Language for Python";
     py::class_<Ami>(m, "Ami")
       .def(py::init<>())
+      .def("Cache", &Ami::Cache)
       .def("Parse", &Ami::Parse)
       .def("Run", &Ami::Run)
       .def("GetFilePath", &Ami::GetFilePath)

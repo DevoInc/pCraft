@@ -17,6 +17,7 @@ class Ami {
 public:
   Ami(void);
   ~Ami(void);
+  int Cache(std::string amifile, std::string cachefile);
   int Parse(std::string file);
   int Run(py::object func, py::object userdata);
   void Debug(void);
