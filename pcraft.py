@@ -51,10 +51,10 @@ class PcraftExec(object):
         except FileNotFoundError:
             pass
 
-        self.ami_cache = amifile + "c"
-        print("Building cache to %s" % self.ami_cache)
+        self.ami_cache = os.path.join(os.path.dirname(amifile), "." + os.path.basename(amifile) + "c")
+        print("Building cache: %s" % self.ami_cache)
         self.ami.Cache(amifile, self.ami_cache)
-        print("done building cache")
+        print("Done building cache")
         
         if self.pcapout:
             self.pcapng.OpenFile(self.pcapout, "w")
