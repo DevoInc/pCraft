@@ -1,6 +1,7 @@
 import pathlib
 import os
 import configparser
+import importlib
 
 from .TemplateBuilder import TemplateBuilder
 
@@ -39,7 +40,11 @@ class PackageManager(object):
             self.packages[package_name] = {}
             self.packages[package_name]["dirpath"] = str(p)
 
+        self.pcap_libraries = {}
+        self.log_libraries = {}
+            
         self.build_config()
+        self.load_libraries()
         self.load_templates()
         
     def get_packages(self):
@@ -50,7 +55,17 @@ class PackageManager(object):
             if not p.is_dir():
                 if str(p).endswith(".conf"):
                     yield p
-        
+
+    def get_pcap_module(self, pkgname):
+        if pkgname in self.pcap_libraries:
+            return self.pcap_libraries[pkgname]
+        return None
+
+    def get_log_module(self, pkgname):
+        if pkgname in self.log_libraries:
+            return self.log_libraries[pkgname]
+        return None
+
     def build_config(self):
         for pkgname, pkgdata in self.packages.items():
             self.packages[pkgname]["config"] = {}
@@ -97,6 +112,43 @@ class PackageManager(object):
 
     def get_pkgnames_from_log_action(self, log_action):
         return self.log_actions_pkg_map[log_action]
+
+    def load_libraries(self):
+        print("Loading Libraries")
+        current_wd = os.getcwd()
+        for pkgname, pkgdata in self.packages.items():
+            try:
+                for lib, libdata in pkgdata["config"][PCAP_CONF].items():
+                    pcap_library_path = os.path.join(pkgdata["dirpath"], "lib", libdata["lib"])
+                    # print("Pcap Library Path:%s" % pcap_library_path)
+                    plugin_name = lib
+    
+                    loading_path = pcap_library_path[len(current_wd)+1:].replace("/", ".")[:-3]
+                    module = importlib.import_module(loading_path)
+                    dylib = module.PcraftPcapWriter()
+                    if lib in self.pcap_libraries:
+                        print("Error with package '%s'; The library '%s' was previously defined by another package. It must be unique!" % (pkgname, lib))
+                    self.pcap_libraries[lib] = dylib
+            except:
+                pass # No pcap library? all good!
+
+            try:
+                for lib, libdata in pkgdata["config"][LOG_CONF].items():
+                    log_library_path = os.path.join(pkgdata["dirpath"], "lib", libdata["lib"])
+                    # print("Log Library Path:%s" % log_library_path)
+                    plugin_name = lib
+    
+                    loading_path = log_library_path[len(current_wd)+1:].replace("/", ".")[:-3]
+                    print(loading_path)
+                    module = importlib.import_module(loading_path)
+                    dylib = module.PcraftLogWriter()
+                    if lib in self.log_libraries:
+                        print("Error with package '%s'; The library '%s' was previously defined by another package. It must be unique!" % (pkgname, lib))
+                    self.log_libraries[lib] = dylib
+            except:
+                pass # No log library? all good!
+            
+        print("Done Loading Libraries")
     
     def load_templates(self):
         for pkgname, pkgdata in self.packages.items():

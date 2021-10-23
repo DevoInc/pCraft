@@ -33,7 +33,7 @@ class Plugins:
             plugin_name = os.path.basename(modfile)[:-3] # We remove the extension
             import_plugin = self._modularize_string_path(modfile)
             import_plugin = "pcraft" + import_plugin[len(self.instdir):]
-#            print("importing plugin %s" % import_plugin)
+            # print("importing plugin %s" % import_plugin)
             module = importlib.import_module(import_plugin)
             # try:
             # print("Loading plugin:%s" % plugin_name)

@@ -63,6 +63,7 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata
     }
   }
 
+  // Set local variables
   if (amiaction->variables) {
     for (k = 0; k < kh_end(amiaction->variables); ++k) {
       if (kh_exist(amiaction->variables, k)) {

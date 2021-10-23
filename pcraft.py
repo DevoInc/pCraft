@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3 -B
 import sys
 import os
 import pprint
@@ -9,6 +9,7 @@ import time
 import shutil
 import pyshark
 import json
+import argparse
 
 import pyami
 import pycapng
@@ -18,6 +19,12 @@ from pcraft.Pipe import PcraftPipe
 from pcraft.utils import *
 from pcraft import io as PcraftIO
 from pcraft.Sessionizer import *
+from pcraft.PcapBuilder import PcapBuilder
+
+import avro.schema
+from avro.datafile import DataFileReader
+from avro.io import DatumReader
+
 
 from scapy.all import *
 
@@ -55,29 +62,36 @@ class PcraftExec(object):
         print("Building cache: %s" % self.ami_cache)
         self.ami.Cache(amifile, self.ami_cache)
         print("Done building cache")
-        
-        if self.pcapout:
-            self.pcapng.OpenFile(self.pcapout, "w")
-            # self.pcap_fp = open(self.pcapout, "wb")
-            # self.pcap_fp.write(PcraftIO.get_pcap_header())
-        
-        self.pipe = PcraftPipe()
-        
-        self.ami.Parse(amifile)
-        self.start_time = int(self.ami.GetStartTime())
-        if self.start_time <= 0:
-            self.start_time = self.current_time - self.ami.GetSleepCursor()
 
-        print("Writing PcapNG file...")
-        self.ami.Run(self.action_handler, None)
-        self._close_pcap_file()
-        print("Writing Logs...")
-        self.logwrite()
+        self.cache_to_pcap(self.ami_cache, self.pcapout)
+
+        self.write_pcap()
+        # if self.pcapout:
+        #     self.pcapng.OpenFile(self.pcapout, "w")
+        #     # self.pcap_fp = open(self.pcapout, "wb")
+        #     # self.pcap_fp.write(PcraftIO.get_pcap_header())
+        
+        # self.pipe = PcraftPipe()
+        
+        # self.ami.Parse(amifile)
+        # self.start_time = int(self.ami.GetStartTime())
+        # if self.start_time <= 0:
+        #     self.start_time = self.current_time - self.ami.GetSleepCursor()
+
+        # print("Writing PcapNG file...")
+        # self.ami.Run(self.action_handler, None)
+        # self._close_pcap_file()
+        # print("Writing Logs...")
+        # self.logwrite()
         
     def __del__(self):
         for k, v in self.file_pointers.items():
             v.close()
-    
+
+    # Write a pcap from our cache file
+    def cache_to_pcap(self, cachefile, pcapout):
+        pass
+            
     def build_outputdir(self, outdir=None, force_mkdir=False):
         if not outdir:
             return None
@@ -297,24 +311,56 @@ class PcraftExec(object):
         self._logwrite_non_network()
 
         self.pcapng.CloseFile()
+
+    def write_pcap(self):
+        avro_reader = DataFileReader(open(self.ami_cache, "rb"), DatumReader())
+        for event in avro_reader:
+            pcapmod = self.pkg.get_pcap_module(event["exec"])
+            # for pkt in pcapmod.run():
+                #
+
+verbose = False                
+def debug(message):
+    if verbose:
+        print(message)
+                
+class RunPcraft(object):
+    def __init__(self, pkg, args):
+        self.pkg = pkg
+        self.args = args
+
+        self.ami = pyami.Ami()
+        self.build_cache()
+
+        if self.args["pcap"]:
+            self.build_pcap(self.args["pcap"])
+            
+    def build_cache(self):
+        self.ami_cache = os.path.join(os.path.dirname(self.args["script"]), "." + os.path.basename(self.args["script"]) + "c")
+        debug("Building cache: %s" % self.ami_cache)
+        self.ami.Cache(self.args["script"], self.ami_cache)
+        debug("Done building cache")
+
+    def build_pcap(self, pcapfile):
+        pcap_builder = PcapBuilder(self.pkg, self.ami_cache)
+        pcap_builder.build(pcapfile)
         
 if __name__ == "__main__":
-    if len(sys.argv) < 4:
-        print("Syntax: %s script.ami output.pcap outdir" % sys.argv[0])
+
+    parser = argparse.ArgumentParser(exit_on_error=True)
+    parser.add_argument("script", type=str, help="The script to run")
+    parser.add_argument("-p", "--pcap", type=str, help="The pcap to build") 
+    parser.add_argument("-l", "--log-folder", type=str, help="The log folder")
+    parser.add_argument("-f", "--force", help="overwrite the log folder", action="store_true")
+    parser.add_argument("-v", "--verbose", action="store_true")    
+    args = parser.parse_args()
+    vargs = vars(args)
+    verbose = vargs["verbose"]
+    
+    if (not vargs["pcap"]) and (not vargs["log_folder"]):
+        parser.print_usage()
+        print("%s: error: argument -p/--pcap OR -l/--log-folder required" % sys.argv[0])
         sys.exit(1)
-
+        
     pkg = PackageManager()
-    # pprint.pprint(pkg.get_packages())
-
-    # print(">>>>>>")
-    # print(pkg.get_pkgname_from_action("DNSConnection"))
-    # print("<<<<")
-    
-    amifile = sys.argv[1]
-    pcapout = sys.argv[2]
-    outdir  = sys.argv[3]
-
-    pe = PcraftExec(pkg, amifile, pcapout, outdir, "-f" in sys.argv)
-    
-    
-    
+    pe = RunPcraft(pkg, vargs)
