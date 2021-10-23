@@ -17,10 +17,12 @@ void _ami_cache_foreach_action(ami_action_t *action, void *u1, void *u2, void *u
   ami_field_action_t *field_action;
   khint_t k;
   char *tmpstr;
-
+  int have_global_variables = 0;
+  
   int sleep_cursor = (int) current_t + (int)action->sleep_cursor + (int)action->sleep;
 
   avro_value_t variables_value;
+  avro_value_t local_variables_value;
   avro_value_t fset;
   avro_value_t freplace;
   
@@ -45,7 +47,8 @@ void _ami_cache_foreach_action(ami_action_t *action, void *u1, void *u2, void *u
     avro_value_t varkey;
     avro_value_t varval;
 
-    if (avro_value_get_by_name(&event, "variables", &variables_value, NULL) == 0) {     
+    if (avro_value_get_by_name(&event, "variables", &variables_value, NULL) == 0) {
+      have_global_variables = 1;
       for (k = 0; k < kh_end(ami->variables); ++k) {
   	if (kh_exist(ami->variables, k)) {
   	  const char *key = kh_key(ami->variables, k);
@@ -73,30 +76,41 @@ void _ami_cache_foreach_action(ami_action_t *action, void *u1, void *u2, void *u
       }
     }
     if (action->variables) {
-      for (k = 0; k < kh_end(action->variables); ++k) {
-	if (kh_exist(action->variables, k)) {
-	  const char *key = kh_key(action->variables, k);
-	  ami_variable_t *var = (ami_variable_t *)kh_value(action->variables, k);
-	  switch(var->type) {
-	  case AMI_VAR_STR:
-  	    tmpstr = strdup(var->strval);
-	    break;
-	  case AMI_VAR_VARIABLE:
-	    tmpstr = ami_action_get_nested_variable_as_str(action, NULL, var->strval);
-	    break;
-	  case AMI_VAR_INT:
-	    asprintf(&tmpstr, "%d", var->ival);
-	    break;
-  	  default:
-  	    fprintf(stderr, "Unable to read variable. Skipping.\n");
-  	    continue;
+      if (avro_value_get_by_name(&event, "local_variables", &local_variables_value, NULL) == 0) {
+	for (k = 0; k < kh_end(action->variables); ++k) {
+	  if (kh_exist(action->variables, k)) {
+	    const char *key = kh_key(action->variables, k);
+	    // Adding the key/values to the variables so we can use them
+	    ami_variable_t *var = (ami_variable_t *)kh_value(ami->variables, k);
+	    /* ami_variable_debug(var); */
+	    switch(var->type) {
+	    case AMI_VAR_VARIABLE:
+	      tmpstr = ami_get_nested_variable_as_str(ami, NULL, var->strval);
+	      break;
+	    case AMI_VAR_STR:
+	      tmpstr = strdup(var->strval);
+	      break;
+	    case AMI_VAR_INT:
+	      asprintf(&tmpstr, "%d", var->ival);
+	      break;
+	    default:
+	      fprintf(stderr, "Unable to read variable. Skipping.\n");
+	      continue;
+	    }
+	    
+	    if (have_global_variables) {
+	      avro_value_t child;
+	      avro_value_add(&variables_value, key, &child, NULL, NULL);
+	      avro_value_set_string_len(&child, tmpstr, strlen(tmpstr) + 1);
+	    }
+	    
+	    // Append the key to the local variables array so we can identify them
+	    avro_value_t child;
+	    avro_value_append(&local_variables_value, &child, NULL);
+	    avro_value_set_string_len(&child, key, strlen(key) + 1);
 	  }
-
-	  avro_value_t child;
-	  avro_value_add(&variables_value, key, &child, NULL, NULL);
-	  avro_value_set_string_len(&child, tmpstr, strlen(tmpstr) + 1);	  
 	}
-      }
+      } // if (avro_value_get_by_name(&event, "local_variables", ...)
     } // if (action->variables)
   } // if (ami->variables)
 

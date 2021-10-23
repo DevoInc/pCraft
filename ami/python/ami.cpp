@@ -69,9 +69,7 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata
       if (kh_exist(amiaction->variables, k)) {
 	const char *key = kh_key(amiaction->variables, k);
 	ami_variable_t *var = (ami_variable_t *)kh_value(amiaction->variables, k);
-
 	action->local_variables.push_back(key);
-
 	switch(var->type) {
 	case AMI_VAR_STR:
 	  action->variables[key] = var->strval;

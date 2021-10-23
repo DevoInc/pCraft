@@ -23,6 +23,7 @@ const char AMI_CACHE_SCHEMA[] =
         {\"name\": \"action\", \"type\": \"string\", \"default\": \"Void\"},\
         {\"name\": \"exec\", \"type\": \"string\", \"default\": \"Void\"},\
         {\"name\": \"variables\", \"type\": {\"type\": \"map\", \"name\": \"var\", \"values\": \"string\"}},\
+        {\"name\": \"local_variables\", \"type\": {\"type\": \"array\", \"items\": \"string\"}},\
         {\"name\": \"fset\", \"type\": {\"type\": \"map\", \"values\": \"string\"}},\
         {\"name\": \"freplace\", \"type\": {\"type\": \"map\", \"values\": \"string\"}}\
         ]\
