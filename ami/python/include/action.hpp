@@ -2,6 +2,7 @@
 #define _ACTIONPP_H_
 
 #include <map>
+#include <vector>
 
 #include <ami/action.h>
 
@@ -17,6 +18,8 @@ public:
   std::map<std::string, std::string> variables;
   std::map<std::string, float> sleep_group;
   std::map<std::string, float> get_sleep_group(void) { return sleep_group; };
+  std::vector<std::string> get_local_variables(void) { return local_variables; };
+  std::vector<std::string> local_variables;
 
   std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> field_actions;
   std::map<std::string, std::map<std::string, std::map<std::string, std::string>>> get_field_actions(void) { return field_actions; };

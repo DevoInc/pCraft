@@ -69,6 +69,9 @@ void Ami::foreach_action(ami_action_t *amiaction, void *userdata, void *userdata
       if (kh_exist(amiaction->variables, k)) {
 	const char *key = kh_key(amiaction->variables, k);
 	ami_variable_t *var = (ami_variable_t *)kh_value(amiaction->variables, k);
+
+	action->local_variables.push_back(key);
+
 	switch(var->type) {
 	case AMI_VAR_STR:
 	  action->variables[key] = var->strval;
@@ -187,6 +190,7 @@ PYBIND11_MODULE(pyami, m) {
     py::class_<Action>(m, "Action")
       .def(py::init<>())
       .def("Variables", &Action::get_variables)
+      .def("LocalVariablesList", &Action::get_local_variables)
       .def("FieldActions", &Action::get_field_actions)
       .def("Name", &Action::get_name)
       .def("Exec", &Action::get_exec)
