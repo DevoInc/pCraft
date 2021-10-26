@@ -30,7 +30,7 @@ def template_get_event(template, event, valuesdict):
     values = template_get_defaults(template, event)
     if valuesdict:
         for k, v in valuesdict.items():
-            values[k] = v
+            values[k[1:]] = v
 
     event = pystache.render(template["files"][event_tmpl], values)
 

@@ -1,6 +1,8 @@
 import random
 from . import utils
 
+from .confnames import *
+
 class LibraryContext(object):
     def __init__(self, service=None):
         self.service = service

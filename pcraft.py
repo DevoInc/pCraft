@@ -20,6 +20,7 @@ from pcraft.utils import *
 from pcraft import io as PcraftIO
 from pcraft.Sessionizer import *
 from pcraft.PcapBuilder import PcapBuilder
+from pcraft.LogsBuilder import LogsBuilder
 
 import avro.schema
 from avro.datafile import DataFileReader
@@ -334,6 +335,9 @@ class RunPcraft(object):
 
         if self.args["pcap"]:
             self.build_pcap(self.args["pcap"])
+
+        if self.args["log_folder"]:
+            self.build_logs(self.args["log_folder"], self.args["force"])
             
     def build_cache(self):
         self.ami_cache = os.path.join(os.path.dirname(self.args["script"]), "." + os.path.basename(self.args["script"]) + "c")
@@ -344,6 +348,11 @@ class RunPcraft(object):
     def build_pcap(self, pcapfile):
         pcap_builder = PcapBuilder(self.pkg, self.ami_cache)
         pcap_builder.build(pcapfile)
+
+    def build_logs(self, log_folder, force):
+        logs = LogsBuilder(self.pkg, self.ami_cache, log_folder, force)
+        logs.build()
+
         
 if __name__ == "__main__":
 

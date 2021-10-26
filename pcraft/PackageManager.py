@@ -4,6 +4,7 @@ import configparser
 import importlib
 
 from .TemplateBuilder import TemplateBuilder
+from .confnames import *
 
 #
 # A package is simply a directory which contains
@@ -12,10 +13,6 @@ from .TemplateBuilder import TemplateBuilder
 #   to execute a plugin correctly
 # * The binaries which work like a pipe mechanism leveraging Avro serialization
 #
-PCAP_CONF = "pcap.conf"
-LOG_CONF = "log.conf"
-DEPENDENCIES_CONF = "dependencies.conf"
-ACTIONS_CONF = "actions.conf"
 
 class PackageManager(object):
     def __init__(self, pkgpath=None):
@@ -44,8 +41,8 @@ class PackageManager(object):
         self.log_libraries = {}
             
         self.build_config()
-        self.load_libraries()
         self.load_templates()
+        self.load_libraries()
         
     def get_packages(self):
         return self.packages
@@ -57,6 +54,9 @@ class PackageManager(object):
                     yield p
 
     def get_pcap_module(self, pkgname):
+        if pkgname.startswith("LogAction:"):
+            pkgname = "LogAction"
+        
         if pkgname in self.pcap_libraries:
             return self.pcap_libraries[pkgname]
         return None
