@@ -1,0 +1,25 @@
+av 1
+
+action cloudtrail1 {
+    $event_id = "DeleteRole"
+    
+    exec AwsApiCall
+}
+
+action cloudtrail2 {
+    $event_id = "SetContactAddress"
+    
+    exec AwsConsoleAction
+}
+
+action cloudtrail3 {
+    $event_id = "CheckMfa"
+    
+    exec AwsConsoleSignIn
+}
+
+action cloudtrail4 {
+    $event_id = "SharedSnapshotCopyInitiated"
+    
+    exec AwsServiceEvent
+}
