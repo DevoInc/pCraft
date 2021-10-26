@@ -24,8 +24,6 @@ class PcraftPcapWriter(LibraryContext):
         pkt = PcraftIO.raw_packet_from_scapy(ack)
         yield "network", pkt
 
-        user = set_user()
-
         # HTTP Request
         httpreq_string = self.build_http_request_string()
         http_request = Ether() / IP(src=self.get_variable("$ip-src"),dst=self.get_variable("$ip-dst")) / TCP(sport=int(self.get_variable("$port-src")), dport=int(self.get_variable("$port-dst")), flags="P""A") / httpreq_string
@@ -52,6 +50,8 @@ class PcraftPcapWriter(LibraryContext):
         return user
         
     def build_http_request_string(self):
+        user = self.set_user()
+
         httpreq_string = "{method} {uri} HTTP/1.1\r\nAccept: */*\r\nUser-Agent: {useragent}\r\nHost:{host}{user}\r\nConnection: Keep-Alive\r\n\r\n".format(
             method=self.get_variable("$method"),
             uri=self.get_variable("$uri"),
