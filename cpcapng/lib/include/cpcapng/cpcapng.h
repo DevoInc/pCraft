@@ -11,7 +11,7 @@ extern "C" {
 #define PADDING(x, aligned_ptr, size) do {\
 		*aligned_ptr = (x % size) == 0 ? x : (x / size + 1) * size; \
 	} while(0)
-
+  
 #define PCAPNG_VERSION_MAJOR 1
 #define PCAPNG_VERSION_MINOR 0
 

@@ -22,12 +22,13 @@ class PcapBuilder(object):
         self.avro_reader = DataFileReader(open(self.ami_cache, "rb"), DatumReader())
 
         self.session = Session()
-        
+
     def build(self, pcapfile):
         self.pcapng.OpenFile(pcapfile, "w")
 
         for event in self.avro_reader:
-            # print(str(event))
+            event_time = event["time"]
+            
             pcapmod = self.pkg.get_pcap_module(event["exec"])
             if not pcapmod:
                 print("Package module '%s' does not contain a pcap writer!" % event["exec"])
@@ -48,9 +49,10 @@ class PcapBuilder(object):
 	            # TODO: Fix time here
                     # pkt = PcraftIO.raw_packet_from_scapy(scapy_pkt)
                     pkt = PcraftIO.raw_packet_from_scapy(scapy_pkt)
-                    pkt = pkt[2:] # FIXME: This is a hack because I cannot slice the scapy packet properly in the PcraftIO.raw_packet_from_scapy function.            
-                    self.pcapng.WritePacket(pkt, "")
-                elif pkt_type == "custom":                          
+                    pkt = pkt[2:] # FIXME: This is a hack because I cannot slice the scapy packet properly in the PcraftIO.raw_packet_from_scapy function
+
+                    self.pcapng.WritePacketTime(pkt, event_time)
+                elif pkt_type == "custom":     
                     self.pcapng.WriteCustom(PCAPNG_CUSTOM_PEN, pkt, "")
                 elif pkt_type == "debug":
                     pass

@@ -15,6 +15,7 @@ public:
   int OpenFile(const char *pathname, const char *mode);
   int CloseFile(void);
   int WritePacket(py::bytes data, const std::string &comment);
+  int WritePacketTime(py::bytes data, uint32_t timestamp);
   int WriteCustom(uint32_t pen, py::bytes data, const std::string &comment);
   int ForeachPacket(const py::object &func);
   //

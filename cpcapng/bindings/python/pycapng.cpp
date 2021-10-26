@@ -86,6 +86,28 @@ int PcapNG::WritePacket(py::bytes data, const std::string &comment)
   return 0;
 }
 
+int PcapNG::WritePacketTime(py::bytes data, uint32_t timestamp)
+{
+  unsigned char *buffer;
+  size_t buffer_size;
+
+  py::buffer_info info(py::buffer(data).request());
+  uint8_t *data_bytes = reinterpret_cast<uint8_t *>(info.ptr);
+  size_t data_len = static_cast<size_t>(info.size);
+
+  uint64_t timestamp_in_micros = timestamp * (uint64_t) 1000000;
+  uint64_t timestamp_high_shift = timestamp_in_micros >> 32;
+  uint32_t timestamp_high = (uint32_t) timestamp_high_shift;
+  uint32_t timestamp_low = timestamp_in_micros & 0xFFFFFFFF;    
+
+  buffer_size = cpcapng_enhanced_packet_block_size(data_len);
+  buffer = (unsigned char *)malloc(buffer_size);
+  cpcapng_enhanced_packet_block_write_time(data_bytes, data_len, timestamp_high, timestamp_low, buffer);
+  fwrite(buffer, buffer_size, 1, _fp);
+
+  return 0;
+}
+
 int PcapNG::WriteCustom(uint32_t pen, py::bytes data, const std::string &comment)  
 {
   unsigned char *buffer;
@@ -169,6 +191,7 @@ PYBIND11_MODULE(pycapng, m) {
       .def("CloseFile", &PcapNG::CloseFile)
       .def("WriteCustom", &PcapNG::WriteCustom)
       .def("WritePacket", &PcapNG::WritePacket)
+      .def("WritePacketTime", &PcapNG::WritePacketTime)
       .def("ForeachPacket", &PcapNG::ForeachPacket);
 }
 
