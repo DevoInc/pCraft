@@ -117,6 +117,7 @@ pcapng_section_header_block_light_t *cpcapng_section_header_block_read(unsigned 
 size_t cpcapng_interface_description_block_write(uint32_t snaplen, unsigned char *outbuf);
 size_t cpcapng_interface_description_block_size(void);
 pcapng_interface_description_block_light_t *cpcapng_interface_description_block_read(unsigned char *inbuf, size_t inbuf_len);
+size_t cpcapng_enhanced_packet_block_write_time(const unsigned char *packet, const size_t packet_len, uint32_t timestamp_high, uint32_t timestamp_low, unsigned char *outbuf);
 size_t cpcapng_enhanced_packet_block_write(const unsigned char *packet, const size_t packet_len, unsigned char *outbuf);
 size_t cpcapng_enhanced_packet_block_size(const size_t packet_len);
 pcapng_enhanced_packet_block_light_t *cpcapng_enhanced_packet_block_read(unsigned char *inbuf, size_t inbuf_len);

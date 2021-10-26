@@ -70,13 +70,11 @@ size_t cpcapng_interface_description_block_size(void)
 	return sizeof(pcapng_interface_description_block_t) + BLOCK_TOTAL_LENGTH_SIZE;
 }
 
-size_t cpcapng_enhanced_packet_block_write(const unsigned char *packet, const size_t packet_len, unsigned char *outbuf)
+size_t cpcapng_enhanced_packet_block_write_time(const unsigned char *packet, const size_t packet_len, uint32_t timestamp_high, uint32_t timestamp_low, unsigned char *outbuf)
 {
 	size_t block_total_length;
 	uint32_t *final_length;
 	pcapng_enhanced_packet_block_t *epb;
-	struct timeval tv;
-	uint64_t ms_tv = 0;
 
 	block_total_length = cpcapng_enhanced_packet_block_size(packet_len);
 
@@ -85,11 +83,8 @@ size_t cpcapng_enhanced_packet_block_write(const unsigned char *packet, const si
 	epb->block_total_length = block_total_length;
 	epb->interface_id = 0;
 
-	gettimeofday(&tv, NULL);
-	ms_tv = (uint64_t) (tv.tv_sec) * (uint64_t) 1e6 + (uint64_t) (tv.tv_usec);
-
-	epb->timestamp_high = (uint32_t) (ms_tv >> 32);
-	epb->timestamp_low = (uint32_t) ms_tv;
+	epb->timestamp_high = timestamp_high;
+	epb->timestamp_low = timestamp_low;
 
 	epb->captured_packet_length = packet_len;
 	epb->original_packet_length = packet_len;
@@ -100,6 +95,22 @@ size_t cpcapng_enhanced_packet_block_write(const unsigned char *packet, const si
 	*final_length = block_total_length;
 
 	return block_total_length;
+}
+
+size_t cpcapng_enhanced_packet_block_write(const unsigned char *packet, const size_t packet_len, unsigned char *outbuf)
+{
+	struct timeval tv;
+	uint64_t ms_tv = 0;
+	uint32_t timestamp_high;
+	uint32_t timestamp_low;
+	
+	gettimeofday(&tv, NULL);
+	ms_tv = (uint64_t) (tv.tv_sec) * (uint64_t) 1e6 + (uint64_t) (tv.tv_usec);
+
+	timestamp_high = (uint32_t) (ms_tv >> 32);
+	timestamp_low = (uint32_t) ms_tv;
+
+	return cpcapng_enhanced_packet_block_write_time(packet, packet_len, timestamp_high, timestamp_low, outbuf);
 }
 
 size_t cpcapng_enhanced_packet_block_size(const size_t packet_len)
