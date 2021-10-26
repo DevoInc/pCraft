@@ -45,9 +45,6 @@ class PcapBuilder(object):
                         self.session.append_to_session(scapy_pkt)
                         scapy_pkt = self.session.fix_seq_ack(scapy_pkt)
 	
-	            # We fix the time
-	            # TODO: Fix time here
-                    # pkt = PcraftIO.raw_packet_from_scapy(scapy_pkt)
                     pkt = PcraftIO.raw_packet_from_scapy(scapy_pkt)
                     pkt = pkt[2:] # FIXME: This is a hack because I cannot slice the scapy packet properly in the PcraftIO.raw_packet_from_scapy function
 
