@@ -1,0 +1,48 @@
+key,default_value
+date,%Y-%m-%d
+time,%H:%M:%S
+time-taken,342
+hostname,localhost
+c-ip,192.168.0.42
+sc-status,200
+s-action,TCP_TUNNELED
+sc-bytes,539
+cs-bytes,551
+cs-method,GET
+cs-uri-scheme,http
+cs-host,www.slashdot.42
+cs-uri-port,80
+cs-uri-path,/
+cs-uri-query,-
+cs-username,-
+cs-auth-group,-
+s-hierarchy,-
+s-supplier-name,-
+rs(Content-Type),text/html
+cs(User-Agent),Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+sc-filter-result,-
+cs-categories,Marketing Site
+x-virus-id,-
+s-ip,216.105.38.15
+s-sitename,-
+r-ip,-
+event_duration,342
+src_ip_addr,192.168.0.42
+http_status_code,200
+dvc_action,TCP_NC_MISS
+http_response_body_bytes,539
+http_request_body_bytes,551
+http_request_method,GET
+network_application_protocol,http
+url_hostname,www.slashdot.42
+http_user_agent_original,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+url_path,/
+url_query,
+user_name,-
+url_category,Marketing Site
+dst_mime_type,text/html
+event_result,PROXIED
+src_port_number,8495
+dst_port_number,80
+dst_ip_addr,216.105.38.15
+http_referer_original,-
