@@ -53,11 +53,29 @@ class LogsBuilder(object):
             else:
                 packages_to_execute.append(pkgname)
 
+            # Replace the packages to execute with their appropriate layers
+            new_pkg_to_execute = []
             for modexec in packages_to_execute:
+                writeslog =  False
+                logmod = self.pkg.get_log_module(modexec)
+                if not logmod:
+                    writeslog = True
+
+                layer = self.pkg.get_pcap_layer_reverse_modules(modexec)
+                if layer:
+                    if writeslog == False:
+                        # We do have a logmod for this too. So it is the first to be added.
+                        new_pkg_to_execute.append(modexec)
+
+                    for l in self.pkg.get_log_layer_modules(layer):
+                        new_pkg_to_execute.append(l)
+                else:
+                     new_pkg_to_execute.append(modexec)   
+
+            for modexec in new_pkg_to_execute:
                 # print("Action Package name:%s" % self.pkg.get_pkgname_from_action_log(modexec))
                 logmod = self.pkg.get_log_module(modexec)
                 if not logmod:
-                    # print("Package module '%s' does not contain a log writer!" % modexec)
                     continue # We skip as this one will not log. Expected if this is just another type of package
                 
                 config = self.pkg.get_packages()[self.pkg.get_pkgname_from_action_log(modexec)]

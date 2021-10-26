@@ -15,31 +15,31 @@ class PcraftLogWriter(LibraryContext):
 
         event["variables"]["$sequence"] = self.seq
         try:
-            event["variables"]["$src_ip_addr"] = kvdict["$ip-src"]
+            event["variables"]["$src_ip_addr"] = event["variables"]["$ip-src"]
         except:
             pass
 
         try:
-            event["variables"]["$src_port_number"] = kvdict["$port-src"]
+            event["variables"]["$src_port_number"] = event["variables"]["$port-src"]
         except:
             event["variables"]["$src_port_number"] = random.randint(4096, 65534)
 
         try:
-            event["variables"]["$dns_query_name"] = kvdict["$domain"]
+            event["variables"]["$dns_query_name"] = event["variables"]["$domain"]
         except:
             pass
 
         try:
-            event["variables"]["$dns_query_type"] = kvdict["$dns-query-type"]
+            event["variables"]["$dns_query_type"] = event["variables"]["$dns-query-type"]
         except:
             pass
 
         try:
-            event["variables"]["$dns_query_class"] = kvdict["$dns-query-class"]
+            event["variables"]["$dns_query_class"] = event["variables"]["$dns-query-class"]
         except:
             pass
         try:
-            event["variables"]["$resolver"] = kvdict["$resolver"]
+            event["variables"]["$resolver"] = event["variables"]["$resolver"]
         except:
             pass
 

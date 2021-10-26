@@ -27,6 +27,12 @@ class PackageManager(object):
         self.pcap_pkg_map = {}
         self.log_pkg_map = {}
 
+        # Keep track of layers each module is in charge of
+        self.pcap_layers = {}
+        self.pcap_layers_reverse = {}
+        self.log_layers = {}
+        self.log_layers_reverse = {}
+        
         # map between package name and log actions (Auth.all -> WindowsSecurity etc.)
         self.log_actions_pkg_map = {}
 
@@ -62,6 +68,24 @@ class PackageManager(object):
             return self.pcap_libraries[pkgname]
         return None
 
+    def get_pcap_layer_modules(self, layer):
+        try:
+            return self.pcap_layers[layer]
+        except:
+            return None
+
+    def get_log_layer_modules(self, layer):
+        try:
+            return self.log_layers[layer]
+        except:
+            return None
+        
+    def get_pcap_layer_reverse_modules(self, module):
+        try:
+            return self.pcap_layers_reverse[module]
+        except:
+            return None
+        
     def get_log_module(self, pkgname):
         if pkgname in self.log_libraries:
             return self.log_libraries[pkgname]
@@ -86,7 +110,7 @@ class PackageManager(object):
                 for section in parsed_conf.sections():
                     if conf_filename == PCAP_CONF:
                         self.pcap_pkg_map[section] = pkgname
-
+                            
                     if conf_filename == LOG_CONF:
                         self.log_pkg_map[section] = pkgname
                         
@@ -103,7 +127,26 @@ class PackageManager(object):
                         except KeyError:
                             self.packages[pkgname]["config"][conf_filename][section] = {}
                             self.packages[pkgname]["config"][conf_filename][section][k] = v
-                            
+
+                        if conf_filename == PCAP_CONF:
+                            if k == "layer":
+                                if v in self.pcap_layers:
+                                    self.pcap_layers[v].append(section)
+                                else:
+                                    self.pcap_layers[v] = []
+                                    self.pcap_layers[v].append(section)
+                                self.pcap_layers_reverse[section] = v
+
+                        if conf_filename == LOG_CONF:
+                            if k == "layer":
+                                if v in self.log_layers:
+                                    self.log_layers[v].append(section)
+                                else:
+                                    self.log_layers[v] = []
+                                    self.log_layers[v].append(section)
+                                self.log_layers_reverse[section] = v
+
+                                
     def get_config(self, pkgname):
         return self.packages[pkgname]["config"]
 
