@@ -24,7 +24,8 @@ class PackageManager(object):
                 print("Packages dir: %s" % self.pkgdir)
 
         # map between package name and actions (plugin to call)
-        self.actions_pkg_map = {}
+        self.pcap_pkg_map = {}
+        self.log_pkg_map = {}
 
         # map between package name and log actions (Auth.all -> WindowsSecurity etc.)
         self.log_actions_pkg_map = {}
@@ -84,8 +85,11 @@ class PackageManager(object):
 
                 for section in parsed_conf.sections():
                     if conf_filename == PCAP_CONF:
-                        self.actions_pkg_map[section] = pkgname
+                        self.pcap_pkg_map[section] = pkgname
 
+                    if conf_filename == LOG_CONF:
+                        self.log_pkg_map[section] = pkgname
+                        
                     if conf_filename == ACTIONS_CONF:
                         try:
                             self.log_actions_pkg_map[section].append(pkgname)
@@ -107,8 +111,10 @@ class PackageManager(object):
     # for example, if the package mydns handles the DNSConnection plugin, it means
     # we want to know by giving "DNSConnection" as the action_plugin variable that it
     # exists in "mydns".
-    def get_pkgname_from_action(self, action_plugin):
-        return self.actions_pkg_map[action_plugin]
+    def get_pkgname_from_action_pcap(self, action_plugin):
+        return self.pcap_pkg_map[action_plugin]
+    def get_pkgname_from_action_log(self, action_plugin):
+        return self.log_pkg_map[action_plugin]
 
     def get_pkgnames_from_log_action(self, log_action):
         return self.log_actions_pkg_map[log_action]

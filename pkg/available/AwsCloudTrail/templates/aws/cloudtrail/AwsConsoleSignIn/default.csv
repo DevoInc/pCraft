@@ -1,0 +1,23 @@
+key,default_value
+eventVersion,1.05
+ConsoleLogin,Failure
+userIdentity_type,IAMUser
+userIdentity_principalId,AIDACKCEVSQ6C2EXAMPLE
+userIdentity_accountId,111122223333
+userIdentity_accessKeyId,
+userIdentity_userName,anaya
+eventTime,%Y-%m-%dT%H:%M:%SZ
+eventSource,signin.amazonaws.com
+awsRegion,us-east-1
+sourceIPAddress,192.0.2.0
+userAgent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36
+requestParameters,null
+responseElements_CheckMfa,Success
+additionalEventData_MfaType,U2F MFA
+eventID,f8ef8fc5-e3e8-4ee1-9d52-2f412ddf17e3
+eventType,AwsConsoleSignIn
+recipientAccountId,111122223333
+userIdentity_arn,arn:aws:iam::111122223333:user/anaya
+additionalEventData_LoginTo,https://console.aws.amazon.com/console/home
+additionalEventData_MobileVersion,No
+additionalEventData_MFAUsed,Yes

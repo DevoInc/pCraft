@@ -42,9 +42,8 @@ class LogsBuilder(object):
         return outdir
         
     def build(self):
-        is_log_action = False
-        
         for event in self.avro_reader:
+            is_log_action = False
             pkgname = event["exec"]
             packages_to_execute = []
             if pkgname.startswith("LogAction:"):
@@ -54,29 +53,30 @@ class LogsBuilder(object):
             else:
                 packages_to_execute.append(pkgname)
 
-            for packagename in packages_to_execute:
-                logmod = self.pkg.get_log_module(packagename)
+            for modexec in packages_to_execute:
+                # print("Action Package name:%s" % self.pkg.get_pkgname_from_action_log(modexec))
+                logmod = self.pkg.get_log_module(modexec)
                 if not logmod:
-                    print("Package module '%s' does not contain a log writer!" % event["exec"])
-                    sys.exit(1)
+                    # print("Package module '%s' does not contain a log writer!" % modexec)
+                    continue # We skip as this one will not log. Expected if this is just another type of package
                 
-                config = self.pkg.get_packages()[packagename]
+                config = self.pkg.get_packages()[self.pkg.get_pkgname_from_action_log(modexec)]
                 modconfig = config["config"]
-                template_name = modconfig[LOG_CONF][packagename]["template"]
-                templates = self._get_templates(packagename, template_name)
+                template_name = modconfig[LOG_CONF][modexec]["template"]
+                templates = self._get_templates(self.pkg.get_pkgname_from_action_log(modexec), template_name)
 
                 if is_log_action:
-                    actions_config = self._get_log_actions_config(packagename)
+                    actions_config = self._get_log_actions_config(modexec)
                     events = None
                     for k, v in actions_config[log_action].items():
                         events = v.split(",")
                         for e in events:
                             event["variables"]["$event_id"] = e
                             for log in logmod.run(event, modconfig, templates[0]):
-                                self._handle_log_write(packagename, modconfig, log)
+                                self._handle_log_write(modexec, modconfig, log)
                 else:
                     for log in logmod.run(event, modconfig, templates[0]):
-                        self._handle_log_write(packagename, modconfig, log)
+                        self._handle_log_write(modexec, modconfig, log)
 
     def _handle_log_write(self, pkgname, config, log):
         log_file = config[LOG_CONF][pkgname]["logfile"]
