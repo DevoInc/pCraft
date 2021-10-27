@@ -72,7 +72,7 @@ class LogsBuilder(object):
                 else:
                      new_pkg_to_execute.append(modexec)   
 
-            print("Packages to execute" + str(new_pkg_to_execute))
+            # print("Packages to execute" + str(new_pkg_to_execute))
                      
             for modexec in new_pkg_to_execute:
                 # print("Action Package name:%s" % self.pkg.get_pkgname_from_action_log(modexec))
