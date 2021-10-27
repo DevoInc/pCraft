@@ -67,6 +67,12 @@ class LogsBuilder(object):
                         # We do have a logmod for this too. So it is the first to be added.
                         new_pkg_to_execute.append(modexec)
 
+                    # We have a layer? We have an IP packet!
+                    ip_modules = self.pkg.get_log_layer_modules("ip")
+                    if ip_modules:
+                        for l in ip_modules:
+                            new_pkg_to_execute.append(l)
+                        
                     for l in self.pkg.get_log_layer_modules(layer):
                         new_pkg_to_execute.append(l)
                 else:
@@ -95,7 +101,13 @@ class LogsBuilder(object):
                             for log in logmod.run(event, modconfig, templates[0]):
                                 self._handle_log_write(modexec, modconfig, log)
                 else:
-                    for log in logmod.run(event, modconfig, templates[0]):
+                    try:
+                        selected_template = templates[0]
+                    except IndexError:
+                        print("Error with template '%s' from package '%s'. Cannot load it. Maybe the event type (path) is wrong?" % (template_name, self.pkg.get_pkgname_from_action_log(modexec)))
+                        sys.exit(1)
+                    
+                    for log in logmod.run(event, modconfig, selected_template):
                         self._handle_log_write(modexec, modconfig, log)
 
     def _handle_log_write(self, pkgname, config, log):

@@ -29,6 +29,7 @@ class PackageManager(object):
 
         # Keep track of layers each module is in charge of
         self.pcap_layers = {}
+        self.pcap_layers["ip"] = [] # We already prepare this one
         self.pcap_layers_reverse = {}
         self.log_layers = {}
         self.log_layers_reverse = {}
@@ -130,6 +131,7 @@ class PackageManager(object):
 
                         if conf_filename == PCAP_CONF:
                             if k == "layer":
+                                self.pcap_layers["ip"].append(section) # Each layer belongs to IP!
                                 if v in self.pcap_layers:
                                     self.pcap_layers[v].append(section)
                                 else:
