@@ -1,0 +1,4 @@
+key,default_value
+action_message,"User performed single sign on to app. "
+action_categories_0,"Application Access"
+action_objectType,"app.auth.sso"

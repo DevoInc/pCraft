@@ -171,14 +171,14 @@ class PackageManager(object):
                     pcap_library_path = os.path.join(pkgdata["dirpath"], "lib", libdata["lib"])
                     # print("Pcap Library Path:%s" % pcap_library_path)
                     plugin_name = lib
-    
+                
                     loading_path = pcap_library_path[len(current_wd)+1:].replace("/", ".")[:-3]
                     module = importlib.import_module(loading_path)
                     dylib = module.PcraftPcapWriter()
                     if lib in self.pcap_libraries:
                         print("Error with package '%s'; The library '%s' was previously defined by another package. It must be unique!" % (pkgname, lib))
                     self.pcap_libraries[lib] = dylib
-            except:
+            except KeyError:
                 pass # No pcap library? all good!
 
             try:
@@ -186,15 +186,15 @@ class PackageManager(object):
                     log_library_path = os.path.join(pkgdata["dirpath"], "lib", libdata["lib"])
                     # print("Log Library Path:%s" % log_library_path)
                     plugin_name = lib
-    
+                
                     loading_path = log_library_path[len(current_wd)+1:].replace("/", ".")[:-3]
-                    print(loading_path)
+                    # print(loading_path)
                     module = importlib.import_module(loading_path)
                     dylib = module.PcraftLogWriter()
                     if lib in self.log_libraries:
                         print("Error with package '%s'; The library '%s' was previously defined by another package. It must be unique!" % (pkgname, lib))
                     self.log_libraries[lib] = dylib
-            except:
+            except KeyError:
                 pass # No log library? all good!
             
         print("Done Loading Libraries")
