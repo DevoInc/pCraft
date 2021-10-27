@@ -1,0 +1,7 @@
+av 1
+
+action login {
+    $username = "jnemard"
+    
+    exec LogAction:Auth.Login
+}
