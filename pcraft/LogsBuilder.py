@@ -108,8 +108,10 @@ class LogsBuilder(object):
                         
                     for e in events:
                         event["variables"]["$event_id"] = e
+                        event = self._event_append_taxonomy_variables(event, modexec, modconfig)                        
                         for log in logmod.run(event, modconfig, templates[0]):
-                            self._handle_log_write(event_log, modconfig, log)
+                            if log:
+                                self._handle_log_write(event_log, modconfig, log)
                     # for k, v in actions_config[log_action].items():
                     #     events = v.split(",")
                     #     for e in events:
@@ -123,11 +125,27 @@ class LogsBuilder(object):
                     except IndexError:
                         print("Error with template '%s' from package '%s'. Cannot load it. Maybe the event type (path) is wrong?" % (template_name, self.pkg.get_pkgname_from_action_log(modexec)))
                         sys.exit(1)
-                    
+
+                    event = self._event_append_taxonomy_variables(event, modexec, modconfig)
                     for log in logmod.run(event, modconfig, selected_template):
                         if log:
                             self._handle_log_write(modexec, modconfig, log)
 
+
+    def _event_append_taxonomy_variables(self, event, pkgname, config):
+        # 'taxonomy.conf': {'fields': {'username': 'winlog_event_data_SubjectUserName,winlog_event_data_TargetUserName'}
+        if "fields" in config[TAXONOMY_CONF]:
+            for pcraftfield, pkgfields in config[TAXONOMY_CONF]["fields"].items():
+                fieldsarray = pkgfields.split(",")
+                variable_pcraftfield = "$" + pcraftfield
+                for f in fieldsarray:
+                    variablef = "$" + f
+                    if not variablef in event["variables"]:
+                        if variable_pcraftfield in event["variables"]:
+                            event["variables"][variablef] = event["variables"][variable_pcraftfield]
+        
+        return event
+        
     def _handle_log_write(self, pkgname, config, log):
         log_file = config[LOG_CONF][pkgname]["logfile"]
         if log_file in self.file_pointers:
