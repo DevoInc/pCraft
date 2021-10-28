@@ -1,0 +1,8 @@
+action github-fork {
+    $event_id = "fork"
+    
+    $username = "EditRoux"
+    $repository = "nodeapp"
+    
+    exec Github
+}
