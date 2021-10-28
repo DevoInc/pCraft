@@ -365,6 +365,26 @@ To stop a variable from being carried to the next action block, one can use the 
   }
 \end{lstlisting}
 
+A variable declared as \textbf{local} is also not carried outside the action:
+\begin{lstlisting}[caption={Local variable},captionpos=b]
+  av 1
+
+  action hello {
+    local $hello = "world"
+    exec Void
+  }
+  
+  action second {
+    exec Void
+  }
+\end{lstlisting}
+
+I is also possible to declare a variable with spaces, as long as it is surrounder by double-quotes, such as:
+\begin{lstlisting}[caption={Variables with space},captionpos=b]
+  $"my variable" = "yo"
+  $"another variable here" = "world"
+\end{lstlisting}
+
 \subsection{Functions}
 
 A Function can define the value to be set for a variable. The actual functions have been designed to help generating data faster, we can add as many as we see fit.
