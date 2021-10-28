@@ -9,3 +9,12 @@ class PcraftPcapWriter(LibraryContext):
         print(str(event["variables"]))
         yield "debug", ""
         
+class PcraftLogWriter(LibraryContext):
+    def __init__(self):
+        super().__init__()
+        
+    def run(self, event, config, templates):
+        print(str(event))
+        yield None
+        
+        

@@ -7,11 +7,13 @@ from datetime import datetime
 from pyfaup.faup import Faup
 
 from pcraft.LibraryContext import *
-from pcraft.TemplateBuilder import template_get_event
+from pcraft.TemplateBuilder import template_get_event, template_get_header
 
 class PcraftLogWriter(LibraryContext):
     def __init__(self):
         super().__init__()
+        self.is_first = True
+        
         self.faup_ctx = Faup()
         blacklist_archive = zipfile.ZipFile(os.path.join(os.path.dirname(__file__), "blacklist.all.zip"))
         blacklist_fp = blacklist_archive.open("blacklist.all", "r")
@@ -26,9 +28,15 @@ class PcraftLogWriter(LibraryContext):
             self.domains[domain] = cat
         blacklist_fp.close()
         
-    def run(self, event, config, templates):        
-        frame_time = datetime.fromtimestamp(event["time"])
+    def run(self, event, config, templates):
         event_name = "main2"
+        
+        if self.is_first:
+            self.is_first = False
+            header = template_get_header(templates, event_name)
+            yield bytes(header, "utf8")
+        
+        frame_time = datetime.fromtimestamp(event["time"])
         try:
             event_name = event["variables"]["$event_name"]
         except:
@@ -144,7 +152,6 @@ class PcraftLogWriter(LibraryContext):
             event["variables"]["$url_category"] = category
 
         event["variables"]["$cs-categories"] = event["variables"]["$url_category"]
-
         
         event = template_get_event(templates, event_name, event["variables"])
         event = frame_time.strftime(event)

@@ -1,0 +1,9 @@
+key,default_value
+host,example.com
+isotimestamp,%Y-%m-%dT%H:%M:%S+00:00
+status,Active
+object,User
+action,user_update
+eventtype,administrator
+timestamp,%s
+username,awallace

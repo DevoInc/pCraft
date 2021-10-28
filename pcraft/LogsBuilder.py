@@ -88,18 +88,35 @@ class LogsBuilder(object):
                 
                 config = self.pkg.get_packages()[self.pkg.get_pkgname_from_action_log(modexec)]
                 modconfig = config["config"]
-                template_name = modconfig[LOG_CONF][modexec]["template"]
-                templates = self._get_templates(self.pkg.get_pkgname_from_action_log(modexec), template_name)
+                try:
+                    template_name = modconfig[LOG_CONF][modexec]["template"]
+                    templates = self._get_templates(self.pkg.get_pkgname_from_action_log(modexec), template_name)
+                except KeyError:
+                    templates = []
+                    templates.append({})
 
+                # print("Excuting %s" % modexec)
                 if is_log_action:
                     actions_config = self._get_log_actions_config(modexec)
-                    events = None
-                    for k, v in actions_config[log_action].items():
-                        events = v.split(",")
-                        for e in events:
-                            event["variables"]["$event_id"] = e
-                            for log in logmod.run(event, modconfig, templates[0]):
-                                self._handle_log_write(modexec, modconfig, log)
+
+                    events = actions_config[log_action]["event_id"].split(",")
+                    try:
+                        event_log = actions_config[log_action]["event_log"]
+                    except:
+                        print("Error, no event_log defined in actions.conf for Package %s" % modexec)
+                        sys.exit(1)
+                        
+                    for e in events:
+                        event["variables"]["$event_id"] = e
+                        for log in logmod.run(event, modconfig, templates[0]):
+                            self._handle_log_write(event_log, modconfig, log)
+                    # for k, v in actions_config[log_action].items():
+                    #     events = v.split(",")
+                    #     for e in events:
+                    #         event["variables"]["$event_id"] = e
+
+                    #         for log in logmod.run(event, modconfig, templates[0]):
+                    #             self._handle_log_write(modexec, modconfig, log)
                 else:
                     try:
                         selected_template = templates[0]
@@ -108,7 +125,8 @@ class LogsBuilder(object):
                         sys.exit(1)
                     
                     for log in logmod.run(event, modconfig, selected_template):
-                        self._handle_log_write(modexec, modconfig, log)
+                        if log:
+                            self._handle_log_write(modexec, modconfig, log)
 
     def _handle_log_write(self, pkgname, config, log):
         log_file = config[LOG_CONF][pkgname]["logfile"]

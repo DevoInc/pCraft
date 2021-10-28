@@ -12,7 +12,6 @@ class PcraftLogWriter(LibraryContext):
     def run(self, event, config, templates):
         frame_time = datetime.fromtimestamp(event["time"])
 
-        print(event)
         
         username = None
         try:

@@ -36,6 +36,11 @@ def template_get_event(template, event, valuesdict):
 
     return event
 
+def template_get_header(template, event):
+    headerfile = event + ".header"
+    header = template["files"][headerfile]
+    return header
+
 class TemplateBuilder:
     def __init__(self, templates_dir):
         self.templates_dir = templates_dir
