@@ -134,6 +134,8 @@ class LogsBuilder(object):
 
     def _event_append_taxonomy_variables(self, event, pkgname, config):
         # 'taxonomy.conf': {'fields': {'username': 'winlog_event_data_SubjectUserName,winlog_event_data_TargetUserName'}
+        if not TAXONOMY_CONF in config:
+            return event
         if "fields" in config[TAXONOMY_CONF]:
             for pcraftfield, pkgfields in config[TAXONOMY_CONF]["fields"].items():
                 fieldsarray = pkgfields.split(",")
