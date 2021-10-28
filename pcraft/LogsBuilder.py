@@ -48,42 +48,26 @@ class LogsBuilder(object):
             packages_to_execute = []
             if pkgname.startswith("LogAction:"):
                 log_action = pkgname[10:]
-                packages_to_execute = self.pkg.get_pkgnames_from_log_action(log_action)
+                packages_to_look = self.pkg.get_pkgnames_from_log_action(log_action)
+                # Get the "event_log" from those packages now.
+                for p in packages_to_look:
+                    config = self.pkg.get_packages()[p]
+                    for action, actionvals in config["config"][ACTIONS_CONF].items():
+                        if action == log_action:
+                            packages_to_execute.append(actionvals["event_log"])
+                    
                 is_log_action = True
             else:
                 packages_to_execute.append(pkgname)
 
-            # Replace the packages to execute with their appropriate layers
-            new_pkg_to_execute = []
-            for modexec in packages_to_execute:
-                writeslog =  False
-                logmod = self.pkg.get_log_module(modexec)
-                if not logmod:
-                    writeslog = True
-
-                layer = self.pkg.get_pcap_layer_reverse_modules(modexec)
-                if layer:
-                    if writeslog == False:
-                        # We do have a logmod for this too. So it is the first to be added.
-                        new_pkg_to_execute.append(modexec)
-
-                    # We have a layer? We have an IP packet!
-                    ip_modules = self.pkg.get_log_layer_modules("ip")
-                    if ip_modules:
-                        for l in ip_modules:
-                            new_pkg_to_execute.append(l)
-                        
-                    for l in self.pkg.get_log_layer_modules(layer):
-                        new_pkg_to_execute.append(l)
-                else:
-                     new_pkg_to_execute.append(modexec)   
-
+            new_pkg_to_execute = self._packages_to_execute_from_layers(packages_to_execute)
             # print("Packages to execute" + str(new_pkg_to_execute))
-                     
+            
             for modexec in new_pkg_to_execute:
                 # print("Action Package name:%s" % self.pkg.get_pkgname_from_action_log(modexec))
                 logmod = self.pkg.get_log_module(modexec)
                 if not logmod:
+                    print("No log module for " + modexec)
                     continue # We skip as this one will not log. Expected if this is just another type of package
                 
                 config = self.pkg.get_packages()[self.pkg.get_pkgname_from_action_log(modexec)]
@@ -92,14 +76,16 @@ class LogsBuilder(object):
                     template_name = modconfig[LOG_CONF][modexec]["template"]
                     templates = self._get_templates(self.pkg.get_pkgname_from_action_log(modexec), template_name)
                 except KeyError:
+                    # print("No template for %s" % modexec)
                     templates = []
                     templates.append({})
 
-                # print("Excuting %s" % modexec)
+                # print("Executing %s" % modexec)
                 if is_log_action:
-                    actions_config = self._get_log_actions_config(modexec)
+                    actions_config = self._get_log_actions_config(self.pkg.get_pkgname_from_action_log(modexec))
 
                     events = actions_config[log_action]["event_id"].split(",")
+                    event_log = None
                     try:
                         event_log = actions_config[log_action]["event_log"]
                     except:
@@ -132,6 +118,34 @@ class LogsBuilder(object):
                             self._handle_log_write(modexec, modconfig, log)
 
 
+    def _packages_to_execute_from_layers(self, packages_to_execute):
+        # Replace the packages to execute with their appropriate layers
+        new_pkg_to_execute = []
+        for modexec in packages_to_execute:
+            writeslog =  False
+            logmod = self.pkg.get_log_module(modexec)
+            if not logmod:
+                writeslog = True
+
+            layer = self.pkg.get_pcap_layer_reverse_modules(modexec)
+            if layer:
+                if writeslog == False:
+                    # We do have a logmod for this too. So it is the first to be added.
+                    new_pkg_to_execute.append(modexec)
+
+                # We have a layer? We have an IP packet!
+                ip_modules = self.pkg.get_log_layer_modules("ip")
+                if ip_modules:
+                    for l in ip_modules:
+                        new_pkg_to_execute.append(l)
+                        
+                for l in self.pkg.get_log_layer_modules(layer):
+                    new_pkg_to_execute.append(l)
+            else:
+                new_pkg_to_execute.append(modexec)   
+
+        return new_pkg_to_execute
+                
     def _event_append_taxonomy_variables(self, event, pkgname, config):
         # 'taxonomy.conf': {'fields': {'username': 'winlog_event_data_SubjectUserName,winlog_event_data_TargetUserName'}
         if not TAXONOMY_CONF in config:

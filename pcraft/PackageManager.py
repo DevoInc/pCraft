@@ -16,7 +16,7 @@ from .confnames import *
 
 class PackageManager(object):
     def __init__(self, pkgpath=None):
-        self.debug = True
+        self.debug = False
         self.pkgdir = pkgpath
         if not pkgpath:
             self.pkgdir = os.path.join(str(pathlib.Path(__file__).parent.parent.absolute()), "pkg", "enabled")
@@ -106,6 +106,7 @@ class PackageManager(object):
                 try:
                     parsed_conf.read(conf)
                 except configparser.MissingSectionHeaderError:
+                    print("Configuration has a missing section header. Package %s, file %s. Ignoring." % (pkgname, conf_filename))
                     pass
 
                 for section in parsed_conf.sections():
@@ -162,6 +163,7 @@ class PackageManager(object):
         return self.log_pkg_map[action_plugin]
 
     def get_pkgnames_from_log_action(self, log_action):
+        # Only get the pkgname from the log action, not the event_log to launch
         return self.log_actions_pkg_map[log_action]
 
     def load_libraries(self):
@@ -184,23 +186,26 @@ class PackageManager(object):
                 pass # No pcap library? all good!
 
             try:
-                for lib, libdata in pkgdata["config"][LOG_CONF].items():
-                    log_library_path = os.path.join(pkgdata["dirpath"], "lib", libdata["lib"])
-                    # print("Log Library Path:%s" % log_library_path)
-                    plugin_name = lib
-                
-                    loading_path = log_library_path[len(current_wd)+1:].replace("/", ".")[:-3]
-                    # print(loading_path)
-                    module = importlib.import_module(loading_path)
-                    dylib = module.PcraftLogWriter()
-                    if lib in self.log_libraries:
-                        print("Error with package '%s'; The library '%s' was previously defined by another package. It must be unique!" % (pkgname, lib))
-                    self.log_libraries[lib] = dylib
+                self._load_log_libraries(current_wd, pkgname, pkgdata)
             except KeyError:
                 pass # No log library? all good!
             
         print("Done Loading Libraries")
-    
+
+    def _load_log_libraries(self, current_wd, pkgname, pkgdata):
+        for lib, libdata in pkgdata["config"][LOG_CONF].items():
+            log_library_path = os.path.join(pkgdata["dirpath"], "lib", libdata["lib"])
+            # print("Log Library Path:%s" % log_library_path)
+            plugin_name = lib
+                
+            loading_path = log_library_path[len(current_wd)+1:].replace("/", ".")[:-3]
+            # print(loading_path)
+            module = importlib.import_module(loading_path)
+            dylib = module.PcraftLogWriter()
+            if lib in self.log_libraries:
+                print("Error with package '%s'; The library '%s' was previously defined by another package. It must be unique!" % (pkgname, lib))
+            self.log_libraries[lib] = dylib        
+        
     def load_templates(self):
         for pkgname, pkgdata in self.packages.items():
             templates_dir = os.path.join(pkgdata["dirpath"], "templates")
