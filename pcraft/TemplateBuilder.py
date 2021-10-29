@@ -3,8 +3,6 @@ import csv
 import io
 import pystache
 import datetime
-import pprint
-
 
 def template_get_defaults(template, event):
     event_tmpl = event + ".tmpl"
@@ -44,22 +42,20 @@ def template_get_header(template, event):
 class TemplateBuilder:
     def __init__(self, templates_dir):
         self.templates_dir = templates_dir
-            
         self.event_types = {}
         self.event_list = []
 
         self.templates = []
-        template_files = {}
         for root, dirs, files in os.walk(self.templates_dir):
             if len(files) > 0:
                 template_path = root[len(templates_dir)+1:].replace("/",".")
+                template_files = {}                
                 for f in files:
                     buf = open(os.path.join(root, f), "r")
-                    template_files[f] = buf.read()
-                        
+                    template_files[f] = buf.read()                        
                     buf.close()
                 self.templates.append({"eventtype": template_path, "files": template_files})
-
+            
     def get_templates(self):
         return self.templates
     

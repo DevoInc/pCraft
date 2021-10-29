@@ -1,9 +1,5 @@
 key,default_value
-FUTURE_USE1,1
-FUTURE_USE2,
-FUTURE_USE3,
-FUTURE_USE4,
-FUTURE_USE5,
+FUTURE_USE,1
 Domain,0
 Receive Time,%Y-%m-%dT%H:%M:%S
 Serial Number,429304

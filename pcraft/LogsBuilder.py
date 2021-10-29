@@ -48,7 +48,11 @@ class LogsBuilder(object):
             packages_to_execute = []
             if pkgname.startswith("LogAction:"):
                 log_action = pkgname[10:]
-                packages_to_look = self.pkg.get_pkgnames_from_log_action(log_action)
+                try:
+                    packages_to_look = self.pkg.get_pkgnames_from_log_action(log_action)
+                except KeyError:
+                    print("Error, Log action %s is called but no packages can handle it!" % log_action)
+                    sys.exit(1)
                 # Get the "event_log" from those packages now.
                 for p in packages_to_look:
                     config = self.pkg.get_packages()[p]
@@ -138,9 +142,11 @@ class LogsBuilder(object):
                 if ip_modules:
                     for l in ip_modules:
                         new_pkg_to_execute.append(l)
-                        
-                for l in self.pkg.get_log_layer_modules(layer):
-                    new_pkg_to_execute.append(l)
+
+                layer_modules = self.pkg.get_log_layer_modules(layer)
+                if layer_modules:
+                    for l in layer_modules:
+                        new_pkg_to_execute.append(l)
             else:
                 new_pkg_to_execute.append(modexec)   
 

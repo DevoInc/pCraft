@@ -16,15 +16,15 @@ class PcraftLogWriter(LibraryContext):
             self.is_first = False
             header = template_get_header(templates, event_name)
             yield bytes(header, "utf8")
-        
+
         frame_time = datetime.fromtimestamp(event["time"])
 
         try:
             event_name = event["variables"]["$event_name"]
         except:
             pass
-        
-        event = template_get_event(templates, "traffic", event["variables"])
-        event = frame_time.strftime(event)
 
+        event = template_get_event(templates, event_name, event["variables"])
+        event = frame_time.strftime(event)
+        
         yield bytes(event, "utf8")
