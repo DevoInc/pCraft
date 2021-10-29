@@ -12,7 +12,7 @@ class PcraftLogWriter(LibraryContext):
     def run(self, event, config, templates):
         frame_time = datetime.fromtimestamp(event["time"])
         
-        event = template_get_event(templates, "login", event["variables"])
+        event = template_get_event(templates, "admin_login", event["variables"])
         event = frame_time.strftime(event)
 
         yield bytes(event, "utf8")
