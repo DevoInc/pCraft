@@ -1,0 +1,11 @@
+key,default_value
+action,ad_sync_finish
+description_sync_ref_code,95d48d8d6bf4a35fd90597242cb1f747
+description_duration,0:00:00
+description_users_removed,0
+description_users_modified,0
+description_users_added,0
+description_users_seen,0
+object,Corp-SF1
+eventtype,administrator
+username,eroux

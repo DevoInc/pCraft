@@ -1,0 +1,7 @@
+key,default_value
+host,example.com
+phone,+18005550123
+isotimestamp,%Y-%m-%dT%H:%M:%S+00:00
+type,sms
+credits,0
+context,administrator login

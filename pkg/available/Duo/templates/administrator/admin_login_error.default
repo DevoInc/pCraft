@@ -1,0 +1,7 @@
+key,default_value
+action,admin_login
+description_primary_auth_method,Password
+description_email,eroux@example.com
+description_error,Login timed out.
+factor,voice
+description_ip_address,192.168.0.42
