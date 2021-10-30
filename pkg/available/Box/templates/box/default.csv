@@ -61,3 +61,5 @@ parent_type,"folder"
 parent_sequence_id,"2"
 type,"folder"
 has_collaborations,"True"
+group_type,managed_group
+group_name,HR
