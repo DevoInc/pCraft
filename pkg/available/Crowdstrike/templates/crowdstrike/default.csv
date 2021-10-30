@@ -1,0 +1,17 @@
+key,default_value
+ConfigBuild,"5.31.11304"
+ConfigStateHash,9403815389
+ContextProcessId,932494304992735022
+ContextThreadId,743885290637038
+ContextTimeStamp,1630088770.000
+DomainName,www.example.com
+Entitlements,15
+RequestType,1
+aid,8e00c1bdfb81464ebea0d03760fee069
+aip,192.168.0.42
+cid,c4014f84073d438e88bdd21309c5696e
+event_platform,Mac
+event_simpleName,DnsRequest
+id,8dc64531-35bd-4d37-90f1-b74fcb058295
+name,DnsRequestMacV1
+timestamp,1630088770
