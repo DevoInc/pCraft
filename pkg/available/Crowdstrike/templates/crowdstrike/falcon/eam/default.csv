@@ -1,5 +1,5 @@
 key,default_value
-AuthenticationId,"806"
+AuthenticationId,"12806"
 CommandLine,"C:/Program Files/Windows/calc.exe"
 ConfigBuild,"1031.9.0006007.8"
 ConfigStateHash,"76754387691"
@@ -9,7 +9,7 @@ ImageFileName,"\\Device\\Volume\\Windows\\calc.exe"
 ImageSubsystem,"2"
 IntegrityLevel,"14930"
 MD5HashData,"d470e13f48707fd56ef6b8f03d10720c"
-ParentAuthenticationId,"806"
+ParentAuthenticationId,"12806"
 ParentProcessId,"9374830192812"
 ProcessCreateFlags,"0"
 ProcessEndTime,""
@@ -35,3 +35,6 @@ timestamp,%s
 UID,"0"
 RGID,"0"
 RUID,"0"
+ContextProcessId,3940592948231
+ContextThreadId,199439203849
+ContextTimeStamp,%s.000

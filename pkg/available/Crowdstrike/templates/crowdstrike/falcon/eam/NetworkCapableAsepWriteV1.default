@@ -1,0 +1,7 @@
+key,default_value
+ConfigBuild,"1007.3.0006009.1"
+EffectiveTransmissionClass,"3"
+Entitlements,"15"
+event_platform,"Win"
+event_simpleName,"NetworkCapableAsepWrite"
+name,"NetworkCapableAsepWriteV1"
