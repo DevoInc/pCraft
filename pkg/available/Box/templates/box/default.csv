@@ -1,0 +1,41 @@
+key,default_value
+acknowledged_at,%Y-%m-%dT%H:%M:%S+00:00
+role,"editor"
+id,"39283128374"
+status,"accepted"
+expires_at,""
+item_name,"Fred's copy"
+item_etag,"0"
+item_id,"85749304738"
+item_type,"folder"
+item_sequence_id,"0"
+modified_at,%Y-%m-%dT%H:%M:%S+00:00
+created_at,%Y-%m-%dT%H:%M:%S+00:00
+accessible_by_name,Edith Roux
+accessible_by_id,283748128
+accessible_by_type,"user"
+accessible_by_login,"edith.roux@example.com"
+type,"collaboration"
+created_by_name,"Edith Roux"
+created_by_id,1929384023
+created_by_type,"user"
+created_by_login,"edith.roux@example.com"
+trashed_at,
+etag,0
+version_number,1
+id,1929384023
+size,4366
+content_modified_at,%Y-%m-%dT%H:%M:%S+00:00
+comment_count,0
+file_version_id=938348972987
+file_version_type,file_version
+file_version_sha1,63f28e7005a591da9969473d818366fa118ca9ed
+name,Fred_copy.docx
+content_created_at,%Y-%m-%dT%H:%M:%S+00:00
+owned_by_name,"Edith Roux"
+owned_by_id,1929384023
+owned_by_type,user
+owned_by_login,edith.roux@example.com
+type,file
+description,
+purged_at,
