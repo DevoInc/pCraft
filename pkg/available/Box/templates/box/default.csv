@@ -9,6 +9,8 @@ item_etag,"0"
 item_id,"85749304738"
 item_type,"folder"
 item_sequence_id,"0"
+item_status,active
+sequence_id,2
 modified_at,%Y-%m-%dT%H:%M:%S+00:00
 created_at,%Y-%m-%dT%H:%M:%S+00:00
 accessible_by_name,Edith Roux
@@ -39,3 +41,23 @@ owned_by_login,edith.roux@example.com
 type,file
 description,
 purged_at,
+modified_by_name,"Edith Roux"
+modified_by_id,1929384023
+modified_by_type,user
+modified_by_login,edith.roux@example.com
+tags,
+permissions_can_share,"False"
+permissions_can_set_share_access,"False"
+permissions_can_rename,"False"
+permissions_can_invite_collaborator,"False"
+permissions_can_download,"False"
+permissions_can_upload,"False"
+permissions_can_delete,"False"
+can_non_owners_invite,"True"
+parent_name,"Documents Shared with Fred"
+parent_etag,"2"
+parent_id,"14336561544"
+parent_type,"folder"
+parent_sequence_id,"2"
+type,"folder"
+has_collaborations,"True"
