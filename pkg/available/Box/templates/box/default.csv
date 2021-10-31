@@ -63,3 +63,21 @@ type,"folder"
 has_collaborations,"True"
 group_type,managed_group
 group_name,HR
+user_name,Edith Roux
+max_upload_size,2147483648
+can_see_managed_users,True
+address,
+timezone,America/San_Francisco
+phone,
+space_used,0
+login,edith.roux@example.com
+space_amount,1e+15
+job_title,
+avatar_url,https://examplecorp.ent.box.com/api/avatar/large/8392019283
+enterprise_name,Example Corp
+enterprise_id,636007
+enterprise_type,enterprise
+is_exempt_from_login_verification,False
+my_tags,
+is_external_collab_restricted,False
+is_exempt_from_device_limits,False
