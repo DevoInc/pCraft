@@ -65,7 +65,7 @@ void _ami_cache_foreach_action(ami_action_t *action, void *u1, void *u2, void *u
   	    asprintf(&tmpstr, "%d", var->ival);
   	    break;
   	  default:
-  	    fprintf(stderr, "Unable to read variable. Skipping.\n");
+  	    fprintf(stderr, "Unable to read variable %s. Skipping.\n", key);
   	    continue;
   	  }
 	  

@@ -19,3 +19,6 @@ Here's a list of those that are currently supported:
 | uri        | URI              |
 | method     | HTTP Method      |
 | portrange  | A port range     | 0-65535 |
+| computername | | |
+| wsdomain | Workstation Domain |
+| event_id | Event ID |
