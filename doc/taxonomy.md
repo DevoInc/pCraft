@@ -18,3 +18,4 @@ Here's a list of those that are currently supported:
 | user-agent | The User-Agent   |
 | uri        | URI              |
 | method     | HTTP Method      |
+| portrange  | A port range     | 0-65535 |

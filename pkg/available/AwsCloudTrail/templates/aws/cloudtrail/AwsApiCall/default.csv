@@ -1,7 +1,7 @@
 key,default_value
 eventVersion,1.07
 eventTime,%Y-%m-%dT%H:%M:%SZ
-awsRegion,awsRegion
+awsRegion,us-west-1
 eventID,de017cfc-014e-4934-af70-e1723de838f0
 recipientAccountId,738192374810
 sharedEventID,5c7609d8-8dff-406d-9600-b15930c23356
@@ -17,10 +17,10 @@ userIdentity_principalId,"738192374810"
 userIdentity_arn,"arn:aws:iam::738192374810:root"
 userIdentity_accountId,"738192374810"
 userIdentity_accessKeyId,"ZOUB1D4IAMD4NSTONGR0"
-userIdentity_sessionContext_attributes_mfaAuthenticated,"false"
+userIdentity_sessionContext_attributes_mfaAuthenticated,false
 userIdentity_sessionContext_attributes_creationDate,"%Y-%m-%dT%H:%M:%SZ"
 eventType,"AwsApiCall"
-sourceIPAddress,"143.204.30.63"
+sourceIPAddress,93.184.216.34
 eventName,"CreateAccessKey"
 eventSource,"iam.amazonaws.com"
 recipientAccountId,"936471293841"

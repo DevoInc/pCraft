@@ -11,7 +11,13 @@ class PcraftLogWriter(LibraryContext):
     def run(self, event, config, templates):
         frame_time = datetime.fromtimestamp(event["time"])
 
+        if "$portrange" in event["variables"]:
+            portfrom, portto = event["variables"]["$portrange"].split("-")
+            event["variables"]["$requestParameters_portRange"] = "{\"from\": %s, \"to\": %s}" % (portfrom, portto)
+        else:
+            event["variables"]["$requestParameters_portRange"] = "{}"
+
         event = template_get_event(templates, event["variables"]["$event_id"], event["variables"])
         event = frame_time.strftime(event)
-
+        
         yield bytes(event, "utf8")
