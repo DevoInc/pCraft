@@ -1,0 +1,22 @@
+av 1
+
+action networkaclwithports {
+    $portrange = "0-65535"
+    $event_id = "CreateNetworkAclEntry"
+
+    exec AwsApiCall
+}
+
+delete $portrange
+
+action networkaclwithoutports {
+    $event_id = "CreateNetworkAclEntry"
+
+    exec AwsApiCall
+}
+
+action replaceacl {
+    $event_id = "ReplaceNetworkAclEntry"
+    
+    exec AwsApiCall
+}
