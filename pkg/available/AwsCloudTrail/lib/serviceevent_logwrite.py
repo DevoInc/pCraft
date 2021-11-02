@@ -8,5 +8,7 @@ class PcraftLogWriter(LibraryContext):
         super().__init__()
 
     def run(self, event, config, templates):
+        event["variables"]["$eventID"] = self.get_uuid(event, "$eventID")
+
         event = template_get_event(templates, event["variables"]["$event_id"], event["variables"])
         yield bytes(event, "utf8")

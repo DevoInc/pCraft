@@ -1,4 +1,6 @@
 import random
+import uuid
+
 from . import utils
 
 from .confnames import *
@@ -22,7 +24,19 @@ class LibraryContext(object):
     
     def get_mand_variable(self, varname):
         return self.vardict[varname]
+
+    def gen_uuid_fixed(self, event, varname):
+        if varname in event["variables"]:
+            return event["variables"][varname]
         
+        return str(uuid.uuid5(uuid.NAMESPACE_DNS, event["variables"][varname]))
+
+    def gen_uuid(self, event, varname):
+        if varname in event["variables"]:
+            return event["variables"][varname]
+        
+        return str(uuid.uuid4())
+                   
     def get_variable(self, varname):
         got_default = False
         retval = ""
