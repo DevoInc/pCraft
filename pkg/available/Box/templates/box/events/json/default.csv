@@ -1,0 +1,16 @@
+key,default_value
+created_at,%Y-%m-%dT%H:%M:%S+00:00
+box_event_id,f4178815-6419-4b48-a4a8-31b2b6d7c8bd
+source_type,user
+source_id,12394007
+source_name,Edith Roux
+source_login,eroux@example.com
+created_by_type,user
+created_by_id,12394007
+created_by_name,Edith Roux
+created_by_login,eroux@example.com
+action_by_type,user
+action_by_id,12394007
+action_by_name,Edith Roux
+action_by_login,eroux@example.com
+ip_address,172.16.0.42
