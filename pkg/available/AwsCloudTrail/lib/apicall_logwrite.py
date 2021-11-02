@@ -10,7 +10,7 @@ class PcraftLogWriter(LibraryContext):
 
     def run(self, event, config, templates):
         frame_time = datetime.fromtimestamp(event["time"])
-        event["variables"]["$eventID"] = self.get_uuid(event, "$eventID")
+        event["variables"]["$eventID"] = self.gen_uuid(event, "$eventID")
 
         if "$portrange" in event["variables"]:
             portfrom, portto = event["variables"]["$portrange"].split("-")
