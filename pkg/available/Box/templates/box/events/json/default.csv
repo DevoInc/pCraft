@@ -3,8 +3,12 @@ created_at,%Y-%m-%dT%H:%M:%S+00:00
 box_event_id,f4178815-6419-4b48-a4a8-31b2b6d7c8bd
 source_type,user
 source_id,12394007
+source_user_id,12394007
 source_name,Edith Roux
+source_user_name,Edith Roux
 source_login,eroux@example.com
+source_folder_id,94857123910
+source_folder_name,"Shared with Friends"
 created_by_type,user
 created_by_id,12394007
 created_by_name,Edith Roux
@@ -13,4 +17,16 @@ action_by_type,user
 action_by_id,12394007
 action_by_name,Edith Roux
 action_by_login,eroux@example.com
+owned_by_type,user
+owned_by_id,12394007
+owned_by_name,Edith Roux
+owned_by_login,eroux@example.com
 ip_address,172.16.0.42
+item_type,file
+item_id,8394019203007
+item_name,IMG_001534.JPG
+parent_type,folder
+parent_name,Personal
+parent_id,38491029355
+additional_details_size,21039647
+additional_details_version_id,98745329876
