@@ -11,7 +11,7 @@ class PcraftLogWriter(LibraryContext):
 
     def run(self, event, config, templates):
         frame_time = datetime.fromtimestamp(event["time"])
-        event["variables"]["$eventID"] = self.gen_uuid(event, "$eventID")
+        event["variables"]["$eventID"] = self.gen_uuid(event)
         
         consistent_id = self.get_consistent_id(event["variables"]["$eventID"], 12)
         
