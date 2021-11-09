@@ -15,6 +15,7 @@ public:
   void set_exec(char *_exec) { exec = _exec;};
   char *get_exec(void) { return exec;};
   std::map<std::string, std::string> get_variables(void) { return variables; };
+  void set_variable(std::string varname, std::string varvalue) { variables[varname] = varvalue; };
   std::map<std::string, std::string> variables;
   std::map<std::string, float> sleep_group;
   std::map<std::string, float> get_sleep_group(void) { return sleep_group; };

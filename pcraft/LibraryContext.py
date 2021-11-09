@@ -1,5 +1,6 @@
 import random
 import uuid
+import hashlib
 
 from . import utils
 
@@ -9,7 +10,8 @@ class LibraryContext(object):
     def __init__(self, service=None):
         self.service = service
         self.built_variables = {}
-
+        self.user_agents = [""]
+        
     def set_vardict(self, vardict):
         self.vardict = vardict
         
@@ -26,17 +28,18 @@ class LibraryContext(object):
         return self.vardict[varname]
 
     def gen_uuid_fixed(self, event, varname):
-        if varname in event["variables"]:
-            return event["variables"][varname]
-        
         return str(uuid.uuid5(uuid.NAMESPACE_DNS, event["variables"][varname]))
 
     def gen_uuid(self, event, varname):
-        if varname in event["variables"]:
-            return event["variables"][varname]
-        
         return str(uuid.uuid4())
-                   
+
+    def get_consistent_id(self, name, idlen):
+        consistent_id = int(hashlib.sha256(bytes(name, "utf8")).hexdigest(), 16)
+        return str(consistent_id)[:idlen]
+
+    def get_random_user_agent(self):
+        pass
+    
     def get_variable(self, varname):
         got_default = False
         retval = ""

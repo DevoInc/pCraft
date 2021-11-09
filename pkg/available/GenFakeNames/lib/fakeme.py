@@ -1,32 +1,34 @@
 #!/usr/bin/env python3
+from text_unidecode import unidecode
+
 from faker import Faker
 
 class PcraftGenFakeNames(object):
     def __init__(self):
         self.faker = Faker(['it_IT', 'en_US', 'es_ES', 'fr_FR', 'de_DE', 'en_GB'])
         self.fakenames = {}
-
+        self.seq = 0
+        
     def get_fake_name(self, event):
+        self.seq += 1
         retdict = {}
-        no_infinite_loop = 0
-        # We have see some duplicate names. We try 10 times to avoid spending too much time
-        while no_infinite_loop < 10:
-            name = self.faker.name()
-            nametable = name.split(" ") # Sometimes there are spaces in last names, we cut short and only grab the first one
-            first_last = "%s %s" % (nametable[0], nametable[1])        
-            try:
-                a = self.fakenames[first_last]
-                break
-            except KeyError: # Same player plays again!
-              pass
-            
-            no_infinite_loop += 1
-
-        retdict["$firstname"] = nametable[0]
-        retdict["$lastname"] = nametable[1]
+        
+        first_name = self.faker.first_name().replace(" ","")
+        last_name = self.faker.last_name().replace(" ","")
+        name = "%s %s" % (first_name, last_name)
+        
+        retdict["$firstname"] = first_name
+        retdict["$lastname"] = last_name
         retdict["$name"] = name
 
-        email = "%s.%s@%s" % (nametable[0], nametable[1], event["variables"]["$domain"])
+        first_last = first_name[0] + last_name
+        first_dot_last = first_name + "." + last_name
+        first_dot_last_dec = unidecode(first_dot_last).lower()
+        retdict["$workstation"] = "WS" + unidecode(first_last).upper() + str(self.seq)
+        
+        retdict["$username"] = first_dot_last_dec        
+        
+        email = "%s@%s" % (first_dot_last_dec, event["variables"]["$domain"])
         retdict["$email"] = email
 
         return retdict

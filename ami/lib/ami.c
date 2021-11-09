@@ -832,7 +832,11 @@ char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_val
     if (node) {
       fprintf(stderr, "Cannot get value for variable %s at %s:%d\n", var_value, node->filename, node->lineno);
     } else {
-      fprintf(stderr, "Cannot get value for variable %s\n", var_value);
+      /* fprintf(stderr, "[AMI] Cannot get value for variable %s\n", var_value); */
+      // We stop putting an error message as we can be in a situation where
+      // the variable is generated. In that case we do not have the variable value so we
+      // skip the nested part. We return then the value.
+      return var_value;
     }
     return NULL;
   }

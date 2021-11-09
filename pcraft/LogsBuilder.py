@@ -14,6 +14,7 @@ class LogsBuilder(object):
         self.log_folder = log_folder
         self.avro_reader = DataFileReader(open(self.ami_cache, "rb"), DatumReader())
         self.file_pointers = {}
+        self.generated_variables = {}
         
         self.build_outputdir(log_folder, force)
 
@@ -43,6 +44,16 @@ class LogsBuilder(object):
         
     def build(self):
         for event in self.avro_reader:
+            original_event_variables = event["variables"].copy()
+            # First we check for nested variables. When we assign a generated value to a variable
+            for k, v in event["variables"].items():
+                if v[0] == "$":
+                    if v in self.generated_variables:
+                        event["variables"][k] = self.generated_variables[v]
+            
+            for k, v in self.generated_variables.items():
+                event["variables"][k] = v
+                
             is_log_action = False
             pkgname = event["exec"]
             packages_to_execute = []
@@ -98,8 +109,10 @@ class LogsBuilder(object):
                         
                     for e in events:
                         event["variables"]["$event_id"] = e
-                        event = self._event_append_taxonomy_variables(event, modexec, modconfig)                        
+                        event = self._event_append_taxonomy_variables(event, modexec, modconfig)
+
                         for log in logmod.run(event, modconfig, templates[0]):
+                            self._update_generated_variables(original_event_variables, event)
                             if log:
                                 self._handle_log_write(event_log, modconfig, log)
                     # for k, v in actions_config[log_action].items():
@@ -109,7 +122,7 @@ class LogsBuilder(object):
 
                     #         for log in logmod.run(event, modconfig, templates[0]):
                     #             self._handle_log_write(modexec, modconfig, log)
-                else:
+                else: # if log_action
                     try:
                         selected_template = templates[0]
                     except IndexError:
@@ -118,6 +131,7 @@ class LogsBuilder(object):
 
                     event = self._event_append_taxonomy_variables(event, modexec, modconfig)
                     for log in logmod.run(event, modconfig, selected_template):
+                        self._update_generated_variables(original_event_variables, event)
                         if log:
                             self._handle_log_write(modexec, modconfig, log)
 
@@ -162,11 +176,16 @@ class LogsBuilder(object):
                 variable_pcraftfield = "$" + pcraftfield
                 for f in fieldsarray:
                     variablef = "$" + f
-                    if not variablef in event["variables"]:
-                        if variable_pcraftfield in event["variables"]:
-                            event["variables"][variablef] = event["variables"][variable_pcraftfield]
+                    # if not variablef in event["variables"]:
+                    if variable_pcraftfield in event["variables"]:
+                        event["variables"][variablef] = event["variables"][variable_pcraftfield]
         
         return event
+        
+    def _update_generated_variables(self, original_event_variables, event):
+        for k, v in event["variables"].items():
+            if not k in original_event_variables:
+                self.generated_variables[k] = v
         
     def _handle_log_write(self, pkgname, config, log):
         log_file = config[LOG_CONF][pkgname]["logfile"]

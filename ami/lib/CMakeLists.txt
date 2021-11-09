@@ -23,6 +23,9 @@ set(AMI_SOURCES
   crypto/rot-13.c
   crypto/sha1.c
   crypto/sha256.c
+
+  ami2/ami2.c
+  ami2/ast-node.c
 )
 
 message("Bison output: ${BISON_parse_OUTPUTS}")

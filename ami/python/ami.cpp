@@ -170,6 +170,12 @@ int Ami::Cache(std::string amifile, std::string cachefile)
   return ami_cache_build(amifile.c_str(), cachefile.c_str());
 }
 
+int Ami::SetVariableString(std::string key, std::string value)
+{
+  return ami_set_variable_string(_ami, key.c_str(), (char *)value.c_str());
+}
+
+
 PYBIND11_MODULE(pyami, m) {
     m.doc() = "AMI Language for Python";
     py::class_<Ami>(m, "Ami")
@@ -184,10 +190,12 @@ PYBIND11_MODULE(pyami, m) {
       .def("AppendSleepCursor", &Ami::AppendSleepCursor)
       .def("Debug", &Ami::Debug)
       .def("GetStartTime", &Ami::GetStartTime)
-      .def("GetTaxonomy", &Ami::GetTaxonomy);
+      .def("GetTaxonomy", &Ami::GetTaxonomy)
+      .def("SetVariableString", &Ami::SetVariableString);      
     py::class_<Action>(m, "Action")
       .def(py::init<>())
       .def("Variables", &Action::get_variables)
+      .def("SetVariable", &Action::set_variable)
       .def("LocalVariablesList", &Action::get_local_variables)
       .def("FieldActions", &Action::get_field_actions)
       .def("Name", &Action::get_name)

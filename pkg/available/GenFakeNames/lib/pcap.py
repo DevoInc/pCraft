@@ -18,4 +18,3 @@ class PcraftPcapWriter(LibraryContext):
 
         yield "custom", payload
         
-
