@@ -148,7 +148,6 @@ class LogsBuilder(object):
             layer = self.pkg.get_pcap_layer_reverse_modules(modexec)
             if layer:
                 if writeslog == False:
-                    # We do have a logmod for this too. So it is the first to be added.
                     new_pkg_to_execute.append(modexec)
 
                 # We have a layer? We have an IP packet!
