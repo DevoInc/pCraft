@@ -2,6 +2,7 @@
 from text_unidecode import unidecode
 
 from faker import Faker
+import uuid
 
 class PcraftGenFakeNames(object):
     def __init__(self):
@@ -31,4 +32,7 @@ class PcraftGenFakeNames(object):
         email = "%s@%s" % (first_dot_last_dec, event["variables"]["$domain"])
         retdict["$email"] = email
 
+        retdict["$uuid"] = str(uuid.uuid5(uuid.NAMESPACE_DNS, email))
+        retdict["$winuuid"] = "{" + str(uuid.uuid5(uuid.NAMESPACE_DNS, email)) + "}"
+        
         return retdict
