@@ -8,3 +8,12 @@ Edge,macOS Big Sur,Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/5
 Safari,iPhone,Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1
 Firefox,iPhone,Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/38.1  Mobile/15E148 Safari/605.1.15
 elinks,macOS Big Sur,ELinks/0.11.7 (textmode; Darwin 20.6.0 x86_64; 143x43-2)
+Firefox,Linux,Mozilla/5.0 (X11; Linux x86_64; rv:93.0) Gecko/20100101 Firefox/93.0
+Konqueror,Linux,Mozilla/5.0 (X11; Linux x86_64) KIO/5.86 konqueror/21.08.2
+Wget,Linux,Wget/1.21.2
+Brave,Linux,Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36
+Firefox,Windows11,Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0
+Edge,Windows11,Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 Edg/95.0.1020.44
+Lynx,Linux,Lynx/2.9.0dev.10 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/3.7.2
+Emacs,Linux,URL/Emacs Emacs/27.1 (TTY; x86_64-pc-linux-gnu)
+Emacs,macOS Big Sur,URL/Emacs Emacs/26.3 (TTY; x86_64-apple-darwin18.2.0)
