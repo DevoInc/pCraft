@@ -17,7 +17,7 @@ class PcraftLogWriter(LibraryContext):
         
         event["variables"]["$recipientAccountId"] = consistent_id
         event["variables"]["$userIdentity_accountId"] = consistent_id
-        event["variables"]["$userIdentity_arn"] = "arn:aws:iam::%s:root" % consistent_id
+        event["variables"]["$userIdentity_arn"] = "arn:aws:iam::%s:user/%s" % (consistent_id, event["variables"]["$username"]) 
         event["variables"]["$userIdentity_principalId"] = consistent_id
         
         logevent = template_get_event(templates, event["variables"]["$event_id"], event["variables"])

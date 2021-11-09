@@ -1,5 +1,4 @@
 key,default_value
-additionalEventData_LoginTo,"https://console.aws.amazon.com/iam/home?region=us-east-1&state=hashArgs%23%2Froles%2Fflaws&isauthcode=true"
 additionalEventData_MobileVersion,"No"
 additionalEventData_MFAUsed,"Yes"
 userAgent,"Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36"
