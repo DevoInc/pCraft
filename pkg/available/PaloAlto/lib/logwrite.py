@@ -12,6 +12,8 @@ class PcraftLogWriter(LibraryContext):
         self.is_first = True
 
     def run(self, event, config, templates):
+        self.populate_variables(event, ["$ip-src", "$ip-dst", "$port-dst", "$port-src", "$protocol"])
+        
         event_name = "traffic"
         if self.is_first:
             self.is_first = False
@@ -35,8 +37,8 @@ class PcraftLogWriter(LibraryContext):
         event["variables"]["$Bytes Received"] = str(bytes_received)
         event["variables"]["$Bytes"] = str(bytes_sent + bytes_received)
 
-        event["variables"]["$Source VM UUID"] = self.gen_uuid_fixed(event, "$ip-src")
-        event["variables"]["$Destination VM UUID"] = self.gen_uuid_fixed(event, "$ip-dst")
+        event["variables"]["$Source VM UUID"] = self.gen_uuid_fixed(event, event["variables"]["$ip-src"])
+        event["variables"]["$Destination VM UUID"] = self.gen_uuid_fixed(event, event["variables"]["$ip-dst"])
 
         logevent = template_get_event(templates, event_name, event["variables"])
         logevent = frame_time.strftime(logevent)

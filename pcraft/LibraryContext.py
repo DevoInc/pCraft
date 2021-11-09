@@ -40,8 +40,8 @@ class LibraryContext(object):
     def get_mand_variable(self, varname):
         return self.vardict[varname]
 
-    def gen_uuid_fixed(self, event, varname):
-        return str(uuid.uuid5(uuid.NAMESPACE_DNS, event["variables"][varname]))
+    def gen_uuid_fixed(self, event, value):
+        return str(uuid.uuid5(uuid.NAMESPACE_DNS, value))
 
     def gen_uuid(self, event):
         return str(uuid.uuid4())
@@ -60,7 +60,23 @@ class LibraryContext(object):
             return response.country.names["en"]
         except:
             return "Internal Networks"
-    
+
+    def set_variable_if_generated(self, event, variable, value):
+        try:
+            if variable in event["generated_variables"]:
+                event["variables"][variable] = value
+        except:
+            pass
+
+    def set_variables_if_generated(self, event, variables):
+        for v in variables:
+            self.set_variable_if_generated(event, v, self.get_variable(v))
+
+    def populate_variables(self, event, variables):
+        for v in variables:
+            if v not in event["variables"]:
+                event["variables"][v] = self.get_variable(v)
+            
     def get_variable(self, varname):
         got_default = False
         retval = ""

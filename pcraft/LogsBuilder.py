@@ -50,9 +50,20 @@ class LogsBuilder(object):
                 if v[0] == "$":
                     if v in self.generated_variables:
                         event["variables"][k] = self.generated_variables[v]
-            
+                        try:
+                            event["generated_variables"][k] = v
+                        except:
+                            event["generated_variables"] = {}
+                            event["generated_variables"][k] = v
+
+                        
             for k, v in self.generated_variables.items():
                 event["variables"][k] = v
+                try:
+                    event["generated_variables"][k] = v
+                except:
+                    event["generated_variables"] = {}
+                    event["generated_variables"][k] = v
                 
             is_log_action = False
             pkgname = event["exec"]
