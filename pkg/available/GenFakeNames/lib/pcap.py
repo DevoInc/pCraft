@@ -2,6 +2,8 @@
 import json
 
 from pcraft.LibraryContext import *
+from pcraft.Packet import *
+
 from .fakeme import PcraftGenFakeNames
 
 class PcraftPcapWriter(LibraryContext):
@@ -16,5 +18,5 @@ class PcraftPcapWriter(LibraryContext):
         
         payload = bytes(json.dumps(event["variables"]), "utf8")
 
-        yield "custom", payload
+        yield PcraftPacket("custom", payload)
         

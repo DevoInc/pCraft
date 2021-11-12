@@ -10,6 +10,6 @@ class PcraftPcapWriter(LibraryContext):
     def run(self, event):
         payload = bytes(json.dumps(event["variables"]), "utf8")
 
-        yield "custom", payload
+        yield PcraftPacket("custom", payload)
         
 

@@ -113,7 +113,7 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 
     ami_global_counter_incr(ami); // used for better random numbers
     ami_set_variable_string(ami, "$__amifile__", n->filename);
-
+    /* ami_set_variable_string(ami, "$__amidir__", n->filedir); */
     
     if ((n->strval) && (!n->is_verbatim)) {
       if ((n->type == AMI_NT_VARVALSTR) || (n->type == AMI_NT_MESSAGE)) {

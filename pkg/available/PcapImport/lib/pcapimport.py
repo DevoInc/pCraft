@@ -6,6 +6,7 @@ from scapy.all import Ether, CookedLinux, IP, TCP, UDP, rdpcap
 
 from pcraft import io as PcraftIO
 from pcraft.LibraryContext import *
+from pcraft.Packet import *
 
 class PcraftPcapWriter(LibraryContext):
     def __init__(self):
@@ -73,12 +74,12 @@ class PcraftPcapWriter(LibraryContext):
 
                 if we_replaced and pcap_import_only_replaced_packets:
                     pkt = PcraftIO.raw_packet_from_scapy(packet)
-                    yield "network", pkt
+                    yield PcraftPacket("network", pkt)
                     packets_injected += 1
                 else:
                     if not pcap_import_only_replaced_packets:
                         pkt = PcraftIO.raw_packet_from_scapy(packet)
-                        yield "network", pkt
+                        yield PcraftPacket("network", pkt)
 
                         packets_injected += 1
 
@@ -87,7 +88,7 @@ class PcraftPcapWriter(LibraryContext):
                             
             else: # if to_replace
                 pkt = PcraftIO.raw_packet_from_scapy(packet)
-                yield "network", pkt
+                yield PcraftPacket("network", pkt)
                 packets_injected += 1
                 
         # print("we replaced %d items" % ( n_items_replaced) )

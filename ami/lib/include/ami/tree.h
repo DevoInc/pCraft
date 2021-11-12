@@ -44,6 +44,7 @@ typedef enum _ami_node_type_t ami_node_type_t;
 
 struct _ami_node_t {
   char *filename;
+  const char *filedir;
   ami_node_type_t type;
   int lineno; // Holds the line where this was created to drop an error later.
   char *strval;

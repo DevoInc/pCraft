@@ -2,6 +2,7 @@
 from scapy.all import Ether, IP, ICMP
 
 from pcraft import io as PcraftIO
+from pcraft.Packet import *
 
 
 class PcraftPcapWriter(LibraryContext):
@@ -13,8 +14,8 @@ class PcraftPcapWriter(LibraryContext):
 
         echo_request = Ether() / IP(src=self.get_variable("$ip-src"), dst=self.get_variable("$ip-dst")) / ICMP(type="echo-request")
         pkt = PcraftIO.raw_packet_from_scapy(echo_request)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
 
         echo_reply = Ether() / IP(src=self.get_variable("$ip-dst"), dst=self.get_variable("$ip-src")) / ICMP(type="echo-reply")
         pkt = PcraftIO.raw_packet_from_scapy(echo_reply)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)

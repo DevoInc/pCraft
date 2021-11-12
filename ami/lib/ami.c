@@ -28,6 +28,7 @@ ami_t *ami_new(void)
 
   ami->error = NO_ERROR;
   ami->file = NULL;
+  ami->dir = NULL;
   ami->_action_block_id = 0;
   ami->_repeat_block_id = 0;
   ami->_opened_sections = 0;
@@ -659,6 +660,7 @@ void ami_close(ami_t *ami)
   
   if (!ami) return;
   if (ami->file) free(ami->file);
+  if (ami->dir) free(ami->dir);
   if (ami->taxonomy) free(ami->taxonomy);
   
   kv_destroy(ami->references);

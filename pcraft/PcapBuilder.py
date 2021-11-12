@@ -35,7 +35,9 @@ class PcapBuilder(object):
                 sys.exit(1)
 
             
-            for pkt_type, pkt in pcapmod.run(event):
+            for packet in pcapmod.run(event):
+                pkt_type = packet.packet_type
+                pkt = packet.packet_data
                 if pkt_type == "network":
 	            # We rebuild the packet because packets building can come from anything.
 	            # We just see a buffer. We need to have a proper session, and the correct time.

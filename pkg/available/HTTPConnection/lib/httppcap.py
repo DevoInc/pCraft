@@ -5,6 +5,7 @@ from scapy.all import Ether, IP, TCP
 from pcraft import utils
 from pcraft import io as PcraftIO
 from pcraft.LibraryContext import *
+from pcraft.Packet import *
 
 class PcraftPcapWriter(LibraryContext):
     def __init__(self):
@@ -18,27 +19,27 @@ class PcraftPcapWriter(LibraryContext):
                                                           int(self.get_variable("$port-src")),
                                                           int(self.get_variable("$port-dst")))
         pkt = PcraftIO.raw_packet_from_scapy(syn)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
         pkt = PcraftIO.raw_packet_from_scapy(syn_ack)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
         pkt = PcraftIO.raw_packet_from_scapy(ack)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
 
         # HTTP Request
         httpreq_string = self.build_http_request_string()
         http_request = Ether() / IP(src=self.get_variable("$ip-src"),dst=self.get_variable("$ip-dst")) / TCP(sport=int(self.get_variable("$port-src")), dport=int(self.get_variable("$port-dst")), flags="P""A") / httpreq_string
         pkt = PcraftIO.raw_packet_from_scapy(http_request)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
 
         # HTTP Response
         ack = Ether() / IP(src=self.get_variable("$ip-src"),dst=self.get_variable("$ip-dst")) / TCP(sport=int(self.get_variable("$port-dst")), dport=int(self.get_variable("$port-src")), flags="A")
         pkt = PcraftIO.raw_packet_from_scapy(ack)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
 
         httpresp_string = self.build_http_response_string()
         http_response = Ether() / IP(src=self.get_variable("$ip-dst"),dst=self.get_variable("$ip-src")) / TCP(sport=int(self.get_variable("$port-dst")),dport=int(self.get_variable("$port-src")), flags="P""A") / httpresp_string
         pkt = PcraftIO.raw_packet_from_scapy(http_response)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
         
     def set_user(self):
         user = self.get_variable("$user")

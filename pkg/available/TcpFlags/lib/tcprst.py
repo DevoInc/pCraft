@@ -13,9 +13,9 @@ class PcraftPcapWriter(LibraryContext):
         
         syn = Ether() / IP(src=self.get_variable("$ip-src"), dst=self.get_variable("$ip-dst")) / TCP(dport=int(self.get_variable("$port-dst")), sport=int(self.get_variable("$port-src")), flags="S")
         pkt = PcraftIO.raw_packet_from_scapy(syn)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
 
         
         rst_ack = Ether() / IP(src=self.get_variable("$ip-dst"), dst=self.get_variable("$ip-src")) / TCP(sport=syn[TCP].dport, dport=syn[TCP].sport, flags="R""A")
         pkt = PcraftIO.raw_packet_from_scapy(rst_ack)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)

@@ -1,6 +1,7 @@
 import json
 
 from pcraft.LibraryContext import *
+from pcraft.Packet import *
 
 class PcraftPcapWriter(LibraryContext):
     def __init__(self):
@@ -9,4 +10,4 @@ class PcraftPcapWriter(LibraryContext):
     def run(self, event):
         payload = bytes(json.dumps(event["variables"]), "utf8")
 
-        yield "custom", payload
+        yield PcraftPacket("custom", payload)

@@ -17,10 +17,10 @@ class PcraftPcapWriter(LibraryContext):
                                                               int(self.get_variable("$port-dst")))
 
         pkt = PcraftIO.raw_packet_from_scapy(syn)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
         pkt = PcraftIO.raw_packet_from_scapy(syn_ack)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
         pkt = PcraftIO.raw_packet_from_scapy(ack)
-        yield "network", pkt
+        yield PcraftPacket("network", pkt)
 
 

@@ -30,9 +30,9 @@ Special variables
 
 Special variables influence pcraft's behavior. Here's the list:
 
-| Name         | Description                 | Example |
-|:------------:|:---------------------------:|:-------:|
-| use-ssl      | Indicates if we use SSL     | true    |
-| onlyreplace  | Tell pcap read to only keep |         |
-|              | the packets being replaced  | true    |
+| Name                              | Description                 | Example |
+|:---------------------------------:|:---------------------------:|:-------:|
+| use-ssl                           | Indicates if we use SSL     | true    |
+| pcap_import_only_replaced_packets | Tell pcap read to only keep |         |
+|                                   | the packets being replaced  | true    |
 

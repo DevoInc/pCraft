@@ -14,6 +14,7 @@ ami_node_t *ami_node_new(void)
   }
 
   node->filename = NULL;
+  node->filedir = NULL;
   node->strval = NULL;
   node->lineno = 0;
   node->is_verbatim = 0;
@@ -320,6 +321,7 @@ ami_node_t *ami_node_create(ami_t *ami, ami_node_t **root, int lineno, ami_node_
   ami_node_t *node = ami_node_new();
 
   node->filename = ami->file;
+  node->filedir = ami->dir;
   node->lineno = lineno;
   node->type = type;
   if (strval) {
