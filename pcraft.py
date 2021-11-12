@@ -20,14 +20,19 @@ def debug(message):
                 
 class RunPcraft(object):
     def __init__(self, pkg, args):
-
         self.current_time = time.time()
         
         self.pkg = pkg
         self.args = args
 
         self.ami = pyami.Ami()
-        self.build_cache()
+        self.ami_cache = self.args["script"]
+        
+        if not args["script"].endswith(".amic"):
+            self.ami_cache = os.path.join(os.path.dirname(self.args["script"]), "." + os.path.basename(self.args["script"]) + "c")            
+            self.build_cache()
+        else:
+            print("Reading cache file %s" % self.ami_cache)
 
         if self.args["pcap"]:
             self.build_pcap(self.args["pcap"])
@@ -36,7 +41,6 @@ class RunPcraft(object):
             self.build_logs(self.args["log_folder"], self.args["force"])
             
     def build_cache(self):
-        self.ami_cache = os.path.join(os.path.dirname(self.args["script"]), "." + os.path.basename(self.args["script"]) + "c")
         debug("Building cache: %s" % self.ami_cache)
         self.ami.Cache(self.args["script"], self.ami_cache)
         debug("Done building cache")

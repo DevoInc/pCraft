@@ -17,7 +17,8 @@ class LogsBuilder(object):
         self.generated_variables = {}
         
         self.build_outputdir(log_folder, force)
-
+        self.no_log_module_for = {}
+        
     def __del__(self):
         for k, v in self.file_pointers.items():
             v.close()
@@ -93,7 +94,11 @@ class LogsBuilder(object):
                 # print("Action Package name:%s" % self.pkg.get_pkgname_from_action_log(modexec))
                 logmod = self.pkg.get_log_module(modexec)
                 if not logmod:
-                    print("No log module for " + modexec)
+                    if modexec in self.no_log_module_for:
+                        pass
+                    else:
+                        print("No log module for [%s]" % modexec)
+                        self.no_log_module_for[modexec] = True
                     continue # We skip as this one will not log. Expected if this is just another type of package
                 
                 config = self.pkg.get_packages()[self.pkg.get_pkgname_from_action_log(modexec)]
