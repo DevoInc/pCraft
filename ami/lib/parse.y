@@ -441,7 +441,15 @@ field_assigned_to_variable: FIELD OPENBRACKET string CLOSEBRACKET EQUAL varset {
  }
 ;
 
-exec: EXEC FUNCTIONNAME
+exec: EXEC FUNCTIONNAME {
+  if (ami->debug) {
+    printf("[parse.y] exec: EXEC FUNCTIONNAME(%s)\n", $2);
+  }
+
+  ami_append_item(ami, get_lineno(scanner), AMI_NT_EXEC, $2, 0, 0, 0, 0);
+  
+  free($2);
+ }
   | EXEC WORD {
   if (ami->debug) {
     printf("[parse.y] exec: EXEC WORD(%s)\n", $2);
