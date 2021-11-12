@@ -1,0 +1,15 @@
+av 1
+
+#
+# If this magic variable is set, the PcapImport
+# package will only import the packets that are
+# being replaced.
+#
+$pcap_import_only_replaced_packets = "true"
+
+action import {
+    $filename = "dns.pcap"
+    field["ip"].replace("192.168.88.174"=>"10.1.1.1")   
+    exec PcapImport
+}
+
