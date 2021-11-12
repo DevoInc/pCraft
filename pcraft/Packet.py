@@ -4,3 +4,15 @@ class PcraftPacket:
         self.packet_data = packet_data
         self.new_sleep_cursor = new_sleep_cursor
 
+    def __iter__(self):
+        return self
+        
+    def get_packet_type(self):
+        return self.packet_type
+
+    def get_packet_data(self):
+        return self.packet_data
+
+    def get_new_sleep_cursor(self):
+        return self.new_sleep_cursor
+    

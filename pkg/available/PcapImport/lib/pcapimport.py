@@ -93,4 +93,3 @@ class PcraftPcapWriter(LibraryContext):
                 
         # print("we replaced %d items" % ( n_items_replaced) )
         # print("Imported %d packets" % (packets_injected) )
-        yield "network", bytes("blah", "utf8")
