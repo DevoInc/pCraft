@@ -14,12 +14,15 @@ class PcraftLogWriter(LibraryContext):
             print("Error: CSV plugin requires the $csv_fields variable with coma separated fields for variables we need to extract, such as $csv_fields = \"$foo, $bar\"")
             sys.exit(1)
 
-        if self.is_first:
+        if not self.is_first:
             is_first = False
             row = ""
             for f in fields:
-                var = str(f).replace("$", "")
-                var = var.replace("\"", "\\\"")
+                if f == "$__time__":
+                    var = "time"
+                else:
+                    var = str(f).replace("$", "")
+                    var = var.replace("\"", "\\\"")
                 row += var
                 row += ","
             linerow = row[:len(row)-1] + "\n"
@@ -27,8 +30,11 @@ class PcraftLogWriter(LibraryContext):
 
         row = ""
         for f in fields:
-            var = event["variables"][f]
-            var = var.replace("\"", "\\\"")
+            if f == "$__time__":
+                var = str(event["time"])
+            else:
+                var = event["variables"][f]
+                var = var.replace("\"", "\\\"")
             row += var
             row += ","
 
