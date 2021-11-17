@@ -3,6 +3,7 @@ from scapy.all import Ether, IP, ICMP
 
 from pcraft import io as PcraftIO
 from pcraft.Packet import *
+from pcraft.LibraryContext import *
 
 
 class PcraftPcapWriter(LibraryContext):
