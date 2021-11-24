@@ -913,7 +913,25 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	
 	kv_push(char *, ami->values_stack, strdup(randstr));
 	free(randstr);
-    } else if (!strcmp("csv", n->strval)) {
+    } else if (!strcmp("hours", n->strval)) {
+	char *convertedtime;
+
+	int timehours = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
+
+	timehours = timehours * 3600;
+	
+	asprintf(&convertedtime, "%d", timehours);
+	kv_push(char *, ami->values_stack, convertedtime);		
+      } else if (!strcmp("minutes", n->strval)) {
+	char *convertedtime;
+
+	int timemn = (int)strtod(kv_A(ami->values_stack, kv_size(ami->values_stack)-1), NULL);
+
+	timemn = timemn * 60;
+	
+	asprintf(&convertedtime, "%d", timemn);
+	kv_push(char *, ami->values_stack, convertedtime);		
+      } else if (!strcmp("csv", n->strval)) {
 		/*size_t stacklen = kv_size(ami->values_stack);
 		for (size_t i = 0; i < stacklen; i++) {
 			printf("[kvec] i:%d;val:%s\n", i, kv_A(ami->values_stack, i));
