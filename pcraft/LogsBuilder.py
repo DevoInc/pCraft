@@ -143,6 +143,7 @@ class LogsBuilder(object):
                         selected_template = templates[0]
                     except IndexError:
                         print("Error with template '%s' from package '%s'. Cannot load it. Maybe the event type (path) is wrong?" % (template_name, self.pkg.get_pkgname_from_action_log(modexec)))
+                        print("   Available templates: %s" % str(templates))
                         sys.exit(1)
 
                     event = self._event_append_taxonomy_variables(event, modexec, modconfig)

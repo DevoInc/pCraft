@@ -9,9 +9,12 @@ intel_labels,""
 properties,"{}"
 service_id,2839ffe8-e435-8374-9ff3-d93df3647116
 os,Microsoft Windows 10 Enterprise
+tanium_os,Microsoft Windows 10 Enterprise
+tanium_count,1
 patch_level,10.0.17778.1.0
 platform,Windows
 unique_event_id,720575940378767925
 unique_process_id,677656456908182943
 hash,7384047332
-
+tanium_app_name,Microsoft OneDrive
+tanium_app_version,3.4.1.4

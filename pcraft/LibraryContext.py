@@ -3,6 +3,7 @@ import uuid
 import hashlib
 import geoip2.database
 import os
+import ipaddress
 
 from . import utils
 from .VariablesState import VariablesState
@@ -78,7 +79,25 @@ class LibraryContext(object):
         for v in variables:
             if v not in event["variables"]:
                 event["variables"][v] = self.get_variable(v)
-            
+
+    def get_consistent_macaddr(self, ip):
+        ipn = int(ipaddress.IPv4Address("192.168.45.43"))
+        ipnhex = format(ipn, "X")
+        extrahex = ipn >> 18
+        extrahex = format(extrahex, "X")
+
+        macstr = ""
+
+        for index in range(0, len(extrahex), 2):
+            macstr += str(extrahex[index:index+2])
+            macstr += ":"
+
+        for index in range(0, len(ipnhex), 2):
+            macstr += str(ipnhex[index:index+2])
+            if index + 2 < len(ipnhex):
+                macstr += ":"
+        return macstr
+                
     def get_variable(self, varname):
         got_default = False
         retval = ""
