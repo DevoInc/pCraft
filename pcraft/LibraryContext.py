@@ -9,6 +9,8 @@ from .VariablesState import VariablesState
 
 from .confnames import *
 
+first_time = True
+
 class LibraryContext(object):
     def __init__(self, service=None):
         self.service = service
@@ -22,8 +24,11 @@ class LibraryContext(object):
             self.geodb_reader = geoip2.database.Reader(os.path.join(os.path.dirname(__file__),geodb))
         except FileNotFoundError:
             self.geodb_reader = None
-            print("Please add GeoLite2-Country.mmdb in %s to have Country mapping support" % (os.path.dirname(__file__)))
+            if first_time = True:
+                print("Please add GeoLite2-Country.mmdb in %s to have Country mapping support" % (os.path.dirname(__file__)))
 
+        first_time = False
+                
     def set_service(self, service):
         self.service = service
         
