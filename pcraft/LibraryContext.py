@@ -24,7 +24,7 @@ class LibraryContext(object):
             self.geodb_reader = geoip2.database.Reader(os.path.join(os.path.dirname(__file__),geodb))
         except FileNotFoundError:
             self.geodb_reader = None
-            if first_time = True:
+            if first_time:
                 print("Please add GeoLite2-Country.mmdb in %s to have Country mapping support" % (os.path.dirname(__file__)))
 
         first_time = False
