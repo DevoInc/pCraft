@@ -1,0 +1,22 @@
+key,default_value
+message_id,x39T1o3o940184
+to,o.hergebel@example.com
+delay,00:00:02
+xdelay,00:00:00
+mailer,esmtp
+tls_verify,NONE
+pri,94312
+relay1,172.16.0.1
+relay2,172.16.0.1
+dsn,2.0.0
+stat,Sent (<V2hvIGlzIFNlYmFzdGllbj8K@mail.example.com> [Internal...=sebastien@mail.example.com] 382912 bytes in 0.321, 1.432 MB/sec Queued mail for delivery)
+from,eroux@bales.ch
+size,184925
+size,-22
+nrcpts,1
+msgid,V2hvIGlzIFNlYmFzdGllbj8K@mail.example.com
+proto,SMTP
+daemon,MTA
+auth,NONE
+relay,mailrelay1.mail.example.com [127.0.0.1]
+
