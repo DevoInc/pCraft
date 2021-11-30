@@ -12,8 +12,6 @@ class PcraftLogWriter(LibraryContext):
         self.is_first = True
 
     def run(self, event, config, templates):
-        self.populate_variables(event, ["$ip-src", "$ip-dst", "$port-dst", "$port-src", "$protocol"])
-        
         event_name = "traffic"
         if self.is_first:
             self.is_first = False
@@ -26,19 +24,23 @@ class PcraftLogWriter(LibraryContext):
         except:
             pass
 
-        bytes_sent = random.randint(512, 8192)
-        bytes_received = random.randint(256, 2048)
-
         event["variables"]["$Session ID"] = random.randint(123, 950432)
 
-        event["variables"]["$Source Location"] = self.get_country_for_ip(event["variables"]["$ip-src"])
-        event["variables"]["$Destination Location"] = self.get_country_for_ip(event["variables"]["$ip-dst"])
+        packets = event["virtualpackets"]
+        
+        first_packet = packets[0]
+        last_packet = packets[-1]
+        bytes_sent = first_packet.packet_size
+        bytes_received = last_packet.packet_size
+        
+        event["variables"]["$Source Location"] = self.get_country_for_ip(first_packet.ip_src)
+        event["variables"]["$Destination Location"] = self.get_country_for_ip(first_packet.ip_dst)
         event["variables"]["$Bytes Sent"] = str(bytes_sent)
         event["variables"]["$Bytes Received"] = str(bytes_received)
         event["variables"]["$Bytes"] = str(bytes_sent + bytes_received)
 
-        event["variables"]["$Source VM UUID"] = self.gen_uuid_fixed(event, event["variables"]["$ip-src"])
-        event["variables"]["$Destination VM UUID"] = self.gen_uuid_fixed(event, event["variables"]["$ip-dst"])
+        event["variables"]["$Source VM UUID"] = self.gen_uuid_fixed(event, first_packet.ip_src)
+        event["variables"]["$Destination VM UUID"] = self.gen_uuid_fixed(event, first_packet.ip_dst)
 
         logevent = template_get_event(templates, event_name, event["variables"])
         logevent = frame_time.strftime(logevent)

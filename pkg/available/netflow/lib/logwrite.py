@@ -11,7 +11,10 @@ class PcraftLogWriter(LibraryContext):
 
     def run(self, event, config, templates):
         frame_time = datetime.fromtimestamp(event["time"])
-    
+
+        packets = event["virtualpackets"]
+        
+        
         event = template_get_event(templates, "v9", event["variables"])
         event = frame_time.strftime(event)
 

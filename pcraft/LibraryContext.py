@@ -7,6 +7,7 @@ import ipaddress
 
 from . import utils
 from .VariablesState import VariablesState
+from .VirtualPacket import *
 
 from .confnames import *
 
@@ -15,6 +16,7 @@ class LibraryContext(object):
         self.service = service
         self.built_variables = {}
         self.varstate = VariablesState()
+        self.virtual_packets = []
         self.user_agents = ["Mozilla/5.0 (iPad; U; CPU OS 3_2_1 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Mobile/7B405", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:93.0) Gecko/20100101 Firefox/93.0", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_16_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 Edg/95.0.1020.44", "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1", "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/38.1  Mobile/15E148 Safari/605.1.15", "ELinks/0.11.7 (textmode; Darwin 20.6.0 x86_64; 143x43-2)", "Mozilla/5.0 (X11; Linux x86_64; rv:93.0) Gecko/20100101 Firefox/93.0", "Mozilla/5.0 (X11; Linux x86_64) KIO/5.86 konqueror/21.08.2", "Wget/1.21.2", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36 Edg/95.0.1020.44", "Lynx/2.9.0dev.10 libwww-FM/2.14 SSL-MM/1.4.1 GNUTLS/3.7.2", "URL/Emacs Emacs/27.1 (TTY; x86_64-pc-linux-gnu)", "URL/Emacs Emacs/26.3 (TTY; x86_64-apple-darwin18.2.0)"]
 
         geodb = "GeoLite2-Country.mmdb"
@@ -24,7 +26,18 @@ class LibraryContext(object):
         except FileNotFoundError:
             self.geodb_reader = None
             # print("Please add GeoLite2-Country.mmdb in %s to have Country mapping support" % (os.path.dirname(__file__)))
-                
+
+    def reset_virtualpackets(self):
+        self.virtual_packets = []
+        
+    def get_virtualpackets(self):
+        return self.virtual_packets
+
+    def add_virtualpacket(self, layer, protocol, ip_src, ip_dst, port_src, port_dst, packet_size=None, frame_time=None):
+        vp = VirtualPacket()
+        vp.build(layer, protocol, ip_src, ip_dst, port_src, port_dst, packet_size, frame_time)
+        self.virtual_packets.append(vp)
+        
     def set_service(self, service):
         self.service = service
         
