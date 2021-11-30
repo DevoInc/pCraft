@@ -27,14 +27,15 @@ class PcraftLogWriter(LibraryContext):
         event["variables"]["$Session ID"] = random.randint(123, 950432)
 
         packets = event["virtualpackets"]
-        
         first_packet = packets[0]
         last_packet = packets[-1]
         bytes_sent = first_packet.packet_size
         bytes_received = last_packet.packet_size
-        
+        event["variables"]["$Protocol"] = protocol_to_string(first_packet.protocol)
         event["variables"]["$Source Location"] = self.get_country_for_ip(first_packet.ip_src)
         event["variables"]["$Destination Location"] = self.get_country_for_ip(first_packet.ip_dst)
+        event["variables"]["$Source Port"] = first_packet.port_src
+        event["variables"]["$Destination Port"] = first_packet.port_dst
         event["variables"]["$Bytes Sent"] = str(bytes_sent)
         event["variables"]["$Bytes Received"] = str(bytes_received)
         event["variables"]["$Bytes"] = str(bytes_sent + bytes_received)

@@ -9,6 +9,12 @@ class Protocol(Enum):
     UDP = 17
     ICMP6 = 58
     SCTP = 132
+
+def protocol_to_string(protocol):
+    if protocol == Protocol.TCP:
+        return "tcp"
+    if protocol == Protocol.UDP:
+        return "udp"
     
 class Flow(Flag):
     UNKNOWN = 0
