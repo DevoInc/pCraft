@@ -1,0 +1,29 @@
+key,default_value
+type,IP
+id,000kdle38jndeazqwj2k
+name,BlockedIpZone
+status,ACTIVE
+system,true
+gateways_type_0,CIDR
+gateways_value_0,192.168.0.0/24
+gateways_type_1,RANGE
+gateways_value_1,192.168.0.1-192.168.0.255
+proxies_type_0,CIDR
+proxies_value_0,192.168.0.0/24
+proxies_type_1,RANGE
+proxies_value_1,192.168.0.1-192.168.0.255
+locations_country_0,US
+locations_region_0,null
+locations_country_0,FR
+locations_region_0,RHONEALPES
+proxyType,Any
+asns_0,15169
+asns_1,8255
+_links_self_href,https://dev-186852.okta.com/api/v1/zones/nzo2flexrDmFbZoNl4x6
+hints_allow_0,["GET", "PUT", "DELETE"]
+hints_allow_1,["POST"]
+errorCode,E0000001
+errorSummary,Api validation failed: gateways
+errorLink,E0000001
+errorId,f0o_pBer0293TaCq-mae
+errorCauses_errorSummary,gateways: The IP: 192.168.0.23.1 in the RANGE: 192.168.0.0-192.168.0.255 is invalid. Make sure it is a valid IPV4.

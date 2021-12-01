@@ -7,7 +7,7 @@ action_message,"User performed single sign on to app. "
 action_categories_0,"Application Access"
 action_objectType,"app.auth.sso"
 action_requestUri,"/app/office365/oek4j2kld903jknv39xz/sso/wsfed/passive"
-actors_0_id,"000kdle38jndeazqwj2k"
+actors_0_id,000kdle38jndeazqwj2k
 actors_0_displayName,"Edith Roux"
 actors_0_login,"Edith.Roux@bale.ch"
 actors_0_objectType,"User"
@@ -22,3 +22,7 @@ targets_0_objectType,"User"
 targets_1_id,"oek4j2kld903jknv39xz"
 targets_1_displayName,"Microsoft Office 365"
 targets_1_objectType,"AppInstance"
+created,%Y-%m-%DT%H:%M:%ST000Z
+lastUpdated,%Y-%m-%DT%H:%M:%ST000Z
+organization,robin-007
+api_version,v1
