@@ -19,6 +19,11 @@ WORKDIR /opt/pcraft/ami/build
 RUN cmake ..
 RUN make
 RUN cp /opt/pcraft/ami/build/python/pyami.cpython*.so /opt/pcraft/
+RUN mkdir /opt/pcraft/cpcapng/build
+WORKDIR /opt/pcraft/cpcapng/build
+RUN cmake ..
+RUN make
+RUN cp /opt/pcraft/cpcapng/build/bindings/python/pycapng.cpython*.so /opt/pcraft/
 WORKDIR /opt/pcraft/ccraft/
 RUN make
 RUN echo "/opt/pcraft/ami/build/lib/" > /etc/ld.so.conf.d/ami.conf
