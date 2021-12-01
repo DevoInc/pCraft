@@ -1,0 +1,32 @@
+key,default_value
+idp,000kdle38jndeazqwj2k
+id,000kdle38jndeazqwj2k
+type,FACEBOOK
+name,Facebook
+protocol_type,OAUTH2
+protocol_endpoints_url,https://www.facebook.com/dialog/oauth
+protocol_endpoints_binding,HTTP-REDIRECT
+protocol_endpoints_token_url,https://graph.facebook.com/v2.5/oauth/access_token
+protocol_endpoints_token_binding,HTTP-POST
+scopes,["public_profile", "email"]
+credentials_client_client_id,oek4j2kld903jknv39xz
+credentials_client_client_secret,myS3kr3tPWD
+policy_provisioning_action,AUTO
+policy_provisioning_profileMaster,true
+policy_provisioning_groups_action,NONE
+policy_provisioning_groups_conditions_deprovisioned_action,NONE
+policy_provisioning_groups_conditions_deprovisioned_suspended_action,NONE
+accountLink_filter,null
+accountLink_action,AUTO
+subject_userNameTemplate_template,user.userPrincipalName
+subject_filter,null
+subject_matchtype,USERNAME
+subject_maxclockskew,0
+response_type,
+response_mode,
+scopes,
+redirect_uri,
+state,
+templated,true
+hints_0,{"allow": ["GET"]}
+hints_1,{"allow": ["POST"]}
