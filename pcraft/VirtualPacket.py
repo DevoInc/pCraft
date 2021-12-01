@@ -83,13 +83,14 @@ class VirtualPacket(object):
 
         return computed
         
-    def build(self, layer, protocol, ip_src, ip_dst, port_src, port_dst, packet_size=None, frame_time=None):
+    def build(self, layer, protocol, flow, ip_src, ip_dst, port_src, port_dst, packet_size=None, frame_time=None):
         self.layer = layer
+        self.protocol = protocol
+        self.flow = flow
         self.ip_src = ip_src
         self.ip_dst = ip_dst
         self.port_src = port_src
         self.port_dst = port_dst
-        self.protocol = protocol
         
         self.packet_id += 1
         if not packet_size:

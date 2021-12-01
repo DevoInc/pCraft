@@ -6,6 +6,8 @@ from avro.datafile import DataFileReader
 from avro.io import DatumReader
 
 from .confnames import *
+from .VirtualPacket import *
+from .LibraryContext import LibraryContext
 
 class LogsBuilder(object):
     def __init__(self, pkg, ami_cache, log_folder, force=False):
@@ -18,6 +20,8 @@ class LogsBuilder(object):
         
         self.build_outputdir(log_folder, force)
         self.no_log_module_for = {}
+        # Just to get some default variables, such as the resolver
+        self.library_context = LibraryContext()
         
     def __del__(self):
         for k, v in self.file_pointers.items():
@@ -86,7 +90,7 @@ class LogsBuilder(object):
                 is_log_action = True
             else:
                 packages_to_execute.append(pkgname)
-
+                
             new_pkg_to_execute = self._packages_to_execute_from_layers(packages_to_execute)
             # print("Packages to execute" + str(new_pkg_to_execute))
             
@@ -126,11 +130,15 @@ class LogsBuilder(object):
                     for e in events:
                         event["variables"]["$event_id"] = e
                         event = self._event_append_taxonomy_variables(event, modexec, modconfig)
-
+                        self.pre_log_write(event)
+                        
                         for log in logmod.run(event, modconfig, templates[0]):
-                            self._update_generated_variables(original_event_variables, event)
+                            # self._update_generated_variables(original_event_variables, event)
                             if log:
                                 self._handle_log_write(event_log, modconfig, log)
+                                
+
+                        self.post_log_write(event)
                     # for k, v in actions_config[log_action].items():
                     #     events = v.split(",")
                     #     for e in events:
@@ -147,11 +155,14 @@ class LogsBuilder(object):
                         sys.exit(1)
 
                     event = self._event_append_taxonomy_variables(event, modexec, modconfig)
+                    self.pre_log_write(event)
                     for log in logmod.run(event, modconfig, selected_template):
-                        self._update_generated_variables(original_event_variables, event)
+                        # self._update_generated_variables(original_event_variables, event)
                         if log:
                             self._handle_log_write(modexec, modconfig, log)
 
+                    self.post_log_write(event)
+                            
 
     def _packages_to_execute_from_layers(self, packages_to_execute):
         # Replace the packages to execute with their appropriate layers
@@ -181,8 +192,26 @@ class LogsBuilder(object):
                 new_pkg_to_execute.append(modexec)   
 
         return new_pkg_to_execute
-                
+
+    def _event_map_taxonomy_with_virtualpackets(self, event, pcraft_field, variable):
+        packets = event["virtualpackets"]
+        first_packet = packets[0]
+        last_packet = packets[-1]
+        # print("We are using virtual packets for field:%s assigned to %s" % (pcraft_field, variable))
+                        
+        if pcraft_field == "$ip-src":
+            event["variables"][variable] = first_packet.ip_src
+        if pcraft_field == "$ip-dst":
+            event["variables"][variable] = first_packet.ip_dst
+        if pcraft_field == "$port-src":
+            event["variables"][variable] = first_packet.port_src
+        if pcraft_field == "$port-dst":
+            event["variables"][variable] = first_packet.port_dst
+        if pcraft_field == "$protocol":
+            event["variables"][variable] = protocol_to_string(first_packet.protocol)
+        
     def _event_append_taxonomy_variables(self, event, pkgname, config):
+        # print("===== _event_append_taxonomy_variables for event %s" % event["exec"])
         # 'taxonomy.conf': {'fields': {'username': 'winlog_event_data_SubjectUserName,winlog_event_data_TargetUserName'}
         if not TAXONOMY_CONF in config:
             return event
@@ -193,15 +222,45 @@ class LogsBuilder(object):
                 for f in fieldsarray:
                     variablef = "$" + f
                     # if not variablef in event["variables"]:
+                        
                     if variable_pcraftfield in event["variables"]:
-                        event["variables"][variablef] = event["variables"][variable_pcraftfield]
-        
+                            event["variables"][variablef] = event["variables"][variable_pcraftfield]
+                    else:
+                        # Using Virtual Packet because no variables were defined
+                        self._event_map_taxonomy_with_virtualpackets(event, variable_pcraftfield, variablef)
+                        
         return event
         
     def _update_generated_variables(self, original_event_variables, event):
         for k, v in event["variables"].items():
             if not k in original_event_variables:
                 self.generated_variables[k] = v
+
+    def _dns_ip_dst_is_resolver(self, event):
+        # Handle the special case with DNS where the ip-dst is actually the resolver
+        try:
+            if event["variables"]["$__layer__"] == "dns":
+                try:
+                    try:
+                        event["variables"]["$__ip-dst__"] = event["variables"]["$ip-dst"]
+                    except KeyError:
+                        event["variables"]["$ip-dst"] = self.library_context.get_variables("$ip-dst")
+                        event["variables"]["$__ip-dst__"] = event["variables"]["$ip-dst"]
+                        
+                    event["variables"]["$ip-dst"] = event["variables"]["$resolver"]
+                except KeyError:
+                    event["variables"]["$ip-dst"] = self.library_context.get_variable("$resolver")
+                    event["variables"]["$__ip-dst__"] = event["variables"]["$ip-dst"]
+            del event["variables"]["$__layer__"]
+        except KeyError:
+            pass
+        
+    def _dns_get_ip_dst_back(self, event):
+        try:
+            event["variables"]["$ip-dst"] = event["variables"]["$__ip-dst__"]
+            del event["variables"]["$__ip-dst__"]
+        except:
+            pass
         
     def _handle_log_write(self, pkgname, config, log):
         log_file = config[LOG_CONF][pkgname]["logfile"]
@@ -234,3 +293,9 @@ class LogsBuilder(object):
                 template.append(tmpl)
 
         return template
+
+    def pre_log_write(self, event):
+        self._dns_ip_dst_is_resolver(event)
+
+    def post_log_write(self, event):
+        self._dns_get_ip_dst_back(event)

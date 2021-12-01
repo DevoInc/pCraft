@@ -18,10 +18,11 @@ class PcraftLogWriter(LibraryContext):
         port_dst = self.get_variable("$port-dst")
 
         # Request
-        self.add_virtualpacket("dns", Protocol.UDP, ip_src, resolver, port_src, port_dst, packet_size=55, frame_time=event["time"])
+        self.add_virtualpacket("dns", Protocol.UDP, Flow.FROM_CLIENT|Flow.TO_SERVER, ip_src, resolver, port_src, port_dst, packet_size=55, frame_time=event["time"])
         # Reply
-        self.add_virtualpacket("dns", Protocol.UDP, resolver, ip_src, port_dst, port_src, packet_size=random.randint(75, 120), frame_time=event["time"])
+        self.add_virtualpacket("dns", Protocol.UDP, Flow.FROM_SERVER|Flow.TO_CLIENT, resolver, ip_src, port_dst, port_src, packet_size=random.randint(75, 120), frame_time=event["time"])
 
         event["virtualpackets"] = self.get_virtualpackets()
+        event["variables"]["$__layer__"] = "dns"
         
         yield None

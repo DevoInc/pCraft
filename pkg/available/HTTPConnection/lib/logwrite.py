@@ -17,21 +17,20 @@ class PcraftLogWriter(LibraryContext):
         port_dst = self.get_variable("$port-dst")
 
         # SYN
-        self.add_virtualpacket("tcp", Protocol.TCP, ip_src, ip_dst, port_src, port_dst, packet_size=54, frame_time=event["time"])
+        self.add_virtualpacket("tcp", Protocol.TCP, Flow.FROM_CLIENT|Flow.TO_SERVER, ip_src, ip_dst, port_src, port_dst, packet_size=54, frame_time=event["time"])
         # SYN|ACK
-        self.add_virtualpacket("tcp", Protocol.TCP, ip_dst, ip_src, port_dst, port_src, packet_size=54, frame_time=event["time"])
+        self.add_virtualpacket("tcp", Protocol.TCP, Flow.FROM_SERVER|Flow.TO_CLIENT, ip_dst, ip_src, port_dst, port_src, packet_size=54, frame_time=event["time"])
         # ACK
-        self.add_virtualpacket("tcp", Protocol.TCP, ip_src, ip_dst, port_src, port_dst, packet_size=54, frame_time=event["time"])
+        self.add_virtualpacket("tcp", Protocol.TCP, Flow.FROM_CLIENT|Flow.TO_SERVER, ip_src, ip_dst, port_src, port_dst, packet_size=54, frame_time=event["time"])
 
         # HTTP Request
-        self.add_virtualpacket("tcp", Protocol.TCP, ip_src, ip_dst, port_src, port_dst, packet_size=random.randint(223, 320), frame_time=event["time"])
+        self.add_virtualpacket("tcp", Protocol.TCP, Flow.FROM_CLIENT|Flow.TO_SERVER, ip_src, ip_dst, port_src, port_dst, packet_size=random.randint(223, 320), frame_time=event["time"])
         
         # ACK
-        self.add_virtualpacket("tcp", Protocol.TCP, ip_dst, ip_src, port_dst, port_src, packet_size=54, frame_time=event["time"])
+        self.add_virtualpacket("tcp", Protocol.TCP, Flow.FROM_SERVER|Flow.TO_CLIENT, ip_dst, ip_src, port_dst, port_src, packet_size=54, frame_time=event["time"])
         
         # HTTP Response
-        self.add_virtualpacket("tcp", Protocol.TCP, ip_dst, ip_src, port_dst, port_src, packet_size=random.randint(268, 425), frame_time=event["time"])
-        
+        self.add_virtualpacket("tcp", Protocol.TCP, Flow.FROM_SERVER|Flow.TO_CLIENT, ip_dst, ip_src, port_dst, port_src, packet_size=random.randint(268, 425), frame_time=event["time"])
         
         event["virtualpackets"] = self.get_virtualpackets()
         

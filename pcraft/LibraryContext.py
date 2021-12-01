@@ -33,9 +33,9 @@ class LibraryContext(object):
     def get_virtualpackets(self):
         return self.virtual_packets
 
-    def add_virtualpacket(self, layer, protocol, ip_src, ip_dst, port_src, port_dst, packet_size=None, frame_time=None):
+    def add_virtualpacket(self, layer, protocol, flow, ip_src, ip_dst, port_src, port_dst, packet_size=None, frame_time=None):
         vp = VirtualPacket()
-        vp.build(layer, protocol, ip_src, ip_dst, port_src, port_dst, packet_size, frame_time)
+        vp.build(layer, protocol, flow, ip_src, ip_dst, port_src, port_dst, packet_size, frame_time)
         self.virtual_packets.append(vp)
         
     def set_service(self, service):
