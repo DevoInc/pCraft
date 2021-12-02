@@ -1,0 +1,61 @@
+key,default_value
+displayMessage,"Revoke group privilege"
+transaction_type,"WEB"
+transaction_id,"DTC42007FMIER3-42-AAbMOeR-M"
+transaction_detail,"{}"
+securityContext_isProxy,"False"
+securityContext_domain,"lb1.example.com"
+securityContext_asNumber,"666"
+securityContext_isp,"Example Provider, by Monkey Brains"
+securityContext_asOrg,"monkeybrains"
+severity,"INFO"
+authenticationContext_credentialProvider,"None"
+authenticationContext_credentialType,"None"
+authenticationContext_externalSessionId,2042MbeRa1DLFKEP-19OqR3iY
+authenticationContext_authenticationStep,"0"
+authenticationContext_interface,null
+authenticationContext_authenticationProvider,null
+authenticationContext_issuer,null
+eventType,"group.privilege.revoke"
+version,"0"
+request_ipChain_0_geographicalContext_postalCode,"94107"
+request_ipChain_0_geographicalContext_city,"San Francisco"
+request_ipChain_0_geographicalContext_state,"California"
+request_ipChain_0_geographicalContext_geolocation_lat,37.773972
+request_ipChain_0_geographicalContext_geolocation_lon,-122.431297
+request_ipChain_0_geographicalContext_country,"United States"
+request_ipChain_0_ip,93.184.216.34
+request_ipChain_0_version,"V4"
+request_ipChain_0_source,"None"
+actor_displayName,"Edith Roux"
+actor_alternateId,eroux@example.com
+actor_type,"User"
+actor_id,ZXJvdXhAZWFtcGxlLmNvbQo=
+actor_detailEntry,null
+client_geographicalContext_postalCode,"94107"
+client_geographicalContext_city,"San Francisco"
+client_geographicalContext_state,"California"
+client_geographicalContext_geolocation_lat,37.773972
+client_geographicalContext_geolocation_lon,-122.431297
+client_geographicalContext_country,"United States"
+client_zone,null
+client_device,"Computer"
+client_userAgent_rawUserAgent,"eroux21"
+client_userAgent_os,"Windows 11 Enterprise"
+client_userAgent_browser,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+client_ipAddress,93.184.216.34
+client_id,null
+debugContext_debugData_url,"/var/log/00djfieowjd2sfe?"
+debugContext_debugData_requestUri,/var/log/00djfieowjd2sfe
+debugContext_debugData_threatSuspected,"false"
+debugContext_debugData_privilegeRevoked,"Super administrator, Organization administrator, Application administrator (all), Application administrator, Read only admin, User administrator (all), User administrator, Help Desk administrator (all), Help Desk administrator, Mobile administrator, API Access Management administrator, Report administrator, Group Membership administrator"
+debugContext_debugData_requestId,Ep293Ffi2WzZm203LgHfdEE4aS
+legacyEventType,"core.group.admin_privilege.revoked"
+outcome_reason,"None"
+outcome_result,"SUCCESS"
+target_0_displayName,"Core_Admins"
+target_0_alternateId,"unknown"
+target_0_type,"UserGroup"
+target_0_id,ZXJvdXhAZWFtcGxlLmNvbQo=
+target_0_detailEntry,"None"
+uuid,8ab28f1c-1abe-4238-a0ce-3e58a10877b6
