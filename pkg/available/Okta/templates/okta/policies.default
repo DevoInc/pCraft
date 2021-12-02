@@ -1,0 +1,16 @@
+key,default_value
+type,"OKTA_SIGN_ON"
+status,"ACTIVE"
+name,"Core Engineering Users"
+priority,"1"
+system,"False"
+conditions_people_groups_include_0,0oa2g6gp23Unh9qxr4x6
+_links_self_href,"https://org.okta.com/api/v1/policies/VGhpcyBpcyBteSB"
+_links_self_hints_allow_0,"GET"
+_links_self_hints_allow_1,"PUT"
+_links_self_hints_allow_2,"DELETE"
+_links_rules_href,"https://org.okta.com/api/v1/policies/VGhpcyBpcyBteSB/rules"
+_links_rules_hints_allow_0,"GET"
+_links_rules_hints_allow_1,"POST"
+_links_deactivate_href,"https://org.okta.com/api/v1/policies/VGhpcyBpcyBteSB/lifecycle/deactivate"
+_links_deactivate_hints_allow_0,"POST"
