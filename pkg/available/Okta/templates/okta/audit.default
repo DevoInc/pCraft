@@ -1,0 +1,32 @@
+key,default_value
+id,ZXJvdXhAZWFtcGxlLmNvbQo=
+timestamp,%Y-%m-%dT%H:%M:%S.000000Z
+details_actor_type,"user"
+details_actor_object_team_name,"Core Engineering"
+details_actor_object_id,20fefaf7-4e85-4673-a114-5e7bec943cc1
+details_actor_object_name,"eroux"
+details_actor_object_status,"ACTIVE"
+details_actor_object_details_first_name,Edith
+details_actor_object_details_last_name,Roux
+details_actor_object_details_full_name,Edith Roux
+details_actor_object_details_email,eroux@example.com
+details_actor_object_user_type,"human"
+details_actor_object_oauth_client_application_id,"None"
+details_actor_object_role_grants,"None"
+details_actor_object_deleted_at,"None"
+details_client_type,"client"
+details_client_object_id,c127c03b-bac3-47e0-bccc-2cb35acbe553
+details_client_object_user_name,"eroux"
+details_client_object_description,"Eroux-MacBook-Pro"
+details_client_object_hostname,"Eroux-MacBook-Pro"
+details_client_object_os,"OS X 10.15.5"
+details_client_object_encrypted,"True"
+details_client_object_deleted_at,%Y-%m-%dT%H:%M:%S.00000Z
+details_client_object_state,"DELETED"
+details_session_type,"authenticated_client"
+details_target_server,""
+details_team_id,d126cc4a-f447-4f60-b70b-9ccf373639c8
+details_team_name,Core Engineering
+details_trace_id,"1-d126cc4a-5175446aa841829b011231b4"
+details_type,"auth_token.issue"
+details_via,"None"
