@@ -26,5 +26,10 @@ targets_1_objectType,"AppInstance"
 created,%Y-%m-%DT%H:%M:%ST000Z
 lastUpdated,%Y-%m-%DT%H:%M:%ST000Z
 published,%Y-%m-%DT%H:%M:%ST000Z
+activated,%Y-%m-%DT%H:%M:%ST000Z
+statusChanged,%Y-%m-%DT%H:%M:%ST000Z
+lastLogin,%Y-%m-%DT%H:%M:%ST000Z
+lastUpdated,%Y-%m-%DT%H:%M:%ST000Z
+passwordChanged,%Y-%m-%DT%H:%M:%ST000Z
 organization,robin-007
 api_version,v1
