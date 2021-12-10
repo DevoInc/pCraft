@@ -1,0 +1,606 @@
+﻿Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Computer Management ,Agent bulk state change finished ,412,Info ,Computer '$computer$' completed the state transition of all files from '$param1$' to '$param2$'. Note: Parameters 1 and 2 can be ‘Unapproved’ or ‘Locally Approved’. 
+Computer Management ,Agent bulk state change requested ,413,Info ,'$userName$' requested state transition of all files on computer '$computer$' from '$param1$' to '$param2$'. Parameters 1 and 2 can be ‘Unapproved’ or ‘Locally Approved’. 
+Computer Management ,Agent config modified ,435,Notice ,Agent configuration property '$param1$' was created as '$param2$' ($param3$) by '$username$'. 
+,,,,"Agent configuration property '$param1$' was modified to '$param2$' ($param3$) by '$username$'. Agent configuration property '$param1$', value '$param2$' ($param3$) was deleted by '$username$'."" Examples: "
+,,,,Computer retrieved Notifier Logo: Source[$param1$] Attempts[$param2$].  
+,,,,Agent configuration property 'KernelWriteExcludePattern' was modified to '/opt/apps/*' (Enabled) by 'bjones@mycorp.local'. 
+,,,,Agent configuration property 'protocol_message_versions (Linux)' was modified to 
+,,,,"'protocol_message_versions=1:4,2:1,3:1,5:4,6:7,7:5,8:3,9:4,10:1,11:1,12:2,13:1,14:1,15:2,16:1,18:1' (Disabled) by 'rgomez@mycorp.local'. "
+Computer Management ,Agent database error ,432,Error ,Cb Protection Agent had to restore its primary database cache. 
+,,,,Cb Protection Agent had to rebuild its primary database cache and now has to re-initialize. Cb Protection Agent detected a cache integrity problem. 
+,,,,Unknown error initializing database pool. 
+,,,,Cb Protection Agent had to restore its primary database cache. 
+,,,,Cb Protection Agent had to rebuild its primary database cache and now has to re-initialize. 
+,,,,Cb Protection Agent failed to upgrade its database. 
+,,,,Cb Protection Agent failed to connect to its cache database. 
+,,,,Cb Protection Agent failed to read config list from file. 
+,,,,Cb Protection Agent failed cache verification. 
+Computer Management ,Agent deleted events ,414,Notice ,Computer '$computer$' deleted $param1$ events. Note: Param1 is a numeric value.    
+Computer Management ,Agent Enforcement Level changed ,407,Notice ,Computer '$computer$' changed Enforcement Level from '$param1$' to '$param2$'. Note: Parameters 1 and 2 are one of the Enforcement Levels or “Local Approval”. 
+Computer Management ,Agent error ,431,Error ,Unsupported kernel [$kernelversion$] running. Agent will not track files. 
+,,,,Cb Protection Agent was unable to communicate with the kernel. Agent may be unprotected Unable to connect to the Kernel. Agent will not track files.  
+,,,,Computer failed to receive Notifier Logo: $logoFilePath$. 
+,,,,Free space on Cb Protection Agent drive is low: Drive[$letter$:] Available[$param1$] 
+,,,,Total[$param2$] Free[$param3$] Threshold[$param4$] 
+,,,,Upload failed: Retry limit exceeded. File upload canceled for file '$filePath$'. Attempts[$param$] 
+Computer Management ,Agent FIPS status changed ,851,Info ,FIPS status has changed on computer '$computer$' from '$param1$' to $param2$'. 
+Computer Management ,Agent health check ,447,Info/ ,Cb Protection Agent is healthy. Options[$param1$]. 
+,,,Error/ ,Cb Protection Agent failed a health check. ErrorsFound[$param2$] Options[$param1$] 
+,,,Warning ,Cb Protection Agent detected a problem: $param1$. $param2$ 
+,,,,Timestamp of events from computer $computer$ are $param1$ day(s) in the $param2$ 
+,,,,Timestamp of events from computer $computer$ are within expected range 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Computer Management ,Agent health check request ,457,Info ,User '$userName$' requested health check for computer '$computer$'.  
+Computer Management ,Agent notification (other) ,1019,Info ,Service control notification on '$computer$': $param1$. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Computer Management ,Agent notification (session change) ,1018,Info ,Session change on '$computer$': $param1$. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Computer Management ,Agent notification (time change) ,1017,Info ,System time change on '$computer$': $param1$. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Computer Management ,Agent Policy changed ,406,Notice ,Computer '$computer$' changed Policies from '$param1$' to '$param2$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Computer Management ,Agent Policy updated ,408,Info ,Computer '$computer$' updated Policy from version '$param1$' to '$param2$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Computer Management ,Agent requires upgrade ,415,Notice ,Agent polled from '$ipaddress$'. Agent Version($param1$). Agent needs to upgrade to latest version. 
+Computer Management ,Agent restart ,405,Info ,"Cb Protection Agent has started, version $param1$. "
+Computer Management ,Agent shutdown ,404,Info ,Cb Protection Agent was stopped because of a system shutdown. 
+Computer Management ,Agent synchronization finished ,411,Info ,Computer '$computer$' finished resynchronizing its local state with the Cb Protection Server. 
+,,,,(Reason: ‘$param1$’). 
+,,,,"Note: Param1 is one of the following:  ‘Agent queue size grew too large’, ‘Server request during agent initialization was deferred’, ‘Server request during agent cache consistency scan was deferred’, ‘Server request’, ‘Agent did not have enough history’, ‘Protocol error’, ‘Agent CLI Request’ "
+Computer Management ,Agent synchronization requested ,418,Info ,User '$username$' has requested resynchronization of computer '$computer$' with the Cb Protection Server. 
+Computer Management ,Agent synchronization started ,410,Info ,Computer '$computer$' started resynchronizing its local state with the Cb Protection Server (Reason: $param2$). 
+Computer Management ,Agent uninstalled ,421,Notice ,Agent has been uninstalled from computer '$computer$' 
+Computer Management ,Agent upgraded ,409,Info ,Computer '$computer$' changed agent version from '$param1$' to '$param2$'. 
+Computer Management ,Automatic resynchronization ,425,Info ,Cb Protection Server scheduled an auto resync on '$computer$' because agent appears to have gone back in time ($param1$/$param2$). 
+,,,,"Note: Param1 is the server’s expected sequence number of an action. Param2 is the sequence number sent by the agent, which can be used for diagnostic purposes with Carbon Black Support. "
+Computer Management ,Cache check complete ,416,Info ,Cache consistency check stopped Level [$param1$] $param2$ 
+,,,,"Cache consistency check complete: $param1$ optimizations made, $param2$ corrections. "
+,,,,"Note:  Param1 is cache consistency level. Param2 is a series of values for diagnosis of what was done during the check, and also indicates whether the check ran to completion (“Successful[1]”) or stopped before completion (“Successful[0]”). "
+Computer Management ,Cache check error ,417,Warning ,"Cache consistency error number '$param1$', file '$param2$'. "
+Computer Management ,Cache check start ,426,Info ,"Cache consistency check at level '$param1$', flags '$param2$' started. "
+Computer Management ,Cache consistency check request ,453,Info ,User ‘$userName$’ requested a cache consistency check Level[$param1$] Options[$param2$] for computer ‘$computer$’] 
+,,,,"Note: Param1 is the consistency check level chosen by the user and param2 indicates any option checkboxes chosen, such as “Full scan of new files”. "
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Computer Management ,Cb Response sensor status ,458,Info ,Cb Response Sensor Version '$param1' installed and '$param2'. 
+,,,,Cb Response Sensor is not installed. 
+,,,,"Note: param1 is the Cb Response sensor version; param2 is the sensor state (e.g., ‘Running’). "
+,,,,"Change Note: Prior to v8.0.0, the event subtype was “Carbon Black sensor status”. "
+Computer Management ,CLI executed ,429,Notice ,The CLI command “$commandname$” was executed. 
+Computer Management ,CLI password reset ,403,Notice ,The CLI password for computer '$computer$' was reset by '$username$'. 
+Computer Management ,Clone orphaned ,446,Info ,Clone computer '$computer$' was orphaned due to deletion of template '$param1$'. 
+Computer Management ,Clone registered ,445,Info ,Computer '$computer$' was registered as a clone of template '$param1$'. 
+Computer Management ,Computer added ,400,Info ,New computer '$computer$' with Policy '$policyName$' registered from '$ipAddress$'. Agent Version ($param1$). 
+Computer Management ,Computer deleted ,401,Info ,Computer '$computer$' was deleted by '$username$'. 
+Computer Management ,Computer modified ,402,Info ,Computer '$computer$' was modified by '$username$'. 
+,,,,Computer '$computer$' was moved into the Policy '$policyName$' by '$username$'. 
+,,,,Computer '$computer$' was modified by '$username$' to use automatic Policy assignment. 
+,,,,Computer '$computer$' was restored to its previous Policy by '$username$'. 
+,,,,Computer '$computer$' was scheduled for re-registration by '$username$'. 
+,,,,Duplicate computer '$computer$' with address '$param1$' was re-registered. 
+,,,,Computer from '$param1$' changed its name from '$param2$' to '$param3$'. 
+,,,,Agent upgrade for computer '$computer$' was requested by '$username$'. 
+Computer Management ,Computer reboot request ,441,Info ,User '$username$' requested reboot of computer '$computer$'. 
+Computer Management ,Computer registered ,459,Info ,Computer '$computer$' registered with the server. $param1$ users are currently logged-in to the computer. 
+Computer Management ,Configuration changed ,434,Info ,Disk configuration change detected: $param1$ volumes added; $param2$ volumes removed. 
+Computer Management ,Configure agent dumps ,452,Info ,User ‘$userName$’ changed agent dump configuration from $param1$ to $param2$ for computer ‘$computer$’. 
+Computer Management ,Debug level set ,451,Info ,User ‘$userName$’ set debug level for computer ‘$computer$’ from ‘$param1$’ to ‘$param2$’ for $param3$ minutes. 
+Computer Management ,Diagnostic file deletion request ,454,Info ,User '$userName$' requested deletion of diagnostic files from computer '$computer$. Change Note: Prior to v8.1.0 this subtype was “File deletion request”. 
+Computer Management ,Duplicate computer registration ,433,Warning ,Error registering computer ‘$computer$’ from $ipaddress$ [$param1$]: unique agent id duplicates that of computer $param2$ from $param3$. 
+Computer Management ,File deleted ,460,Info ,File 'test123.bat' [FBAD9...34F00] was successfully deleted from MYCORP\LAPTOP3 
+Computer Management ,File deletion failed ,461,Error ,If the deletion failed because it was a file from a protected publisher:   
+,,,,File deletion failure of 'emet_gui.exe' [2024F...41CCD] from MYCORP\LAPTOP3. Error: Microsoft File If the deletion failed because the agent version doesn’t support server-based deletion:   
+,,,,File deletion failure of 'emet_gui.exe' [2024F...41CCD] from MYCORP\LAPTOP3 because this Agent version doesn’t support it. 
+,,,,If the deletion failed because the file is no longer present on the computer and not in its inventory: 
+,,,,File deletion failure of 'tryme.bat' [76C7F...BD915] from MYCORP\DESKTOP8. Error: Delete Error[C0000034] 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Computer Management ,File deletion processed (file not found) ,466,Info ,If a file is exists in a computer’s inventory but is not on disk: 
+,,,,File deletion processed with file not found for [EDBD7...12F06] from MYCORP\DESKTOP9 
+Computer Management ,File deletion requested ,464,Info ,If the request was to delete a file from one computer: 
+,,,,  User 'admin' requested file deletion of all instances of [2488C...558F1] from MYCORP\DESKTOP6. 
+,,,,If the request was to delete a file from all computers: 
+,,,,  User 'admin' requested file deletion of all instances of [FBAD9...34F00] from 100 computer(s). 
+,,,,If the request was to delete a file came from an Event Rule: 
+,,,,  User 'System' requested file deletion of all instances of [81027...576DA] from MYCORP\DESKTOP6. 
+Computer Management ,File process error ,423,Error ,Agent on computer '$computer$' is unable to process required update '$param1$' from Cb Protection Server. 
+Computer Management ,File receive error ,422,Warning ,Agent on computer '$computer$' is unable to download required update '$param1$' from Cb Protection Server. 
+Computer Management ,File upload canceled ,438,Info ,User '$username$' canceled upload of file [$hash$] from computer '$computer$'. 
+,,,,User '$username$' canceled upload of file '$filepath $' from computer '$computer$'. 
+Computer Management ,File upload completed ,439,Info ,Upload of file [$hash$] from computer '$computer$' completed. 
+,,,,Upload of file '$filePathAndName$' from computer '$computer$' completed. 
+Computer Management ,File upload deleted ,449,Info ,User '$username$' deleted uploaded file [$hash$]. 
+,,,,User '$username$' deleted uploaded file '$filePathAndName$'. 
+Computer Management ,File upload error ,440,Error ,Upload of file [$hash$] from computer '$computer$' failed because of error $description$. Upload of file '$filePathAndName$' from computer '$computer$' failed because of error $description$. 
+Computer Management ,File upload requested ,437,Info ,User '$username$' requested upload of file [$hash$] from computer '$computer$'. 
+,,,,User '$username$' requested upload of file '$filePathAndName$' from computer '$computer$'. 
+,,,,Upload of file [$hash$] from computer '$computer$' was requested by Event Rule '$ruleName$'. 
+Computer Management ,Installer rescan requested ,424,Info ,User '$username$' has requested rescan of installers on computer '$computer$'. 
+Computer Management ,Local agent cache copy request ,455,Info ,User '$userName$' requested local copy of agent cache for computer '$computer$'. 
+Computer Management ,Lockdown all computers ,427,Warning ,Lockdown All button pressed by '$username$': $param1$ computer(s) have been moved to High Enforcement level. 
+Computer Management ,Prioritize updates request ,450,Info ,Updates prioritized for computer '$computer$' by user '$userName$'. 
+,,,,Prioritization of updates removed for computer '$computer$' by user '$username$'. 
+Computer Management ,Resend all Policy rules request ,456,Info ,User '$userName$' requested all Policy rules be resent to computer '$computer$'. 
+,,,,User '$userName$' requested all Policy rules be resent to computer '$computer$' using shared file. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Computer Management ,Security Alert ,448,Warning ,Unauthorized connection attempt: Pid[$processId$] Address[$IPaddress$] to the Notifier client interface 
+,,,,"The $fileState$ file '$filePathAndName$' [$hash$] is set to run automatically: $param2$."" "
+,,,,"Notes: fileState is the state of the file in Cb Protection (e.g., Unapproved or Banned). Param2 is a description of the file source (e.g., Service [Microsoft Network Inspection]). The case referred to in the second description does not occur for agents in Low enforcement, and only once per file unless there is a reboot. "
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Computer Management ,Tamper Protection changed ,428,Warning ,User '$username$' has disabled Tamper Protection on computer '$computer$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Computer Management ,Template created ,442,Info ,User '$username$' has converted computer '$param1$' to template '$computer$'. 
+Computer Management ,Template deleted ,444,Info ,User '$username$' has deleted template '$computer$'. 
+Computer Management ,Template modified ,443,Info ,User '$username$' has modified template '$computer$'. 
+Computer Management ,Temporary Enforcement Level override ,419,Warning ,A temporary override to place computer '$computer$' in Enforcement Level $param1$ for $param2$ minute(s) has been accepted. 
+Computer Management ,Temporary Enforcement Level restore ,420,Notice ,Computer '$computer$' has been restored to Enforcement Level '$param1$'. 
+Computer Management ,Temporary Policy override generated ,436,Info ,"User '$username$' has generated temporary Policy override code for computer '$computer$' with Enforcement Level '$param1', valid for $param2$ minutes. "
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Computer Management ,Unauthorized computer registration ,430,Warning ,An unauthorized computer registration attempt was made from $ipaddress$ ($param1$). 
+Discovery ,Banned file written to computer ,1004,Warning ,Computer $computer$ discovered new banned file '$filePathAndName$' [$hash$]. 
+Discovery ,Certificate added ,1013,Info ,Certificate '$param1$' was added by user '$username$'. 
+Discovery ,Certificate checked ,1014,Info ,Computer $computer$ reported that certificate used to sign file ‘$filePathAndName$’ is invalid. 
+,,,,Error: 0x$param1$ 
+,,,,Computer $computer$ reported that certificate used to counter-sign file ‘$filePathAndName$’ is invalid. Error: 0x$param1$ 
+,,,,Server detected that certificate ‘$param2$’ is invalid. Error: 0x$param1$ Agent detected that certificate ‘$param2$’ is valid. 
+,,,,Agent detected that certificate ‘$param2$’ is invalid. Error: 0x$param1$ Server checked certificate ‘$param2$’ for errors. Error flags: 0x$param1$ Agent has not been able to verify if certificate ‘$param2$’ is valid. 
+,,,,Note:  “Invalid” for this event means that it has an error according to the Microsoft CryptoAPI. 
+Discovery ,Certificate revocation ,1011,Warning ,Computer $computer$ detected revocation of certificate ‘$param2$’ on file ‘$filePathAndName$ Error: $param1$ 
+,,,,Note: This event is for file-signing certificates. 
+Discovery ,Device attached ,1009,Info ,Device '$param1$' was attached as drive '$param2$'. Interactive user at the time: '$username$'. 
+Discovery ,Device detached ,1010,Info ,Device '$param1$' was detached as drive '$param2$'. Interactive user at the time: '$username$'. 
+Discovery ,External notification ,1099,Info ,$Provider$ reported $notificationType$ with name $malwareName$ for file $filename$ from $sourceName$[$source_ipaddress$] to $destName$[$dest_ipaddress$]. Found on $num_endpoints$ endpoints. 
+,,,,$Provider$ reported no threat for file ‘$filename$’. Found on $num_endpoints$ endpoints. 
+Discovery ,File discovered (browser download) ,1020,Info ,The file '$pathname$$pathSeparator$$filename$' [$hash$] was downloaded by the browser $process$. $param1$ 
+Discovery ,File discovered (email attachment) ,1021,Info ,The file '$pathname$$pathSeparator$$filename$' [$hash$] was created by the email client $process$. $param1$ 
+Discovery ,File group created ,1001,Info ,Installation group was created for the file '$filePathAndName$' [$hash$]. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Discovery ,First execution on network ,1007,Info ,File '$filePathAndName$' with hash [$hash$] was executed for the first time. 
+Discovery ,Malicious file detected ,1201,Critical ,Unknown file '$fileName$' [$hash$] was identified by $provider$ as malicious. 
+,,,,File '$fileName$' [$hash$] was identified by $provider$ as malicious. 
+,,,,File '$fileName$ [$hash$] was identified by Cb Reputation as a malicious file. 
+,,,,"Note: Standard external providers are Check Point, FireEye, Palo Alto Networks or Microsoft. Other providers might be added through the Cb Protection API. "
+Discovery ,New certificate on network ,1012,Info ,Server discovered new certificate $SubjectName$. Note: This event is for file-signing certificates. 
+Discovery ,New device found ,1008,Notice ,A new device '$deviceName$' was mounted as drive '$param2$'. Interactive user at the time: '$username$'. 
+Discovery ,New file on network ,1005,Info ,Server discovered new file '$filePathAndName$' with hash [$hash$]. 
+Discovery ,New publisher found ,1000,Notice ,New publisher ‘$publisherName$’ was added. 
+Discovery ,New unapproved file to computer ,1003,Notice ,Computer $computer$ discovered new file '$filePathAndName$' [$hash$]. 
+Discovery ,Potential risk file detected ,1200,Warning ,Unknown file '$filename$' [$hash$] was identified by $provider$ as a potential risk File '$filename$' [$hash$] was identified by $provider$ as a potential risk. 
+,,,,File '$filename$’ [$hash$] was identified by Cb Reputation as a potential risk. 
+,,,,"Note: Standard external providers are Check Point, FireEye, Palo Alto Networks or Microsoft. Other providers might be added through the Cb Protection API.  "
+Discovery ,Service created ,1015,Info ,'$computer$' detected the creation of a new service: $servicename$. 
+Discovery ,Service deleted ,1016,Info ,'$computer$' detected the deletion of a service: $servicename$. 
+General Management ,Agent diagnostics available ,1117,Info ,Host '$computer$' generated automatic diagnostics '$param1$'. 
+,,,,"Note: Param1 is the name of the zip file for the diagnostic package, with timestamp in the name. "
+General Management ,Alert created ,1101,Info ,Alert '$alertname$' was created by '$username$'. 
+General Management ,Alert deleted ,1102,Info ,Alert '$alertname$' was deleted by '$username$'. 
+General Management ,Alert modified ,1103,Info ,Alert '$alertname$' was modified by '$username$'. 
+General Management ,Alert reset ,1105,Info ,Alert '$alertname$' was cleared by '$username$'. 
+General Management ,Alert triggered ,1104,Critical ,$alertname$: $alertmessage$ Examples: 
+,,,/Error/ ,Revoked Certificate Alert: Certificate with subject 'New App Corp Digital ID-1' was revoked for publisher 'New App Corp' 
+,,,Warning ,Backup Missed Alert: Scheduled database backup was not performed. 
+,,,,"Note: Previously, Notice was the severity for all alerts. Now it is: Critical for High priority alerts; Error for Medium priority alerts; Warning for Low priority alerts. "
+General Management ,Baseline Drift Report created ,1106,Info ,Baseline Drift Report '$param1$' has been created by '$userName$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+General Management ,Baseline Drift Report deleted ,1108,Info ,Baseline Drift Report '$reportname1$' has been deleted by '$userName$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+General Management ,Baseline Drift Report generated ,1109,Info ,Baseline Drift Report '$reportname$' has been generated. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+General Management ,Baseline Drift Report generation is slow ,1113,Warning ,Drift report $reportlink$ is taking a long time to generate. You may want to consider modifying your target or setting the report size to summary only. 
+,,,,Note: Report name is a link in this description. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+General Management ,Baseline Drift Report modified ,1107,Info ,Baseline Drift Report '$reportname$' has been modified by '$userName$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+General Management ,Event Rule created ,1114,Info ,Event Rule '$ruleName$' has been created by '$userName$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+General Management ,Event Rule deleted ,1116,Info ,Event Rule '$ruleName$' has been deleted by '$userName$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+General Management ,Event Rule modified ,1115,Info ,Event Rule '$param1$' has been modified by '$userName$'. 
+,,,,Event Rule '$ruleName1$' was disabled because analysis target is no longer valid. 
+,,,,Event Rule '$param1$' was disabled because file uploads are no longer allowed. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+General Management ,Meter created ,632,Info ,Meter '$param1$' for ‘$fileName$’ was created by '$username$'. 
+,,,,Note: Type was incorrectly identified as Policy Management in previous editions of this document. 
+General Management ,Meter deleted ,633,Info ,Meter '$param1$' for ‘$fileName$’ was deleted by '$username$'.  
+General Management ,Meter modified ,634,Info ,Meter '$param1$' for ‘$fileName$’ was modified by '$username$'. 
+General Management ,Snapshot created ,1110,Info ,Snapshot '$snapshotName$' has been created by '$userName$'. 
+General Management ,Snapshot deleted ,1112,Info ,Snapshot '$ snapshotName $' has been deleted by '$userName$'. 
+General Management ,Snapshot modified ,1111,Info ,Snapshot '$ snapshotName $' has been modified by '$userName$'. 
+Policy Enforcement ,Access block (Memory Rule) ,830,Notice ,Access to process '$filePathAndName$' was restricted - Requested[$param1$] Restricted[$param2$]. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0.  
+Policy Enforcement ,Access prompt (Memory Rule) ,831,Info ,Access to process '$filePathAndName$' was granted because of a Memory Rule user response. 
+,,,,Access to process '$filePathAndName$' was restricted because of a Memory Rule user response. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Banned process discovered ,847,Warning ,The Cb Protection Agent discovered a banned process '$pathname$$pathSeparator$$filename$' 
+,,,,[$hash$] that ran during system startup. $param1$ 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Cb Response Watchlist ,842,Notice ,If Process watchlist and file are known to Cb Protection:  
+,,,,Cb Response process watchlist '$ruleName$' hit for process '$process$' [$hash$] on computer '$computer$'. 
+,,,,Cb Response watchlist '$watchlist$' detected file '$filePathAndName$' [$filehash$] on computer '$computer$'. 
+,,,,If Process watchlist and file are unknown to Cb Protection: 
+,,,,Cb Response process watchlist '$ruleName$' hit for unknown process '$process$' [$processhash$] on computer '$computer$'. 
+,,,,Cb Response watchlist '$watchlist$' detected unknown file '$filePathAndName$' [$hash$] on computer '$computer$'. (continued) 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+,,,,If Binary watchlist and file are known to Cb Protection: 
+,,,,Cb Response binary watchlist '$ruleName$' detected file '$filePathAndName$' [$filehash$]. 
+,,,,If Binary watchlist and file is unknown to Cb Protection: 
+,,,,Cb Response binary watchlist '$ruleName$' detected unknown file '$filePathAndName$' [$filehash$]. 
+,,,,"Change Note: Prior to v8.0.0, “Cb Response” in the subtype and descriptions was “Carbon Black”. Capitalization of the subtype changed in v8.1.0. "
+Policy Enforcement ,Execution allowed (file loaded before kernel) ,843,Warning ,The $param1$ file '$pathname$$pathSeparator$$filename$' [$hash$] executed before the Cb Protection Agent was running. $param2$ 
+Policy Enforcement ,Execution allowed (file loaded before service) ,844,Warning ,The $param1$ file '$pathname$$pathSeparator$$filename$' [$hash$] executed before the Cb Protection Agent was enforcing. $param2$ 
+Policy Enforcement ,Execution allowed (inactive) ,841,Warning ,Execution of file '$filePathAndName$' [$hash$] would have blocked if Cb Protection Agent was active.  
+Policy Enforcement ,Execution allowed (Trusted User) ,815,Notice ,Execution of unapproved file '$filePathAndName$' [$hash$] was allowed because of a Trusted User '$username$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0.  
+Policy Enforcement ,Execution allowed (Unanalyzed file loaded before service) ,846,Warning ,The file '$pathname$$pathSeparator$$filename$' executed before the Cb Protection Agent started. The file was removed before the Cb Protection Agent could analyze it. $param2$ 
+Policy Enforcement ,Execution block (banned file) ,802,Notice ,File '$filePathAndName$' [$hash$] was blocked because it was banned. 
+Policy Enforcement ,Execution block (Custom Rule) ,806,Notice ,File '$filePathAndName$' with hash [$hash$] was blocked because of a Custom Rule. 
+,,,,Process '$process$' was terminated due to a Custom Rule. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Execution block (network file) ,805,Notice ,The file '$filePathAndName$' [$hash$] was blocked because it was located on a remote drive. 
+Policy Enforcement ,Execution block (prompt timeout) ,839,Info ,File '$filePathAndName$' with hash [$hash$] was blocked because of a timeout waiting for user response. 
+Policy Enforcement ,Execution block (removable media) ,819,Notice ,File '$filePathAndName$' with hash [$hash$] was blocked from execution because it was on removable media. 
+Policy Enforcement ,Execution block (still analyzing) ,804,Info ,File '$filePathAndName$' was blocked because Cb Protection Agent did not have time to analyze it. 
+Policy Enforcement ,Execution block (unapproved file) ,801,Notice ,File '$filePathAndName$' [$hash$] was blocked because it was unapproved. 
+Policy Enforcement ,Execution prompt (Custom Rule) ,818,Info ,File '$filePathAndName$' [$hash$] was executed because of a Custom Rule user response. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Execution prompt (unapproved file)  ,814,Info ,File '$filePathAndName$' [$hash$] was approved because of a user response. 
+Policy Enforcement ,Execution prompt allowed (unapproved file) ,838,Info ,File '$filePathAndName$' [$hash$] was approved because of a user response. 
+,,,,
+Policy Enforcement ,Execution prompt block (unapproved file) ,837,Info ,File '$filePathAndName$' [$hash$] was blocked because of a user response.  
+Policy Enforcement ,File access error ,825,Warning ,Unable to access the file '$filePathAndName$'. 
+Policy Enforcement ,File approved (cache consistency) ,835,Info ,File '$filePathAndName$' [$hash$] was approved due to cache a consistency scan. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Policy Enforcement ,File approved (Custom Rule) ,833,Info ,File '$filePathAndName$' [$hash$] was approved due to Custom Rule. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,File approved (local approval) ,813,Info ,File '$filePathAndName$' [$hash$] was locally approved. 
+Policy Enforcement ,File approved (publisher) ,812,Info ,File '$filePathAndName$' [$hash$] was approved by Publisher '$publisherName$'. 
+Policy Enforcement ,File approved (Reputation) ,840,Info ,File '$filePathAndName$' [$hash$] was approved by reputation. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,File approved (system update) ,836,Info ,File '$filePathAndName$' with hash [$hash$] was approved due to system update.  
+,,,,"Note: For Windows, this applies to the package/root files from Windows Update, not files installed from them. "
+Policy Enforcement ,File approved (Trusted User) ,810,Info ,File '$filePathAndName$' [$hash$] was approved by Trusted User '$username$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,File approved (Unidesk) ,850,Info ,The file '$pathname$$pathSeparator$$filename$' [$hash$] was approved due to Unidesk read-only provisioning. '$param1$' '$param2$' 
+Policy Enforcement ,File approved (updater) ,811,Info ,File '$filePathAndName$' [$hash$] was approved by an Updater. 
+Policy Enforcement ,File approved (version resource) ,834,Info ,File '$filePathAndName$' [$hash$] was approved due to version resource. 
+Policy Enforcement ,Metered execution ,816,Notice ,Metered file '$filePathAndName$' [$hash$] was executed by the user '$username$'. 
+Policy Enforcement ,New file discovered on startup ,845,Warning ,The newly discovered file '$pathname$$pathSeparator$$filename$' [$hash$] was executing when the Cb Protection Agent started. $param1$ 
+,,,,"Change Note: Prior to v8.0.0, the subtype was “Execution allowed (New file discovered on startup)”. "
+Policy Enforcement ,Prompt canceled ,849,Warning ,Prompt '$filePathAndName$' [$hash$] prompt is canceled ($param1$). 
+,,,,Note: Param1 shows the reason a notifier prompt was cancelled. It can be one of the following: 
+,,,,"•        EnforcementChange – Agent changed enforcement levels and the prompt no longer applies (e.g., moved from Medium to High, so the file will now just block). "
+,,,,•        SubsequentBlock – Agent blocked the file and is no longer waiting for response (typically means timeout or file was banned or had a rule change the blocked it).  
+,,,,•        AgentShutdown – System or daemon shutdown while the prompt was still outstanding. File will be blocked in this case. 
+,,,,•        PingTimeout – Agent was unable to communicate with notifier and canceled the prompt. This is an error case and should be rare. 
+,,,,Platform Note: This event only occurs for Mac OS X and Linux agents. 
+Policy Enforcement ,Read block (removable media) ,821,Notice ,Read access to file '$filePathAndName$' with hash [$hash$] was blocked because it was on removable media. 
+Policy Enforcement ,Report access (Memory Rule) ,829,Info ,Access to process '$filePathAndName$' was granted – Requested[$param1$] 
+,,,,Note: Param1 is a hex number indicating the Windows code of the permissions requested. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Policy Enforcement ,Report execution (Custom Rule) ,807,Notice ,File '$filePathAndName$' [$hash$] was executed. 
+,,,,Process '$process$' failed to be terminated: $param3$. Banned image: '$filePathAndName$' [$hash$]. 
+,,,,Process '$process$' would have been terminated due to the banned file '$filePathAndName$' [$hash$] if Policy were not in Visibility Only 
+,,,,"Process '$process$' would have been terminated due to the banned image '$filePathAndName$' [$hash$]: $param3$."". "
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Report execution (removable media) ,822,Info ,File '$filePathAndName$' with hash [$hash$] was executed on removable media. 
+Policy Enforcement ,Report execution block ,803,Notice ,File '$filePathAndName$' [$hash$] would have blocked if a ban were not in Report Only mode.  
+Policy Enforcement ,Report read (removable media) ,824,Info ,File '$filePathAndName$' was read on removable media. 
+Policy Enforcement ,Report write (Custom Rule) ,809,Info ,File '$filePathAndName$' was modified or deleted. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Report write (Registry Rule) ,826,Info ,Modification of registry '$filePathAndName$' was allowed. 
+,,,,Change Note: The wording of the Description was modified slightly in v8.0.0. Subtype capitalization changed in v8.1.0. 
+Policy Enforcement ,Report write (removable media) ,823,Info ,File '$filePathAndName$' was modified or deleted on removable media. 
+Policy Enforcement ,Tamper Protection ,832,Warning ,Execution of '$filePathAndName$' by '$username$' was blocked because tamper protection was enabled. 
+,,,,Modification of '$filePathAndName$' by '$username$' was blocked because tamper protection was enabled. 
+,,,,Execution of '$filePathAndName$' by '$username$' would have been blocked if tamper protection were enabled. 
+,,,,Modification of '$filePathAndName$' by '$username$' would have been blocked if tamper protection were enabled. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Unapproved process discovered ,848,Warning ,The Cb Protection Agent discovered an unapproved process '$filePathandName$' [$hash$] that ran during system startup. $param1$ 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Write block (Custom Rule) ,808,Notice ,Modification of file '$filePathAndName$' [$hash$] was blocked because of a Custom Rule. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Write block (Registry Rule) ,827,Notice ,Modification of registry '$filePathAndName$' was blocked. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Write block (removable media) ,820,Notice ,Modification of file '$filePathAndName$' with hash [$hash$] was blocked because it was on removable media. 
+Policy Enforcement ,Write prompt (Custom Rule) ,817,Info ,File '$filePathAndName$' was modified or deleted because of a Custom Rule user response. Modification of file '$filePathAndName$' [$hash$] was blocked because of a Custom Rule user response. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Enforcement ,Write prompt (Registry Rule) ,828,Info ,Registry '$filePathAndName$' was modified or deleted because of a Registry Rule user response. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+,,,,Modification of registry '$filePathAndName$' was blocked because of a Registry Rule user response.  Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,AD rules loaded ,605,Info ,Active Directory rules script with version $param1$ was loaded successfully. 
+Policy Management ,Approval Request closed ,646,Info ,Approval Request Id $requestID$ was closed by user '$username$' as ‘$resolvedState$’ with ‘$comment$’. 
+,,,,Change Note: The request ID was added to the Description field in v8.0.0. Subtype capitalization changed in v8.1.0. 
+Policy Management ,Approval Request created ,644,Info ,Approval Request Id $requestID$ was created by user '$username$'. 
+,,,,Change Note: The request ID was added to the Description field in v8.0.0. Subtype capitalization changed in v8.1.0. 
+Policy Management ,Approval Request duplicate created ,661,Info ,Duplicate of Approval Request Id $requestID$ was created by user '$username$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+,,,,
+Policy Management ,Approval Request escalated ,663,Info ,Approval Request Id $requestID$ was escalated by user '$username$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+,,,,
+Policy Management ,Approval Request modified ,662,Info ,Approval Request Id $requestID$ was modified by user '$username$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+,,,,
+Policy Management ,Approval Request opened ,645,Info ,Approval Request Id $requestID$ was opened by user '$username$'. 
+,,,,Change Note: The request ID was added to the Description field in v8.0.0. Subtype capitalization changed in v8.1.0. 
+Policy Management ,Certificate approval created ,651,Info ,Certificate $SubjectName$ was approved by ‘$username$’ for publisher $publisher$. 
+Policy Management ,Certificate approval deleted ,653,Info ,Approval of certificate $SubjectName$ was deleted by '$username$' for publisher $publisher$. 
+Policy Management  ,Certificate approval modified ,652,Info ,Approval of certificate '$param1$' was modified by '$username$' for publisher '$param3$'. 
+Policy Management ,Certificate ban created ,654,Info ,Certificate $SubjectName$ was banned by $username$ for publisher $publisher$. 
+Policy Management ,Certificate ban deleted ,656,Info ,Ban of certificate $SubjectName$ was deleted by '$username$' for publisher $publisher$. 
+Policy Management ,Certificate ban modified ,655,Info ,Ban of certificate '$subjectName$' was modified by '$username$' for publisher '$param3$'. 
+Policy Management ,Custom Rule created ,638,Info ,Custom Rule '$ruleName$' was created by '$username$'. 
+,,,,Custom Rule '$ruleName$ (Unified)' was created by '$username$'. ‘$ruleName$’ was imported by ‘$username’. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Custom Rule deleted ,640,Info ,Custom Rule '$ruleName$' was deleted by '$username$'. 
+,,,,Custom Rule '$ruleName$ (Unified)' was deleted by '$username$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Custom Rule modified ,639,Info ,Custom Rule '$ruleName$' was modified by '$username$'. 
+,,,,Custom Rule '$ruleName$ (Unified)' was modified by '$username$'. ‘$ruleName$’ was imported by ‘$username’. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Device Rule created ,641,Info ,Device Rule for ‘$ruleName$’ with id ‘$ruleID$’ was created by '$username$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Device Rule deleted ,642,Info ,Rule for device '$deviceName$' with id ‘$ruleID$’ was removed by '$username$'. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Device Rule modified ,643,Info ,Device Rule ‘$ruleName$’ with id ‘$ruleID$’ was modified by '$username$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,File approval created ,627,Info ,Approval '$ruleName$' for hash [$hash$] was created by '$username$'. 
+,,,,Approval ‘$ruleName (Unified)’ for hash [$hash$] was created by '$username$'. 
+Policy Management ,File approval deleted ,629,Info ,Approval '$ruleName$' for hash [$hash$] was deleted by '$username$'. 
+,,,,Approval ‘$ruleName (Unified)’ for hash [$hash$] was deleted by '$username$'. 
+Policy Management ,File approval modified ,628,Info ,Approval '$ruleName$' for hash [$hash$] was modified by '$username$'. 
+,,,,Approval ‘$ruleName (Unified)’ for hash [$hash$] was modified by '$username$'. 
+Policy Management ,File approved (certificate) ,660,Info ,File '$filePathAndName$' was approved by certificate '$param1$'.  
+Policy Management ,File ban created ,635,Info ,Ban '$name$' for [$hash$] was created by '$username$'. 
+,,,,Ban ‘$name$ (Unified)’ for [$hash$] was created by '$username$'. 
+,,,,Note:  $name$ is either the name of the banned file or a user-created name (usually for multi-file bans). 
+Policy Management ,File ban deleted ,637,Info ,Ban '$name$' for [$hash$] was deleted by '$username$'. 
+,,,,Ban ‘$name$ (Unified)’ for [$hash$] was deleted by '$username$'. 
+,,,,Note:  $name$ is the name of the banned file or a user-created name (usually for multi-file bans). 
+Policy Management ,File ban modified ,636,Info ,Ban '$name$' for [$hash$] was modified by '$username$'. 
+,,,,Ban ‘$name$ (Unified)’ for [$hash$] was modified by '$username$'. 
+,,,,Note:  $name$ is the name of the banned file or a user-created name (usually for multi-file bans). 
+Policy Management ,File local approval ,623,Info ,File '$filePathAndName$' [$hash$] was locally approved on computer $computer$ by '$userName$'. 
+Policy Management ,File properties modified ,611,Info ,There are multiple possible descriptions for this subtype. Examples: 
+,,,,File [$hash$] was approved by '$username$'. 
+,,,,File [$hash$] was marked as an installer by '$username$'. 
+,,,,Reputation was disabled for file [$hash$] by '$username$’. 
+Policy Management ,File remove local approval ,625,Info ,File '$filePathAndName$' [$hash$] was changed to unapproved on computer $computer$ by '$userName$'. 
+Policy Management ,Install package created ,603,Notice ,An $param1$ install package $policyName$.msi was created by '$username$'.  
+,,,,Note: Param1 is either empty or “automatic” for packages that allow automatic AD Policy assignment. 
+Policy Management ,Justification created ,650,Info ,Justification Id $param2$ was created by user '$username$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Justification duplicate created ,664,Info ,Duplicate of Justification Id $param2$ was created by user '$username$'. 
+Policy Management ,Memory Rule created ,129,Info ,Memory Rule '$ruleName$' created by '$username$'. 
+,,,,Memory Rule '$ruleName$ (Unified)' created by '$username$'.  ‘$ruleName$’ was imported by ‘$username’. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Policy Management ,Memory Rule deleted ,131,Info ,Memory Rule '$ruleName$' deleted by '$username$'. 
+,,,,Memory Rule '$ruleName$ (Unified)' deleted by '$username$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Memory Rule modified ,130,Info ,Memory Rule '$ruleName$' modified by '$username$'. 
+,,,,Memory Rule '$ruleName$ (Unified)' modified by '$username$'. ‘$ruleName$’ was imported by ‘$username’. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Notifier created ,153,Info ,Notifier ‘$notifierName$’ was created by '$username$' 
+Policy Management ,Notifier deleted ,154,Info ,Notifier ‘$notifierName$’ was deleted by '$username$' 
+Policy Management ,Notifier modified ,155,Info ,Notifier ‘$notifierName$’ was modified by '$username$' 
+Policy Management ,Policy AD rules changed ,604,Notice ,'$username$' created an AD rule for mapping $param1$ to the Policy $policyName$. 
+,,,,"Change Note: Prior to v8.0.0, the event subtype was “AD Rules changed”. The type was changed because there are now mapping rules for user login accounts. "
+Policy Management ,Policy created ,600,Info ,Policy '$policyName$' was created by '$username$'. 
+Policy Management ,Policy deleted ,601,Info ,Policy '$policyName$' was deleted by '$username$'. 
+Policy Management ,Policy file tracking disabled ,606,Notice ,File tracking has been disabled for Policy '$policyName$' by '$userName$'. 
+Policy Management ,Policy file tracking enabled ,607,Notice ,File tracking has been enabled for Policy '$policyName$' by '$userName$'. 
+Policy Management ,Policy modified ,602,Info ,Policy '$policyName$' was modified by '$username$'. 
+Policy Management ,Process demoted ,1006,Notice ,Process $filePathAndName$ was demoted on the computer '$computer$'. New files written by this process will be unapproved.  
+Policy Management ,Publisher approval created ,618,Info ,Publisher '$publisherName$' was approved by '$username$'. 
+Policy Management ,Publisher approval removed ,619,Info ,Publisher '$publisherName$' approval was removed by '$username$'. 
+Policy Management ,Publisher ban created ,657,Info ,Publisher $publisherName$ was banned by $username$. 
+Policy Management ,Publisher ban deleted ,659,Info ,Publisher $publisherName$ ban was removed by '$username$'. 
+Policy Management ,Publisher modified ,630,Info ,Publisher '$publisherName$' was edited by '$username$'. 
+Policy Management ,Registry Rule created ,132,Info ,Registry Rule '$ruleName$' created by '$username$'. 
+,,,,Registry Rule '$ruleName$ (Unified)' created by '$username$'.  ‘$ruleName$’ was imported by ‘$username’. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Registry Rule deleted ,134,Info ,Registry Rule '$ruleName$' deleted by '$username$'. 
+,,,,Registry Rule '$ruleName$ (Unified)' deleted by '$username$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Registry Rule modified ,133,Info ,Registry Rule '$ruleName$' modified by '$username$'. 
+,,,,Registry Rule '$ruleName$ (Unified)' modified by '$username$'. ‘$ruleName$’ was imported by ‘$username’. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Policy Management ,Reputation settings modified ,144,Info ,Reputation was enabled by '$username$'. 
+,,,,Reputation was disabled by '$username$'. 
+,,,,Reputation settings were modified by '$username$'. 
+Policy Management ,Rules exported ,200,Info ,Custom Rules were exported by '$username$'. 
+,,,,Memory Rules were exported by '$username$'. 
+,,,,Registry Rules were exported by '$username$'. 
+Policy Management ,Script Rule created ,647,Info ,Script Rule '$ruleName$' was created by '$username$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Script Rule deleted ,648,Info ,Script Rule '$ruleName$' was deleted by '$username$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Script Rule modified ,649,Info ,Script Rule '$ruleName$' was modified by '$username$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Trusted Directory check ,608,Info ,Trusted Directory '$pathName$' on computer '$computer$' is '$param2$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Trusted Directory created ,613,Info ,Approval directory '$pathname$' added by '$username$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Trusted Directory deleted ,615,Info ,Approval directory '$pathname$' deleted by '$username$'. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Trusted Directory import ,626,"Info, ",Trusted package '$param1$' from '$source$' has been processed. 
+,,,"Warning, ",Notes: Source may be a computer name or a manifest name. Severity is Info for status imports; Warning for improperly signed or misidentified manifests; Error for all other cases. 
+,,,Error ,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Trusted Directory modified ,614,Info ,Approval directory '$filePathAndName$' modified by '$username$'. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Trusted Directory scan ,609,Info ,Pre-approval scan started for '$filePathAndName$'. Approval ID: $param1$. Job ID: $param2$. Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Policy Management ,Trusted User added ,616,Info ,Trusted User '$name$' was added by '$consoleusername$'. 
+Policy Management ,Trusted User deleted ,617,Info ,Trusted User '$name$' was deleted by '$consoleusername$'. 
+Policy Management ,Unified rule overridden ,665,Info ,Unified rule '$param1$' was overridden by '$username$' 
+,,,,"Note:  In the initial release of v8.0.0, “overridden” was misspelled in the subtype and description. "
+Policy Management ,Updater disabled ,621,Info ,Updater '$updaterName$' was disabled by '$username$'. 
+Policy Management ,Updater enabled ,620,Info ,Updater '$updaterName$' was enabled by '$username$'. 
+Server Management ,AD lookups are slow ,114,Warning ,Active Directory Lookups are slow. Average lookup took $param1$ ms. Please review your AD configuration. 
+Server Management ,Agent SSL error ,126,Warning ,SSL certificate error was detected when talking with host at IP '$ipAddress$'. This event can be falsely triggered by unreliable network connections. 
+,,,,Change Notes:  Subtype was “Agent certificate expired” in some previous versions. 
+Server Management ,Cb Collective Defense Cloud connection lost ,138,Warning ,Cb Collective Defense Cloud connection lost: $reason$ 
+,,,,"Change Note: In pre-8.0.0 releases, the subtype referred to “Parity Knowledge Service” or “Bit9 Software Reputation Service.” "
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Server Management ,Cb Collective Defense Cloud connection restored ,139,Notice ,Cb Collective Defense Cloud connection restored  
+,,,,"Change Note:  In pre-8.0.0 releases, the subtype referred to “Parity Knowledge Service” or “Bit9 Software Reputation Service.”. "
+Server Management ,Cb Collective Defense Cloud proxy cleared ,141,Info ,Proxy disabled. Using direct connection to Cb Collective Defense Cloud. 
+,,,,"Change Note: In pre-8.0.0 releases, the subtype referred to “Parity Knowledge Service” or “Bit9 Software Reputation Service.”  "
+Server Management ,Cb Collective Defense Cloud proxy set ,140,Info ,Using proxy '$param1$' for connection to Cb Collective Defense Cloud. 
+,,,,"Change Note:  In pre-8.0.0 releases, the subtype referred to “Parity Knowledge Service” or “Bit9 Software Reputation Service.”. "
+Server Management ,Communication error ,136,Error ,SOAP error on computer $computer$ ($ipaddress$) in $param1$. 
+Server Management ,Connector restart ,178,Warning ,"Connector started, build information: $param1$ "
+Server Management ,Connector shutdown ,179,Notice ,Connector shutdown cleanly. 
+Server Management ,Database error ,135,Error ,Unknown error initializing database pool. 
+Server Management ,Database server reached specified limit ,106,Critical ,Database data file size limit reached. Total data file size is $param1$ MB. 
+Server Management ,Database verification error ,108,Error ,Cb Protection Server database is corrupt: $param1$. 
+Server Management ,Enabled Indicator Set deleted ,169,Info ,Indicator Set $setName$ was deleted by '$username$' 
+,,,,Note: Occurs only when the Indicator Set was enabled at the time of deletion. There is a different Indicator Set deleted event for the general case. 
+Server Management ,Enabled updater deleted ,148,Info ,Enabled Updater $updaterName$ was deleted by '$username$'  
+,,,,Note: Occurs only when the Updater was enabled at the time of deletion. 
+Server Management ,File analysis canceled ,158,Info ,User '$username$' canceled analysis of file '$filename$' [$hash$] with '$provider$'. 
+Server Management ,File analysis completed ,161,Info ,File '$filename$' [$hash$] was successfully analyzed with '$provider$'. Nothing suspicious was found. 
+,,, ,File '$filename$' [$hash$] was successfully analyzed with '$provider$'. It was reported as malicious. 
+,,,Warning ,
+Server Management ,File analysis error ,160,Error ,Analysis of file '$filename$' [$hash$] with '$provider$' failed because of error '$param1$'. 
+Server Management ,File analysis modified ,176,Info ,'User ''$username$'' modified priority of analysis of file [$hash$]. 
+Server Management ,File analysis requested ,157,Info ,User '$username$' requested analysis of file [$hash$] with '$provider$'. 
+,,,,Analysis of file [$hash$] with '$provider$' was requested by Event Rule '$ruleName$'. 
+Server Management ,File downloaded ,196,Info ,File '$filename$' [$hash$] downloaded by '$username$' from server 
+Server Management ,File inventory deleted ,187,Notice ,Deleted $param1 inventory files that were excluded per configuration Note: Param1 is the number of files deleted. 
+Server Management ,File tracking disabled ,109,Warning ,File tracking has been automatically disabled because database data file size limit has been reached. 
+Server Management ,File upload modified ,177,Info ,User ‘$username$' modified priority of upload of file [$hash$] from computer '$computer$' 
+Server Management ,Health Indicator changed ,183,Info ,The System has changed Health Indicator ‘$Param1$’ on tab ‘$Param2$’ on the System Health page. 
+,,,,Notes: Param1 is the name of the Health Indicator. Param2 is the tab on which it appears. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Server Management ,Health Indicator created ,182,Info ,A new Health Indicator ‘$Param1$’ was created by $username$ on the ‘$Param2$’ tab of the System Health page. 
+,,,,Note:  Param1 is the name of the Health Indicator. Param2 is the tab on which it appears. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Server Management ,Health Indicator deleted ,184,Info ,The system has removed Health Indicator ‘$Param1$’ from tab ‘$Param2$’ on the System Health Page. 
+,,,,Note: Param1 is the name of the Health Indicator. Param2 is the tab where it previously appeared. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Server Management ,Health Indicator severity change ,181,Warning,For existing Health Indicators: 
+,,,/Info ,Health Indicator $Param1$ has changed from severity $Param2$ to severity $Param3$. Health Indicator $Param1$ has gone to severity Param3$ Check the Health Indicator for more details. (Appears when indicator stops showing healthy state) 
+,,,,Health Indicator $Param1$ has increased in severity from $Param2$ to $Param3$. Check the Health 
+,,,,Indicator for more details. (Appears when indicator moves from borderline to critical) 
+,,,,Health Indicator $Param1$ has decreased in severity from Param2$ to Param3$. (Appears when indicator moves from critical to borderline) 
+,,,,Health Indicator $Param1$ is now healthy. (Appears when indicator moves to healthy state) For newly created Health Indicators: 
+,,,,Newly created Health Indicator $Param1$ is healthy. 
+,,,,Newly created Health Indicator $Param1$ has severity $Param3$. Check the Health Indicator for more details. 
+,,,,Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Server Management ,Indicator Set created ,163,Info ,Indicator Set '$setName$' was created by '$username$'. 
+Server Management ,Indicator Set deleted ,164,Info ,Indicator Set '$setName$' was deleted by '$username$'  
+,,,,Note: There is a separate Enabled Indicator Set deleted event for Updaters deleted while enabled. 
+Server Management ,Indicator Set disabled ,167,Info ,Indicator Set '$setName$' was disabled by '$username$' 
+Server Management ,Indicator Set enabled ,166,Info ,Indicator Set '$setName$' was enabled by '$username$' 
+Server Management ,Indicator Set exception created ,172,Info ,Indicator Set Exception '$setName$' created by '$username$' 
+Server Management ,Indicator Set exception deleted ,174,Info ,Indicator Set Exception '$param1$' deleted by '$username$' 
+Server Management ,Indicator Set exception modified ,173,Info ,Indicator Set Exception '$param1$' modified by '$username$' 
+Server Management ,Indicator Set modified ,168,Info ,Indicator Set '$param1$' was modified by '$username$' 
+Server Management ,Indicator Set updated ,165,Info ,Indicator Set '$param1$' was updated by '$username$' 
+Server Management ,License added ,115,Notice ,User '$username$' has successfully added new Cb Protection license. 
+Server Management ,License error ,116,Error ,User '$username$' attempted to add Cb Protection license. ($param1$)  
+Server Management ,License warning ,117,Warning ,Your Cb Protection Suite license will expire in $param1$ day(s) on $date$. 
+Server Management ,Network Connector ,162,Info ,"New network connector '$product$', version '$param2$' was registered. "
+,,,,"Network connector ‘$product$’, version ‘$param2$’ was removed. "
+,,,,"Network connector ‘$product$’, version ‘$param2$’ was removed and its data was deleted. "
+,,,,(continued) 
+,,,,User ‘$username$’ has modified configuration of network connector '$product$'. 
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+,,,,User ‘$user$’ has modified UI configuration of network connector ‘$param1$’. 
+,,,,User ‘$username$’ has enabled network connector ‘$product$’. 
+,,,,User ‘$username$’ has disabled network connector ‘$product$’. 
+,,,,User ‘$username$’ has enabled file analysis for network connector ‘$product$’. 
+,,,,User ‘$username$’ has disabled file analysis for network connector ‘$product$’. 
+,,,,User ‘$username$’ has set param '$param2$' to '$param3$' for network connector '$product$'. 
+,,,,User ‘$username$’ has enabled file analysis mode ‘$param1$’ for network connector ‘$product$’. 
+Server Management ,Network Connector added ,185,Notice ,"User ‘$user$’ has registered new network connector ‘$param1$', version ‘$param2$’  "
+Server Management ,Network Connector removed ,186,Notice ,"User ‘$user$’ has removed network connector ‘$param1$', version ‘$param2$’ "
+Server Management ,Notifier install failed ,156,Error ,"Upgrade Error: Notifier for Policy '$policyName$', Setting '$policySetting$' was reset to default during upgrade. "
+Server Management ,Old events were deleted ,107,Notice ,Deleting $param1$ events older than $param2$. 
+Server Management ,Rapid Config created ,188,Info ,Rapid Config '$param1$' was created by '$username$'. 
+Server Management ,Rapid Config deleted ,189,Info ,Rapid Config '$param1$' was deleted by '$username$'. 
+Server Management ,Rapid Config disabled ,193,Info ,Rapid Config '$param1$' was disabled by '$username$'. 
+Server Management ,Rapid Config enabled ,192,Info ,Rapid Config '$param1$' was enabled by '$username$'. 
+Server Management ,Rapid Config modified ,190,Info ,Rapid Config '$param1$' was modified by '$username$'. 
+Server Management ,Rapid Config updated ,191,Info ,Rapid Config '$param1$' was updated by '$username$'. 
+Server Management ,Reporter restart ,151,Warning ,"Reporter started, build information: $param1$. "
+Server Management ,Reporter shutdown ,152,Notice ,Reporter shutdown cleanly. 
+Server Management ,Server backup failed ,104,Warning ,Database backup has failed. 
+Server Management ,Server backup missed ,105,Warning ,Scheduled database backup was not performed. 
+Server Management ,Server backup started ,103,Info ,"Database backup has been enabled, starting backup service. "
+Server Management ,Server backup stopped ,110,Notice ,"Backup has been disabled, stopping backup service. "
+Server Management ,Server Config List error ,113,Error ,"Data is bad for config list entry. Id[$param1$], Version[$param2$], Data[$param3$]. Change Note: Capitalization of the subtype was changed in v8.1.0. "
+Server Management ,Server config modified ,102,Notice ,Configuration property '$param1$' was changed from '$param3$' to '$param2$' by '$username$'. Tracking of locally approved support files signed by Microsoft was disabled/enabled by 
+,,,,'$username$' 
+Server Management ,Server error ,142,Error/ Warning ,There are too many descriptions to list for this subtype since it handles many different types of errors. Examples include: 
+,,,,Cb Collective Defense Cloud - error logged and service resuming operation. 
+,,,,The remote server returned an unexpected response: (413) Request Entity Too Large.  
+Server Management ,Server performance ,175,Warning ,Event filter for alert '$alertName$' is not performing well. Execution took $param2$ ms while processing $param3$ events. Please review associated alert filter. 
+,,,,Event Rule '$ruleName1$' is not performing well. Execution took $param2$ ms while processing $param3$ events. Please review associated Event Rule filter. 
+Server Management ,Server restart ,101,Notice ,"Cb Protection Server started, build information: $param1$. "
+,,,,
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+Server Management ,Server shutdown ,100,Warning ,Cb Protection Server shutdown cleanly. 
+Server Management ,Server upgrade failed ,112,Error ,Failed to upgrade Cb Protection Server to $param1$. Contact support. 
+,,,,Change Note: The event description referred to “Parity Server” or “Bit9 Server” in pre-8.0.0 releases.  Not currently used in v8.0.0. 
+Server Management ,Server upgrade info ,195,Info ,Upgrade Information for server Cb Protection Server : Default Rules order was modified by customer 
+Server Management ,Server upgrade succeeded ,111,Info ,Successfully upgraded Cb Protection Server to version $param1$. 
+,,,,Change Note: The event description referred to “Parity Server” or “Bit9 Server” in pre-8.0.0 releases. 
+Server Management ,SSL certificate CN mismatch ,128,Critical ,Common Name mismatch between SSL certificate ($param1$) and RPC Server Name ($param2$). 
+Server Management ,SSL certificate error ,127,Critical ,Server was not able to use default SSL certificate. Communication with agents is disabled. 
+Server Management ,SSL certificate expired ,125,Critical ,Server SSL certificate has expired on $param1$. Agents will not be able to connect if SSL protocol is enabled. 
+Server Management ,SSL certificate expiring ,124,Critical ,Server SSL certificate will expire on $param1$. 
+Server Management ,SSL certificate generated ,118,Notice ,User '$username$' has successfully generated a new SSL certificate for Cb Protection Server: $param1$  
+Server Management ,SSL certificate generation failed ,119,Warning ,User '$username$' has failed to generate a new SSL certificate for Cb Protection Server. Error: $param1$ 
+Server Management ,SSL certificate import failed ,121,Warning ,User '$username$' has failed to import new SSL certificate for Cb Protection Server. Error: $param1$ 
+Server Management ,SSL certificate imported ,120,Notice ,User '$username$' has successfully imported a new SSL certificate for Cb Protection Server: $param1$ 
+Server Management ,Strong SSL communications disabled ,123,Warning ,User '$username$' has disabled strong SSL communications. Agents using strong SSL will not be able to talk to server anymore. Contact Carbon Black Support for remediation. 
+Server Management ,Strong SSL communications enabled ,122,Notice ,User '$username$' has enabled strong SSL communications. Server cannot be spoofed. 
+Server Management ,System error ,137,Error ,Reports a variety of descriptions for command line usage errors in rarely used debugging activities. 
+Server Management ,Unified server added ,280,Info ,Unified server '$param1$' added to local configuration by ‘$username$’. 
+Server Management ,Unified server error ,283,Critical ,Unified server '$param1$' inaccessible. 
+,,,,Unified server '$param1$' inaccessible due to an issue with the SSL certificate. 
+,,,,Unified server '$param1$' inaccessible due to an authentication issue. 
+Server Management ,Unified server modified ,282,Info ,Unified server '$param1$' modified by ‘$username$’. 
+,,,,Unified Management disabled on local server by '$username$'. 
+,,,,Unified Management configured to be managed only from this server by '$username$'. 
+,,,,Unified Management configured to be managed from all servers by '$username$'. 
+,,,,This server was added to remote unified management configuration by '$username$'. 
+Server Management ,Unified server removed ,281,Info ,Unified server '$param1$' removed from local configuration by ‘$username$’. 
+Server Management ,Updater created ,145,Info ,Updater ‘$updaterName$’ was created by '$username$' 
+Server Management ,Updater deleted ,146,Info ,Updater ‘$updaterName$’ was deleted by '$username$' 
+,,,,Note: There is a separate Enabled Updater deleted event for Updaters deleted while enabled. 
+Server Management ,Updater modified ,147,Info ,Updater ‘$updaterName$’ was modified by '$username$'. 
+Type,Subtype ,ID No. ,Severity ,Example Descriptions/Comments 
+,,,,Enabled Updater ‘$updaterName$’ was deleted by '$username$'. 
+Server Management ,Updaters Indicator Set disabled ,171,Info ,'$username$' disabled automatic update of Indicator Sets from Cb Collective Defense Cloud 
+Server Management ,Updaters Indicator Set enabled ,170,Info ,'$username$' enabled automatic update of Indicator Sets from Cb Collective Defense Cloud 
+Server Management ,Updaters update disabled ,150,Info ,'$username$' disabled automatic update of Application Updaters from Cb Collective Defense Cloud Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Server Management ,Updaters update enabled ,149,Info ,'$username$' enabled automatic update of Application Updaters from Cb Collective Defense Cloud Change Note: Capitalization of the subtype was changed in v8.1.0. 
+Server Management ,Yara Rules Added ,197,Info ,A new set of Yara Rules were added: $param1$ Version: $param2$. 
+Server Management ,Yara Rules Modified ,198,Info ,Yara Rules were modified: $param1$ OldVersion: $param2$. 
+Session Management ,Console user created ,302,Info ,'$userName1$' created new username ‘$userName2$’. 
+Session Management ,Console user deleted ,303,Info ,'$userName1$' deleted the user '$userName2$'. 
+Session Management ,Console user login ,300,Info ,User '$username$' logged in from $ipaddress$. 
+,,,,User '$username$' logged in from $ipaddress$ via SAML. 
+,,,,User '$username$' redirected to unified server $serverName$. 
+,,,,"Change Note: In v8.0.0, a new description option for Unified Management was added. In v8.1.0, a new description option was added for SAML logins. "
+Session Management ,Console user logout ,301,Info ,User '$username$' logged out. 
+Session Management ,Console user modified ,304,Info ,'$userName1$' changed the User Roles for $userName2$'. 
+,,,,'$userName1$' changed the password for '$userName2$'. ‘$userName1$’ modified the user ‘$userName2$’. 
+,,,,‘$userName1$' changed the password for '$userName2$'. 
+,,,,‘$userName1$’ created the API token for '$userName2$'. 
+,,,,Unified server modified the unified user $userName2$. 
+,,,,"Change Note: In pre-8.0.0 releases, the first description referred to “access level” instead of user roles, and listed the user group the user was moved from and to. User groups were changed to user roles in v8.0.0, and users can have more than one role. Also, unified servers are new for v8.0.0; the “Unified server modified” message indicates that a user has been authenticated on a client server. "
+Session Management ,Multiple failed logins ,305,Warning ,User '$username$' has failed to login $param1$ times in a row. Current IP Address $ipaddress$. 
+Session Management ,User Role AD rules changed ,309,Notice ,'$username$' modified an AD rule for mapping $param1$ to the User Role $param2$. 
+Session Management ,User Role created ,306,Info ,User Role '$param1$' created by '$username$'. 
+,,,,"Change Note: Prior to v8.0.0, the event subtype and description referred to “User group”. "
+Session Management ,User Role deleted ,307,Info ,User Role '$param1$' deleted by '$username$'. 
+,,,,"Change Note: Prior to v8.0.0, the event subtype and description referred to “User group”. "
+Session Management ,User Role modified ,308,Info ,User Role '$param1$' modified by '$username$'. 
+,,,,"Change Note: Prior to v8.0.0, the event subtype and description referred to “User group”. "
