@@ -1,0 +1,12 @@
+key,default_value
+ip-src,192.168.0.42
+client-identity,-
+username,-
+method,GET
+uri,/
+httpver,HTTP/1.1
+status,200
+response-len,3380
+http-referer,-
+user-agent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+
