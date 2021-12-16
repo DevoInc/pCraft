@@ -62,6 +62,15 @@ class LibraryContext(object):
     def gen_uuid(self, event):
         return str(uuid.uuid4())
 
+    def gen_md5(self):
+        return hashlib.md5(bytes(str(random.randint(1, 99999999999)), "utf8")).hexdigest()
+    
+    def gen_sha1(self):
+        return hashlib.sha1(bytes(str(random.randint(1, 99999999999)), "utf8")).hexdigest()
+
+    def gen_sha256(self):
+        return hashlib.sha256(bytes(str(random.randint(1, 99999999999)), "utf8")).hexdigest()
+    
     def get_consistent_id(self, name, idlen):
         consistent_id = int(hashlib.sha256(bytes(name, "utf8")).hexdigest(), 16)
         return str(consistent_id)[:idlen]
