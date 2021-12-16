@@ -19,7 +19,7 @@ ParentProcessId,42435800479051
 SourceProcessId,42435800479051
 SessionProcessId,4243590427320
 SHA1HashData,0000000000000000000000000000000000000000
-ProcessEndTime,%S.000
+ProcessEndTime,%s.000
 SVUID,0
 ParentBaseFileName,bash
 EffectiveTransmissionClass,2
