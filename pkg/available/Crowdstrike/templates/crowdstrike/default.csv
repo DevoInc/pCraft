@@ -1,5 +1,5 @@
 key,default_value
-ConfigBuild,"5.31.11304"
+ConfigBuild,"1007.31.11304.1"
 ConfigStateHash,9403815389
 ContextProcessId,932494304992735022
 ContextThreadId,743885290637038
@@ -14,4 +14,29 @@ event_platform,Mac
 event_simpleName,DnsRequest
 id,8dc64531-35bd-4d37-90f1-b74fcb058295
 name,DnsRequestMacV1
-timestamp,1630088770
+timestamp,%s
+ParentProcessId,42435800479051
+SourceProcessId,42435800479051
+SessionProcessId,4243590427320
+SHA1HashData,0000000000000000000000000000000000000000
+ProcessEndTime,%S.000
+SVUID,0
+ParentBaseFileName,bash
+EffectiveTransmissionClass,2
+ProcessGroupId,45826351452103
+RawProcessId,18236
+GID,0
+SVGID,0
+MD5HashData,a7966bf58e23583c9a5a4059383ff850
+SHA256HashData,37980c33951de6b0e450c3701b219bfeee930544705f637cd1158b63827bb390
+UID,0
+CommandLine,/usr/bin/java -XX:+UseConcMarkSweepGC -Dfile.encoding=UTF-8 -Djava.awt.headless=true
+TargetProcessId,45826351483916
+ImageFileName,/usr/lib/jvm/openjdk-15/jre/bin/java
+RGID,0
+SourceThreadId,0
+Entitlements,12
+name,ProcessRollup2LinV6
+RUID,0
+ProcessStartTime,%s.000
+GrandParentBaseFileName,
