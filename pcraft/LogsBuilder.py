@@ -194,7 +194,10 @@ class LogsBuilder(object):
         return new_pkg_to_execute
 
     def _event_map_taxonomy_with_virtualpackets(self, event, pcraft_field, variable):
-        packets = event["virtualpackets"]
+        try:
+            packets = event["virtualpackets"]
+        except:
+            return
         first_packet = packets[0]
         last_packet = packets[-1]
         # print("We are using virtual packets for field:%s assigned to %s" % (pcraft_field, variable))
