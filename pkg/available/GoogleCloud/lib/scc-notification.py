@@ -125,27 +125,27 @@ class PcraftLogWriter(LibraryContext):
         frame_time = datetime.fromtimestamp(event["time"])
 
         try:
-            org = event["variables"]["org"]
+            org = event["variables"]["$org"]
         except:
             org = "My Organization"
         try:
-            rule_name = event["variables"]["rule_name"]
+            rule_name = event["variables"]["$rule_name"]
         except:
             rule_name = "compromise_attempt"
         try:
-            rule_desc = event["variables"]["rule_desc"]
+            rule_desc = event["variables"]["$rule_desc"]
         except:
             rule_desc = "Initial access: Comprimise Attempt"
         try:
-            referer = event["variables"]["referer"]
+            referer = event["variables"]["$referer"]
         except:
             referer = ""
         try:
-            uri = event["variables"]["uri"]
+            uri = event["variables"]["$uri"]
         except:
             uri = "/"
         try:
-            useragent = event["variables"]["user-agent"]
+            useragent = event["variables"]["$user-agent"]
         except:
             useragent = self.get_random_user_agent()
         
