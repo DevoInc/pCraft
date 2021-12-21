@@ -1,0 +1,269 @@
+ID,Name,File Type Name,Min Version (>=),Max Version (<),File Type Direction
+52000,Microsoft PowerPoint,ppt,7.1.0,,both
+52001,Microsoft Word DOC File,doc,7.1.0,,both
+52002,Microsoft Excel XLS File,xls,7.1.0,,both
+52003,Microsoft Cabinet (CAB),cab,7.1.0,,both
+52004,ZIP,zip,7.1.0,,both
+52005,TAR,tar,7.1.0,,both
+52006,HTA (HTML Application),hta,7.1.0,,both
+52007,Windows Program Information File (PIF),pif,7.1.0,,both
+52008,Windows Registry (REG),reg,7.1.0,,both
+52009,Windows Batch (BAT),bat,7.1.0,,both
+52010,Windows Script (WSF),wsf,7.1.0,,both
+52011,Microsoft PowerPoint PPT File,ppt,7.1.0,,both
+52012,Microsoft Word DOC File,doc,7.1.0,,both
+52013,Microsoft Excel XLS File,xls,7.1.0,,both
+52014,GZIP,gzip,7.1.0,,both
+52015,RAR,rar,7.1.0,,both
+52016,Z Compressed,zcompressed,7.1.0,,both
+52017,Perl Script,pl,8.1.0,,both
+52018,Shell Script,sh,7.1.0,,both
+52019,Windows Dynamic Link Library (DLL),dll,7.1.0,,both
+52020,Windows Executable (EXE),exe,7.1.0,,both
+52021,Adobe PDF File,pdf,7.1.0,,both
+52022,Microsoft Word 2007 DOCX File,docx,7.1.0,,both
+52023,Microsoft PowerPoint 2007 PPTX File,pptx,7.1.0,,both
+52024,Microsoft Excel 2007 XLSX File,xlsx,7.1.0,,both
+52025,Pretty Good Privacy Format (PGP),pgp,7.1.0,,both
+52026,Encrypted ZIP,encrypted-zip,7.1.0,,both
+52027,GZIP,gzip,7.1.0,,download
+52028,Microsoft Excel Encrypted XLS File,encrypted-xls,7.1.0,,both
+52030,TIF File,tif,7.1.0,,both
+52031,Microsoft Access Database File,mdb,7.1.0,,both
+52032,CSV File,csv,7.1.0,,both
+52033,Microsoft MSOFFICE,msoffice,7.1.0,,both
+52034,Encrypted RAR File,encrypted-rar,7.1.0,,both
+52035,Encrypted PGP File,pgp,7.1.0,,both
+52036,MDI File,mdi,7.1.0,,both
+52038,Microsoft Word Encrypted DOC File,encrypted-doc,7.1.0,,both
+52039,Microsoft Encrypted PowerPoint File,encrypted-ppt,7.1.0,,both
+52040,Windows Batch (BAT),bat,7.1.0,,download
+52041,Activex File,ocx,7.1.0,,both
+52042,Activex CAB File,ocx,7.1.0,,download
+52043,WRI File,wri,7.1.0,,both
+52044,RTF File,rtf,7.1.0,,both
+52045,MPEG File,mpeg,7.1.0,,both
+52046,WMV File,wmv,7.1.0,,both
+52047,FLV File,flv,7.1.0,,both
+52048,AVI File,avi,7.1.0,,both
+52049,Quicktime MOV File,mov,7.1.0,,both
+52054,MP3 File,mp3,8.1.0,,both
+52056,PSD File,psd,7.1.0,,both
+52057,SGI File,sgi,7.1.0,,both
+52059,XPM File,xpm,7.1.0,,both
+52060,Microsoft PE File,PE,7.1.0,,both
+52062,Scalable Vector Graphics SVG File,svg,7.1.0,,both
+52063,SHK File,shk,7.1.0,,both
+52064,Maya MB File,mb,7.1.0,,both
+52065,Maya ASCII File,ma,7.1.0,,both
+52066,DPX File,dpx,7.1.0,,both
+52071,GIF File,gif,7.1.0,,both
+52072,JPEG File,jpeg,7.1.0,,both
+52076,WMF File,wmf,7.1.0,,both
+52081,Unknown Binary File,unknown-binary,9.0.0,,both
+52082,Microsoft Word 2007 IRM Encrypted DOCX File,encrypted-docx,7.1.0,,both
+52083,Microsoft Excel 2007 IRM Encrypted XLSX File,encrypted-xlsx,7.1.0,,both
+52084,Microsoft PowerPoint 2007 IRM Encrypted PPTX File,encrypted-pptx,7.1.0,,both
+52085,Microsoft Word 2007 Encrypted DOCX File,encrypted-docx,7.1.0,,both
+52086,Encrypted Microsoft Office 2007 File,encrypted-office2007,7.1.0,,both
+52087,Encrypted Microsoft Office 2007 File,encrypted-office2007,7.1.0,,both
+52088,ISO File,iso,7.1.0,,both
+52089,MSI File,msi,7.1.0,,both
+52090,Torrent File,torrent,7.1.0,,both
+52092,CMD Windows Script File,cmd,7.1.0,,both
+52093,LZH File,lzh,7.1.0,,both
+52094,LNK File,lnk,7.1.0,,both
+52095,DWG File Detected,dwg,7.1.0,,both
+52096,GIF File Upload,gif-upload,7.1.0,,upload
+52097,JPEG File Upload,jpeg-upload,7.1.0,,upload
+52098,BMP File Upload,bmp-upload,7.1.0,,upload
+52099,RealMedia File,rm,7.1.0,,both
+52100,PNG File Upload,png-upload,7.1.0,,upload
+52101,Mac Application Tar Detected,macapp,7.1.0,,both
+52104,MP4 Detected,mp4,7.1.0,,both
+52105,MKV Detected,mkv,7.1.0,,both
+52106,AVI DIVX Video Detected,avi-divx,7.1.0,,both
+52107,AVI XVID Video Detected,avi-xvid,7.1.0,,both
+52108,Android Package File Detected,apk,7.1.0,,both
+52109,Graphic Data System File Detected,gds,7.1.0,,both
+52110,Tanner Database File,tdb,7.1.0,,both
+52111,OrCAD DSN File,dsn,7.1.0,,both
+52112,EDIF File,edif,7.1.0,,both
+52113,EDIF File,edif,7.1.0,,both
+52114,VBScript Encoded File,vbe,7.1.0,,both
+52115,ISO File,iso,7.1.0,,both
+52116,JAR File,jar,7.1.0,,both
+52117,Java Class File,class,7.1.0,,both
+52118,Apple iWork Pages File,iwork-pages,7.1.0,,both
+52119,Apple iWork Numbers File,iwork-numbers,7.1.0,,both
+52120,Apple iWork Keynote File,iwork-keynote,7.1.0,,both
+52121,CorelDRAW File,cdr,7.1.0,,both
+52122,Design Web Format File,dwf,7.1.0,,both
+52123,CAD STEP File,stp,7.1.0,,both
+52124,CAD STEP File,stp,7.1.0,,both
+52128,Windows BAT,bat,7.1.0,8.1.0,both
+52129,Windows Script,wsf,7.1.0,,both
+52130,Encrypted PDF,encrypted-pdf,7.1.0,,both
+52131,HTML Application,hta,8.1.0,,both
+52132,Android Package File Detected,apk,7.1.0,,both
+52133,CMD Windows Script File,cmd,7.1.0,,both
+52136,JPEG File Upload,jpeg-upload,7.1.0,8.1.0upload
+52137,PNG File Upload,png-upload,7.1.0,8.1.0upload
+52138,BMP File Upload,bmp-upload,7.1.0,8.1.0upload
+52139,GIF File Upload,gif-upload,7.1.0,8.1.0upload
+52140,Microsoft Word 2007 DOCX File,docx,7.1.0,,both
+52141,Microsoft Excel 2007 XLSX File,xlsx,7.1.0,,both
+52142,Microsoft PowerPoint 2007 PPTX File,pptx,7.1.0,,both
+52143,Email Link,Email-link,7.1.0,,both
+52144,Windows Screen Saver SCR File,scr,7.1.0,,both
+52145,Adobe Shockwave Flash File,flash,7.1.0,,both
+52148,Windows Help File,hlp,7.1.0,,both
+52149,Multi-Level Encoding,Multi-Level-Encoding,7.1.0,,both
+52150,Catpart,catpart,7.1.0,,both
+52151,DMG File Detected,dmg,7.1.0,,both
+52152,PKG File Detected,pkg,7.1.0,,both
+52153,MACH-O File Detected,mach-o,7.1.0,,both
+52154,MacOSX Universal Binaries File Detected,mach-ub,7.1.0,,both
+52155,MacOSX APP File Detected,macapp,7.1.0,,both
+52156,JustSystems Ichitaro Document,ichitaro,7.1.0,,both
+52157,ARJ File Detected,arj,7.1.0,,both
+52158,7z File Detected,7z,7.1.0,,both
+52159,CPL File,cpl,7.1.0,,both
+52160,CHM File,chm,7.1.0,,both
+52163,Microsoft Word XML File,doc,7.1.0,,both
+52164,Microsoft Excel XML File,xls,7.1.0,,both
+52165,Microsoft Word Open XML File,docx,7.1.0,,both
+52166,Python File,py,7.1.0,,both
+52168,MIME HTML File,mht,7.1.0,,both
+52169,TAR,tar,7.1.0,,both
+52170,MP3 File,mp3,7.1.0,8.1.0,both
+52172,Windows Script,wsf,7.1.0,,both
+52173,Deflate64 Compressed ZIP,deflate64-zip,7.1.0,,both
+52174,ACE File,ace,7.1.0,,both
+52175,ELF File,elf,7.1.0,,both
+52177,WEBM File,webm,7.1.0,,both
+52178,MPEG-TS File,mpeg-ts,7.1.0,,both
+52179,PowerShell Script File,powershell,7.1.0,,both
+52180,PowerShell Script File,powershell,8.1.0,,both
+52181,HWP file,hwp,7.1.0,,both
+52182,Encrypted 7ZIP File,encrypted-7z,7.1.0,,both
+52183,Split RAR File,split-rar,7.1.0,,both
+52184,Split Microsoft Cabinet,split-cab,7.1.0,,both
+52185,Microsoft Scrap File,shs,7.1.0,,both
+52186,Windows Explorer Shell Command File,scf,7.1.0,,both
+52187,BZIP2,bzip2,8.0.0,,both
+52188,Windows Explorer Shell Command File,scf,8.1.0,,both
+52189,CSV File,csv,7.1.0,,both
+52190,MIME HTML File,mht,8.1.0,,both
+52191,HWPX file,hwpx,7.1.0,,both
+52193,Python File,py,7.1.0,,both
+52194,Microsoft Word 2007 DOCM File,docm,7.1.0,,both
+52195,Microsoft Excel 2007 Encrypted XLSX File,encrypted-xlsx,7.1.0,,both
+52196,Microsoft Word 2007 Encrypted DOCX File,encrypted-docx,7.1.0,,both
+52200,Excel Web Query File,iqy,7.1.0,,both
+52201,Excel Web Query File,iqy,8.1.0,,both
+52202,JS Script File,js,7.1.0,,download
+52203,VBScript File,vbs,7.1.0,,download
+52204,JS Script File,js,7.1.0,,both
+52205,VBScript File,vbs,7.1.0,,both
+52208,JScript Encoded File,jse,7.1.0,,both
+52209,DER Encoded X509 Certificate,der,7.1.0,,both
+52210,PEM Encoded X509 Certificate,pem,7.1.0,,both
+52211,Microsoft Shell,microsoft-shell,7.1.0,,both
+52213,Access Shortcut File,access-shortcut,7.1.0,,both
+52214,Excel Add-in XLL File,xll,7.1.0,,both
+52216,Excel Symbolic Link File,slk,8.1.0,,both
+52218,Microsoft Excel 2007 AIP Encrypted XLSX File,aip-encrypted-xlsx,7.1.0,,both
+52219,Microsoft PowerPoint 2007 AIP Encrypted PPTX File,aip-encrypted-pptx,7.1.0,,both
+52220,Microsoft Word 2007 AIP Encrypted DOCX File,aip-encrypted-docx,7.1.0,,both
+52221,Microsoft Access Add-in MDA File,mda,7.1.0,,both
+52222,Microsoft Access Add-in Data MDT File,mdt,7.1.0,,both
+52223,Microsoft Access Workgroup Information MDW File,mdw,7.1.0,,both
+52224,Microsoft Access Wizard Template MDZ File,mdz,7.1.0,,both
+52225,Microsoft Access Project ADP File,adp,7.1.0,,both
+52226,Microsoft Access Project Extension ADE File,ade,7.1.0,,both
+52227,VBScript VB File,vb,7.1.0,,both
+52228,Temporary TMP File,tmp,7.1.0,,both
+52229,Internet Location URL File,url,7.1.0,,both
+52230,Windows Script Host Settings WSH File,wsh,7.1.0,,both
+52231,Renamed Zip File,renamed-zip,7.1.0,,both
+52232,Virtual Device Driver VXD File,vxd,7.1.0,,both
+52233,Windows System SYS File,sys,7.1.0,,both
+52234,Setup Information INF File,inf,7.1.0,,both
+52235,Power-BI PBIX File,pbix,7.1.0,,both
+52238,BASIC Source Code BAS File,bas,7.1.0,,both
+52239,Active Server Page ASP File,asp,7.1.0,,both
+52240,Internet Settings INS File,ins,7.1.0,,both
+52241,Internet Document Set ITS File,its,7.1.0,,both
+52242,DOS Executable COM File,com,7.1.0,,both
+52244,Program PRG File,prg,7.1.0,,both
+52245,Microsoft Management Console MSC File,msc,7.1.0,,both
+52246,Windows Installer Patch MSP File,msp,7.1.0,,both
+52247,Microsoft Windows Gadget File,gadget,7.1.0,,both
+52248,Windows Document Shortcut SHB File,shb,7.1.0,,both
+52249,Office Profile Settings OPS File,ops,7.1.0,,both
+52250,IIS Internet Service Provider Settings ISP File,isp,7.1.0,,both
+52251,Windows Task Scheduler JOB File,job,7.1.0,,both
+52252,Generic Data Library LIB File,lib,7.1.0,,both
+52253,BZip2 Compressed Tar Archive TBZ2 File,tbz2,7.1.0,,both
+52254,HTML Application,hta,7.1.0,8.1.0,both
+52255,JavaServer Pages JSP File,jsp,7.1.0,,both
+52256,Hypertext Preprocessor PHP File,php,7.1.0,,both
+52257,Active Server Page Extended ASPX File,aspx,7.1.0,,both
+52258,Windows BAT,bat,8.1.0,,both
+52259,Dalvik Executable DEX File,dex,7.1.0,,both
+52260,Microsoft Word DOC File,doc,9.0.0,,both
+52261,Microsoft Word 2007 DOCX File,docx,9.0.0,,both
+52262,Microsoft Excel XLS File,xls,9.0.0,,both
+52263,Microsoft Excel 2007 XLSX File,xlsx,9.0.0,,both
+52264,Microsoft PowerPoint PPT File,ppt,9.0.0,,both
+52265,Microsoft PowerPoint 2007 PPTX File,pptx,9.0.0,,both
+52266,Adobe PDF File,pdf,9.0.0,,both
+52267,Microsoft RTF File,rtf,9.0.0,,both
+52268,CSV File,csv,9.0.0,,both
+52270,Google Chrome Extension CRX File,crx,7.1.0,,both
+52271,Windows ICON File,ico,7.1.0,,both
+52272,Ogg Vorbis Audio File,ogg,7.1.0,,both
+52273,Hierarchical Data Format HDF File,hdf,7.1.0,,both
+52274,WOFF File Format,woff,7.1.0,,both
+52275,WebP Image File,webp,7.1.0,,both
+52277,Revit Project File,rvt,7.1.0,,both
+52278,Windows Bat File,bat,10.0.0,,both
+52280,Certificate Revocation List File,crl,7.1.0,,both
+52281,Certificate Revocation List File,crl,7.1.0,,both
+52285,Package Manager RPM File,rpm,7.1.0,,both
+52286,Virtual Machine Disk VMDK File,vmdk,7.1.0,,both
+52287,TXT File Upload,txt-upload,7.1.0,,upload
+52288,TXT File Upload,txt-upload,10.0.0,,upload
+52289,Java Source File,java-src,8.1.0,,both
+52290,Ruby Source File,ruby,8.1.0,,both
+52291,VHDL Source File,vhdl,8.1.0,,both
+52292,Java Source File,java-src,10.0.0,,both
+52293,VHDL Source File,vhdl,10.0.0,,both
+52294,CPP Source File,cpp-src,8.1.0,,both
+52295,CPP Source File,cpp-src,10.0.0,,both
+52296,CPP Header File,cpp-hdr,8.1.0,,both
+52297,CPP Header File,cpp-hdr,10.0.0,,both
+52298,C Sharp Source File,csharp,8.1.0,,both
+52299,C Sharp Source File,csharp,10.0.0,,both
+52300,Ruby Source File,ruby,10.0.0,,both
+52301,Matlab Mathematica Objective-C Source File,matlab/obj-c,8.1.0,,both
+52302,Matlab Mathematica Objective-C Source File,matlab/obj-c,10.0.0,,both
+52303,Verilog Source File,verilog,8.1.0,,both
+52304,Verilog Source File,verilog,10.0.0,,both
+52305,Assembly Source File,asm,8.1.0,,both
+52306,Assembly Source File,asm,10.0.0,,both
+52307,JavaScript File Upload,js,10.0.0,,upload
+52308,PowerShell Script File,powershell,10.0.0,,both
+52309,Python File,py,10.0.0,,both
+52310,Perl Script,pl,10.0.0,,both
+52311,VBScript File,vbs,10.0.0,,both
+52312,C CPP Source File,c_cpp-src,8.1.0,,both
+52313,C CPP Header File,c_cpp_hdr,8.1.0,,both
+52314,R Source File,r,8.1.0,,both
+52317,C CPP Source File,c_cpp-src,10.0.0,,both
+52318,C CPP Header File,c_cpp_hdr,10.0.0,,both
+52319,R Source File,r,10.0.0,,both
+52320,Virtual Hard Disk VHD File,vhd,7.1.0,,both
+52321,Keepass Database File,kdb,8.1.0,,both
+52322,MSI File,msi,8.1.0,,both
