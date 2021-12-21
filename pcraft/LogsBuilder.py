@@ -247,7 +247,7 @@ class LogsBuilder(object):
                     try:
                         event["variables"]["$__ip-dst__"] = event["variables"]["$ip-dst"]
                     except KeyError:
-                        event["variables"]["$ip-dst"] = self.library_context.get_variables("$ip-dst")
+                        event["variables"]["$ip-dst"] = self.library_context.get_variable("$ip-dst")
                         event["variables"]["$__ip-dst__"] = event["variables"]["$ip-dst"]
                         
                     event["variables"]["$ip-dst"] = event["variables"]["$resolver"]

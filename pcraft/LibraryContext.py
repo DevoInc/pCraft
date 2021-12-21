@@ -4,6 +4,7 @@ import hashlib
 import geoip2.database
 import os
 import ipaddress
+import string
 
 from . import utils
 from .VariablesState import VariablesState
@@ -70,6 +71,9 @@ class LibraryContext(object):
 
     def gen_sha256(self):
         return hashlib.sha256(bytes(str(random.randint(1, 99999999999)), "utf8")).hexdigest()
+
+    def gen_string(self, length):
+        return ''.join(random.choices(string.ascii_lowercase + string.digits, k = length))
     
     def get_consistent_id(self, name, idlen):
         consistent_id = int(hashlib.sha256(bytes(name, "utf8")).hexdigest(), 16)
