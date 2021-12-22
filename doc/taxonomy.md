@@ -17,13 +17,15 @@ Here's a list of those that are currently supported:
 | resolver     | A DNS Resolver     |         |
 | user-agent   | The User-Agent     |         |
 | uri          | URI                |         |
+| referer      | HTTP Referrer      |         |
 | method       | HTTP Method        |         |
 | portrange    | A port range       | 0-65535 |
 | computername | client hostname    | mdr123  |
 | wsdomain     | Workstation Domain |         |
 | event_id     | Event ID           |         |
 | protocol     | Protocol           | tcp     |
-
+| org          | Organization Name  | Enron   |
+| username     | User Name          | jsmith  |
 
 Special variables
 -----------------

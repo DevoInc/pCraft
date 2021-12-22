@@ -38,7 +38,7 @@ class RunPcraft(object):
             self.build_pcap(self.args["pcap"])
 
         if self.args["log_folder"]:
-            self.build_logs(self.args["log_folder"], self.args["force"])
+            self.build_logs(self.args["log_folder"], self.args["force"], self.args["no_triggers"])
             
     def build_cache(self):
         debug("Building cache: %s" % self.ami_cache)
@@ -49,8 +49,8 @@ class RunPcraft(object):
         pcap_builder = PcapBuilder(self.pkg, self.ami_cache)
         pcap_builder.build(pcapfile)
 
-    def build_logs(self, log_folder, force):
-        logs = LogsBuilder(self.pkg, self.ami_cache, log_folder, force)
+    def build_logs(self, log_folder, force, triggers):
+        logs = LogsBuilder(self.pkg, self.ami_cache, log_folder, force, triggers)
         logs.build()
 
         
@@ -61,7 +61,8 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pcap", type=str, help="The pcap to build") 
     parser.add_argument("-l", "--log-folder", type=str, help="The log folder")
     parser.add_argument("-f", "--force", help="overwrite the log folder", action="store_true")
-    parser.add_argument("-v", "--verbose", action="store_true")    
+    parser.add_argument("-t", "--no-triggers", help="Do not run automatic triggers", action="store_false")
+    parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args()
     vargs = vars(args)
     verbose = vargs["verbose"]

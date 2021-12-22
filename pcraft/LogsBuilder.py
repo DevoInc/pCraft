@@ -10,7 +10,7 @@ from .VirtualPacket import *
 from .LibraryContext import LibraryContext
 
 class LogsBuilder(object):
-    def __init__(self, pkg, ami_cache, log_folder, force=False):
+    def __init__(self, pkg, ami_cache, log_folder, force=False, triggers=True):
         self.pkg = pkg
         self.ami_cache = ami_cache
         self.log_folder = log_folder
@@ -22,6 +22,7 @@ class LogsBuilder(object):
         self.no_log_module_for = {}
         # Just to get some default variables, such as the resolver
         self.library_context = LibraryContext()
+        self.triggers = triggers
         
     def __del__(self):
         for k, v in self.file_pointers.items():
@@ -61,7 +62,6 @@ class LogsBuilder(object):
                             event["generated_variables"] = {}
                             event["generated_variables"][k] = v
 
-                        
             for k, v in self.generated_variables.items():
                 event["variables"][k] = v
                 try:
@@ -69,6 +69,10 @@ class LogsBuilder(object):
                 except:
                     event["generated_variables"] = {}
                     event["generated_variables"][k] = v
+
+            triggered_packages = None
+            if self.triggers:
+                triggered_packages = self.trigger_bypass(event)
                 
             is_log_action = False
             pkgname = event["exec"]
@@ -90,10 +94,12 @@ class LogsBuilder(object):
                 is_log_action = True
             else:
                 packages_to_execute.append(pkgname)
+                if triggered_packages:
+                    for tp in triggered_packages:
+                        packages_to_execute.append(tp)                    
                 
             new_pkg_to_execute = self._packages_to_execute_from_layers(packages_to_execute)
-            # print("Packages to execute" + str(new_pkg_to_execute))
-            
+           
             for modexec in new_pkg_to_execute:
                 # print("Action Package name:%s" % self.pkg.get_pkgname_from_action_log(modexec))
                 logmod = self.pkg.get_log_module(modexec)
@@ -104,6 +110,14 @@ class LogsBuilder(object):
                         print("No log module for [%s]" % modexec)
                         self.no_log_module_for[modexec] = True
                     continue # We skip as this one will not log. Expected if this is just another type of package
+                try:
+                    actions_config = self._get_log_actions_config(self.pkg.get_pkgname_from_action_log(modexec))
+                except:
+                    if is_log_action:
+                        # We want to see the exact error in this case
+                        actions_config = self._get_log_actions_config(self.pkg.get_pkgname_from_action_log(modexec))
+                    else:
+                        actions_config = None
                 
                 config = self.pkg.get_packages()[self.pkg.get_pkgname_from_action_log(modexec)]
                 modconfig = config["config"]
@@ -117,8 +131,6 @@ class LogsBuilder(object):
 
                 # print("Executing %s" % modexec)
                 if is_log_action:
-                    actions_config = self._get_log_actions_config(self.pkg.get_pkgname_from_action_log(modexec))
-
                     events = actions_config[log_action]["event_id"].split(",")
                     event_log = None
                     try:
@@ -302,3 +314,24 @@ class LogsBuilder(object):
 
     def post_log_write(self, event):
         self._dns_get_ip_dst_back(event)
+
+    def trigger_bypass(self, event):
+        # Threshold bypass, a threshold is matched as an action, we execute the configured plugin
+        # for this reason. In conf/actions.conf if we have:
+        # [triggervar:VARIABLE]
+        # event_id=XXX
+        # event_log=YYY
+        #
+        # We run YYY giving the event id XXX
+        triggers = []
+        for var in event["variables"]:
+            vartriggers = self.pkg.get_triggers(var[1:])
+            if vartriggers:
+#                print("variable %s HAS A TRIGGER" % var)
+                for vt in vartriggers:
+                    if vt not in triggers:
+                        triggers.append(vt)
+            
+        return triggers
+
+            

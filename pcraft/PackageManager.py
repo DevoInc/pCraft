@@ -37,6 +37,9 @@ class PackageManager(object):
         # map between package name and log actions (Auth.all -> WindowsSecurity etc.)
         self.log_actions_pkg_map = {}
 
+        # Know which package we trigger for which variable
+        self.trigger_maps = {}
+        
         self.packages = {}
         for p in pathlib.Path(self.pkgdir).iterdir():
             if not p.is_dir():
@@ -117,12 +120,20 @@ class PackageManager(object):
                         self.log_pkg_map[section] = pkgname
                         
                     if conf_filename == ACTIONS_CONF:
-                        try:
-                            self.log_actions_pkg_map[section].append(pkgname)
-                        except:
-                            self.log_actions_pkg_map[section] = []
-                            self.log_actions_pkg_map[section].append(pkgname)                        
-                        
+                        if section.startswith("triggervar:"):
+                            triggervar = section[11:]
+                            try:
+                                self.trigger_maps[triggervar].append(parsed_conf[section]["event_log"])
+                            except:
+                                self.trigger_maps[triggervar] = []
+                                self.trigger_maps[triggervar].append(parsed_conf[section]["event_log"])
+                        else:                        
+                            try:
+                                self.log_actions_pkg_map[section].append(pkgname)
+                            except:
+                                self.log_actions_pkg_map[section] = []
+                                self.log_actions_pkg_map[section].append(pkgname)
+
                     for k, v in parsed_conf[section].items():
                         try:
                             self.packages[pkgname]["config"][conf_filename][section][k] = v
@@ -216,3 +227,10 @@ class PackageManager(object):
     def get_templates(self, pkgname):
         return self.packages[pkgname]["templates"]
     
+    def get_triggers(self, variable):
+        # Return all the packages that can handle a given trigger
+        try:
+            return self.trigger_maps[variable]
+        except:
+            return None
+        

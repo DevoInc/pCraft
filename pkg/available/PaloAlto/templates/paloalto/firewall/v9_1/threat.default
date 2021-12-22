@@ -1,0 +1,4 @@
+key,default_value
+Threat/Content Type,wildfire
+Rule Name,VPN-to-Internet
+Direction,client-to-server
