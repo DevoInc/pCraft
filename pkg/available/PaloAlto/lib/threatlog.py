@@ -37,7 +37,7 @@ class PcraftLogWriter(LibraryContext):
         
         if "$uri" in event["variables"]:
             event["variables"]["$URL/Filename"] = event["variables"]["$uri"]
-            if len(event["variables"]["$uri"]) > 256:
+            if len(event["variables"]["$uri"]) > 128:
                 event["variables"]["$Threat ID"] = "HTTP GET Requests Long URI Anomaly(30800)"
                 event["variables"]["$Severity"] = "low"
                 event["variables"]["$Category"] = "low-risk"
