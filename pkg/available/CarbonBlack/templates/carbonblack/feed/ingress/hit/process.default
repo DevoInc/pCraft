@@ -1,0 +1,4 @@
+key,default_value
+ioc_type,ipv4
+ioc_value,192.168.0.42
+ioc_attr,{"port":22,"protocol":"TCP","direction":"Outbound"}

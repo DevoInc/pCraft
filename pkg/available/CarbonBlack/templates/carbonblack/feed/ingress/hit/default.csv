@@ -1,0 +1,14 @@
+key,default_value
+md5,22c3683b094136c3398391ae71b20f04
+report_id,dtcenv_007
+ioc_type,md5
+ioc_value,00a8893025d975299a4b6f1bdf330a4b
+ioc_attr,{}
+feed_id,42
+hostname,BACKUP_SRV1
+sensor_id,31337
+cb_version,510
+server_name,localhost
+feed_name,dtfeed
+event_timestamp,%s.000
+process_id,e2b247c1-9389-4055-8614-d531409c4945
