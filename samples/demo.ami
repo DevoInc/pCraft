@@ -1,0 +1,119 @@
+#
+# This script intents to demo as much as possible
+# what can be done with ami
+#
+ami_version 2
+
+$domain = "example.com"
+$ip-dst = ip.gethostbyname($domain)
+
+$"A space in our variable" = "1234"
+
+action dns {
+    exec DNSConnection
+}
+
+sleep random.int(minutes(1), minutes(3))
+
+action http {
+    exec HTTPConnection
+}
+
+sleep 30
+
+repeat 3 as $index {
+    $randstring = random.string(10)
+    $timegroup = "${randstring}-${index}"
+    $randip = random.int(1, 8000)
+    $ip-src = ip.cidr("172.16.0.0/16", $randip, false)
+
+    sleep group "${timegroup}" random.int(0, 18000)
+
+    action gen_users {
+	exec GenFakeName
+    }
+
+    action gen_ua {
+	exec GenUserAgent
+    }
+
+    $computername = $workstation
+    
+    action winlogin {
+	$event_id = "4624"
+	$winlog_event_data_TargetLinkedLogonId = uuid.v4("")
+    
+	exec WindowsSecurity
+        sleep fromgroup "${timegroup}"
+    }
+
+    action csv {
+	exec CSV
+	$csv_fields = "$__time__,$username,$ip-src"
+        sleep fromgroup "${timegroup}"
+    }
+}
+
+action auth_login {
+    $winlog_event_data_TargetLinkedLogonId = uuid.v4("")    
+    exec LogAction:Auth.LoginSuccess
+}
+
+repeat 2 as $index {
+    action tcp_rst {	
+        $port-dst = random.int(1,65535)
+	local $port-src = random.int(3000,5000)
+        $ip-src = "192.168.0.32"
+        $ip-dst = "10.0.1.2"	
+
+        exec TcpRst
+    }
+
+    sleep random.int(3, 5) 
+}
+
+delete $port-dst
+# delete $port-src <- not needed as it was declared local
+
+message """This contains ${verbatim} string"""
+
+match $ip-dst {
+    "r/4*/" {
+	message "ip-dst Starts with 4"
+    }
+    %2 {
+	message "ip-dst (${ip-dst}) Matches $2"
+    }
+    > 10 {
+	message "ip-dst is greater than 10"
+    }
+    nomatch {
+	message "ip-dst does not start with 4"
+    }
+}
+
+#sleep 12
+
+match random.int(1,20) {
+    < 10 {
+	message "Less than 10"
+    }
+    >= 10 {
+	message "More or equal to 10"
+	action dnsover10 {
+	    $domain = "my10domain.io"
+	    exec DNSConnection
+	}
+    }
+}
+
+$b64test = base64.encode(s"""Our IP is: ${ip-dst}""")
+message "Base64 string: ${b64test}"
+
+repeat 5 as $index {    
+    repeat 2 as $index2 {
+	action sub2 {
+	    exec Void
+	}
+    }
+}
