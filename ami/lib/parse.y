@@ -66,6 +66,11 @@ typedef void *yyscan_t;
 %token TAG
 %token MESSAGE
 %token EQUAL
+%token GREATER
+%token LESS
+%token GREATER_EQUAL
+%token LESS_EQUAL
+%token MODULO
 %token ASSIGN
 %token OPENSECTION
 %token CLOSESECTION
@@ -97,6 +102,8 @@ typedef void *yyscan_t;
 %token DELETE
 %token LOCAL
 %token TAXONOMY
+%token MATCH
+%token NOMATCH
 
 %left PLUS MINUS
 
@@ -146,6 +153,12 @@ input:
        | input expression_float
        | input delete
        | input taxonomy
+       | input match
+       | input match_less_than
+       | input match_less_equal_than
+       | input match_greater_equal_than
+       | input match_string
+       | input match_nomatch
        ;
 
 
@@ -752,6 +765,48 @@ taxonomy: TAXONOMY WORD {
   free(ami->taxonomy);
   ami->taxonomy = strdup($2);
   free($2);
+}
+;
+
+match: MATCH varset OPENSECTION {
+  ami->_opened_sections++;
+  printf("We Match a match\n");
+}
+;
+
+match_less_than: LESS varset OPENSECTION {
+  ami->_opened_sections++;
+  printf("We Match less\n");
+}
+;
+
+match_less_equal_than: LESS_EQUAL varset OPENSECTION {
+  ami->_opened_sections++;
+  printf("We Match less equal\n");
+}
+;
+
+match_greater_than: GREATER varset OPENSECTION {
+  ami->_opened_sections++;
+  printf("We Match greater\n");
+}
+;
+
+match_greater_equal_than: GREATER_EQUAL varset OPENSECTION {
+  ami->_opened_sections++;
+  printf("We Match greater equal\n");
+}
+;
+
+match_string: string OPENSECTION {
+  ami->_opened_sections++;
+  printf("We Match a string\n");
+}
+;
+
+match_nomatch: NOMATCH OPENSECTION {
+  ami->_opened_sections++;
+  printf("We Match in nomatch\n");
 }
 ;
 

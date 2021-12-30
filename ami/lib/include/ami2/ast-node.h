@@ -14,7 +14,7 @@ enum _ami2_node_type_t {
   AMI2_NODE_VARIABLE,
   // statements
   AMI2_NODE_REPEAT,
-  AMI2_NODE_IF,
+  AMI2_NODE_MATCH,
   AMI2_NODE_ASSIGN,
   AMI2_NODE_FUNCTION_CALL,
   // expressions
@@ -22,6 +22,9 @@ enum _ami2_node_type_t {
   AMI2_NODE_BOOLEAN,
   AMI2_NODE_RELATIONAL,
   AMI2_NODE_EQUAL,  
+  AMI2_NODE_REGEX,
+  AMI2_NODE_MODULO,
+  AMI2_NODE_MATCH_NOMATCH
 };
 typedef enum _ami2_node_type_t ami2_node_type_t;
   
@@ -30,14 +33,16 @@ static const char *ami2_node_names[] = {
   "AMI2_NODE_DECL",
   "AMI2_NODE_VARIABLE",
   "AMI2_NODE_REPEAT",
-  "AMI2_NODE_IF",
+  "AMI2_NODE_MATCH",
   "AMI2_NODE_ASSIGN",
-  "AMI2_NODE_FUNCTION_CALL",
   "AMI2_NODE_FUNCTION_CALL",
   "AMI2_NODE_ARITHMETIC",
   "AMI2_NODE_BOOLEAN",
   "AMI2_NODE_RELATIONAL",
   "AMI2_NODE_EQUAL",
+  "AMI2_NODE_REGEX",
+  "AMI2_NODE_MODULO",
+  "AMI2_NODE_MATCH_NOMATCH",
 };
 
 enum _ami2_operation_t {
@@ -74,7 +79,7 @@ struct _ami2_ast_node_t {
 };
 typedef struct _ami2_ast_node_t ami2_ast_node_t;
 
-ami2_ast_node_t *ami2_ast_node_new(void);
+ami2_ast_node_t *ami2_ast_node_new(ami2_node_type_t node_type);
 void ami2_ast_node_free(ami2_ast_node_t *node);
 void ami2_ast_node_debug(ami2_ast_node_t *node);
 int ami2_ast_node_append_right(ami2_ast_node_t *dstnode, ami2_ast_node_t *srcnode);

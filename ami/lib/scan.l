@@ -173,6 +173,8 @@ SLICERUN slice_run
 DELETE delete
 LOCAL local
 TAXONOMY taxonomy
+MATCH match
+NOMATCH nomatch
 
 %%
 
@@ -210,6 +212,10 @@ TAXONOMY taxonomy
 
 
 "=" return TOK_EQUAL;
+">" return TOK_GREATER;
+"<" return TOK_LESS;
+">=" return TOK_GREATER_EQUAL;
+"<=" return TOK_LESS_EQUAL;
 "=>" return TOK_ASSIGN;
 "{" return TOK_OPENSECTION;
 "}" return TOK_CLOSESECTION;
@@ -222,6 +228,7 @@ TAXONOMY taxonomy
 ":" return TOK_COLON;
 "+" return TOK_PLUS;
 "-" return TOK_MINUS;
+"%" return TOK_MODULO;
 
 {AMIVERSION}      { return TOK_AMIVERSION; }
 {AMIVERSIONSHORT} { return TOK_AMIVERSION; }
@@ -333,6 +340,14 @@ TAXONOMY taxonomy
 
 {TAXONOMY} {
                return TOK_TAXONOMY;
+           }
+
+{MATCH} {
+               return TOK_MATCH;
+           }
+
+{NOMATCH} {
+               return TOK_NOMATCH;
            }
 
 [a-zA-Z0-9_\-:<>@]+ {

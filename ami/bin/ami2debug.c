@@ -24,6 +24,18 @@
 /*     exec Debug */
 /* } */
 
+void walk_ast(ami2_ast_node_t *node)
+{
+  if (!node) return;
+  printf("Node Type: %s\n", ami2_node_names[node->type]);
+  switch(node->type){
+  case AMI2_NODE_VARIABLE:
+    ami_variable_debug(node->variable);
+  }
+  walk_ast(node->left);
+  walk_ast(node->right);  
+}
+
 int main(int argc, char **argv)
 {
   ami2_t *ami2;
@@ -33,28 +45,27 @@ int main(int argc, char **argv)
   ami2_free(ami2);
 
   ami2_ast_node_t *node;
-  node = ami2_ast_node_new();
-  node->type = AMI2_NODE_ASSIGN;
-  
+  node = ami2_ast_node_new(AMI2_NODE_ASSIGN);  
 /* $firstg = "My first global variable" */
   ami2_ast_node_t *rnode;
-  rnode = ami2_ast_node_new();
-  rnode->type = AMI2_NODE_VARIABLE;
+  rnode = ami2_ast_node_new(AMI2_NODE_VARIABLE);
   ami_variable_t *var;
   var = ami_variable_new();
   ami_variable_set_string(var, "My first global variable");
   rnode->variable = var;
   
   ami2_ast_node_t *lnode;
-  lnode = ami2_ast_node_new();
-  lnode->type = AMI2_NODE_VARIABLE;
+  lnode = ami2_ast_node_new(AMI2_NODE_VARIABLE);
   /* ami_variable_t *var; */
   var = ami_variable_new();
   ami_variable_set_variable(var, "$firstg");
   lnode->variable = var;
-/* $point_to_firstg = $firstg */
+/* $point_to_firstg = $firstg */  
 
+  node->left = lnode;
+  node->right = rnode;
   
+  walk_ast(node);
   
   return 0;
 }

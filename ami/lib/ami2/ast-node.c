@@ -3,7 +3,7 @@
 
 #include <ami2/ast-node.h>
 
-ami2_ast_node_t *ami2_ast_node_new(void)
+ami2_ast_node_t *ami2_ast_node_new(ami2_node_type_t node_type)
 {
   ami2_ast_node_t *node;
 
@@ -12,7 +12,7 @@ ami2_ast_node_t *ami2_ast_node_new(void)
     fprintf(stderr, "Cannot allocate ami2_ast_node_t!\n");
     return NULL;
   }
-  node->type = AMI2_NODE_ROOT;
+  node->type = node_type;
   node->operation = AMI2_OP_NONE;
   node->lineno = 0;
   node->variable = NULL;
