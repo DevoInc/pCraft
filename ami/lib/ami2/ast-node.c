@@ -61,6 +61,17 @@ ami2_ast_node_t *ami2_ast_node_lr_new(ami2_node_type_t node_type, ami2_ast_node_
   return node;
 }
 
+ami2_ast_node_t *ami2_ast_node_lr_with_variable_new(ami2_node_type_t node_type, ami2_ast_node_t *var, ami2_ast_node_t *left, ami2_ast_node_t *right)
+{
+  ami2_ast_node_t *node;
+  node = ami2_ast_node_new(node_type);
+  node->variable = var->variable;
+  node->left = left;
+  node->right = right;
+
+  return node;
+}
+
 void ami2_ast_node_free(ami2_ast_node_t *node)
 {
   free(node);

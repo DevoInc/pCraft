@@ -162,7 +162,7 @@ NOMATCH nomatch
     BEGIN(INITIAL);
     verbatim_buf[vbindex] = '\0';
     yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, verbatim_buf);
-    return TOK_VERBATIM;
+    return TOK_STRING;
 }
 
 <VERBASTRING>(.|\n) {
