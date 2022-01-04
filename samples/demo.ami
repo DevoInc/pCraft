@@ -7,6 +7,9 @@ ami_version 2
 $domain = "example.com"
 $ip-dst = ip.gethostbyname($domain)
 
+$domain2 = $domain
+$domain3 = $domain2
+
 $"A space in our variable" = "1234"
 
 action dns {

@@ -7,26 +7,28 @@
 typedef void *yyscan_t;
 #endif
 
-#include <ami/kvec.h>
-#include <ami/ami.h>
-#include <ami/action.h> 
-#include <ami/csvread.h>
+#include <ami2/ami2.h>
+#include <ami2/ast-node.h>
+#include <ami2/errors.h>
 
 #include <unistd.h>
-
 }
 
 %code provides
 {
-  void ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...);
+  void ami_yyerror (yyscan_t scanner, ami2_t *ami, const char *msg, ...);
   int get_lineno(yyscan_t scanner);
-
+  int ami_yylex_init(yyscan_t *scanner);
+  void ami_yyrestart(FILE *fp, yyscan_t scanner);
+  int ami_yylex_destroy(yyscan_t scanner);
+  
   static char *current_file = NULL;
 
 }
 
 %code top
 {
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
@@ -43,19 +45,23 @@ typedef void *yyscan_t;
 %define api.pure full
 %define api.prefix {ami_yy}
 %define api.token.prefix {TOK_}
-%define api.value.type union
-%param {yyscan_t scanner}{ami_t *ami}
+/* %define api.value.type union */
+%param {yyscan_t scanner}{ami2_t *ami}
 %define parse.error verbose
 
-%token <char *>WORD
-%token <char *>FUNCTIONNAME
-%token <char *>STRING
-%token <char *>VERBATIM
-%token <char *>EVERYTHING
-%token <char *>VARIABLE
-%token <char *>LABEL
-%token <int>INTEGER
-%token <float>FLOAT
+%union {
+    ami2_ast_node_t *node;
+}
+
+%token WORD
+%token FUNCTIONNAME
+%token STRING
+%token VERBATIM
+%token EVERYTHING
+%token VARIABLE
+%token LABEL
+%token INTEGER
+%token FLOAT
 %token AMIVERSION
 %token STARTTIME
 %token REVISION
@@ -105,721 +111,110 @@ typedef void *yyscan_t;
 %token MATCH
 %token NOMATCH
 
+%right EQUAL
 %left PLUS MINUS
+%left GREATER LESS
+%left MODULO
 
-%type <char *> string
-%type <int> variable_expression_int
-%type <float> variable_expression_float
-%type <int> expression_int
-%type <float> expression_float
+%type <node> action_block expr primary_expr function function_arguments
+%type <node> statements core_action input
+%type <node> STRING INTEGER FLOAT VARIABLE FUNCTIONNAME WORD
 
 %%
 
-input:
-       | input amiversion
-       | input starttime
-       | input revision
-       | input author
-       | input shortdesc
-       | input description
-       | input reference
-       | input tag
-       | input message
-       | input variable
-       | input sleep_varset
-       | input sleep_group_varset
-       | input sleep_fromgroup
-       | input repeat
-       | input closesection
-       | input action
-       | input field_function_inline
-       | input field_assigned_to_variable
-       | input exec
-       | input function
-       | input keywords_as_argname
-       | input skiprepeat
-       | input ignoregroupsleep
-       | input set_slice_div
-       | input set_slice_run
-       | input debugon
-       | input debugoff
-       | input exit
-       | input _goto
-       | input label
-       | input string
-       | input array
-       | input array_item
-       | input expression_int
-       | input expression_float
-       | input delete
-       | input taxonomy
-       | input match
-       | input match_less_than
-       | input match_less_equal_than
-       | input match_greater_equal_than
-       | input match_string
-       | input match_nomatch
+input: 
+       | input action_block {
+             if (!ami->root) {
+	       ami->root = ami2_ast_node_new(AMI2_NODE_ROOT);
+	     }
+	     ami2_ast_node_append_right(ami->root, $2);
+       }
+       | input statements {
+             if (!ami->root) {
+	       ami->root = ami2_ast_node_new(AMI2_NODE_ROOT);
+	     }
+	     ami2_ast_node_append_right(ami->root, $2);
+       }
+       | input core_action {
+             if (!ami->root) {
+	       ami->root = ami2_ast_node_new(AMI2_NODE_ROOT);
+	     }
+	     ami2_ast_node_append_right(ami->root, $2);
+       }
        ;
 
-
-amiversion: AMIVERSION INTEGER
-  {
-    if (ami->debug) {
-      printf("[parse.y] Version:%d\n", $2);
-    }
-    ami->version = $2;
-
-    /* ami_tree_append_int_no_leaves(ami->tree, AMI_NT_VERSION, $2); */
-
-  }
-  ;
-
-starttime: STARTTIME INTEGER
-{
-  if (ami->debug) {
-    printf("[parse.y] Start Time:%d\n", $2);   
-  }
-  ami->start_time = $2;
+statements: VARIABLE EQUAL expr {
+  $$ = ami2_ast_node_lr_new(AMI2_NODE_ASSIGN, $1, $3);
 }
-;
-
-revision: REVISION INTEGER
-  {
-    if (ami->debug) {
-      printf("[parse.y] Revision:%d\n", $2);
-    }
-    ami->revision = $2;
-    /* ami_tree_append_int_no_leaves(ami->tree, AMI_NT_REVISION, $2); */
-  }
-  ;
-
-author: AUTHOR string {
-  if (ami->debug) {
-    printf("[parse.y] Author:%s\n", $2);
-  }
-
-  ami->author = strdup($2);
-  
-  free($2);
-}
-;
-
-shortdesc: SHORTDESC string {
-  if (ami->debug) {
-    printf("[parse.y] Short Desc:%s\n", $2);  
-  }
-  ami->shortdesc = strdup($2);
-
-  free($2);
-}
-;
-
-description: DESCRIPTION string {
-  if (ami->debug) {
-    printf("[parse.y] Description:%s\n", $2);  
-  }
-  ami->description = strdup($2);
-
-  free($2);
-}
-;
-
-
-reference: REFERENCE string {
-  char *ref = strdup($2);
-  if (ami->debug) {
-    printf("[parse.y](reference: REFERENCE STRING):%s\n", $2);
-  }  
-  /* kv_push(char *, ami->references, ref); */
-  ami_node_create(ami, &ami->root_node, get_lineno(scanner), AMI_NT_REFERENCE, $2, 0, 0, 0, 0);
-  
-  free($2);
-}
-;
-
-tag: TAG string {
-  if (ami->debug) {
-    printf("[parse.y](tag: TAG STRING):%s\n", $2);
-  }
-  ami_node_create(ami, &ami->root_node, get_lineno(scanner), AMI_NT_TAG, $2, 0, 0, 0, 0);
-
-  free($2);
-}
-;
-
-message: MESSAGE string {
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_MESSAGE, $2, 0, 0, 0, 0);
-
-  /* if (ami->debug) { */
-  /*   printf("[parse.y](message: MESSAGE STRING): %s\n", $2); */
-  /* } */
-  /* if (ami->printmessagecb) { */
-  /*   ami->printmessagecb(strdup($2)); */
-  /* } else { */
-  /*   // As we have no callback defined for the print function, we simply print here. */
-  /*   printf("%s\n", $2); */
-  /*   /\* fprintf(stderr, "*** WARNING: No callback set for the message function!\n"); *\/ */
-  /* } */
-  free($2);
-}
-;
-
-variable: VARIABLE EQUAL varset {
-  if (ami->debug) {
-    printf("[parse.y] variable: VARIABLE(%s) EQUAL varset\n", $1);
-  }
-
-   /* ami_node_create(ami, &ami->root_node, AMI_NT_VARNAME, $1, 0); */
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARNAME, $1, 0, 0, 0, 0);
-  
-  free($1);
+| VARIABLE EQUAL function {
+  $$ = ami2_ast_node_lr_new(AMI2_NODE_ASSIGN, $1, $3);
  }
-| LOCAL VARIABLE EQUAL varset {
-  
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_LOCALVARNAME, $2, 0, 0, 0, 0);
+| LOCAL VARIABLE EQUAL expr {
+  $$ = ami2_ast_node_lr_new(AMI2_NODE_ASSIGN_AS_LOCAL, $2, $4);
+}
+| LOCAL VARIABLE EQUAL function {
+  $$ = ami2_ast_node_lr_new(AMI2_NODE_ASSIGN_AS_LOCAL, $2, $4);  
+}
+;
 
-   free($2);
+core_action: WORD expr {
+  $$ = ami2_ast_node_lr_new(AMI2_NODE_COREACTION, $1, $2);
  }
-;
-
-varset:   variable_string
-        | variable_expression_int
-        | variable_expression_float
-        | variable_function
-        | variable_variable
-        | variable_array
-        ;
-
-variable_string: string {
-  if (ami->debug) {
-    printf("[parse.y] variable_string: STRING(%s)\n", $1);
-  }  
-    
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALSTR, $1, 0, 0, 0, 0);
-  
-  free($1);
+            | WORD function {
+  $$ = ami2_ast_node_lr_new(AMI2_NODE_COREACTION, $1, $2);
 }
 ;
 
-
-variable_function: function {
-  if (ami->debug) {
-    printf("[parse.y] variable_function: function\n");
-  }
-
-  /* ami_append_item(ami, AMI_NT_FUNCTION, NULL, 0); , 0*/
-
+expr:   primary_expr
+      | expr PLUS expr {
+          $$ = ami2_ast_node_lr_new(AMI2_NODE_PLUS, $1, $3);  
+}
+      | expr MINUS expr {
+          $$ = ami2_ast_node_lr_new(AMI2_NODE_MINUS, $1, $3);  
+}
+      | expr MODULO expr {
+          $$ = ami2_ast_node_lr_new(AMI2_NODE_MINUS, $1, $3);  
 }
 ;
 
-variable_variable: VARIABLE {
-    if (ami->debug) {
-      printf("[parse.y] variable_variable: VARIABLE(%s)\n", $1);
-    }
-
-    
-    ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVAR, $1, 0, 0, 0, 0);
-
-    free($1);
-}
-;
-
-variable_array:   array
-                | array_item
-                ;
-
-variable_expression_int: expression_int {
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALINT, NULL, $1, 0, 0, 0);
+primary_expr:   STRING
+              | INTEGER
+              | FLOAT
+              | VARIABLE
+              {
   $$ = $1;
- }
-;
-
-variable_expression_float: expression_float {
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALFLOAT, NULL, 0, $1, 0, 0);
-
-  $$ = $1;
- }
-;
-
-
-sleep_varset: SLEEP varset {
-  if (ami->debug) {
-    printf("[parse.y] sleep: SLEEP varset\n");
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_SLEEP, NULL, 0, 0, 0, 0);
-}
-;
-
-sleep_group_varset: SLEEP GROUP string varset {
-  if (ami->debug) {
-    printf("[parse.y] sleep: SLEEP group \"%s\" varset\n", $3);
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_SLEEP, strdup($3), 0, 0, 0, 0);
-
-  free($3);
-}
-;
-
-sleep_fromgroup: SLEEP FROMGROUP string {
-  if (ami->debug) {
-    printf("[parse.y] sleep: SLEEP fromgroup \"%s\"\n", $3);
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_SLEEP_FROMGROUP, strdup($3), 0, 0, 0, 0);
-
-  free($3);
-}
-;
-
-repeat: REPEAT varset AS VARIABLE OPENSECTION {
-  if (ami->debug) {
-    printf("[parse.y] repeat: REPEAT varset AS VARIABLE(%s) OPENSECTION)\n", $4);
-  }
-
-  ami->_opened_sections++;
-  ami->_repeat_block_id = ami->_opened_sections;
-
-  ami_append_repeat(ami, get_lineno(scanner), AMI_NT_REPEAT, $4, 0, 0, 0, 0);
-  
-  free($4);
-  }
-;
-
-closesection: CLOSESECTION {
-  if (ami->debug) {
-    printf("[parse.y] closesection: CLOSESECTION\n");
-  }
-
-  if (ami->_action_block_id == ami->_opened_sections) {
-    if (ami->debug) {
-      printf("[parse.y] Closing Action Block\n");
-    }
-    ami_append_item(ami, get_lineno(scanner), AMI_NT_ACTIONCLOSE, NULL, 0, 0, 0, 0);
-  }
-
-  if (ami->_repeat_block_id == ami->_opened_sections) {
-    if (ami->debug) {
-      printf("[parse.y] Closing Repeat Block\n");
-    }
-    /* printf("We close the repeat that has block id:%d\n", ami->_repeat_block_id); */
-    ami->_repeat_block_id = 0;
-    ami_append_item(ami, get_lineno(scanner), AMI_NT_REPEATCLOSE, NULL, 0, 0, 0, 0);
-  }
-  
-  ami->_opened_sections--;
-  if (ami->_opened_sections < 0) {
-    ami_yyerror(scanner, ami, "Section closed was never opened\n");
-    exit(1);
-  }
-  
-}
-;
-
-action: ACTION WORD OPENSECTION {
-  if (ami->debug) {
-    printf("[parse.y] action: ACTION WORD(%s) OPENSECTION\n", $2);
-  }
-
-  ami->_opened_sections++;
-  ami->_action_block_id = ami->_opened_sections;
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_ACTION, $2, 0, 0, 0, 0);
-  /* ami_node_create(ami, &ami->root_node, AMI_NT_ACTION, $2, 0); */
-  
-  free($2);
-}
-;
-
-field_function_inline: FIELD OPENBRACKET string CLOSEBRACKET DOT function {
-  if (ami->debug) {
-   printf("[parse.y] field_function_inline: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET DOT function\n", $3);
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_FIELDFUNC, $3, 0, 0, 0, 0);
-  
-  free($3);
-}
-;
-
-field_assigned_to_variable: FIELD OPENBRACKET string CLOSEBRACKET EQUAL varset {
-  if (ami->debug) {
-    printf("[parse.y] field_assigned_to_variable: FIELD OPENBRACKET STRING(%s) CLOSEBRACKET EQUAL varset\n", $3);
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_FIELDVAR, $3, 0, 0, 0, 0);
-
- }
-;
-
-exec: EXEC FUNCTIONNAME {
-  if (ami->debug) {
-    printf("[parse.y] exec: EXEC FUNCTIONNAME(%s)\n", $2);
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_EXEC, $2, 0, 0, 0, 0);
-  
-  free($2);
- }
-  | EXEC WORD {
-  if (ami->debug) {
-    printf("[parse.y] exec: EXEC WORD(%s)\n", $2);
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_EXEC, $2, 0, 0, 0, 0);
-  
-  free($2);
-}
-;
+};
 
 function: FUNCTIONNAME OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
-  if (ami->debug) {
-    printf("[parse.y] function: FUNCTIONNAME(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0, 0);
-
-  ami->arguments_count = 0;
-  
-  free($1);
-}
-| FUNCTIONNAME OPENPARENTHESIS CLOSEPARENTHESIS {
-  if (ami->debug) {
-    printf("[parse.y] function: FUNCTIONNAME(%s) OPENPARENTHESIS CLOSEPARENTHESIS\n", $1);
-  }
-
-  ami->arguments_count = 0;
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0, 0);
-  
-  free($1);  
-}
-| WORD OPENPARENTHESIS function_arguments CLOSEPARENTHESIS {
-  if (ami->debug) {
-    printf("[parse.y] function: WORD(%s) OPENPARENTHESIS function_arguments CLOSEPARENTHESIS\n", $1);
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0, 0);
-
-  ami->arguments_count = 0;
-  
-  free($1);
-}
-| WORD OPENPARENTHESIS CLOSEPARENTHESIS {
-  if (ami->debug) {
-    printf("[parse.y] function: WORD(%s) OPENPARENTHESIS CLOSEPARENTHESIS\n", $1);
-  }
-
-  ami->arguments_count = 0;
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_FUNCTION, $1, ami->arguments_count, 0, 0, 0);
-  
-  free($1);
-}
+  $$ = ami2_ast_node_lr_new(AMI2_NODE_FUNCTION_CALL, $1, NULL);
+  ami2_ast_node_append_right($$, $3);  
+ }
 ;
 
-function_arguments:   function_argument
-                    | function_arguments COMMA function_argument
+function_arguments:   expr 
+                    | function_arguments COMMA expr
 {
-  // done parsing function arguments.
-}
-                    ;
-
-/* function_argument: variable <- Why variable?
-                      | function_argument_variable */
-
-function_argument: function_argument_variable
-                   | function_argument_string
-                   | function_argument_int
-                   | function_argument_float
-                   | function_argument_word_eq_string
-                   | function_argument_word_eq_int
-                   | function_argument_assign
-                   | keywords_as_argname
-                   | function
-                   ;
-
-/* function_argument_assign: string ASSIGN varset { */
-/*   if (ami->debug) { */
-/*     printf("[parse.y] function_argument_assign: STRING(%s) ASSIGN varset\n", $1); */
-/*   } */
-
-/*   ami->arguments_count++; */
-  
-/*   ami_append_item(ami, get_lineno(scanner), AMI_NT_REPLACE, $1, 0, 0, 0); , 0*/
-  
-/*   free($1); */
-/* } */
-/* ; */
-
-function_argument_assign: varset ASSIGN varset {
-  if (ami->debug) {
-    printf("[parse.y] function_argument_assign: varset ASSIGN varset\n");
-  }
-
-  ami->arguments_count++;
-  
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_REPLACE, NULL, 0, 0, 0, 0);
-  
+  ami2_ast_node_append_right($$, $3);
+  /* $$ = $3; */
 }
 ;
 
-function_argument_string: string {
-  if (ami->debug) {
-    printf("[parse.y] function_argument_string: STRING(%s)\n", $1);
-  }
-
-  ami->arguments_count++;
-  
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALSTR, $1, 0, 0, 0, 0);
-
-  free($1);
+action_block: ACTION WORD OPENSECTION statements CLOSESECTION {
+  $$ = ami2_ast_node_lr_new(AMI2_NODE_ACTION, $2, $4);
 }
 ;
 
-function_argument_int: INTEGER {
-  if (ami->debug) {
-    printf("[parse.y] function_argument_int: INTEGER(%d)\n", $1);
-  }
-
-  ami->arguments_count++;
-
-  
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALINT, NULL, $1, 0, 0, 0);
-}
-;
-
-function_argument_float: FLOAT {
-  if (ami->debug) {
-    printf("[parse.y] function_argument_float: FLOAT(%f)\n", $1);
-  }
-
-  ami->arguments_count++;
-
-  
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALFLOAT, NULL, 0, $1, 0, 0);
-}
-;
-
-function_argument_variable: VARIABLE {
-  if (ami->debug) {
-    printf("[parse.y] function_argument_variable: VARIABLE(%s)\n", $1);
-  }
-
-  ami->arguments_count++;
-  
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVAR, $1, 0, 0, 0, 0);
-  
-  free($1);
-}
-;
-
-function_argument_word_eq_string: WORD EQUAL string {
-  if (ami->debug) {
-    printf("[parse.y] function_argument_word_eq_string: WORD(%s) EQUAL STRING(%s)\n", $1, $3);
-  }
-
-  ami->arguments_count++;
-  
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALSTR, $3, 0, 0, 0, 0);
-  
-  free($1);
-  free($3);
-}
-;
-
-function_argument_word_eq_int: WORD EQUAL INTEGER {
-  if (ami->debug) {
-    printf("[parse.y] function_argument_word_eq_int: WORD(%s) EQUAL INTEGER(%d)\n", $1, $3);
-  }
-
-  ami->arguments_count++;
-  
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_VARVALINT, NULL, $3, 0, 0, 0);
-  
-  free($1);
-}
-;
-
-keywords_as_argname: keyword_field
-                     ;
-
-keyword_field: FIELD EQUAL varset {
-  if (ami->debug) {
-    printf("[parse.y] keyword_field: FIELD EQUAL varset: This would be a keyword, but it is not used as a keyword. Simply as an argument. (field)\n");
-  }  
-  
-}
-;
-
-skiprepeat: SKIPREPEAT {
-  ami->skip_repeat = 1;
-}
-;
-
-ignoregroupsleep: IGNOREGROUPSLEEP {
-  ami->ignore_group_sleep = 1;
-}
-;
-
-set_slice_div: SLICEDIVIDER INTEGER {
-  ami->slice_divider = $2;
-}
-;
-
-set_slice_run: SLICERUN INTEGER {
-  ami->slice_to_run = $2;
-}
-;
-
-debugon: DEBUGON {
-  ami->debug = 1;
-}
-;
-
-debugoff: DEBUGOFF {
-  ami->debug = 0;
-}
-;
-
-exit: EXIT {
-  fprintf(stderr, "Exiting. As it was requested from the script!\n");
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_EXIT, NULL, 0, 0, 0, 0);
-}
-;
-
-_goto: GOTO WORD {
-  if (ami->debug) {
-    printf("[parse.y] GOTO WORD(%s)\n", $2);
-  }
-  free($2);
-}
-;
-
-label: LABEL {
-  if (ami->debug) {
-    printf("[parse.y] LABEL(%s)\n", $1);
-  }
-  free($1);
-}
-;
-
-string: STRING {
-  ami->_is_verbatim_string = 0;
-  $$ = $1;
- }
-| VERBATIM {
-  ami->_is_verbatim_string = 1;
-  $$ = $1;
- }
- ;
-
-array: VARIABLE EQUAL OPENBRACKET function_arguments CLOSEBRACKET {
-  if (ami->debug) {
-    printf("[parse.y] array[...]\n");
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYVAR, $1, ami->arguments_count, 0, 0, 0);
-
-  ami->arguments_count = 0;
-  
- }
- ;
-
-array_item: VARIABLE OPENBRACKET varset CLOSEBRACKET {
-  if (ami->debug) {
-    printf("[parse.y] array_item[varset]\n");
-  }
-
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_ARRAYGET, $1, 0, 0, 0, 0);
-  
- }
- ;
-
-expression_int: INTEGER { $$ = $1; }
-          | expression_int PLUS expression_int { $$ = $1 + $3; }
-          | expression_int MINUS expression_int { $$ = $1 - $3; }
-          | string PLUS expression_int {
-	    int converted_str = (int)strtod($1, NULL);
-	    $$ = converted_str + $3;
-           }
-          | string MINUS expression_int {
-	    int converted_str = (int)strtod($1, NULL);	    
-	    $$ = converted_str - $3;
-           }
-;
-
-
-expression_float: FLOAT { $$ = $1; }
-          | expression_float PLUS expression_float { $$ = $1 + $3; }
-          | expression_float MINUS expression_float { $$ = $1 - $3; }
-;
-
-delete: DELETE VARIABLE {
-  ami_append_item(ami, get_lineno(scanner), AMI_NT_DELETE, $2, 0, 0, 0, 0);
-  free($2);
- }
-;
-
-taxonomy: TAXONOMY WORD {
-  free(ami->taxonomy);
-  ami->taxonomy = strdup($2);
-  free($2);
-}
-;
-
-match: MATCH varset OPENSECTION {
-  ami->_opened_sections++;
-  printf("We Match a match\n");
-}
-;
-
-match_less_than: LESS varset OPENSECTION {
-  ami->_opened_sections++;
-  printf("We Match less\n");
-}
-;
-
-match_less_equal_than: LESS_EQUAL varset OPENSECTION {
-  ami->_opened_sections++;
-  printf("We Match less equal\n");
-}
-;
-
-match_greater_than: GREATER varset OPENSECTION {
-  ami->_opened_sections++;
-  printf("We Match greater\n");
-}
-;
-
-match_greater_equal_than: GREATER_EQUAL varset OPENSECTION {
-  ami->_opened_sections++;
-  printf("We Match greater equal\n");
-}
-;
-
-match_string: string OPENSECTION {
-  ami->_opened_sections++;
-  printf("We Match a string\n");
-}
-;
-
-match_nomatch: NOMATCH OPENSECTION {
-  ami->_opened_sections++;
-  printf("We Match in nomatch\n");
-}
-;
 
 %%
 
 
 void
-ami_yyerror (yyscan_t scanner, ami_t *ami, const char *msg, ...)
+ami_yyerror (yyscan_t scanner, ami2_t *ami, const char *msg, ...)
 {
   (void) scanner;
 
   if (ami) {
-    fprintf(stderr, "AMI Syntax error at %s:%d or just above: ", ami->file, ami_yyget_lineno());
+    fprintf(stderr, "AMI Syntax error at %s:%d or just above: ", ami->original_file, ami_yyget_lineno());
   } else {
     fprintf(stderr, "AMI Syntax error line %d: ",  ami_yyget_lineno());
   }

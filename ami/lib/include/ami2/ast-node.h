@@ -9,13 +9,20 @@ extern "C" {
 
 enum _ami2_node_type_t {
   AMI2_NODE_ROOT,
+  AMI2_NODE_LIST,
   // declarations
-  AMI2_NODE_DECL,
+  AMI2_NODE_COREACTION,
+  AMI2_NODE_STATEMENT,
   AMI2_NODE_VARIABLE,
+  AMI2_NODE_STRING,
+  AMI2_NODE_INTEGER,
+  AMI2_NODE_FLOAT,
   // statements
+  AMI2_NODE_ACTION,
   AMI2_NODE_REPEAT,
   AMI2_NODE_MATCH,
   AMI2_NODE_ASSIGN,
+  AMI2_NODE_ASSIGN_AS_LOCAL,
   AMI2_NODE_FUNCTION_CALL,
   // expressions
   AMI2_NODE_ARITHMETIC,
@@ -24,17 +31,26 @@ enum _ami2_node_type_t {
   AMI2_NODE_EQUAL,  
   AMI2_NODE_REGEX,
   AMI2_NODE_MODULO,
+  AMI2_NODE_PLUS,
+  AMI2_NODE_MINUS,
   AMI2_NODE_MATCH_NOMATCH
 };
 typedef enum _ami2_node_type_t ami2_node_type_t;
   
 static const char *ami2_node_names[] = {
   "AMI2_NODE_ROOT",
-  "AMI2_NODE_DECL",
+  "AMI2_NODE_LIST",
+  "AMI2_NODE_COREACTION",
+  "AMI2_NODE_STATEMENT",
   "AMI2_NODE_VARIABLE",
+  "AMI2_NODE_STRING",
+  "AMI2_NODE_INTEGER",
+  "AMI2_NODE_FLOAT",
+  "AMI2_NODE_ACTION",
   "AMI2_NODE_REPEAT",
   "AMI2_NODE_MATCH",
   "AMI2_NODE_ASSIGN",
+  "AMI2_NODE_ASSIGN_AS_LOCAL",
   "AMI2_NODE_FUNCTION_CALL",
   "AMI2_NODE_ARITHMETIC",
   "AMI2_NODE_BOOLEAN",
@@ -42,6 +58,8 @@ static const char *ami2_node_names[] = {
   "AMI2_NODE_EQUAL",
   "AMI2_NODE_REGEX",
   "AMI2_NODE_MODULO",
+  "AMI2_NODE_PLUS",
+  "AMI2_NODE_MINUS",
   "AMI2_NODE_MATCH_NOMATCH",
 };
 
@@ -71,7 +89,7 @@ struct _ami2_ast_node_t {
   
   unsigned int lineno;
   ami_variable_t *variable;
-
+  
   unsigned int repeat_count;
   
   struct _ami2_ast_node_t *left;
@@ -80,10 +98,14 @@ struct _ami2_ast_node_t {
 typedef struct _ami2_ast_node_t ami2_ast_node_t;
 
 ami2_ast_node_t *ami2_ast_node_new(ami2_node_type_t node_type);
+ami2_ast_node_t *ami2_ast_node_string_new(ami2_node_type_t node_type, char *string);
+ami2_ast_node_t *ami2_ast_node_integer_new(ami2_node_type_t node_type, int number);
+ami2_ast_node_t *ami2_ast_node_float_new(ami2_node_type_t node_type, float number);
+ami2_ast_node_t *ami2_ast_node_lr_new(ami2_node_type_t node_type, ami2_ast_node_t *left, ami2_ast_node_t *right);
 void ami2_ast_node_free(ami2_ast_node_t *node);
 void ami2_ast_node_debug(ami2_ast_node_t *node);
-int ami2_ast_node_append_right(ami2_ast_node_t *dstnode, ami2_ast_node_t *srcnode);
-int ami2_ast_node_append_left(ami2_ast_node_t *dstnode, ami2_ast_node_t *srcnode);
+ami2_ast_node_t *ami2_ast_node_append_right(ami2_ast_node_t *dstnode, ami2_ast_node_t *srcnode);
+ami2_ast_node_t *ami2_ast_node_append_left(ami2_ast_node_t *dstnode, ami2_ast_node_t *srcnode);
   
 #ifdef __cplusplus
 }

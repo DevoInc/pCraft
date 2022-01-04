@@ -6,6 +6,7 @@
 
 #include <parse.h>
 
+#include <ami2/ami2.h>
 #include <ami/ami.h>
 #include <ami/csvread.h>
 #include <ami/tree.h>
@@ -727,9 +728,8 @@ char *ami_error_to_string(ami_t *ami) {
 
 int ami_parse_file(ami_t *ami, const char *file)
 {
-	char *string = "This is a bunch of words";
 	yyscan_t scanner;
-	int state;
+	/* int state; */
 	FILE *fpin;
 
 	/* printf("Parsing file: %s\n", file); */
@@ -752,7 +752,7 @@ int ami_parse_file(ami_t *ami, const char *file)
 	  fprintf(stderr, "Error parsing %s\n", file);
 	  return 1;
 	}
-	state = ami_yyrestart(fpin, scanner);
+	ami_yyrestart(fpin, scanner);
 	
 	/* state = ami_yy_scan_string(string, scanner); */
 	if (ami_yyparse(scanner, ami) != 0) {

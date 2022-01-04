@@ -22,6 +22,7 @@ typedef enum _ami_variable_type_t ami_variable_type_t;
   
 struct _ami_variable_t {
   ami_variable_type_t type;
+  int    is_local;
   size_t len;
   char  *strval;
   int    ival;
@@ -48,6 +49,7 @@ void ami_variable_debug(ami_variable_t *var);
 char *ami_variable_to_string(ami_variable_t *var);
 int ami_variable_to_int(ami_variable_t *var);
 void ami_variable_free(ami_variable_t *var);
+void ami_variable_make_local(ami_variable_t *var);
   
 #ifdef __cplusplus
 }

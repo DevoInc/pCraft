@@ -29,14 +29,16 @@ struct _ami2_t {
 
   ami2_header_t header;
 
-  int in_action;
+  int in_action_block;
   ami2_ast_node_t *root;
-  ami2_ast_node_t *last;
+  /* ami2_ast_node_t *last; */
 };
 typedef struct _ami2_t ami2_t;
 
 ami2_t *ami2_new(void);
 void ami2_free(ami2_t *ami);
+int ami2_parse_file(ami2_t *ami, const char *file);
+void ami2_walk_ast(ami2_ast_node_t *node, int is_left, int is_right);
 void ami2_debug(ami2_t *ami);
   
 #ifdef __cplusplus

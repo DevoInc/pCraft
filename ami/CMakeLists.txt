@@ -49,6 +49,8 @@ endif()
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -ggdb")
 
+add_definitions(-D_GNU_SOURCE)
+
 add_subdirectory(lib)
 add_subdirectory(bin)
 add_subdirectory(python)

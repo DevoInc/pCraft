@@ -1,4 +1,3 @@
-#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,12 +13,13 @@ ami_variable_t *ami_variable_new(void)
     fprintf(stderr, "Cannot allocate ami_variable_t!\n");
     return NULL;
   }
-  var->type   = AMI_VAR_NONE;
-  var->len    = 0;
-  var->strval = NULL;
-  var->ival   = 0;
-  var->fval   = 0;
-  var->array  = NULL;
+  var->type     = AMI_VAR_NONE;
+  var->is_local = 0;
+  var->len      = 0;
+  var->strval   = NULL;
+  var->ival     = 0;
+  var->fval     = 0;
+  var->array    = NULL;
   
   return var;
 }
@@ -203,19 +203,19 @@ void _ami_variable_debug_indent(ami_variable_t *var, int indent)
     break;
   case AMI_VAR_INT:
     fprintf(out, "%sAMI_VAR_INT\n", indent?"\t":"");
-    fprintf(out, "%s\t%d\n", indent?"\t":"", var->ival);
+    fprintf(out, "%s\t[local:%d] %d\n", indent?"\t":"", var->is_local, var->ival);
     break;
   case AMI_VAR_FLOAT:
     fprintf(out, "%sAMI_VAR_FLOAT\n", indent?"\t":"");
-    fprintf(out, "%s\t%f\n", indent?"\t":"", var->fval);    
+    fprintf(out, "%s\t[local:%d] %f\n", indent?"\t":"", var->is_local,var->fval);    
     break;
   case AMI_VAR_STR:
     fprintf(out, "%sAMI_VAR_STR\n",indent?"\t":"");
-    fprintf(out, "%s\t[len:%ld] %s\n", indent?"\t":"",var->len, var->strval);        
+    fprintf(out, "%s\t[local:%d,len:%ld] %s\n", indent?"\t":"",var->is_local,var->len, var->strval);        
     break;
   case AMI_VAR_VARIABLE:
     fprintf(out, "%sAMI_VAR_VARIABLE\n",indent?"\t":"");
-    fprintf(out, "%s\t[len:%ld] %s\n", indent?"\t":"",var->len, var->strval);        
+    fprintf(out, "%s\t[local:%d,len:%ld] %s\n", indent?"\t":"", var->is_local, var->len, var->strval);        
     break;
   default:
     fprintf(out, "No such variable type:%d\n", var->type);
@@ -297,4 +297,9 @@ void ami_variable_free(ami_variable_t *var)
     free(var->strval);
   }
   free(var);
+}
+
+void ami_variable_make_local(ami_variable_t *var)
+{
+  var->is_local = 1;
 }

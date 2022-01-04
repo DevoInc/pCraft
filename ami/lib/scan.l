@@ -8,13 +8,13 @@
 %{
 #define YYSTYPE AMI_YYSTYPE
 
-#define _GNU_SOURCE
 #include <stdio.h>
 
 #include <parse.h>
 #include <libgen.h>
 
 #include <ami/ami.h>
+#include <ami2/ast-node.h>
 
 static char *filename;
 static char *realfile;
@@ -28,9 +28,9 @@ char verbasub_buf[MAX_VERBATIM_BUF_SIZE];
 int vbsubindex;
 
 
-#define YY_DECL yylex(YYSTYPE * yylval_param, yyscan_t yyscanner, ami_t *ami)
+#define YY_DECL yylex(YYSTYPE * yylval_param, yyscan_t yyscanner, ami2_ast_node_t *ami)
 
-static char *get_include_file(ami_t *ami, const char *str) {
+static char *get_include_file(ami2_ast_node_t *ami, const char *str) {
         char *dname, *da, *result;
 
         if (!str) {
@@ -51,7 +51,8 @@ static char *get_include_file(ami_t *ami, const char *str) {
                         return strdup(str);
                 break;
                 default:
-	                da = strdup(ami->file);
+//	                da = strdup(ami->file);
+                        da = strdup(str); // FIXME: This has changed with ami2_ast_node_t.
 	                dname = dirname(da);
 	                asprintf(&result,"%s/%s", dname, str);
                         free(da);
@@ -122,6 +123,7 @@ char *escape_string(char *str) {
     return s;
 }
 
+
 #define MAX_INCLUDE_DEPTH 10
 YY_BUFFER_STATE includes[MAX_INCLUDE_DEPTH];
 char *filenames[MAX_INCLUDE_DEPTH];
@@ -131,7 +133,7 @@ int includes_index = 0;
 
 COMMENT1 #.*\n
 COMMENT2 \/\*(.*\n)*.*\*\/
-STRING (\"[^\"](\\.|\"\"|[^"\n])*\")|(\"\")
+STRING \"[^\"\n]*\"
 %x VERBASTRING
 %x VERBASUBSTITUTESTRING
 FLOAT [0-9\.]+
@@ -140,39 +142,16 @@ VARIABLE $[a-zA-Z0-9\-_]+
 VARIABLESTR $(\"[^\"](\\.|\"\"|[^"\n])*\")|(\"\")
 LABEL ^[a-zA-Z0-9][a-zA-Z0-9\-_]+:
 
-AMIVERSION ami_version
-AMIVERSIONSHORT av
-STARTTIME start_time
-STARTTIMESHORT st
-REVISION revision
-AUTHOR author
-SHORTDESC shortdesc
-DESCRIPTION description
-REFERENCE reference
-TAG tag
-MESSAGE message
 INCLUDE include
-SLEEP sleep
 REPEAT repeat
 AS as
 ACTION action
-FIELD field
 EXEC exec
-DEBUGON debugon
-DEBUGOFF debugoff
-EXIT exit
-GOTO goto
 TRUE true
 FALSE false
 GROUP group
 FROMGROUP fromgroup
-SKIPREPEAT skip_repeat
-IGNOREGROUPSLEEP ignore_group_sleep
-SLICEDIVIDER slice_div
-SLICERUN slice_run
-DELETE delete
 LOCAL local
-TAXONOMY taxonomy
 MATCH match
 NOMATCH nomatch
 
@@ -182,7 +161,7 @@ NOMATCH nomatch
 <VERBASTRING>"\"\"\"" {
     BEGIN(INITIAL);
     verbatim_buf[vbindex] = '\0';
-    yylval->TOK_VERBATIM = strdup(verbatim_buf);
+    yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, verbatim_buf);
     return TOK_VERBATIM;
 }
 
@@ -198,7 +177,7 @@ NOMATCH nomatch
 <VERBASUBSTITUTESTRING>"\"\"\"" {
     BEGIN(INITIAL);
     verbasub_buf[vbsubindex] = '\0';
-    yylval->TOK_STRING = strdup(verbasub_buf);
+    yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, verbasub_buf);
     return TOK_STRING;
 }
 
@@ -230,17 +209,6 @@ NOMATCH nomatch
 "-" return TOK_MINUS;
 "%" return TOK_MODULO;
 
-{AMIVERSION}      { return TOK_AMIVERSION; }
-{AMIVERSIONSHORT} { return TOK_AMIVERSION; }
-{STARTTIME}       { return TOK_STARTTIME; }
-{STARTTIMESHORT}  { return TOK_STARTTIME; }
-{REVISION}        { return TOK_REVISION; }
-{AUTHOR}          { return TOK_AUTHOR; }
-{SHORTDESC}       { return TOK_SHORTDESC; }
-{DESCRIPTION}     { return TOK_DESCRIPTION; }
-{REFERENCE}       { return TOK_REFERENCE; }
-{TAG}             { return TOK_TAG; }
-{MESSAGE}         { return TOK_MESSAGE; }
 {INCLUDE}         { BEGIN(incl); }
 <incl>[ \t]*
 <incl>[^ \t\n]+	{ /* got the include file name */
@@ -260,7 +228,7 @@ NOMATCH nomatch
 
 		realfile = strdup(filename);
                 // The includedfile is realfile
-                ami->file = strdup(filename);
+                // ami->original_file = strdup(filename);
 
 		yyin = fopen(realfile, "r");
 		if (!yyin) {
@@ -290,57 +258,40 @@ NOMATCH nomatch
 		}
 
 {LOCAL} { return TOK_LOCAL; }
-{DELETE} { return TOK_DELETE; }
-{SLICEDIVIDER} { return TOK_SLICEDIVIDER; }
-{SLICERUN} { return TOK_SLICERUN; }
-{IGNOREGROUPSLEEP} { return TOK_IGNOREGROUPSLEEP; }
-{SKIPREPEAT} { return TOK_SKIPREPEAT; }
-{FROMGROUP} { return TOK_FROMGROUP; }
-{GROUP} { return TOK_GROUP; }
-{SLEEP} { return TOK_SLEEP; }
 {REPEAT} { return TOK_REPEAT; }
 {AS} { return TOK_AS; }
 {ACTION} { return TOK_ACTION; }
 {EXEC} { return TOK_EXEC; }
-{FIELD} { return TOK_FIELD; }
-{DEBUGON} { return TOK_DEBUGON; }
-{DEBUGOFF} { return TOK_DEBUGOFF; }
-{EXIT} { return TOK_EXIT; }
-{GOTO} { return TOK_GOTO; }
-{TRUE} { yylval->TOK_INTEGER = 1; return TOK_INTEGER; }
-{FALSE} { yylval->TOK_INTEGER = 0; return TOK_INTEGER;}
+{TRUE} { yylval->node = ami2_ast_node_integer_new(AMI2_NODE_INTEGER, 1); return TOK_INTEGER; }
+{FALSE} { yylval->node = ami2_ast_node_integer_new(AMI2_NODE_INTEGER, 0); return TOK_INTEGER;}
 
 {VARIABLE} {
-              yylval->TOK_VARIABLE = strdup(yytext);
+              yylval->node = ami2_ast_node_string_new(AMI2_NODE_VARIABLE, yytext);
               return TOK_VARIABLE;
            }
 {VARIABLESTR} {
-           yylval->TOK_STRING = escape_string(yytext);
+           yylval->node = ami2_ast_node_string_new(AMI2_NODE_VARIABLE, escape_string(yytext));
            return TOK_VARIABLE;
          }
 
 {LABEL} {
-              yylval->TOK_LABEL = strdup(yytext);
+              yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, yytext);
               return TOK_LABEL;
            }
 
 
-{INTEGER} { yylval->TOK_INTEGER = (int)strtol(yytext, NULL, 10);
+{INTEGER} { yylval->node = ami2_ast_node_integer_new(AMI2_NODE_INTEGER, (int)strtol(yytext, NULL, 10));
            return TOK_INTEGER;
 }
 
-{FLOAT} { yylval->TOK_FLOAT = (float)strtof(yytext, NULL);
+{FLOAT} { yylval->node = ami2_ast_node_float_new(AMI2_NODE_FLOAT, (float)strtof(yytext, NULL));
            return TOK_FLOAT;
 }
 
 {STRING} {
-           yylval->TOK_STRING = escape_string(yytext);
+           yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, escape_string(yytext));
            return TOK_STRING;
          }
-
-{TAXONOMY} {
-               return TOK_TAXONOMY;
-           }
 
 {MATCH} {
                return TOK_MATCH;
@@ -351,12 +302,12 @@ NOMATCH nomatch
            }
 
 [a-zA-Z0-9_\-:<>@]+ {
-        yylval->TOK_WORD = strdup(yytext);
+        yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, strdup(yytext));
 	return TOK_WORD;
 }
 
 [a-zA-Z][\.a-zA-Z0-9_:<>@]+ {
-        yylval->TOK_FUNCTIONNAME = strdup(yytext);
+        yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, strdup(yytext));
 	return TOK_FUNCTIONNAME;
 }
 
