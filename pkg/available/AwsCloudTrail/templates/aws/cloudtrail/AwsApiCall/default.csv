@@ -1,5 +1,5 @@
 key,default_value
-eventVersion,1.07
+eventVersion,1.08
 eventTime,%Y-%m-%dT%H:%M:%SZ
 awsRegion,us-west-1
 eventID,de017cfc-014e-4934-af70-e1723de838f0
@@ -16,6 +16,9 @@ userIdentity_type,"Root"
 userIdentity_principalId,"738192374810"
 userIdentity_arn,"arn:aws:iam::738192374810:root"
 userIdentity_accountId,"738192374810"
+resources_0_ARN,arn:aws:s3:::eb47x3918be-dev-us-east-1/nft/cleansed/PC_1234/EB47X3918DEV_MDAH_MDR/date_partition=2021-08-15/dataset=2021081500120/part-00001-88b6a03b-a25f-4ff1-88f0-54b6c93191ec.c000.snappy.parquet
+resources_1_arn,"arn:aws:iam::738192374810:root"
+resources_1_accountId,"738192374810"
 userIdentity_accessKeyId,"ZOUB1D4IAMD4NSTONGR0"
 userIdentity_sessionContext_attributes_mfaAuthenticated,false
 userIdentity_sessionContext_attributes_creationDate,"%Y-%m-%dT%H:%M:%SZ"
@@ -26,6 +29,9 @@ eventSource,"iam.amazonaws.com"
 recipientAccountId,"936471293841"
 requestParameters_userName,"backup"
 awsRegion,"us-east-1"
+requestParameters_bucketName,"eb47x3918be-dev-us-east-1"
+requestParameters_Host,"eb47x3918be-dev-us-east-1.s3.amazonaws.com"
+requestParameters_key,"nft/cleansed/PC_1234/EB47X3918DEV_MDAH_MDR/date_partition=2021-08-15/dataset=2021081500120/part-00001-88b6a03b-a25f-4ff1-88f0-54b6c93191ec.c000.snappy.parquet"
 requestID,"88b6a03b-a25f-4ff1-88f0-54b6c93191ec"
 responseElements_accessKey_accessKeyId,"ZOUB1D4IAMD4NSTONGR0"
 responseElements_accessKey_status,"Active"

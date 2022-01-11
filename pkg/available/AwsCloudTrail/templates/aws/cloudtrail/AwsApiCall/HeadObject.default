@@ -1,0 +1,18 @@
+key,default_value
+userIdentity_type,"AWSAccount"
+eventSource,"s3.amazonaws.com"
+eventName,"HeadObject"
+userAgent,"[aws-sdk-java/1.7.4 Linux/4.14.181-140.257.amzn2.x86_64 OpenJDK_64-Bit_Server_VM/25.232-b09/1.8.0_232]"
+responseElements,null
+additionalEventData_SignatureVersion,"SigV2"
+additionalEventData_CipherSuite,"ECDHE-RSA-AES128-SHA"
+additionalEventData_bytesTransferredIn,"0.0"
+additionalEventData_AuthenticationMethod,"AuthHeader"
+additionalEventData_x-amz-id-2,"1gAAAAAAgAEMFk7B1gCAAwAABgAAAFwAAAbIcFAP7DywI8AAGAwgAAAAwWTsHWAgAmQkIDCg=="
+additionalEventData_bytesTransferredOut,"0.0"
+readOnly,"True"
+resources_0_type,"AWS::S3::Object"
+resources_1_type,"AWS::S3::Bucket"
+eventType,"AwsApiCall"
+managementEvent,"False"
+eventCategory,"Data"
