@@ -1,0 +1,67 @@
+useragent
+AWS Internal
+[aws-cli/1.18.154 Python/3.5.2 Linux/4.18.0-123-aws botocore/1.18.13]
+[aws-sdk-java/1.7.4 Linux/4.18.0-123.007.amzn2.x86_64 OpenJDK_64-Bit_Server_VM/25.232-b09/1.8.0_232]
+[Hadoop 3.3.1, aws-sdk-java/1.11.901 Linux/4.18.0-123.007.amzn2.x86_64 OpenJDK_64-Bit_Server_VM/25.312-b07 java/1.8.0_312 scala/2.12.15 vendor/Oracle_Corporation]
+APN/1.0 HashiCorp/1.0 Terraform/0.12.31 (+https://www.terraform.io) terraform-provider-aws/3.70.0 (+https://registry.terraform.io/providers/hashicorp/aws) aws-sdk-go/1.42.23 (go1.16; linux; amd64)
+Boto3/1.20.18 Python/3.8.10 Linux/4.14.252-195.483.amzn2.x86_64 exec-env/AWS_ECS_FARGATE Botocore/1.23.18
+Datadog
+Go-http-client/1.1
+SignalFx, aws-sdk-java/2.15.48 Linux/4.18.0-123.007.amzn2.x86_64 OpenJDK_64-Bit_Server_VM/11.0.13+8-LTS Java/11.0.13 vendor/Amazon.com_Inc. io/sync http/Apache, cwdata-getmetricdata
+[Boto3/1.9.249 Python/3.7.9 Linux/4.18.0-123.007.amzn2.x86_64 Botocore/1.12.253]
+[NiFi, aws-sdk-java/1.11.820 Linux/4.18.0-123.007.amzn2.x86_64 OpenJDK_64-Bit_Server_VM/11.0.10+9 java/11.0.10 vendor/Oracle_Corporation]
+[aws-sdk-dotnet-coreclr/3.7.0.32 aws-sdk-dotnet-core/3.7.0.43 .NET_Core/5.0.13 OS/Linux_4.18.0-123.007.amzn2.x86_64_#1_SMP_Mon_Nov_28_22:58:46_UTC_2020 exec-env/AWS_ECS_FARGATE ClientAsync]
+[libcloud/0.15.2.divvy (Amazon S3 (standard))]
+[rclone/v1.56.2]
+amazon-vpc-cni-k8s/version/ aws-sdk-go/1.40.6 (go1.14.15; linux; amd64)
+apigateway.amazonaws.com
+autoscaling.amazonaws.com
+aws-cli/1.16.96 Python/2.7.5 Linux/4.18.0-123.007.1.el9.x86_64 botocore/1.12.86
+aws-internal/3 aws-sdk-java/1.12.81 Linux/4.18.0-123.007.amzn2.x86_64 OpenJDK_64-Bit_Server_VM/25.312-b07 java/1.8.0_312 kotlin/1.3.72 vendor/Oracle_Corporation cfg/retry-mode/standard
+aws-sdk-dotnet-45/3.7.0.2 aws-sdk-dotnet-core/3.7.0.43 .NET_Runtime/4.0 .NET_Framework/4.0 OS/Microsoft_Windows_NT_6.2.9200.0 ClientSync
+aws-sdk-go/1.25.41 (go1.12.11; windows; amd64) amazon-ssm-agent/
+aws-sdk-go/1.25.41 (go1.13.14; windows; amd64) amazon-ssm-agent/
+aws-sdk-go/1.33.14 (go1.13.15; linux; amd64) amazon-vpc-cni-k8s
+aws-sdk-java/1.11.1003 Linux/4.18.0-123.007.amzn2.x86_64 OpenJDK_64-Bit_Server_VM/25.302-b08 java/1.8.0_302 vendor/Red_Hat,_Inc. cfg/retry-mode/legacy
+aws-sdk-java/1.11.312 Linux/3.10.0-1160.2.1.el7.x86_64 OpenJDK_64-Bit_Server_VM/25.212-b04 java/1.8.0_212
+aws-sdk-nodejs/2.1002.0 linux/v14.18.1 callback
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-autoscaling/1.54.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-cloudformation/1.47.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-cloudtrail/1.32.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-configservice/1.56.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-dynamodb/1.59.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-ec2/1.222.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-elasticache/1.52.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-elasticloadbalancingv2/1.57.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-emr/1.41.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-kinesis/1.31.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-lambda/1.58.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-organizations/1.56.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-rds/1.112.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-redshift/1.54.0 cloudhealth
+aws-sdk-ruby3/3.112.0 jruby/2.3.3 java aws-sdk-route53/1.46.0 cloudhealth
+aws-sdk-ruby3/3.68.0 ruby/2.6.4 x86_64-linux aws-sdk-cloudwatchlogs/1.25.0
+awslambda-worker/1.0 rusoto/0.47.0 rust/1.56.1 linux
+cloudfront.amazonaws.com
+cloudtrail.amazonaws.com
+config.amazonaws.com
+curl/7.61.1-DEV
+dynamodb.application-autoscaling.amazonaws.com
+ec2.amazonaws.com
+ecs.amazonaws.com
+ecs.application-autoscaling.amazonaws.com
+eks.amazonaws.com
+elasticbeanstalk.amazonaws.com
+elasticloadbalancing.amazonaws.com
+elbv2.k8s.aws/v2.2.0 aws-sdk-go/1.35.18 (go1.15; linux; amd64)
+fms.amazonaws.com
+lambda.amazonaws.com
+libcloud/0.15.2.divvy (Amazon CloudTrail)
+libcloud/0.15.2.divvy (Amazon EC2)
+null
+okhttp/4.2.2
+rds.amazonaws.com
+replication.dynamodb.amazonaws.com
+secretsmanager.amazonaws.com
+transit-vpc-ec2-eu-central-1
+trustedadvisor.amazonaws.com
