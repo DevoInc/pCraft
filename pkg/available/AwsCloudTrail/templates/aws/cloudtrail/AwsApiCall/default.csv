@@ -23,6 +23,7 @@ userIdentity_sessionContext_sessionIssuer_arn,"arn:aws:iam::738192374810:role/gl
 userIdentity_sessionContext_sessionIssuer_userName,"glb-mdr"
 userIdentity_sessionContext_sessionIssuer_accountId,738192374810
 userIdentity_sessionContext_attributes_creationDate,"%Y-%m-%dT%H:%M:%SZ"
+resources_0_accountId,"738192374810"
 resources_1_accountId,"738192374810"
 userIdentity_accessKeyId,"ZOUB1D4IAMD4NSTONGR0"
 userIdentity_sessionContext_attributes_mfaAuthenticated,false
