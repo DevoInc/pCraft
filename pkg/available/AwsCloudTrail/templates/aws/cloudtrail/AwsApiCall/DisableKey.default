@@ -1,10 +1,8 @@
 key,default_value
 eventVersion,"1.02"
 userIdentity_type,"IAMUser"
-userIdentity_principalId,"EX_PRINCIPAL_ID"
 userIdentity_arn,"arn:aws:iam::111122223333:user/Alice"
 userIdentity_accountId,"111122223333"
-userIdentity_accessKeyId,"EXAMPLE_KEY_ID"
 userIdentity_userName,"Alice"
 eventSource,"kms.amazonaws.com"
 eventName,"DisableKey"
