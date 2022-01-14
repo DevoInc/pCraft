@@ -18,6 +18,7 @@ userIdentity_arn,"arn:aws:iam::738192374810:root"
 userIdentity_accountId,"738192374810"
 resources_0_ARN,arn:aws:s3:::eb47x3918be-dev-us-east-1/nft/cleansed/PC_1234/EB47X3918DEV_MDAH_MDR/date_partition=2021-08-15/dataset=2021081500120/part-00001-88b6a03b-a25f-4ff1-88f0-54b6c93191ec.c000.snappy.parquet
 resources_1_arn,"arn:aws:iam::738192374810:root"
+resources_1_ARN,"arn:aws:iam::738192374810:root"
 userIdentity_sessionContext_sessionIssuer_principalId,"ZOUB1D4IAMD4NSTONGR0"
 userIdentity_sessionContext_sessionIssuer_arn,"arn:aws:iam::738192374810:role/glb-mdr"
 userIdentity_sessionContext_sessionIssuer_userName,"glb-mdr"
@@ -25,6 +26,10 @@ userIdentity_sessionContext_sessionIssuer_accountId,738192374810
 userIdentity_sessionContext_attributes_creationDate,"%Y-%m-%dT%H:%M:%SZ"
 resources_0_accountId,"738192374810"
 resources_1_accountId,"738192374810"
+resources_2_accountId,"738192374810"
+resources_2_arn,"arn:aws:iam::738192374810:root"
+resources_2_ARN,"arn:aws:iam::738192374810:root"
+resources_3_ARN,"arn:aws:iam::738192374810:root"
 userIdentity_accessKeyId,"ZOUB1D4IAMD4NSTONGR0"
 userIdentity_sessionContext_attributes_mfaAuthenticated,false
 userIdentity_sessionContext_attributes_creationDate,"%Y-%m-%dT%H:%M:%SZ"
@@ -45,3 +50,4 @@ responseElements_accessKey_userName,"backup"
 responseElements_accessKey_createDate,"%b %d, %Y %H:%M:%S %p"
 requestParameters_networkAclId,"acl-ae7391fb23f0b00f1"
 responseElements_requestId,"4dd9a996-4129-48a5-ad36-10905476ee8b"
+vpcEndpointId,vpce-83721f9328deb351c
