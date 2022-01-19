@@ -19,6 +19,7 @@ class PcraftLogWriter(LibraryContext):
         event["variables"]["$ProcessGroupId"] = str(first_pid + random.randint(300, 10000))
         event["variables"]["$TargetProcessId"] = str(first_pid + random.randint(5000, 30000))
         
+        event["variables"]["$aid"] = self.gen_uuid(event["variables"]["$aip"])
         event["variables"]["$id"] = self.gen_uuid(event)
         event["variables"]["$MD5HashData"] = self.gen_md5()
         event["variables"]["$SHA256HashData"] = self.gen_sha256()
