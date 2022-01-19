@@ -52,3 +52,16 @@ ModuleCharacteristics,9876
 OriginalEventTimeStamp,%s.000
 MappedFromUserMode,1
 PrimaryModule,0
+Options,24019283
+MinorFunction,0
+Information,1
+FileIdentifier,37980c33951de6b0e450c3701b219bfeee930544705f637c
+ShareAccess,1
+FileObject,37980c33951de6b0e450
+FileAttributes,0
+Status,0
+IrpFlags,2180
+MajorFunction,0
+DesiredAccess,1179785
+OperationFlags,0
+TargetFileName,\\Device\\HarddiskVolume3\\Users\\eroux\\Downloads\\balecity.pptx
