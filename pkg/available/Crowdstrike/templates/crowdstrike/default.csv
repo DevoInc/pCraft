@@ -3,7 +3,7 @@ ConfigBuild,"1007.31.11304.1"
 ConfigStateHash,9403815389
 ContextProcessId,932494304992735022
 ContextThreadId,743885290637038
-ContextTimeStamp,1630088770.000
+ContextTimeStamp,%s.000
 DomainName,www.example.com
 Entitlements,15
 RequestType,1
@@ -40,3 +40,11 @@ name,ProcessRollup2LinV6
 RUID,0
 ProcessStartTime,%s.000
 GrandParentBaseFileName,
+LocalAddressIP4,0.0.0.0
+ConnectionFlags,0
+RemotePort,443
+LocalPort,0
+Protocol,6
+RemoteAddressIP4,10.1.2.3
+ConnectionDirection,0
+InContext,0
