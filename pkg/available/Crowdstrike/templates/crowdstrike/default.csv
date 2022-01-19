@@ -48,3 +48,7 @@ Protocol,6
 RemoteAddressIP4,10.1.2.3
 ConnectionDirection,0
 InContext,0
+ModuleCharacteristics,9876
+OriginalEventTimeStamp,%s.000
+MappedFromUserMode,1
+PrimaryModule,0

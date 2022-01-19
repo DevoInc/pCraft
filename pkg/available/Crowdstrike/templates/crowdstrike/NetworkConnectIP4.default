@@ -1,2 +1,3 @@
 key,default_value
+event_simpleName,NetworkConnectIP4
 name,NetworkConnectIP4MacV5
