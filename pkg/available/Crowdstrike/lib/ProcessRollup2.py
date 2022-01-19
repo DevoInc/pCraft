@@ -24,7 +24,7 @@ class PcraftLogWriter(LibraryContext):
         event["variables"]["$MD5HashData"] = self.gen_md5()
         event["variables"]["$SHA256HashData"] = self.gen_sha256()
         
-        event = template_get_event(templates, "processrollup2", event["variables"])
+        event = template_get_event(templates, "ProcessRollup2", event["variables"])
         event = frame_time.strftime(event)
         
         yield bytes(event, "utf8")
