@@ -11,7 +11,7 @@ from pcraft.confnames import *
 from pcraft.PackageManager import PackageManager
 from pcraft.PcapBuilder import PcapBuilder
 from pcraft.LogsBuilder import LogsBuilder
-
+from pcraft.SendData import *
 
 verbose = False                
 def debug(message):
@@ -37,8 +37,16 @@ class RunPcraft(object):
         if self.args["pcap"]:
             self.build_pcap(self.args["pcap"])
 
+        log_files = None
         if self.args["log_folder"]:
-            self.build_logs(self.args["log_folder"], self.args["force"], self.args["no_triggers"])
+            log_files = self.build_logs(self.args["log_folder"], self.args["force"], self.args["no_triggers"])
+
+        if self.args["log_folder"] and self.args["send_data"]:
+            target = self.args["send_data"]
+            if target.startswith("s3:"):
+                bucket = target.split(":")[1]
+                print("Sending data to s3 bucket %s" % bucket)
+                push_to_s3(bucket, log_files)
             
     def build_cache(self):
         debug("Building cache: %s" % self.ami_cache)
@@ -51,7 +59,7 @@ class RunPcraft(object):
 
     def build_logs(self, log_folder, force, triggers):
         logs = LogsBuilder(self.pkg, self.ami_cache, log_folder, force, triggers)
-        logs.build()
+        return logs.build()
 
         
 if __name__ == "__main__":
@@ -62,7 +70,9 @@ if __name__ == "__main__":
     parser.add_argument("-l", "--log-folder", type=str, help="The log folder")
     parser.add_argument("-f", "--force", help="overwrite the log folder", action="store_true")
     parser.add_argument("-t", "--no-triggers", help="Do not run automatic triggers", action="store_false")
+    parser.add_argument("-s", "--send-data", type=str, help="Send Data")
     parser.add_argument("-v", "--verbose", action="store_true")
+    
     args = parser.parse_args()
     vargs = vars(args)
     verbose = vargs["verbose"]

@@ -9,3 +9,4 @@ geoip2
 pyfaup
 pypcapkit[PyShark]
 pystache
+boto3

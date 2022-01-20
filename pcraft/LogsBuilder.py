@@ -23,6 +23,7 @@ class LogsBuilder(object):
         # Just to get some default variables, such as the resolver
         self.library_context = LibraryContext()
         self.triggers = triggers
+        self.log_files_written = []
         
     def __del__(self):
         for k, v in self.file_pointers.items():
@@ -148,8 +149,8 @@ class LogsBuilder(object):
                         for log in logmod.run(event, modconfig, templates[0]):
                             # self._update_generated_variables(original_event_variables, event)
                             if log:
-                                self._handle_log_write(event_log, modconfig, log)
-                                
+                                log_file = self._handle_log_write(event_log, modconfig, log)
+                                self.log_files_written.append(os.path.join(self.log_folder, log_file))
 
                         self.post_log_write(event)
                     # for k, v in actions_config[log_action].items():
@@ -172,10 +173,12 @@ class LogsBuilder(object):
                     for log in logmod.run(event, modconfig, selected_template):
                         # self._update_generated_variables(original_event_variables, event)
                         if log:
-                            self._handle_log_write(modexec, modconfig, log)
+                            log_file = self._handle_log_write(modexec, modconfig, log)
+                            self.log_files_written.append(os.path.join(self.log_folder, log_file))
 
                     self.post_log_write(event)
-                            
+
+        return self.log_files_written
 
     def _packages_to_execute_from_layers(self, packages_to_execute):
         # Replace the packages to execute with their appropriate layers
@@ -286,6 +289,7 @@ class LogsBuilder(object):
             self.file_pointers[log_file] = open(os.path.join(self.log_folder, log_file), "wb")
 
         self.file_pointers[log_file].write(log)
+        return log_file
 
     def _get_log_actions_config(self, pkgname):
         processes = {}
