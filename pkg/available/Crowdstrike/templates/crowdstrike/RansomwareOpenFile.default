@@ -1,3 +1,3 @@
 key,default_value
-event_simpleName,RansomwareOpenFile
-name,RansomwareOpenFileV4
+event_simpleName,"RansomwareOpenFile"
+name,"RansomwareOpenFileV4"

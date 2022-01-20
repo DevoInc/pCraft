@@ -1,0 +1,3 @@
+key,default_value
+event_simpleName,"NetworkCloseIP4"
+name,"NetworkCloseIP4V6"
