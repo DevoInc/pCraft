@@ -99,7 +99,8 @@ class LogsBuilder(object):
                         packages_to_execute.append(tp)                    
                 
             new_pkg_to_execute = self._packages_to_execute_from_layers(packages_to_execute)
-           
+            # print("Packages to Execute: %s" % str(new_pkg_to_execute))
+            
             for modexec in new_pkg_to_execute:
                 # print("Action Package name:%s" % self.pkg.get_pkgname_from_action_log(modexec))
                 logmod = self.pkg.get_log_module(modexec)
