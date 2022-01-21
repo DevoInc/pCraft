@@ -1,5 +1,5 @@
 #include <ami2/ami2.h>
-
+#include <ami2/ast.h>
 
 /* av 2 */
 
@@ -24,42 +24,19 @@
 /*     exec Debug */
 /* } */
 
+void foreach_action(ami2_t *ami, ami_action_t *action, void *userdata1, void *userdata2, void *userdata3)
+{
+  printf("We have an action!\n");
+}
+
 int main(int argc, char **argv)
 {
   ami2_t *ami;
   ami = ami2_new();
   ami2_parse_file(ami, argv[1]);
-  ami2_debug(ami);
+  /* ami2_debug(ami); */
+  ami2_ast_exec(ami, foreach_action, NULL, NULL, NULL);
   ami2_free(ami);
-
-  /*   ami2_t *ami2; */
-  
-/*   ami2 = ami2_new(); */
-/*   ami2_debug(ami2); */
-/*   ami2_free(ami2); */
-
-/*   ami2_ast_node_t *node; */
-/*   node = ami2_ast_node_new(AMI2_NODE_ASSIGN);   */
-/* /\* $firstg = "My first global variable" *\/ */
-/*   ami2_ast_node_t *rnode; */
-/*   rnode = ami2_ast_node_new(AMI2_NODE_VARIABLE); */
-/*   ami_variable_t *var; */
-/*   var = ami_variable_new(); */
-/*   ami_variable_set_string(var, "My first global variable"); */
-/*   rnode->variable = var; */
-  
-/*   ami2_ast_node_t *lnode; */
-/*   lnode = ami2_ast_node_new(AMI2_NODE_VARIABLE); */
-/*   /\* ami_variable_t *var; *\/ */
-/*   var = ami_variable_new(); */
-/*   ami_variable_set_variable(var, "$firstg"); */
-/*   lnode->variable = var; */
-/* /\* $point_to_firstg = $firstg *\/   */
-
-/*   node->left = lnode; */
-/*   node->right = rnode; */
-  
-/*   walk_ast(node); */
   
   return 0;
 }

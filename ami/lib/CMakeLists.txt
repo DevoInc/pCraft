@@ -26,6 +26,7 @@ set(AMI_SOURCES
 
   ami2/ami2.c
   ami2/ast-node.c
+  ami2/ast.c
 )
 
 message("Bison output: ${BISON_parse_OUTPUTS}")

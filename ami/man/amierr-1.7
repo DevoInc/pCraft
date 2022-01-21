@@ -1,0 +1,13 @@
+.Dd January 21,2022
+.Dt AMI Error
+.Os
+.Sh NAME
+.Nm 1
+.Nd Missing ami_version. Simply add 'ami_version 2' as first line
+.Sh DESCRIPTION
+An AMI file must start with the version instruction so the parser can recognize the version being used and help with backward compatibility.
+This error was generated because the instruction was missing.
+.Sh RESOLUTION
+Simply prepend your AMI file with
+.Nm ami_version 2
+

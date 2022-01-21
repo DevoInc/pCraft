@@ -1,13 +1,14 @@
 #ifndef _AMI2_H_
 #define _AMI2_H_
 
-#include <ami/ami.h> // For csv_files_t
+#include <ami/ami.h>
+#include <ami/action.h>
 #include <ami2/ast-node.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+  
 struct _ami2_header_t {
   unsigned int debug;
   unsigned int version;
@@ -35,6 +36,8 @@ struct _ami2_t {
 };
 typedef struct _ami2_t ami2_t;
 
+typedef void (*ami2_action_cb)(ami2_t *ami, ami_action_t *action, void *userdata1, void *userdata2, void *userdata3);
+  
 ami2_t *ami2_new(void);
 void ami2_free(ami2_t *ami);
 int ami2_parse_file(ami2_t *ami, const char *file);

@@ -1,5 +1,5 @@
-#ifndef _AMI2_AST_H_
-#define _AMI2_AST_H_
+#ifndef _AMI2_AST_NODE_H_
+#define _AMI2_AST_NODE_H_
 
 #include <ami/variable.h>
 
@@ -132,4 +132,4 @@ ami2_ast_node_t *ami2_ast_node_append_left(ami2_ast_node_t *dstnode, ami2_ast_no
 }
 #endif
 
-#endif // _AMI2_AST_H_
+#endif // _AMI2_AST_NODE_H_

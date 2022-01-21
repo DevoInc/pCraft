@@ -134,7 +134,7 @@ input: {}
 ;
 
 declarations:   declaration { $$ = $1; }
-| declarations declaration { $$ = ami2_ast_node_lr_new(AMI2_NODE_DECLARATION, $1, $2); }
+              | declarations declaration { $$ = ami2_ast_node_lr_new(AMI2_NODE_DECLARATION, $1, $2); }
 ;
 
 declaration: ACTION WORD block {
