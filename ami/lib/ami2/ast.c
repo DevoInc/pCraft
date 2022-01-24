@@ -1,10 +1,11 @@
 #include <ami2/ami2.h>
 #include <ami2/ast.h>
 #include <ami2/errors.h>
+#include <ami2/ast-actions.h>
 
-void _ami2_ast_exec(ami2_t *ami, ami2_action_cb action_cb, ami2_ast_node_t *node, ami2_ast_node_t *parent, int is_left, int is_right)
+int _ami2_ast_exec(ami2_t *ami, ami2_action_cb action_cb, ami2_ast_node_t *node, ami2_ast_node_t *parent, int is_left, int is_right)
 {
-  if (!node) return;
+  if (!node) return -1;
 
   /* if (is_left) printf("[L]"); */
   /* if (is_right) printf("[R]"); */
@@ -12,23 +13,29 @@ void _ami2_ast_exec(ami2_t *ami, ami2_action_cb action_cb, ami2_ast_node_t *node
   /* printf("Node Type: %s\n", ami2_node_names[node->type]); */
   switch(node->type){
   case AMI2_NODE_DECLARATION:
+    break;
   case AMI2_NODE_COREACTION:
-    // Nothing to do, we keep browsing left
+    ami2_ast_coreaction_handle(ami, action_cb, node, parent, is_left, is_right);
     break;
   case AMI2_NODE_INTEGER:
   case AMI2_NODE_FLOAT:
     break;
   case AMI2_NODE_STRING:
-    if  ((parent) && (parent->type == AMI2_NODE_COREACTION)) {
-      if ((!strcmp(node->variable->strval, "av")) ||
-	  (!strcmp(node->variable->strval, "ami_version"))) {
-	/* printf("Ami version\n"); */
-	/* printf("val:%d\n", parent->right->variable->ival); */
-	ami->header.version = parent->right->variable->ival;
-      }
-    }
+    break;
+  case AMI2_NODE_ASSIGN:
+    /* printf("var name:%s\n", node->left->variable->strval); */
+    
     break;
   case AMI2_NODE_VARIABLE:
+    /* if (parent->type == AMI2_NODE_ASSIGN) { */
+    /*   if (is_left) { */
+    /* 	// We assign the right value to this variable */
+    /* 	printf("var name:%s\n", node->variable->strval); */
+    /*   } */
+    /*   /\* if (is_right) { *\/ */
+    /*   /\* 	printf("This var is on the right:%s\n", node->variable->strval); *\/ */
+    /*   /\* } *\/ */
+    /* } */
     /* if (node->variable) { */
     /*   ami_variable_debug(node->variable); */
     /* } else { */
@@ -38,6 +45,8 @@ void _ami2_ast_exec(ami2_t *ami, ami2_action_cb action_cb, ami2_ast_node_t *node
   }
   _ami2_ast_exec(ami, action_cb, node->left,  node, 1, 0);
   _ami2_ast_exec(ami, action_cb, node->right, node, 0, 1);
+
+  return 0;
 }
 
 int _ami2_ast_validate(ami2_t *ami)
@@ -52,8 +61,13 @@ int _ami2_ast_validate(ami2_t *ami)
 
 int ami2_ast_exec(ami2_t *ami, ami2_action_cb action_cb, void *userdata1, void *userdata2, void *userdata3)
 {
-  _ami2_ast_exec(ami, action_cb, ami->root, NULL, 0, 0);
-
+  int retval;
+  
+  retval = _ami2_ast_exec(ami, action_cb, ami->root, NULL, 0, 0);
+  if (retval) {
+    return retval;
+  }
+  
   return _ami2_ast_validate(ami);
 }
 

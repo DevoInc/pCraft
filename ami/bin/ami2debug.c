@@ -32,11 +32,17 @@ void foreach_action(ami2_t *ami, ami_action_t *action, void *userdata1, void *us
 int main(int argc, char **argv)
 {
   ami2_t *ami;
+  int retval;
+  
   ami = ami2_new();
   ami2_parse_file(ami, argv[1]);
   /* ami2_debug(ami); */
-  ami2_ast_exec(ami, foreach_action, NULL, NULL, NULL);
+  retval = ami2_ast_exec(ami, foreach_action, NULL, NULL, NULL);
   ami2_free(ami);
+
+  if (retval) {
+    fprintf(stderr, "Terminated earlier than expected\n");
+  }
   
   return 0;
 }

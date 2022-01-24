@@ -161,7 +161,7 @@ NOMATCH nomatch
 <VERBASTRING>"\"\"\"" {
     BEGIN(INITIAL);
     verbatim_buf[vbindex] = '\0';
-    yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, verbatim_buf);
+    yylval->node = ami2_ast_node_string_new(yylineno, AMI2_NODE_STRING, verbatim_buf);
     return TOK_STRING;
 }
 
@@ -177,7 +177,7 @@ NOMATCH nomatch
 <VERBASUBSTITUTESTRING>"\"\"\"" {
     BEGIN(INITIAL);
     verbasub_buf[vbsubindex] = '\0';
-    yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, verbasub_buf);
+    yylval->node = ami2_ast_node_string_new(yylineno, AMI2_NODE_STRING, verbasub_buf);
     return TOK_STRING;
 }
 
@@ -262,34 +262,34 @@ NOMATCH nomatch
 {AS} { return TOK_AS; }
 {ACTION} { return TOK_ACTION; }
 {EXEC} { return TOK_EXEC; }
-{TRUE} { yylval->node = ami2_ast_node_integer_new(AMI2_NODE_INTEGER, 1); return TOK_INTEGER; }
-{FALSE} { yylval->node = ami2_ast_node_integer_new(AMI2_NODE_INTEGER, 0); return TOK_INTEGER;}
+{TRUE} { yylval->node = ami2_ast_node_integer_new(yylineno, AMI2_NODE_INTEGER, 1); return TOK_INTEGER; }
+{FALSE} { yylval->node = ami2_ast_node_integer_new(yylineno, AMI2_NODE_INTEGER, 0); return TOK_INTEGER;}
 
 {VARIABLE} {
-              yylval->node = ami2_ast_node_string_new(AMI2_NODE_VARIABLE, yytext);
+              yylval->node = ami2_ast_node_string_new(yylineno, AMI2_NODE_VARIABLE, yytext);
               return TOK_VARIABLE;
            }
 {VARIABLESTR} {
-           yylval->node = ami2_ast_node_string_new(AMI2_NODE_VARIABLE, escape_string(yytext));
+           yylval->node = ami2_ast_node_string_new(yylineno, AMI2_NODE_VARIABLE, escape_string(yytext));
            return TOK_VARIABLE;
          }
 
 {LABEL} {
-              yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, yytext);
+              yylval->node = ami2_ast_node_string_new(yylineno, AMI2_NODE_STRING, yytext);
               return TOK_LABEL;
            }
 
 
-{INTEGER} { yylval->node = ami2_ast_node_integer_new(AMI2_NODE_INTEGER, (int)strtol(yytext, NULL, 10));
+{INTEGER} { yylval->node = ami2_ast_node_integer_new(yylineno, AMI2_NODE_INTEGER, (int)strtol(yytext, NULL, 10));
            return TOK_INTEGER;
 }
 
-{FLOAT} { yylval->node = ami2_ast_node_float_new(AMI2_NODE_FLOAT, (float)strtof(yytext, NULL));
+{FLOAT} { yylval->node = ami2_ast_node_float_new(yylineno, AMI2_NODE_FLOAT, (float)strtof(yytext, NULL));
            return TOK_FLOAT;
 }
 
 {STRING} {
-           yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, escape_string(yytext));
+           yylval->node = ami2_ast_node_string_new(yylineno, AMI2_NODE_STRING, escape_string(yytext));
            return TOK_STRING;
          }
 
@@ -302,12 +302,12 @@ NOMATCH nomatch
            }
 
 [a-zA-Z0-9_\-:<>@]+ {
-        yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, strdup(yytext));
+        yylval->node = ami2_ast_node_string_new(yylineno, AMI2_NODE_STRING, strdup(yytext));
 	return TOK_WORD;
 }
 
 [a-zA-Z][\.a-zA-Z0-9_:<>@]+ {
-        yylval->node = ami2_ast_node_string_new(AMI2_NODE_STRING, strdup(yytext));
+        yylval->node = ami2_ast_node_string_new(yylineno, AMI2_NODE_STRING, strdup(yytext));
 	return TOK_FUNCTIONNAME;
 }
 

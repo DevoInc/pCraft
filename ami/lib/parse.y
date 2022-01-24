@@ -134,32 +134,32 @@ input: {}
 ;
 
 declarations:   declaration { $$ = $1; }
-              | declarations declaration { $$ = ami2_ast_node_lr_new(AMI2_NODE_DECLARATION, $1, $2); }
+              | declarations declaration { $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_DECLARATION, $1, $2); }
 ;
 
 declaration: ACTION WORD block {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_ACTION, $2, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_ACTION, $2, $3);
  }
 | REPEAT expr AS VARIABLE block {
-  $$ = ami2_ast_node_lr_with_variable_new(AMI2_NODE_REPEAT, $4, $2, $5);
+  $$ = ami2_ast_node_lr_with_variable_new(get_lineno(scanner), AMI2_NODE_REPEAT, $4, $2, $5);
  }
 | MATCH VARIABLE matchblock {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_MATCH, $2, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_MATCH, $2, $3);
  }
 | VARIABLE EQUAL expr {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_ASSIGN, $1, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_ASSIGN, $1, $3);
 }
 | LOCAL VARIABLE EQUAL expr {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_ASSIGN_AS_LOCAL, $2, $4);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_ASSIGN_AS_LOCAL, $2, $4);
 }
 | EXEC WORD {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_EXEC, NULL, $2);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_EXEC, NULL, $2);
  }
 | core_action { $$ = $1; }
 ;
 
 matchblock: OPENSECTION matchexprs CLOSESECTION {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_MATCH_EXPR, $2, NULL);  
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_MATCH_EXPR, $2, NULL);  
 }
 ;
 
@@ -168,63 +168,63 @@ matchexprs: matchexpr { $$ = ami2_ast_node_append_right(NULL, $1); }
 ;
 
 matchexpr: STRING block {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_MATCH_EXPR, $1, $2);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_MATCH_EXPR, $1, $2);
  }
 | INTEGER block {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_MATCH_EXPR, $1, $2);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_MATCH_EXPR, $1, $2);
  }
 | NOMATCH block {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_NOMATCH, NULL, $2);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_NOMATCH, NULL, $2);
  }
 | MODULO INTEGER block {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_MODULO, $2, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_MODULO, $2, $3);
  }
 | LESS INTEGER block {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_LESS, $2, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_LESS, $2, $3);
  }
 | GREATER INTEGER block {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_GREATER, $2, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_GREATER, $2, $3);
  }
 | LESS_EQUAL INTEGER block {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_LESS_EQUAL, $2, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_LESS_EQUAL, $2, $3);
  }
 | GREATER_EQUAL INTEGER block {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_GREATER_EQUAL, $2, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_GREATER_EQUAL, $2, $3);
  }
 ;
 
 block: OPENSECTION statements CLOSESECTION {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_BLOCK, NULL, $2);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_BLOCK, NULL, $2);
 }
 ;
 
-statements:  statement { $$ =  ami2_ast_node_lr_new(AMI2_NODE_STATEMENT, NULL, $1); }
-| statements statement { $$ = ami2_ast_node_lr_new(AMI2_NODE_STATEMENT, $1, $2); }
+statements:  statement { $$ =  ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_STATEMENT, NULL, $1); }
+| statements statement { $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_STATEMENT, $1, $2); }
 ;
 
 statement: declaration { $$ = $1; } 
 ;
 
 core_action: WORD expr {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_COREACTION, $1, $2);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_COREACTION, $1, $2);
  }
 ;
 
 expr:   primary_expr
       | VARIABLE EQUAL expr {
-          $$ = ami2_ast_node_lr_new(AMI2_NODE_ASSIGN, $1, $3); 
+          $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_ASSIGN, $1, $3); 
 }
       | LOCAL VARIABLE EQUAL expr {
-          $$ = ami2_ast_node_lr_new(AMI2_NODE_ASSIGN_AS_LOCAL, $2, $4); 
+          $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_ASSIGN_AS_LOCAL, $2, $4); 
 }
       | expr PLUS expr {
-          $$ = ami2_ast_node_lr_new(AMI2_NODE_PLUS, $1, $3);
+          $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_PLUS, $1, $3);
 }
       | expr MINUS expr {
-          $$ = ami2_ast_node_lr_new(AMI2_NODE_MINUS, $1, $3);
+          $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_MINUS, $1, $3);
 }
       | expr MODULO expr {
-          $$ = ami2_ast_node_lr_new(AMI2_NODE_MINUS, $1, $3);
+          $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_MINUS, $1, $3);
  }
 ;
 
@@ -244,17 +244,17 @@ arguments: expr { $$ = ami2_ast_node_append_right(NULL, $1); }
 ;
 
 function: FUNCTIONNAME OPENPARENTHESIS arguments CLOSEPARENTHESIS {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_FUNCTION_CALL, $1, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_FUNCTION_CALL, $1, $3);
  }
 ;
 
 array_set: OPENBRACKET arguments CLOSEBRACKET {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_ARRAY_SET, NULL, $2);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_ARRAY_SET, NULL, $2);
  }
 ;
 
 array_get: VARIABLE OPENBRACKET expr CLOSEBRACKET {
-  $$ = ami2_ast_node_lr_new(AMI2_NODE_ARRAY_GET, $1, $3);
+  $$ = ami2_ast_node_lr_new(get_lineno(scanner), AMI2_NODE_ARRAY_GET, $1, $3);
  }
 ;
 

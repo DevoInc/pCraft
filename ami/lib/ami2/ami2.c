@@ -23,8 +23,7 @@ ami2_t *ami2_new(void)
   ami2->header.description = NULL;
   ami2->header.taxonomy = NULL;
 
-  ami2->in_action_block
-    = 0;
+  ami2->in_action_block = 0;
   ami2->root = NULL; //ami2_ast_node_new(AMI2_NODE_ROOT);
   /* ami2->last = ami2->root; */
   
