@@ -39,4 +39,5 @@ Special variables influence pcraft's behavior. Here's the list:
 |                                   | the packets being replaced  | true           |
 | csv_fields                        | List of fields to write     |                |
 |                                   | variables from for CSV out  | "$var1, $var2" |
-
+| del_generated_vars                | Makes sure all generated    | true           |
+|                                   | are removed                 |                |

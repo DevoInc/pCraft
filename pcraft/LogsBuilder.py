@@ -251,8 +251,13 @@ class LogsBuilder(object):
         return event
         
     def _update_generated_variables(self, original_event_variables, event):
+        if "$del_generated_vars" in event["variables"]:
+            if event["variables"]["$del_generated_vars"] == "1":
+                self.generated_variables = {}
+                return
+                
         for k, v in event["variables"].items():
-            if not k in original_event_variables:
+            if not k in original_event_variables:                
                 self.generated_variables[k] = v
 
     def _dns_ip_dst_is_resolver(self, event):
