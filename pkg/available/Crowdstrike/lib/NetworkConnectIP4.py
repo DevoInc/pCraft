@@ -13,10 +13,18 @@ class PcraftLogWriter(LibraryContext):
 
     def run(self, event, config, templates):
         frame_time = datetime.fromtimestamp(event["time"])
-
+        
         event = build_variables(self, event)
         
-        event = template_get_event(templates, "NetworkConnectIP4", event["variables"])
-        event = frame_time.strftime(event)
-        
-        yield bytes(event, "utf8")
+        if "$TargetProcessId" in event["variables"]:
+            event["variables"]["$ContextProcessId"] = event["variables"]["$TargetProcessId"]
+            
+        eventlog = template_get_event(templates, "NetworkConnectIP4", event["variables"])
+        eventlog = frame_time.strftime(eventlog)
+
+        # If we have the TargetProcessId defined, that means this network connection
+        # was launched from a monitored process. Then we write the log. If not we skip.
+        if "$TargetProcessId" in event["variables"]:
+            yield bytes(eventlog, "utf8")
+        else:
+            yield None

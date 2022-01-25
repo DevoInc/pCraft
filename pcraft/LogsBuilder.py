@@ -147,7 +147,7 @@ class LogsBuilder(object):
                         self.pre_log_write(event)
                         
                         for log in logmod.run(event, modconfig, templates[0]):
-                            # self._update_generated_variables(original_event_variables, event)
+                            self._update_generated_variables(original_event_variables, event)
                             if log:
                                 log_file = self._handle_log_write(event_log, modconfig, log)
                                 self.log_files_written.append(os.path.join(self.log_folder, log_file))
@@ -171,7 +171,7 @@ class LogsBuilder(object):
                     event = self._event_append_taxonomy_variables(event, modexec, modconfig)
                     self.pre_log_write(event)
                     for log in logmod.run(event, modconfig, selected_template):
-                        # self._update_generated_variables(original_event_variables, event)
+                        self._update_generated_variables(original_event_variables, event)
                         if log:
                             log_file = self._handle_log_write(modexec, modconfig, log)
                             self.log_files_written.append(os.path.join(self.log_folder, log_file))
