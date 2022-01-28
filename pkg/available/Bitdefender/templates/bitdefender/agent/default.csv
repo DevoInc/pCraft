@@ -89,3 +89,7 @@ user_id,2013
 is_driver,false
 name,Notepad
 service_path,C:\\Windows\\System32\\notepad.exe
+key_path,HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon
+data,F1???
+data_type,4
+value,ShutdownFlags
