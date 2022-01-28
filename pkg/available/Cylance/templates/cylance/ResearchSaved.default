@@ -1,0 +1,5 @@
+key,default_value
+Event Type,ThreatClassification
+Threat Class,Malware
+Threat Subclass,Worm
+

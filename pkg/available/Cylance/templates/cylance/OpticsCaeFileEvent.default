@@ -1,0 +1,4 @@
+key,default_value
+Severity,Low
+Description,Microsoft Office WLL//XLL RCE
+Instigating Process Name,WINWORD.EXE

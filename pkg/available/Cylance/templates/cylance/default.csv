@@ -1,0 +1,35 @@
+key,default_value
+Event Type,Threat
+Event Name,threat_found
+Event Id,fc542c8c-2b2f-4abf-947d-ababab202167
+Device Name,SH-Win81-1
+IP Address,(10.3.0.132)
+File Name,virusshare_00fbc4cc4b42774b50a9f71074b79bd9
+Path,c:\ruby\host_automation\test\data\test_files\
+Drive Type,None
+File Owner,SH-Win81-1\Exampleuser
+SHA256,1EBF3B8A61A7E0023AAB3B0CB24938536A1D87BCE1FCC6442E137FB2A7DD510B
+MD5,
+Status,Unsafe
+Cylance Score,100
+Found Date,6/1/2015 10:57:42 PM
+File Type,Executable
+Is Running,False
+Auto Run,False
+Detected By,FileWatcher)
+Zone Names,(Script Test,Server Test)
+Is Malware,False
+Is Unique to Cylance,False
+Threat Classification,File Unavailable
+Severity,Informational
+Description,v1-dnsrequest_tld2
+Instigating Process Name,Firefox.exe
+Instigating Process Owner,CORP//Eroux
+Instigating Process ImageFileSha256,4BEBB498B89C538CBDE8C52EA187518080CB6ACCB95B674B836F6854EC1B96FA
+Target Domain Name,donexistsexample.com
+Resolved Address,Unknown
+Resolved Address Count,0
+Device Id,b33f221d-ea10-43dc-8632-a0714a5e9898
+Target File Path,c:\\users\\mmorin\\appdata\\local\\microsoft\\office\\suspect.wll
+Target File Owner,CORP//Eroux
+Target File Sha256,63C40B2CC817D11550EA1767970A0B2C67ED6256D382EACA0E502A49DE606358
