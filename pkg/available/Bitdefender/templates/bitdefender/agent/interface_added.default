@@ -1,0 +1,7 @@
+key,default_value
+network_interface_ipv4,172.16.0.42
+network_interface_ipv6_link_local,
+network_interface_prefix_length_ipv6_link_local,
+network_interface_subnet_mask_ipv4,255.255.255.0
+network_interface_type,VPN tunnel
+
