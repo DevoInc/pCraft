@@ -1,0 +1,10 @@
+key,default_value
+Event Type,AppControl
+Event Name,pechange
+Device Name,WIN-7entSh64
+IP Address,192.168.119.128
+Action,PEFileChange
+Action Type,Deny
+File Path,C:\Users\admin\AppData\Local\Temp\MyInstaller.exe
+SHA256,04D4DC02D96673ECA9050FE7201044FDB380E3CFE0D727E93DB35A709B45EDAA)
+Zone Names,(Script Test,Server Test)
