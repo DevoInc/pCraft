@@ -1,0 +1,2 @@
+key,default_value
+path,C:\\Windows\\system32\\wbem\\wmiprvse.exe -secured -Embedding

@@ -112,3 +112,5 @@ network_interface_subnet_mask_ipv4,
 ppid,1
 rgid,17
 ruid,2013
+parent_path,C:\\Windows\\System32\\svchost.exe
+parent_pid,4013
