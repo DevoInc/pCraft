@@ -79,7 +79,9 @@ active_sessions_user_fqdn,eroux@coredev.example.com
 active_sessions_user_id,2013
 domain_user,eroux
 group_id,17
+gid,17
 group_name,coredev
+group,coredev
 logout_time,%s000
 remote_user,eroux
 session_id,492
@@ -93,3 +95,20 @@ key_path,HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon
 data,F1???
 data_type,4
 value,ShutdownFlags
+network_interface_changed_values,["ipv6_link_local", "mac"]
+network_interface_dhcp,no
+network_interface_dns,[]
+network_interface_type,Ethernet
+network_interface_gateway_ipv4,
+network_interface_gateway_ipv6,
+network_interface_interface,wlan0
+network_interface_ipv4,
+network_interface_ipv6,
+network_interface_ipv6_link_local,f4c3:c4f3:::de4d:b33f%wlan0
+network_interface_mac,f4:c3:de:4d:b3:3f
+network_interface_prefix_length_ipv6,
+network_interface_prefix_length_ipv6_link_local,64
+network_interface_subnet_mask_ipv4,
+ppid,1
+rgid,17
+ruid,2013
