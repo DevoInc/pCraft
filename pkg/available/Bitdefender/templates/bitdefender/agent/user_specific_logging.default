@@ -1,0 +1,4 @@
+key,default_value
+source,Microsoft-Windows-CertificateServicesClient-Lifecycle-User
+opcode,Info
+category,None
