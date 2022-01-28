@@ -120,3 +120,5 @@ is64,1
 parent_process_name,python3
 parent_process_path,/usr/bin/python3
 user_sid,eroux-17
+signal,14
+target_pid,21732
