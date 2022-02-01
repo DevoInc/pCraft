@@ -54,14 +54,15 @@ class LogsBuilder(object):
             original_event_variables = event["variables"].copy()
             # First we check for nested variables. When we assign a generated value to a variable
             for k, v in event["variables"].items():
-                if v[0] == "$":
-                    if v in self.generated_variables:
-                        event["variables"][k] = self.generated_variables[v]
-                        try:
-                            event["generated_variables"][k] = v
-                        except:
-                            event["generated_variables"] = {}
-                            event["generated_variables"][k] = v
+                if len(v) > 0:
+                    if v[0] == "$":
+                        if v in self.generated_variables:
+                            event["variables"][k] = self.generated_variables[v]
+                            try:
+                                event["generated_variables"][k] = v
+                            except:
+                                event["generated_variables"] = {}
+                                event["generated_variables"][k] = v
 
             for k, v in self.generated_variables.items():
                 event["variables"][k] = v
