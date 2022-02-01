@@ -14,7 +14,7 @@ event_platform,Mac
 event_simpleName,DnsRequest
 id,8dc64531-35bd-4d37-90f1-b74fcb058295
 name,DnsRequestMacV1
-timestamp,%s
+timestamp,%s000
 ParentProcessId,42435800479051
 SourceProcessId,42435800479051
 SessionProcessId,4243590427320

@@ -27,6 +27,8 @@ class RunPcraft(object):
 
         self.ami = pyami.Ami()
         self.ami_cache = self.args["script"]
+        self.sleep_cursor = self.ami.GetSleepCursor()
+#        print("Final Sleep Cursor: %d seconds; %d hours; %d days" % (int(self.sleep_cursor), int(self.sleep_cursor / 60 / 60), int(self.sleep_cursor / 60 / 60 / 24)))
         
         if not args["script"].endswith(".amic"):
             self.ami_cache = os.path.join(os.path.dirname(self.args["script"]), "." + os.path.basename(self.args["script"]) + "c")            
