@@ -72,7 +72,7 @@ RemoteAccount,0
 UserSid,S-1-4-22-91833f5f-887d4be88-df5bc9442b-1008
 UserFlags,288
 LogonServer,MYDMD1
-UserName,eroux
+UserName,NT AUTHORITY\\SYSTEM
 LogonType,4
 PrivilegesBitmask,139300471204
 AuthenticationPackage,NTLM
@@ -82,3 +82,37 @@ PasswordLastSet,%s.000
 UserLogonFlags,6
 EnabledPrivilegesBitmask,100742471204
 UserGroupsBitmask,672831
+AmsiStatusCode,4
+AmsiRegistrationState,0
+TotalCount,2
+ErrorCode,3938710018
+CommandHistory,powershell\u00b6
+FirstCommand,0
+CommandCountMax,50
+ApplicationName,cmd.exe
+LastDisplayed,0
+LastAdded,0
+CommandCount,1
+ExclusionType,1
+BoundingLimitCount,1
+PatternId,142
+ExclusionSource,4
+CertificateThumbprintAlgorithm,32780
+CertificateIssuer,Microsoft Windows PRoduction PCA 2011
+CertificatePublisher,Microsoft Windows
+CompanyName,Microsoft Corporation
+AuthenticodeHashData,2ffa15fefa5a4a279d50825b211b36d72a93a7cb56e4e1a0731cbc791c9a4ca4
+OriginalFilename,bindflt.sys
+CertificateThumbprint,d2ccf80f1b1161370c72179d69c8780bc986bb16aa05d99ed10bc4ebacecfa96
+FileVersion,10.0.18362.1237 (WinBuild.160101.0800)
+DriverLoadFlags,0
+RegistryPath,
+HashAlgorithm,32780
+WmiQuery,select * from win32_computersystem
+ClientComputerName,EROUX-WIN10
+WmiNamespaceName,root\\erouxv1
+WmiFilterQuery,select * from MSFT_SCMEventLogEvent
+WmiFilterName,SCM Event Log Filter
+WmiFilterQueryLanguage,WQL
+WmiConsumerType,NTEventLogEventConsumer
+WmiFilterType,__EventFilter
