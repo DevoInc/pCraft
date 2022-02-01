@@ -136,7 +136,7 @@ void _ami_cache_foreach_action(ami_action_t *action, void *u1, void *u2, void *u
 
   if (avro_file_writer_append_value(ami_cache_file, &event)) {
     fprintf(stderr,
-	    "Unable to write event value to memory buffer\nMessage: %s\n", avro_strerror());
+	    "Unable to write event value to memory buffer (action name:%s)\nMessage: %s\n", action->name, avro_strerror());
     exit(EXIT_FAILURE);
   }
   

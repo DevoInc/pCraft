@@ -116,3 +116,7 @@ WmiFilterName,SCM Event Log Filter
 WmiFilterQueryLanguage,WQL
 WmiConsumerType,NTEventLogEventConsumer
 WmiFilterType,__EventFilter
+TargetThreadId,9834182930
+ThreadStartAddress,140735956510016
+InjectedThreadFlag,258
+InjectedDLL,C:\\Decomp\\x64\\mydllinject.dll
