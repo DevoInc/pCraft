@@ -10,3 +10,4 @@ pyfaup
 pypcapkit[PyShark]
 pystache
 boto3
+text_unidecode
