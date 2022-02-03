@@ -183,7 +183,7 @@ int ami_cache_build(const char *amifile, const char *amicache)
       fprintf(stderr, "No time could be extracted!\n");
     }
   } else {
-    printf("Start Time: None\n");
+    printf("Start Time: None (sleep cursor:%ld)\n", ami->sleep_cursor);
     current_t = time(NULL);
     current_t -= ami->sleep_cursor;
   }

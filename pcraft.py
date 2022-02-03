@@ -27,7 +27,9 @@ class RunPcraft(object):
 
         self.ami = pyami.Ami()
         self.ami_cache = self.args["script"]
-        self.sleep_cursor = self.ami.GetSleepCursor()
+        self.sleep_cursor = self.ami.GetGroupSleepCursor("_global")
+        self.ami.DebugSleepCursor()
+        
 #        print("Final Sleep Cursor: %d seconds; %d hours; %d days" % (int(self.sleep_cursor), int(self.sleep_cursor / 60 / 60), int(self.sleep_cursor / 60 / 60 / 24)))
         
         if not args["script"].endswith(".amic"):
@@ -66,7 +68,11 @@ class RunPcraft(object):
         
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(exit_on_error=True)
+    try:
+        parser = argparse.ArgumentParser(exit_on_error=True)
+    except TypeError: # Some argparse versions do not have the exit_on_error option and throw a TypeError
+        parser = argparse.ArgumentParser()
+        
     parser.add_argument("script", type=str, help="The script to run")
     parser.add_argument("-p", "--pcap", type=str, help="The pcap to build") 
     parser.add_argument("-l", "--log-folder", type=str, help="The log folder")

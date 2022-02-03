@@ -899,6 +899,25 @@ int ami_append_sleep_cursor(ami_t *ami, const char *group, float cursor)
   return 0;
 }
 
+int ami_debug_sleep_cursor(ami_t *ami)
+{
+  int absent;
+  khint_t k;
+
+  if (!ami) return 1;
+  if (!ami->sleepcursor) return 1;
+  
+    for (k = 0; k < kh_end(ami->sleepcursor); ++k)
+      if (kh_exist(ami->sleepcursor, k)) {
+	const char *key = kh_key(ami->sleepcursor, k);
+	float val = (float)kh_value(ami->sleepcursor, k);
+	printf("group '%s': %f\n", key, val);
+      }
+  
+  return 0;
+}
+
+
 float ami_get_new_sleep_cursor(ami_t *ami, const char *group)
 {
   khint_t k;

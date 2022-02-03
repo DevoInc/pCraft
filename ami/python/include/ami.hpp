@@ -27,7 +27,9 @@ public:
   std::vector<std::string> GetReferences(void);
   std::vector<std::string> GetTags(void);
   float GetSleepCursor(void) { return _ami->sleep_cursor; };
+  float GetGroupSleepCursor(std::string group) { return ami_get_new_sleep_cursor(_ami, group.c_str()); };
   void AppendSleepCursor(float s) { _ami->sleep_cursor += s; };
+  void DebugSleepCursor(void) { ami_debug_sleep_cursor(_ami); };
   int GetStartTime(void) { return _ami->start_time; };
   char *GetTaxonomy(void) { return _ami->taxonomy; };
   int SetVariableString(std::string key, std::string value);

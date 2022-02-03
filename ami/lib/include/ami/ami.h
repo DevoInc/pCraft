@@ -153,6 +153,7 @@ float ami_get_sleep_cursor(ami_t *ami);
 char *ami_get_nested_variable_as_str(ami_t *ami, ami_node_t *node, char *var_value);
 int ami_get_nested_variable_as_int(ami_t *ami, char *var_value);
 int ami_append_sleep_cursor(ami_t *ami, const char *group, float cursor);
+int ami_debug_sleep_cursor(ami_t *ami);  
 float ami_get_new_sleep_cursor(ami_t *ami, const char *group);
 FILE *ami_get_open_file(ami_t *ami, const char *filename);
 int ami_set_open_file(ami_t *ami, const char *filename, FILE *fp);
