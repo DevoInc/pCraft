@@ -1,0 +1,18 @@
+key,default_value
+id,firewall
+sn,18B1690729A8
+time,%Y-%m-%d %H:%M:%S %Z
+fw,10.205.123.15
+pri,6
+c,1024
+app,44
+n,1183392
+src-ip,10.205.122.22
+src-port,514
+src-interface,X1
+dst-ip,10.205.123.15
+dst-port,514
+dst-interface,X1
+proto,udp/syslog
+sent,294
+spkt,1
