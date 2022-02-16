@@ -1,4 +1,5 @@
 *~
 *.pcap
 __pycache__
-*.mmdb
+GeoLite2-Country.mmdb
+

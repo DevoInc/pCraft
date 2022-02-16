@@ -76,6 +76,12 @@ Available Plugins
 The Plugins documentation is generated from themselves: [Plugins Documentation][plugins]
 
 
+Geolocation
+-----------
+
+We are using Geo Open for the IP<->Country mapping: [https://data.public.lu/fr/datasets/geo-open-ip-address-geolocation-per-country-in-mmdb-format/](https://data.public.lu/fr/datasets/geo-open-ip-address-geolocation-per-country-in-mmdb-format/)
+
+
 List of Similar Projects
 ------------------------
 
