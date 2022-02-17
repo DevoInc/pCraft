@@ -32,4 +32,4 @@ process_username,NT AUTHORITY\\SYSTEM
 sensor_action,ACTION_ALLOW
 event_origin,NGAV
 target_cmdline,\"C:\\Program Files (x86)\\Google\\Update\\GoogleUpdate.exe\" /ua /installsource scheduler
-
+find_file,C:\\Program Files\\Document Mgr\\\*
