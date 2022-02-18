@@ -1,0 +1,43 @@
+key,default_value
+process_guid,WS1AB8P1-0002b64a-00004221-00000000-68819682aa13
+parent_guid, WS1AB8P1-0002b64a-0000042f-00000000-688af38190032eeb
+backend_timestamp,%Y-%m-%D %H:%M:%S +0000 UTC
+org_key,WS1AB8P1
+device_id,148322
+device_name,ORG42\\WIN-JEANEMAR1
+device_external_ip,93.184.216.34
+device_os,WINDOWS
+device_group,
+schema,1
+link_hash,5797dee1fb51e8fd40184bbb6b66013d080a6472e20bd06dc61cd69f796ac8d2
+parent_process_name,C:\\Windows\\System32\\taskeng.exe
+children_process_name,C:\\Program Files (x86)\\Google\\Update\\GoogleUpdate.exe
+event_description,
+alert_id,
+event_id,
+device_timestamp,%Y-%m-%D %H:%M:%S +0000 UTC
+process_terminated,false
+parent_repuation,
+process_pid,5021
+parent_pid,913
+process_publisher,null
+process_path,c:\\windows\\system32\\taskeng.exe
+parent_path,c:\\windows\\system32\\svchost.exe
+process_hash_md5,c3266687a4fdd232cc047548a27a4985
+process_hash_sha256,230d33c64c9ee2c13a365405ffcc423a836479f6f77ac9d7fa2cf7576529df29
+parent_hash_md5,
+parent_hash_sha256,25ee2ab4022fb86bc4475548e7f44b27875aa7598d8eb048c9c4ed0780622f4d
+process_cmdline,taskeng.exe {161AD78D-C881-42CE-83F2-00DEB54F14FE} S-1-5-18:NT AUTHORITY\\System:Service:
+parent_cmdline,C:\\Windows\\system32\\svchost.exe -k netsvcs
+process_username,NT AUTHORITY\\SYSTEM
+sensor_action,ACTION_ALLOW
+event_origin,EDR
+target_cmdline,\"C:\\Program Files (x86)\\Google\\Update\\GoogleUpdate.exe\" /ua /installsource scheduler
+find_file,C:\\Program Files\\Document Mgr\\\*
+crossproc_name,c:\\windows\\system32\\taskhostw.exe
+crossproc_hash_md5,8ac325c757fa721b272ecea19ebcf745
+crossproc_hash_sha256,0bec3128b241fa533dc5a9d3f62aa41323d205defc30dcde228c5ecc2d1e50a9
+crossproc_publisher_name,Microsoft Windows
+crossproc_publisher_state,FILE_SIGNATURE_STATE_OS | FILE_SIGNATURE_STATE_TRUSTED | FILE_SIGNATURE_STATE_SIGNED | FILE_SIGNATURE_STATE_VERIFIED
+crossproc_reputation,REP_RESOLVING
+target_cmdline,taskhostw.exe Install $(Arg0)

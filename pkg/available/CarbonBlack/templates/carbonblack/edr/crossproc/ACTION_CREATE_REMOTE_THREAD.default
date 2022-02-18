@@ -1,0 +1,10 @@
+key,default_value
+process_path,SYSTEM
+process_hash_md5,
+process_hash_sha256,
+parent_hash,null
+process_cmdline,
+parent_cmdline,
+process_username,NT AUTHORITY\\SYSTEM
+sensor_action,ACTION_ALLOW
+event_origin,EDR

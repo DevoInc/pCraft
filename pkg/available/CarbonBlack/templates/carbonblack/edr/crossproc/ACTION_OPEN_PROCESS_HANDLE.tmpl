@@ -1,5 +1,5 @@
 {
-  "type": "endpoint.event.filemod",
+  "type": "endpoint.event.crossproc",
   "process_guid": "{{{process_guid}}}",
   "parent_guid": "{{{parent_guid}}}",
   "backend_timestamp": "{{{backend_timestamp}}}",
@@ -9,7 +9,7 @@
   "device_external_ip": "{{{device_external_ip}}}",
   "device_os": "{{{device_os}}}",
   "device_group": "{{{device_group}}}",
-  "action": "ACTION_FILE_MOD_OPEN | ACTION_FILE_TRUNCATE | ACTION_FILE_OPEN_WRITE | ACTION_FILE_CREATE | ACTION_FILE_OPEN_READ | ACTION_FILE_DELETE",
+  "action": "ACTION_OPEN_PROCESS_HANDLE",
   "schema": {{{schema}}},
   "event_description": "{{{event_description}}}",
   "alert_id": "{{{alert_id}}}",
@@ -20,7 +20,12 @@
   "parent_repuation": "{{{parent_repuation}}}",
   "process_pid": {{{process_pid}}},
   "parent_pid": {{{parent_pid}}},
-  "process_publisher": {{{process_publisher}}},
+  "process_publisher": [
+    {
+      "name": "{{{process_publisher_name}}}",
+      "state": "{{{process_publisher_state}}}"
+    }
+  ],
   "process_path": "{{{process_path}}}",
   "parent_path": "{{{parent_path}}}",
   "process_hash": [
@@ -36,9 +41,17 @@
   "process_username": "{{{process_username}}}",
   "sensor_action": "{{{sensor_action}}}",
   "event_origin": "{{{event_origin}}}",
-  "filemod_hash": [
-    "",
-    ""
+  "crossproc_name": "{{{crossproc_name}}}",
+  "crossproc_hash": [
+    "{{{crossproc_hash_md5}}}",
+    "{{{crossproc_hash_sha256}}}"
   ],
-  "filemod_name": "{{{filemod_name}}}"
+  "crossproc_publisher": [
+    {
+      "name": "{{{crossproc_publisher_name}}}",
+      "state": "{{{crossproc_publisher_state}}}"
+    }
+  ],
+  "crossproc_reputation": "{{{crossproc_reputation}}}",
+  "target_cmdline": "{{{target_cmdline}}}"
 }
