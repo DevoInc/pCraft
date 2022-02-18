@@ -1,0 +1,32 @@
+key,default_value
+process_guid,WS1AB8P1-0002b64a-00004221-00000000-68819682aa13
+parent_guid, WS1AB8P1-0002b64a-0000042f-00000000-688af38190032eeb
+backend_timestamp,%Y-%m-%D %H:%M:%S +0000 UTC
+device_timestamp,%Y-%m-%D %H:%M:%S +0000 UTC
+org_key,WS1AB8P1
+device_id,148322
+device_name,ORG42\\WIN-JEANEMAR1
+device_external_ip,
+device_os,WINDOWS
+device_group,
+schema,1
+filemod_name,c:\\users\\admin\\appdata\\local\\microsoft_corporation\\powershell_ise.exe_strongname_el2weid930bhzidyy3329djc007dtc\\3.0.0.0\\autosaveinformation\\09qieopt.tmp
+event_description,
+alert_id,
+event_id,
+process_terminated,false
+process_reputation,REP_RESOLVING
+parent_repuation,
+process_pid,1234
+parent_pid,628
+process_publisher,null
+process_cmdline,C:\\WINDOWS\\system32\\svchost.exe -k LocalSystemNetworkRestricted -p -s SysMain
+parent_cmdline,C:\\WINDOWS\\system32\\services.exe
+process_hash_md5,c3266687a4fdd232cc047548a27a4985
+process_hash_sha256,230d33c64c9ee2c13a365405ffcc423a836479f6f77ac9d7fa2cf7576529df29
+parent_hash_md5,
+parent_hash_sha256,25ee2ab4022fb86bc4475548e7f44b27875aa7598d8eb048c9c4ed0780622f4d
+process_username,NT AUTHORITY\\SYSTEM
+sensor_action,ACTION_ALLOW
+event_origin,EDR
+
