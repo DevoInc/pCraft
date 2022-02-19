@@ -29,4 +29,18 @@ parent_hash_sha256,25ee2ab4022fb86bc4475548e7f44b27875aa7598d8eb048c9c4ed0780622
 process_username,NT AUTHORITY\\SYSTEM
 sensor_action,ACTION_ALLOW
 event_origin,EDR
+process_publisher_name,Microsoft Windows
+process_published_state,FILE_SIGNATURE_STATE_TRUSTED | FILE_SIGNATURE_STATE_CATALOG_SIGNED | FILE_SIGNATURE_STATE_SIGNED | FILE_SIGNATURE_STATE_VERIFIED | FILE_SIGNATURE_STATE_OS
+modload_name,c:\\windows\\system32\\sppcommdlg.dll
+target_cmdline,C:\\Windows\\System32\\cmd.exe 
+childproc_name,C:\\Windows\\System32\\cmd.exe
+childproc_hash_md5,c3266687a4fdd232cc047548a27a4985
+childproc_hash_sha256,230d33c64c9ee2c13a365405ffcc423a836479f6f77ac9d7fa2cf7576529df29
+childproc_pid,21930
+childproc_guid,DF876C72-1922-4899-B873-B353D744831F
+childproc_username,ORG42\\admin
+childproc_publisher_name,Microsoft Windows
+childproc_publisher_state,FILE_SIGNATURE_STATE_TRUSTED | FILE_SIGNATURE_STATE_CATALOG_SIGNED | FILE_SIGNATURE_STATE_SIGNED | FILE_SIGNATURE_STATE_VERIFIED | FILE_SIGNATURE_STATE_OS
+childproc_reputation,REP_RESOLVING
+
 

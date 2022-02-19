@@ -1,0 +1,37 @@
+key,default_value
+process_guid,WS1AB8P1-0002b64a-00004221-00000000-68819682aa13
+parent_guid, WS1AB8P1-0002b64a-0000042f-00000000-688af38190032eeb
+backend_timestamp,%Y-%m-%D %H:%M:%S +0000 UTC
+device_timestamp,%Y-%m-%D %H:%M:%S +0000 UTC
+org_key,WS1AB8P1
+device_id,148322
+device_name,ORG42\\WIN-JEANEMAR1
+device_external_ip,
+device_os,WINDOWS
+device_group,
+schema,1
+event_description,
+alert_id,
+event_id,
+process_terminated,false
+process_reputation,REP_RESOLVING
+parent_repuation,
+process_pid,1234
+parent_pid,628
+remote_port,138
+local_port,138
+remote_ip,192.168.0.42
+local_ip,192.168.0.21
+netconn_domain,
+netconn_inbound,true
+netconn_protocol,PROTO_UDP
+process_cmdline,\"C:\\Program Files\\jre\\bin\\java\"
+parent_cmdline,C:\\Windows\\system32\\cmd.exe /c javaprocess.cmd < nul
+process_username,NT AUTHORITY\\SYSTEM
+parent_hash,null
+process_path,c:\\program files\\jre\\bin\\java.exe
+parent_path,c:\\windows\\system32\\cmd.exe
+process_hash_md5,5460a3814cceb3b24b8e29a9f3607357
+process_hash_sha256,fafc81c87ae51525893d7e77c52f1aaed9444f1cb8f67601ba23c7e0530ee5db
+parent_hash_md5,f5ae03de0ad60f5b17b82f2cd68402fe
+parent_hash_sha256,6f88fb88ffb0f1d5465c2826e5b4f523598b1b8378377c8378ffebc171bad18b

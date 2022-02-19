@@ -1,0 +1,10 @@
+key,default_value
+parent_guid,
+process_path,system
+parent_path,
+process_hash_md5,
+process_hash_sha256,
+parent_hash,null
+process_cmdline,
+parent_cmdline,
+netconn_domain,
