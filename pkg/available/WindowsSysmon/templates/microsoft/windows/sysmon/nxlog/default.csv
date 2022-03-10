@@ -1,0 +1,41 @@
+key,default_value
+EventTime,%Y-%m-%D %H:%M:%S.%f-08:00
+Hostname,MYWST120
+Keywords,0x8000000000000000
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{12E95D8D-80BF-484F-8AE7-3EF5237D3F27}
+Version,5
+TaskValue,1
+OpcodeValue,0
+RecordNumber,1717748
+ExecutionProcessID,2903
+ExecutionThreadID,3193
+AccountName,SYSTEM
+UserID,S-1-5-13
+AccountType,User
+Opcode,Info
+UtcTime,%Y-%m-%D %H:%M:%S.000
+ProcessGuid,{FFF06A02-7E9E-4691-8400-07390F345C86}
+ProcessId,6374
+Image,C:\\Users\\JeanMichel\\calc.exe
+FileVersion,10.0.10392.0 (rs5_release.160715-2849)
+Description,Windows Modules Installer
+Product,Microsoft® Windows® Operating System
+Company,Microsoft Corporation
+CommandLine,C:\\Users\\JeanMichel\\calc.exe
+CurrentDirectory,C:\\Users\\JeanMichel\\
+User,NT AUTHORITY\\SYSTEM
+LogonGuid,{9EB950B5-F976-4A4F-8351-F78E3BFB2658}
+LogonId,0x3f1
+TerminalSessionId,0
+IntegrityLevel,System
+Hashes,MD5=081ECC5E6DD6BA0D150FC4BC0E62EC50
+ParentProcessGuid,{D7877BCB-3E30-4C72-B6D3-542C624F5FB2}
+ParentProcessId,531
+ParentImage,C:\\Windows\\System32\\cmd.exe
+ParentCommandLine,C:\\WINDOWS\\system32\\cmd.exe
+EventReceivedTime,%Y-%m-%D %H:%M:%S.%f-08:00
+SourceModuleName,eventlog
+SourceModuleType,im_msxplog
