@@ -1,0 +1,42 @@
+key,default_value
+ReceivedUTC,%m/%d/%y %H:%M:%S %Z
+DetectedUTC,%m/%d/%y %H:%M:%S %Z
+AgentGUID,111B694D-03AF-4817-9ADF-F23CFF1E289E
+Analyzer,VIRUSCAN9200
+AnalyzerName,VirusScan Enterprise
+AnalyzerVersion,9.2
+AnalyzerHostName,WKST1
+AnalyzerIPV4,172.16.0.42
+AnalyzerIPV6,172.16.0.42
+AnalyzerMAC,
+AnalyzerDATVersion,
+AnalyzerEngineVersion,
+AnalyzerDetectionMethod,OAS
+SourceHostName,
+SourceIPV4,172.16.0.1
+SourceIPV6,172.16.0.1
+SourceMAC,
+SourceUserName,
+SourceProcessName,C:\\Users\\MIROSLAV\\calc.exe
+SourceURL,
+TargetHostName,WKST3
+TargetIPV4,172.16.0.129
+TargetIPV6,172.16.0.129
+TargetMAC,
+TargetUserName,SYSTEM
+TargetPort,6667
+TargetProtocol,
+TargetProcessName,
+TargetFileName,
+ThreatCategory,Firewall Detected
+ThreatEventID,1096
+ThreatSeverity,Info
+ThreatName,Antivirus Protection: IRC Communication
+ThreatType,access protection
+ThreatActionTaken,would block
+ThreatHandled,true
+OsPlatform,Server
+OsType,Windows 2010
+DefinedAt,BatCorp Inc.
+NodeTextPath,GlobalRoot\\Directory\\FRIENDSINC\\
+EventDesc,Rule Violation NOT traffic blocked
