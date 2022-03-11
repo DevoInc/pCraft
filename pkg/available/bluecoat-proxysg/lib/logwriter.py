@@ -30,6 +30,10 @@ class PcraftLogWriter(LibraryContext):
         
     def run(self, event, config, templates):
         event_name = "main2"
+        try:
+            event_name = event["variables"]["$bluecoat_event_name"]
+        except:
+            pass
         
         if self.is_first:
             self.is_first = False
@@ -37,10 +41,6 @@ class PcraftLogWriter(LibraryContext):
             yield bytes(header, "utf8")
         
         frame_time = datetime.fromtimestamp(event["time"])
-        try:
-            event_name = event["variables"]["$event_name"]
-        except:
-            pass
         
         if not "$domain" in event["variables"]:
             raise ValueError("Error, bluecoat proxysg requires a domain variable to be set for %s" % str(event["exec"]))
