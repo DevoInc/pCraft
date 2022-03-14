@@ -1,5 +1,5 @@
 key,default_value
-EventTime,%Y-%m-%D %H:%M:%S.%f-08:00
+EventTime,%Y-%m-%d %H:%M:%S
 Hostname,MYWST120
 Keywords,0x8000000000000000
 EventType,INFO
@@ -16,7 +16,7 @@ AccountName,SYSTEM
 UserID,S-1-5-13
 AccountType,User
 Opcode,Info
-UtcTime,%Y-%m-%D %H:%M:%S.000
+UtcTime,%Y.%m.%d. %H:%M
 ProcessGuid,{FFF06A02-7E9E-4691-8400-07390F345C86}
 ProcessId,6374
 Image,C:\\Users\\JeanMichel\\calc.exe
@@ -36,6 +36,6 @@ ParentProcessGuid,{D7877BCB-3E30-4C72-B6D3-542C624F5FB2}
 ParentProcessId,531
 ParentImage,C:\\Windows\\System32\\cmd.exe
 ParentCommandLine,C:\\WINDOWS\\system32\\cmd.exe
-EventReceivedTime,%Y-%m-%D %H:%M:%S.%f-08:00
+EventReceivedTime,%Y-%m-%D %H:%M:%S
 SourceModuleName,eventlog
 SourceModuleType,im_msxplog
