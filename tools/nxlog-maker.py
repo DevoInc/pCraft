@@ -41,11 +41,17 @@ def handle_one_ev(event):
    
    tmplfilepath = os.path.join(event["SourceName"], str(event["EventID"]) + ".tmpl")
    defaultfilepath = os.path.join(event["SourceName"], str(event["EventID"]) + ".default")
-
+   defaultcsvpath = os.path.join(event["SourceName"], "default.csv")
+   
    if os.path.exists(tmplfilepath):
       print("%s exists. Skip." % tmplfilepath)
       return
-   
+
+   if not os.path.exists(tmplfilepath):
+      csvfp = open(defaultcsvpath, "w")
+      csvfp.write("key,default_value\n")
+      csvfp.close()
+
    tmplfp = open(tmplfilepath, "w")
    defaultfp = open(defaultfilepath, "w")
 
@@ -53,6 +59,9 @@ def handle_one_ev(event):
    
    newevent = {}
    for k,v in event.items():
+      if isinstance(v, str):
+         v = v.replace("\\","\\\\")
+         v = v.replace("\"","\\\"")
       if k == "Message":
          newevent[k] = message_handler(v)
       elif k == "SourceName":
@@ -69,8 +78,8 @@ def handle_one_ev(event):
          defaultfp.write("%s,\"%s\"\n" % (k, v))
          newevent[k] = "{{{%s}}}" % k
 
-   tmplfp.write(str(newevent) + "\n")
-         
+   tmplfp.write(json.dumps(newevent) + "\n")
+
    tmplfp.close()
    defaultfp.close()
    
