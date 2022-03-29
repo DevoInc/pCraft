@@ -1,0 +1,35 @@
+key,default_value
+Hostname,"Win10ProDesktop"
+Keywords,"-9214364837600034816"
+EventType,"AUDIT_SUCCESS"
+SeverityValue,"2"
+Severity,"INFO"
+ProviderGuid,"{54849625-5478-4994-A5BA-3E3B0328C30D}"
+Version,"0"
+Task,"12548"
+OpcodeValue,"0"
+RecordNumber,"1851"
+ActivityID,"{7167E24B-D095-0000-8844-A08FD938D801}"
+ProcessID,"724"
+ThreadID,"3108"
+Channel,"Security"
+Category,"Special Logon"
+Opcode,"Info"
+SubjectUserSid,"S-1-5-18"
+SubjectUserName,"SYSTEM"
+SubjectDomainName,"NT AUTHORITY"
+SubjectLogonId,"0x3e7"
+PrivilegeList,"SeAssignPrimaryTokenPrivilege
+			SeTcbPrivilege
+			SeSecurityPrivilege
+			SeTakeOwnershipPrivilege
+			SeLoadDriverPrivilege
+			SeBackupPrivilege
+			SeRestorePrivilege
+			SeDebugPrivilege
+			SeAuditPrivilege
+			SeSystemEnvironmentPrivilege
+			SeImpersonatePrivilege
+			SeDelegateSessionUserImpersonatePrivilege"
+SourceModuleName,"in"
+SourceModuleType,"im_msvistalog"
