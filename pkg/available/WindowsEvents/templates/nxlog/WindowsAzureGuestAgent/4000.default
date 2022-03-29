@@ -1,25 +1,25 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"4611686018427387905"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{3000B92B-CA8B-4269-90EA-C4185EE09E92}"
-Version,"0"
-Task,"0"
-OpcodeValue,"0"
-RecordNumber,"9"
-ProcessID,"4044"
-ThreadID,"4432"
-Channel,"Microsoft-WindowsAzure-Status/GuestAgent"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Opcode,"Info"
-Timestamp100ns,"132918756228456913"
-EventPid,"4044"
-EventTid,"12"
-Payload,"WindowsAzureGuestAgent Heartbeat. SvdIncarnation=1;HeartBeatCount=6;ProcessId=4044;ArtifactsProfileSeqNo=0;GAVersion=2.7.41491.1044;VMSize=Standard_DS1_v2"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,4611686018427387905
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{3000B92B-CA8B-4269-90EA-C4185EE09E92}
+Version,0
+Task,0
+OpcodeValue,0
+RecordNumber,9
+ProcessID,4044
+ThreadID,4432
+Channel,Microsoft-WindowsAzure-Status/GuestAgent
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+Timestamp100ns,132918756228456913
+EventPid,4044
+EventTid,12
+Payload,WindowsAzureGuestAgent Heartbeat. SvdIncarnation=1;HeartBeatCount=6;ProcessId=4044;ArtifactsProfileSeqNo=0;GAVersion=2.7.41491.1044;VMSize=Standard_DS1_v2
+SourceModuleName,in
+SourceModuleType,im_msvistalog

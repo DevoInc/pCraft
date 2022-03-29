@@ -1,28 +1,28 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223336852482686976"
-EventType,"VERBOSE"
-SeverityValue,"1"
-Severity,"DEBUG"
-ProviderGuid,"{9C2A37F3-E5FD-5CAE-BCD1-43DAFEEE1FF0}"
-Version,"0"
-Task,"8002"
-OpcodeValue,"17"
-RecordNumber,"3128"
-ActivityID,"{FFAFC93E-6F10-443D-BCB6-1A0400000000}"
-ProcessID,"684"
-ThreadID,"6308"
-Channel,"Microsoft-Windows-Store/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"LOCAL SERVICE"
-UserID,"S-1-5-19"
-AccountType,"Well Known Group"
-Category,"LM State Machine"
-Opcode,"Change State"
-State Machine,"0x22a7840fc80"
-Thread ID,"6308"
-Current State,"Key:Initial"
-New State,"Key:NegotiatingUnleased"
-State Machine Name,"E6D3B497-80AF-7F14-F9E6-9606EE369FC3"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223336852482686976
+EventType,VERBOSE
+SeverityValue,1
+Severity,DEBUG
+ProviderGuid,{9C2A37F3-E5FD-5CAE-BCD1-43DAFEEE1FF0}
+Version,0
+Task,8002
+OpcodeValue,17
+RecordNumber,3128
+ActivityID,{FFAFC93E-6F10-443D-BCB6-1A0400000000}
+ProcessID,684
+ThreadID,6308
+Channel,Microsoft-Windows-Store/Operational
+Domain,NT AUTHORITY
+AccountName,LOCAL SERVICE
+UserID,S-1-5-19
+AccountType,Well Known Group
+Category,LM State Machine
+Opcode,Change State
+State Machine,0x22a7840fc80
+Thread ID,6308
+Current State,Key:Initial
+New State,Key:NegotiatingUnleased
+State Machine Name,E6D3B497-80AF-7F14-F9E6-9606EE369FC3
+SourceModuleName,in
+SourceModuleType,im_msvistalog

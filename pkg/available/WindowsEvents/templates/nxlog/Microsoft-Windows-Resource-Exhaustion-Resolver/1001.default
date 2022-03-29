@@ -1,22 +1,22 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854771712"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{91F5FB12-FDEA-4095-85D5-614B495CD9DE}"
-Version,"0"
-Task,"1"
-OpcodeValue,"11"
-RecordNumber,"1"
-ProcessID,"768"
-ThreadID,"2452"
-Channel,"Microsoft-Windows-Resource-Exhaustion-Resolver/Operational"
-Domain,"Win10ProDesktop"
-AccountName,"octavehergebel"
-UserID,"S-1-5-21-406643171-3527911121-3377784627-500"
-AccountType,"User"
-Category,"Lifecycle Events"
-Opcode,"Events logged when the resource exhaustion resolver is started."
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854771712
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{91F5FB12-FDEA-4095-85D5-614B495CD9DE}
+Version,0
+Task,1
+OpcodeValue,11
+RecordNumber,1
+ProcessID,768
+ThreadID,2452
+Channel,Microsoft-Windows-Resource-Exhaustion-Resolver/Operational
+Domain,Win10ProDesktop
+AccountName,octavehergebel
+UserID,S-1-5-21-406643171-3527911121-3377784627-500
+AccountType,User
+Category,Lifecycle Events
+Opcode,Events logged when the resource exhaustion resolver is started.
+SourceModuleName,in
+SourceModuleType,im_msvistalog

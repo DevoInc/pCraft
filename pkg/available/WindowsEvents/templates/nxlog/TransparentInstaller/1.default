@@ -1,25 +1,25 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775808"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{747C00B6-F0B4-438C-8B48-F3E5D7ED38A2}"
-Version,"0"
-Task,"0"
-OpcodeValue,"0"
-RecordNumber,"1089"
-ProcessID,"4836"
-ThreadID,"2388"
-Channel,"Microsoft-WindowsAzure-Diagnostics/GuestAgent"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Opcode,"Info"
-Timestamp100ns,"132918753814394701"
-EventPid,"4836"
-EventTid,"16"
-Payload,"Getting the Guest Agent Extension GAFamily from VMArtifactsProfile"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775808
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{747C00B6-F0B4-438C-8B48-F3E5D7ED38A2}
+Version,0
+Task,0
+OpcodeValue,0
+RecordNumber,1089
+ProcessID,4836
+ThreadID,2388
+Channel,Microsoft-WindowsAzure-Diagnostics/GuestAgent
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+Timestamp100ns,132918753814394701
+EventPid,4836
+EventTid,16
+Payload,Getting the Guest Agent Extension GAFamily from VMArtifactsProfile
+SourceModuleName,in
+SourceModuleType,im_msvistalog

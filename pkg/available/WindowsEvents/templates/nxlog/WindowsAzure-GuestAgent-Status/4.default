@@ -1,28 +1,28 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"0"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{69B669B9-4AF8-4C50-BDC4-6006FA76E975}"
-Version,"0"
-Task,"65530"
-OpcodeValue,"0"
-RecordNumber,"1103"
-ProcessID,"4836"
-ThreadID,"1068"
-Channel,"Microsoft-WindowsAzure-Diagnostics/GuestAgent"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Opcode,"Info"
-Timestamp100ns,"132918756165954739"
-EventPid,"4836"
-EventTid,"24"
-category,"Process"
-counter,"Working Set - Private"
-instance,"WaAppAgent"
-value,"2.009088e+007"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,0
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{69B669B9-4AF8-4C50-BDC4-6006FA76E975}
+Version,0
+Task,65530
+OpcodeValue,0
+RecordNumber,1103
+ProcessID,4836
+ThreadID,1068
+Channel,Microsoft-WindowsAzure-Diagnostics/GuestAgent
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+Timestamp100ns,132918756165954739
+EventPid,4836
+EventTid,24
+category,Process
+counter,Working Set - Private
+instance,WaAppAgent
+value,2.009088e+007
+SourceModuleName,in
+SourceModuleType,im_msvistalog

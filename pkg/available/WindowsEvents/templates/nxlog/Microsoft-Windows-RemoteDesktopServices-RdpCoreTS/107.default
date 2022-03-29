@@ -1,23 +1,23 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"4611686018427387904"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{1139C61B-B549-4251-8ED3-27250A1EDEC8}"
-Version,"0"
-Task,"4"
-OpcodeValue,"17"
-RecordNumber,"180"
-ActivityID,"{F42006A3-248C-420D-966E-635608530000}"
-ProcessID,"3096"
-ThreadID,"1248"
-Channel,"Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"NETWORK SERVICE"
-UserID,"S-1-5-20"
-AccountType,"Well Known Group"
-Category,"RemoteFX module"
-Opcode,"CloseConnection"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,4611686018427387904
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{1139C61B-B549-4251-8ED3-27250A1EDEC8}
+Version,0
+Task,4
+OpcodeValue,17
+RecordNumber,180
+ActivityID,{F42006A3-248C-420D-966E-635608530000}
+ProcessID,3096
+ThreadID,1248
+Channel,Microsoft-Windows-RemoteDesktopServices-RdpCoreTS/Operational
+Domain,NT AUTHORITY
+AccountName,NETWORK SERVICE
+UserID,S-1-5-20
+AccountType,Well Known Group
+Category,RemoteFX module
+Opcode,CloseConnection
+SourceModuleName,in
+SourceModuleType,im_msvistalog

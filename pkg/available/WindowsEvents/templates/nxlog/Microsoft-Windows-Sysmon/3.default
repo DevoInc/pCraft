@@ -1,38 +1,38 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775808"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{5770385F-C22A-43E0-BF4C-06F5698FFBD9}"
-Version,"5"
-Task,"3"
-OpcodeValue,"0"
-RecordNumber,"299913"
-ProcessID,"1912"
-ThreadID,"7616"
-Channel,"Microsoft-Windows-Sysmon/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Category,"Network connection detected (rule: NetworkConnect)"
-Opcode,"Info"
-RuleName,"-"
-ProcessGuid,"{bb712610-5b05-6231-e002-000000000500}"
-Image,"C:\Program Files\nxlog\nxlog.exe"
-User,"NT AUTHORITY\SYSTEM"
-Protocol,"tcp"
-Initiated,"true"
-SourceIsIpv6,"false"
-SourceIp,"127.0.0.1"
-SourceHostname,"-"
-SourcePort,"53680"
-SourcePortName,"-"
-DestinationIsIpv6,"false"
-DestinationIp,"127.0.0.1"
-DestinationHostname,"-"
-DestinationPort,"53679"
-DestinationPortName,"-"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775808
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{5770385F-C22A-43E0-BF4C-06F5698FFBD9}
+Version,5
+Task,3
+OpcodeValue,0
+RecordNumber,299913
+ProcessID,1912
+ThreadID,7616
+Channel,Microsoft-Windows-Sysmon/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Category,Network connection detected (rule: NetworkConnect)
+Opcode,Info
+RuleName,-
+ProcessGuid,{bb712610-5b05-6231-e002-000000000500}
+Image,C:\\Program Files\\nxlog\\nxlog.exe
+User,NT AUTHORITY\\SYSTEM
+Protocol,tcp
+Initiated,true
+SourceIsIpv6,false
+SourceIp,127.0.0.1
+SourceHostname,-
+SourcePort,53680
+SourcePortName,-
+DestinationIsIpv6,false
+DestinationIp,127.0.0.1
+DestinationHostname,-
+DestinationPort,53679
+DestinationPortName,-
+SourceModuleName,in
+SourceModuleType,im_msvistalog

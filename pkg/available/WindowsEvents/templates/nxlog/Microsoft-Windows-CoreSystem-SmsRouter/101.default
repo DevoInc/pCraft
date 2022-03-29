@@ -1,21 +1,21 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775806"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{A9C11050-9E93-4FA4-8FE0-7C4750A345B2}"
-Version,"0"
-Task,"1"
-OpcodeValue,"2"
-RecordNumber,"24"
-ProcessID,"1408"
-ThreadID,"4628"
-Channel,"Microsoft-Windows-CoreSystem-SmsRouter-Events/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"LOCAL SERVICE"
-UserID,"S-1-5-19"
-AccountType,"Well Known Group"
-Opcode,"Stop"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775806
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{A9C11050-9E93-4FA4-8FE0-7C4750A345B2}
+Version,0
+Task,1
+OpcodeValue,2
+RecordNumber,24
+ProcessID,1408
+ThreadID,4628
+Channel,Microsoft-Windows-CoreSystem-SmsRouter-Events/Operational
+Domain,NT AUTHORITY
+AccountName,LOCAL SERVICE
+UserID,S-1-5-19
+AccountType,Well Known Group
+Opcode,Stop
+SourceModuleName,in
+SourceModuleType,im_msvistalog

@@ -1,28 +1,28 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"4611686052787126272"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{6BBA3851-2C7E-4DEA-8F54-31E5AFD029E3}"
-Version,"0"
-Task,"1"
-OpcodeValue,"13"
-RecordNumber,"23"
-ActivityID,"{EE7D3D00-FC34-4F59-8601-AF3DC12304B2}"
-ProcessID,"432"
-ThreadID,"5180"
-Channel,"Microsoft-Windows-Diagnosis-DPS/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"LOCAL SERVICE"
-UserID,"S-1-5-19"
-AccountType,"Well Known Group"
-Category,"Scenario Lifecycle"
-Opcode,"A scenario instance was dispatched for troubleshooting"
-ScenarioId,"{180b3a99-8c39-4f12-b631-2031998efe45}"
-InstanceId,"{ee7d3d00-fc34-4f59-8601-af3dc12304b2}"
-OriginalActivityId,"{00000000-0000-0000-0000-000000000000}"
-DiagnosticModuleImageName,"%windir%\system32\radardt.dll"
-DiagnosticModuleId,"{45de1ea9-10bc-4f96-9b21-4b6b83dbf476}"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,4611686052787126272
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{6BBA3851-2C7E-4DEA-8F54-31E5AFD029E3}
+Version,0
+Task,1
+OpcodeValue,13
+RecordNumber,23
+ActivityID,{EE7D3D00-FC34-4F59-8601-AF3DC12304B2}
+ProcessID,432
+ThreadID,5180
+Channel,Microsoft-Windows-Diagnosis-DPS/Operational
+Domain,NT AUTHORITY
+AccountName,LOCAL SERVICE
+UserID,S-1-5-19
+AccountType,Well Known Group
+Category,Scenario Lifecycle
+Opcode,A scenario instance was dispatched for troubleshooting
+ScenarioId,{180b3a99-8c39-4f12-b631-2031998efe45}
+InstanceId,{ee7d3d00-fc34-4f59-8601-af3dc12304b2}
+OriginalActivityId,{00000000-0000-0000-0000-000000000000}
+DiagnosticModuleImageName,%windir%\\system32\\radardt.dll
+DiagnosticModuleId,{45de1ea9-10bc-4f96-9b21-4b6b83dbf476}
+SourceModuleName,in
+SourceModuleType,im_msvistalog

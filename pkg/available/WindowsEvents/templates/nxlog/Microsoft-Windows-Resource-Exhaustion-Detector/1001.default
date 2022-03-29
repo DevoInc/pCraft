@@ -1,22 +1,22 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"4611686018695823360"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{9988748E-C2E8-4054-85F6-0C3E1CAD2470}"
-Version,"0"
-Task,"1"
-OpcodeValue,"11"
-RecordNumber,"8"
-ProcessID,"792"
-ThreadID,"1072"
-Channel,"Microsoft-Windows-Resource-Exhaustion-Detector/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Category,"Lifecycle Events"
-Opcode,"Events logged when the resource exhaustion detector is started."
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,4611686018695823360
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{9988748E-C2E8-4054-85F6-0C3E1CAD2470}
+Version,0
+Task,1
+OpcodeValue,11
+RecordNumber,8
+ProcessID,792
+ThreadID,1072
+Channel,Microsoft-Windows-Resource-Exhaustion-Detector/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Category,Lifecycle Events
+Opcode,Events logged when the resource exhaustion detector is started.
+SourceModuleName,in
+SourceModuleType,im_msvistalog

@@ -1,26 +1,26 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"4611686018427387904"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{EF1CC15B-46C1-414E-BB95-E76B077BD51E}"
-Version,"3"
-Task,"0"
-OpcodeValue,"0"
-RecordNumber,"102"
-ProcessID,"1020"
-ThreadID,"3860"
-Channel,"Microsoft-Windows-Bits-Client/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Opcode,"Info"
-jobTitle,"Push Notification Platform Job: 1"
-jobId,"{17e05ede-013e-4a8b-b4cf-3a4760ffbc91}"
-jobOwner,"Win10ProDesktop\octavehergebel"
-processPath,"C:\Windows\System32\svchost.exe"
-ClientProcessStartKey,"1407374883553591"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,4611686018427387904
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{EF1CC15B-46C1-414E-BB95-E76B077BD51E}
+Version,3
+Task,0
+OpcodeValue,0
+RecordNumber,102
+ProcessID,1020
+ThreadID,3860
+Channel,Microsoft-Windows-Bits-Client/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+jobTitle,Push Notification Platform Job: 1
+jobId,{17e05ede-013e-4a8b-b4cf-3a4760ffbc91}
+jobOwner,Win10ProDesktop\\octavehergebel
+processPath,C:\\Windows\\System32\\svchost.exe
+ClientProcessStartKey,1407374883553591
+SourceModuleName,in
+SourceModuleType,im_msvistalog

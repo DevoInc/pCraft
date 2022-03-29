@@ -1,17 +1,17 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"36028797018963968"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-Version,"0"
-Task,"4"
-OpcodeValue,"0"
-RecordNumber,"47"
-ProcessID,"0"
-ThreadID,"0"
-Channel,"Windows PowerShell"
-Category,"Engine Lifecycle"
-Opcode,"Info"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,36028797018963968
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+Version,0
+Task,4
+OpcodeValue,0
+RecordNumber,47
+ProcessID,0
+ThreadID,0
+Channel,Windows PowerShell
+Category,Engine Lifecycle
+Opcode,Info
+SourceModuleName,in
+SourceModuleType,im_msvistalog

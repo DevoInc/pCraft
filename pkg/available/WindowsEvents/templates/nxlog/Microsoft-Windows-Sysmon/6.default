@@ -1,28 +1,28 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775808"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{5770385F-C22A-43E0-BF4C-06F5698FFBD9}"
-Version,"4"
-Task,"6"
-OpcodeValue,"0"
-RecordNumber,"390763"
-ProcessID,"1912"
-ThreadID,"4088"
-Channel,"Microsoft-Windows-Sysmon/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Category,"Driver loaded (rule: DriverLoad)"
-Opcode,"Info"
-RuleName,"-"
-ImageLoaded,"C:\Windows\System32\drivers\WUDFRd.sys"
-Hashes,"SHA1=ADF3AC37298A75CE31F3A1284E871F56F8515C9A,MD5=19E5827542EC4D6008C82873F772BA95,SHA256=BA4DB58A59A53009320E7E999D1609947790AE8CCEC0C681C71EB9CF3FCECEEC,IMPHASH=75A21565C8563214D5E2D16C3F750044"
-Signed,"true"
-Signature,"Microsoft Windows"
-SignatureStatus,"Valid"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775808
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{5770385F-C22A-43E0-BF4C-06F5698FFBD9}
+Version,4
+Task,6
+OpcodeValue,0
+RecordNumber,390763
+ProcessID,1912
+ThreadID,4088
+Channel,Microsoft-Windows-Sysmon/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Category,Driver loaded (rule: DriverLoad)
+Opcode,Info
+RuleName,-
+ImageLoaded,C:\\Windows\\System32\\drivers\\WUDFRd.sys
+Hashes,SHA1=ADF3AC37298A75CE31F3A1284E871F56F8515C9A,MD5=19E5827542EC4D6008C82873F772BA95,SHA256=BA4DB58A59A53009320E7E999D1609947790AE8CCEC0C681C71EB9CF3FCECEEC,IMPHASH=75A21565C8563214D5E2D16C3F750044
+Signed,true
+Signature,Microsoft Windows
+SignatureStatus,Valid
+SourceModuleName,in
+SourceModuleType,im_msvistalog

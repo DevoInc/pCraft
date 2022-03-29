@@ -1,25 +1,25 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"4611686018427387920"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{05F02597-FE85-4E67-8542-69567AB8FD4F}"
-Version,"0"
-Task,"101"
-OpcodeValue,"0"
-RecordNumber,"352"
-ProcessID,"1020"
-ThreadID,"8472"
-Channel,"Microsoft-Windows-LiveId/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Category,"WLID Service Operation"
-Opcode,"Info"
-Operation,"Service started"
-Details,"The service will auto stop if no requests received for some period of time."
-Status,"0x0"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,4611686018427387920
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{05F02597-FE85-4E67-8542-69567AB8FD4F}
+Version,0
+Task,101
+OpcodeValue,0
+RecordNumber,352
+ProcessID,1020
+ThreadID,8472
+Channel,Microsoft-Windows-LiveId/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Category,WLID Service Operation
+Opcode,Info
+Operation,Service started
+Details,The service will auto stop if no requests received for some period of time.
+Status,0x0
+SourceModuleName,in
+SourceModuleType,im_msvistalog

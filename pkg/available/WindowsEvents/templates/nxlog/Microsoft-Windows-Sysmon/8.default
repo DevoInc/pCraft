@@ -1,35 +1,35 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775808"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{5770385F-C22A-43E0-BF4C-06F5698FFBD9}"
-Version,"2"
-Task,"8"
-OpcodeValue,"0"
-RecordNumber,"392243"
-ProcessID,"1912"
-ThreadID,"4968"
-Channel,"Microsoft-Windows-Sysmon/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Category,"CreateRemoteThread detected (rule: CreateRemoteThread)"
-Opcode,"Info"
-RuleName,"-"
-SourceProcessGuid,"{bb712610-53a6-6231-2d01-000000000500}"
-SourceProcessId,"3952"
-SourceImage,"C:\Windows\System32\dwm.exe"
-TargetProcessGuid,"{bb712610-53a5-6231-2901-000000000500}"
-TargetProcessId,"2672"
-TargetImage,"C:\Windows\System32\csrss.exe"
-NewThreadId,"4732"
-StartAddress,"0xFFFF8AAC738320D0"
-StartModule,"-"
-StartFunction,"-"
-SourceUser,"Window Manager\DWM-2"
-TargetUser,"NT AUTHORITY\SYSTEM"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775808
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{5770385F-C22A-43E0-BF4C-06F5698FFBD9}
+Version,2
+Task,8
+OpcodeValue,0
+RecordNumber,392243
+ProcessID,1912
+ThreadID,4968
+Channel,Microsoft-Windows-Sysmon/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Category,CreateRemoteThread detected (rule: CreateRemoteThread)
+Opcode,Info
+RuleName,-
+SourceProcessGuid,{bb712610-53a6-6231-2d01-000000000500}
+SourceProcessId,3952
+SourceImage,C:\\Windows\\System32\\dwm.exe
+TargetProcessGuid,{bb712610-53a5-6231-2901-000000000500}
+TargetProcessId,2672
+TargetImage,C:\\Windows\\System32\\csrss.exe
+NewThreadId,4732
+StartAddress,0xFFFF8AAC738320D0
+StartModule,-
+StartFunction,-
+SourceUser,Window Manager\\DWM-2
+TargetUser,NT AUTHORITY\\SYSTEM
+SourceModuleName,in
+SourceModuleType,im_msvistalog

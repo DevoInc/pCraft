@@ -1,27 +1,27 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775806"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{FF79A477-C45F-4A52-8AE0-2B324346D4E4}"
-Version,"0"
-Task,"2001"
-OpcodeValue,"14"
-RecordNumber,"3121"
-ActivityID,"{FFAFC93E-6F10-443D-BCB6-1A0400000000}"
-ProcessID,"4552"
-ThreadID,"1420"
-Channel,"Microsoft-Windows-Store/Operational"
-Domain,"Win10ProDesktop"
-AccountName,"octavehergebel"
-UserID,"S-1-5-21-406643171-3527911121-3377784627-500"
-AccountType,"User"
-Category,"In-App Purchase"
-Opcode,"Info"
-Function,"Windows::Services::Store::StoreContextFactory::GetDefault"
-Error Code,"-1"
-Source,"onecoreuap\enduser\winstore\licensing\winrt\lib\storecontext.cpp"
-Line Number,"57"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775806
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{FF79A477-C45F-4A52-8AE0-2B324346D4E4}
+Version,0
+Task,2001
+OpcodeValue,14
+RecordNumber,3121
+ActivityID,{FFAFC93E-6F10-443D-BCB6-1A0400000000}
+ProcessID,4552
+ThreadID,1420
+Channel,Microsoft-Windows-Store/Operational
+Domain,Win10ProDesktop
+AccountName,octavehergebel
+UserID,S-1-5-21-406643171-3527911121-3377784627-500
+AccountType,User
+Category,In-App Purchase
+Opcode,Info
+Function,Windows::Services::Store::StoreContextFactory::GetDefault
+Error Code,-1
+Source,onecoreuap\\enduser\\winstore\\licensing\\winrt\\lib\\storecontext.cpp
+Line Number,57
+SourceModuleName,in
+SourceModuleType,im_msvistalog

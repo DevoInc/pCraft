@@ -1,28 +1,28 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775808"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{5770385F-C22A-43E0-BF4C-06F5698FFBD9}"
-Version,"2"
-Task,"11"
-OpcodeValue,"0"
-RecordNumber,"299807"
-ProcessID,"1912"
-ThreadID,"4968"
-Channel,"Microsoft-Windows-Sysmon/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Category,"File created (rule: FileCreate)"
-Opcode,"Info"
-RuleName,"-"
-ProcessGuid,"{bb712610-5a8a-6231-da02-000000000500}"
-Image,"C:\Program Files\nxlog\nxlog.exe"
-TargetFilename,"C:\Program Files\nxlog\data\configcache.dat"
-CreationUtcTime,"2022-03-16 03:35:32.986"
-User,"NT AUTHORITY\SYSTEM"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775808
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{5770385F-C22A-43E0-BF4C-06F5698FFBD9}
+Version,2
+Task,11
+OpcodeValue,0
+RecordNumber,299807
+ProcessID,1912
+ThreadID,4968
+Channel,Microsoft-Windows-Sysmon/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Category,File created (rule: FileCreate)
+Opcode,Info
+RuleName,-
+ProcessGuid,{bb712610-5a8a-6231-da02-000000000500}
+Image,C:\\Program Files\\nxlog\\nxlog.exe
+TargetFilename,C:\\Program Files\\nxlog\\data\\configcache.dat
+CreationUtcTime,2022-03-16 03:35:32.986
+User,NT AUTHORITY\\SYSTEM
+SourceModuleName,in
+SourceModuleType,im_msvistalog

@@ -1,23 +1,23 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"4611686018427387904"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{97CA8142-10B1-4BAA-9FBB-70A7D11231C3}"
-Version,"0"
-Task,"3"
-OpcodeValue,"1"
-RecordNumber,"271"
-ProcessID,"1780"
-ThreadID,"6724"
-Channel,"Microsoft-Windows-ShellCommon-StartLayoutPopulation/Operational"
-Domain,"Win10ProDesktop"
-AccountName,"octavehergebel"
-UserID,"S-1-5-21-406643171-3527911121-3377784627-500"
-AccountType,"User"
-Opcode,"Start"
-layoutSelectionSerializedString,"
+Hostname,Win10ProDesktop
+Keywords,4611686018427387904
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{97CA8142-10B1-4BAA-9FBB-70A7D11231C3}
+Version,0
+Task,3
+OpcodeValue,1
+RecordNumber,271
+ProcessID,1780
+ThreadID,6724
+Channel,Microsoft-Windows-ShellCommon-StartLayoutPopulation/Operational
+Domain,Win10ProDesktop
+AccountName,octavehergebel
+UserID,S-1-5-21-406643171-3527911121-3377784627-500
+AccountType,User
+Opcode,Start
+layoutSelectionSerializedString,
 Region Codes:US 
 SKUs:2 
 Office SKUs: &lt;not set&gt;
@@ -26,6 +26,6 @@ PreInstalledAppsEnabled: 0
 TargetedContentTilesEnabled: 1
 EducationModeEnabled: 0
 CommercialDevice: 0
-"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+
+SourceModuleName,in
+SourceModuleType,im_msvistalog

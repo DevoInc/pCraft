@@ -1,23 +1,23 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036317904896"
-EventType,"WARNING"
-SeverityValue,"3"
-Severity,"WARNING"
-ProviderGuid,"{9988748E-C2E8-4054-85F6-0C3E1CAD2470}"
-Version,"0"
-Task,"3"
-OpcodeValue,"33"
-RecordNumber,"637"
-ActivityID,"{056E21E4-A095-4044-BCA4-524F6060C3B3}"
-ProcessID,"792"
-ThreadID,"7864"
-Channel,"System"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Category,"Resource Exhaustion Diagnosis Events"
-Opcode,"Contains the results of the diagnosis."
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036317904896
+EventType,WARNING
+SeverityValue,3
+Severity,WARNING
+ProviderGuid,{9988748E-C2E8-4054-85F6-0C3E1CAD2470}
+Version,0
+Task,3
+OpcodeValue,33
+RecordNumber,637
+ActivityID,{056E21E4-A095-4044-BCA4-524F6060C3B3}
+ProcessID,792
+ThreadID,7864
+Channel,System
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Category,Resource Exhaustion Diagnosis Events
+Opcode,Contains the results of the diagnosis.
+SourceModuleName,in
+SourceModuleType,im_msvistalog

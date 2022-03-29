@@ -1,24 +1,24 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775808"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{ED8B9BD3-F66E-4FF2-B86B-75C7925F72A9}"
-Version,"0"
-Task,"0"
-OpcodeValue,"0"
-RecordNumber,"134"
-ProcessID,"6072"
-ThreadID,"6924"
-Channel,"Microsoft-Windows-Provisioning-Diagnostics-Provider/Admin"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Opcode,"Info"
-Message1,"LogonIdleTask"
-Message2,"&lt;Not Present&gt;"
-Message3,"&lt;Not Present&gt;"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775808
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{ED8B9BD3-F66E-4FF2-B86B-75C7925F72A9}
+Version,0
+Task,0
+OpcodeValue,0
+RecordNumber,134
+ProcessID,6072
+ThreadID,6924
+Channel,Microsoft-Windows-Provisioning-Diagnostics-Provider/Admin
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+Message1,LogonIdleTask
+Message2,&lt;Not Present&gt;
+Message3,&lt;Not Present&gt;
+SourceModuleName,in
+SourceModuleType,im_msvistalog

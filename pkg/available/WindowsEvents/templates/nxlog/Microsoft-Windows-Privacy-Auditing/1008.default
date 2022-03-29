@@ -1,29 +1,29 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775806"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{D67FBB76-D18A-5AE3-24A3-8C1DB52D6C62}"
-Version,"0"
-Task,"20"
-OpcodeValue,"0"
-RecordNumber,"306"
-ProcessID,"1152"
-ThreadID,"7864"
-Channel,"Microsoft-Windows-Privacy-Auditing/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Category,"Default Consent Created"
-Opcode,"Info"
-NewConsentValue,"Allow"
-TargetUserSid,"S-1-5-21-406643171-3527911121-3377784627-500"
-AppPackageFamilyName,"NULL"
-HResult,"0x0"
-SettingName,"activity"
-Migrated,"false"
-Suppressed,"false"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775806
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{D67FBB76-D18A-5AE3-24A3-8C1DB52D6C62}
+Version,0
+Task,20
+OpcodeValue,0
+RecordNumber,306
+ProcessID,1152
+ThreadID,7864
+Channel,Microsoft-Windows-Privacy-Auditing/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Category,Default Consent Created
+Opcode,Info
+NewConsentValue,Allow
+TargetUserSid,S-1-5-21-406643171-3527911121-3377784627-500
+AppPackageFamilyName,NULL
+HResult,0x0
+SettingName,activity
+Migrated,false
+Suppressed,false
+SourceModuleName,in
+SourceModuleType,im_msvistalog

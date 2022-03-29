@@ -1,26 +1,26 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9223372036854775800"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{89FE8F40-CDCE-464E-8217-15EF97D4C7C3}"
-Version,"0"
-Task,"8"
-OpcodeValue,"0"
-RecordNumber,"49"
-ActivityID,"{7167E24B-D095-0000-F36C-A28FD938D801}"
-ProcessID,"724"
-ThreadID,"5384"
-Channel,"Microsoft-Windows-Crypto-DPAPI/Operational"
-Domain,"NT AUTHORITY"
-AccountName,"SYSTEM"
-UserID,"S-1-5-18"
-AccountType,"User"
-Category,"Credential Key Operation"
-Opcode,"Info"
-CredKeyIdentifier,"956675E12D2782882C3378A6D7E32177812A4900541C8CDAF88D07A52B6E257B"
-UserName,"octavehergebel"
-UserSid,"S-1-5-21-406643171-3527911121-3377784627-500"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775800
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{89FE8F40-CDCE-464E-8217-15EF97D4C7C3}
+Version,0
+Task,8
+OpcodeValue,0
+RecordNumber,49
+ActivityID,{7167E24B-D095-0000-F36C-A28FD938D801}
+ProcessID,724
+ThreadID,5384
+Channel,Microsoft-Windows-Crypto-DPAPI/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Category,Credential Key Operation
+Opcode,Info
+CredKeyIdentifier,956675E12D2782882C3378A6D7E32177812A4900541C8CDAF88D07A52B6E257B
+UserName,octavehergebel
+UserSid,S-1-5-21-406643171-3527911121-3377784627-500
+SourceModuleName,in
+SourceModuleType,im_msvistalog

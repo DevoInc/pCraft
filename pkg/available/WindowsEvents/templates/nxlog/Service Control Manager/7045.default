@@ -1,24 +1,24 @@
 key,default_value
-Hostname,"Win10ProDesktop"
-Keywords,"-9187343239835811840"
-EventType,"INFO"
-SeverityValue,"2"
-Severity,"INFO"
-ProviderGuid,"{555908D1-A6D7-4695-8E1E-26931D2012F4}"
-Version,"0"
-Task,"0"
-OpcodeValue,"0"
-RecordNumber,"643"
-ProcessID,"712"
-ThreadID,"3776"
-Channel,"System"
-Domain,"Win10ProDesktop"
-AccountName,"octavehergebel"
-UserID,"S-1-5-21-406643171-3527911121-3377784627-500"
-AccountType,"User"
-ServiceName,"Mozilla Maintenance Service"
-ImagePath,""C:\Program Files (x86)\Mozilla Maintenance Service\maintenanceservice.exe""
-ServiceType,"user mode service"
-StartType,"demand start"
-SourceModuleName,"in"
-SourceModuleType,"im_msvistalog"
+Hostname,Win10ProDesktop
+Keywords,-9187343239835811840
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{555908D1-A6D7-4695-8E1E-26931D2012F4}
+Version,0
+Task,0
+OpcodeValue,0
+RecordNumber,643
+ProcessID,712
+ThreadID,3776
+Channel,System
+Domain,Win10ProDesktop
+AccountName,octavehergebel
+UserID,S-1-5-21-406643171-3527911121-3377784627-500
+AccountType,User
+ServiceName,Mozilla Maintenance Service
+ImagePath,\"C:\\Program Files (x86)\\Mozilla Maintenance Service\\maintenanceservice.exe\"
+ServiceType,user mode service
+StartType,demand start
+SourceModuleName,in
+SourceModuleType,im_msvistalog
