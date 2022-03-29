@@ -75,7 +75,7 @@ def handle_one_ev(event):
       elif k == "UtcTime":
          newevent[k] = "%Y-%m-%d %H:%M:%S.000"
       else:
-         defaultfp.write("%s,\"%s\"\n" % (k, v))
+         defaultfp.write("%s,%s\n" % (k, v))
          newevent[k] = "{{{%s}}}" % k
 
    tmplfp.write(json.dumps(newevent) + "\n")
