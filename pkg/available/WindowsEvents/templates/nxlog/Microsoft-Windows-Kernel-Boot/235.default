@@ -1,0 +1,22 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,2305851805306716160
+EventType,ERROR
+SeverityValue,4
+Severity,ERROR
+ProviderGuid,{15CA44FF-4D7A-4BAA-BBA5-0998955E531E}
+Version,0
+Task,99
+OpcodeValue,11
+RecordNumber,21
+ProcessID,4
+ThreadID,8
+Channel,Microsoft-Windows-Kernel-Boot/Operational
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+StatusCode,3221225474
+Position,1
+SourceModuleName,in
+SourceModuleType,im_msvistalog

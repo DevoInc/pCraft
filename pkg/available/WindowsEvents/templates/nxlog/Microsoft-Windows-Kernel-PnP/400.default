@@ -1,0 +1,35 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,4611686018427387904
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{9C205A39-1250-487D-ABD7-E831C6290539}
+Version,0
+Task,0
+OpcodeValue,0
+RecordNumber,174
+ProcessID,4
+ThreadID,3940
+Channel,Microsoft-Windows-Kernel-PnP/Configuration
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+DeviceInstanceId,SWD\\PRINTENUM\\{3678C5B4-EE85-42BB-810A-03A5787406CC}
+DriverName,printqueue.inf
+ClassGuid,{1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}
+DriverDate,06/21/2006
+DriverVersion,10.0.19041.1
+DriverProvider,Microsoft
+DriverInbox,true
+DriverSection,NO_DRV_LOCAL
+DriverRank,0x1
+MatchingDeviceId,PRINTENUM\\LocalPrintQueue
+OutrankedDrivers,prnms011.inf:{133619e4-143b-463a-b809-b1f51d05f973}:00FF0002 c_swdevice.inf:SWD\\GenericRaw:00FF3001
+DeviceUpdated,false
+Status,0x0
+ParentDeviceInstanceId,SWD\\PRINTENUM\\PrintQueues
+SourceModuleName,in
+SourceModuleType,im_msvistalog

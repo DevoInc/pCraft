@@ -1,0 +1,25 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,-9223372036854775808
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{15CA44FF-4D7A-4BAA-BBA5-0998955E531E}
+Version,1
+Task,31
+OpcodeValue,0
+RecordNumber,952
+ProcessID,4
+ThreadID,8
+Channel,System
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+LastShutdownGood,true
+LastBootGood,true
+LastBootId,5
+BootStatusPolicy,1
+SourceModuleName,in
+SourceModuleType,im_msvistalog

@@ -1,0 +1,25 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,4611686018427387904
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{9C205A39-1250-487D-ABD7-E831C6290539}
+Version,0
+Task,0
+OpcodeValue,0
+RecordNumber,173
+ProcessID,2132
+ThreadID,1308
+Channel,Microsoft-Windows-Kernel-PnP/Configuration
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+DeviceInstanceId,SWD\\PRINTENUM\\{F503A663-204B-4ED8-B125-5DC6A9934A4B}
+ClassGuid,{1ed2bbf9-11f0-4084-b21f-ad83a8e6dcdc}
+Problem,0x2d
+Status,0x0
+SourceModuleName,in
+SourceModuleType,im_msvistalog
