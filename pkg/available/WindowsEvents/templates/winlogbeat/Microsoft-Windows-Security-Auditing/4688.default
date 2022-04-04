@@ -1,0 +1,14 @@
+key,default_value
+Hostname,Win10ProDesktop
+SubjectUserSid,S-1-5-18
+NewProcessName,C:\\Windows\\System32\\autochk.exe
+ParentProcessName,C:\\Windows\\System32\\smss.exe
+SubjectLogonId,0x3e7
+MandatoryLabel,S-1-16-16384
+ProcessId,0x18c
+SubjectUserName,-
+TargetUserSid,S-1-0-0
+SubjectDomainName,-
+NewProcessId,0x1b0
+TokenElevationType,%%1936
+TargetLogonId,0x0
