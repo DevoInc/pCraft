@@ -1,0 +1,23 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,144115188075856000
+EventType,WARNING
+SeverityValue,3
+Severity,WARNING
+ProviderGuid,{988C59C5-0A1C-45B6-A555-0C62276E327D}
+Version,0
+Task,0
+OpcodeValue,0
+RecordNumber,6
+ProcessID,4
+ThreadID,356
+Channel,Microsoft-Windows-SmbClient/Security
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+RegName,AllowInsecureGuestAuth
+RegValue,1
+SourceModuleName,in
+SourceModuleType,im_msvistalog
