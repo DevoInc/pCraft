@@ -27,8 +27,11 @@ def message_handler(message):
 #         print(res.group(1))
          retmsg += "%s: {{{%s}}}\r\n" % (res.group(1), res.group(1))
    # print(message[seq:])
-   return retmsg[:-2] # We remove the trailing \r\n
+   
+   if retmsg[:-1] == '\n':
+      return retmsg[:-2] # We remove the trailing \r\n
 
+   return retmsg
 
 def handle_one_ev(event):
    # print(event["SourceName"])
