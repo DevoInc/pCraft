@@ -1,0 +1,32 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,-9214364837600034816
+EventType,AUDIT_SUCCESS
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{54849625-5478-4994-A5BA-3E3B0328C30D}
+Version,1
+Task,12292
+OpcodeValue,0
+RecordNumber,2113
+ActivityID,{7167E24B-D095-0000-D395-1C214248D801}
+ProcessID,708
+ThreadID,752
+Channel,Security
+Category,Other System Events
+Opcode,Info
+SubjectUserSid,S-1-5-19
+SubjectUserName,LOCAL SERVICE
+SubjectDomainName,NT AUTHORITY
+SubjectLogonId,0x3e5
+ClientProcessId,1264
+ClientCreationTime,2022-04-04T16:36:48.6229951Z
+ProviderName,Microsoft Software Key Storage Provider
+AlgorithmName,UNKNOWN
+KeyName,Microsoft Connected Devices Platform device certificate
+KeyType,%%2500
+KeyFilePath,C:\\Windows\\ServiceProfiles\\LocalService\\AppData\\Roaming\\Microsoft\\Crypto\\Keys\\de7cf8a7901d2ad13e5c67c29e5d1662_bb712610-7153-47d6-ae22-df4288fb66cd
+Operation,%%2458
+ReturnCode,0x0
+SourceModuleName,in
+SourceModuleType,im_msvistalog

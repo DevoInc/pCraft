@@ -1,0 +1,25 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,-9214364837600034816
+EventType,AUDIT_SUCCESS
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{54849625-5478-4994-A5BA-3E3B0328C30D}
+Version,1
+Task,12288
+OpcodeValue,0
+RecordNumber,2017
+ProcessID,4
+ThreadID,92
+Channel,Security
+Category,Security State Change
+Opcode,Info
+SubjectUserSid,S-1-5-19
+SubjectUserName,LOCAL SERVICE
+SubjectDomainName,NT AUTHORITY
+SubjectLogonId,0x3e5
+PreviousTime,2022-04-04T16:36:48.7944345Z
+NewTime,2022-04-04T16:36:49.0820000Z
+ProcessName,C:\\Windows\\System32\\svchost.exe
+SourceModuleName,in
+SourceModuleType,im_msvistalog

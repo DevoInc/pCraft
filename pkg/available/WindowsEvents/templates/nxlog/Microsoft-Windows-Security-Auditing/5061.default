@@ -1,0 +1,29 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,-9214364837600034816
+EventType,AUDIT_SUCCESS
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{54849625-5478-4994-A5BA-3E3B0328C30D}
+Version,0
+Task,12290
+OpcodeValue,0
+RecordNumber,2114
+ActivityID,{7167E24B-D095-0000-D395-1C214248D801}
+ProcessID,708
+ThreadID,752
+Channel,Security
+Category,System Integrity
+Opcode,Info
+SubjectUserSid,S-1-5-19
+SubjectUserName,LOCAL SERVICE
+SubjectDomainName,NT AUTHORITY
+SubjectLogonId,0x3e5
+ProviderName,Microsoft Software Key Storage Provider
+AlgorithmName,ECDSA_P256
+KeyName,Microsoft Connected Devices Platform device certificate
+KeyType,%%2500
+Operation,%%2480
+ReturnCode,0x0
+SourceModuleName,in
+SourceModuleType,im_msvistalog

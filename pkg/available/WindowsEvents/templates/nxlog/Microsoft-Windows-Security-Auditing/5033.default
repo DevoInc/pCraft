@@ -1,0 +1,18 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,-9214364837600034816
+EventType,AUDIT_SUCCESS
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{54849625-5478-4994-A5BA-3E3B0328C30D}
+Version,0
+Task,12292
+OpcodeValue,0
+RecordNumber,2024
+ProcessID,4
+ThreadID,204
+Channel,Security
+Category,Other System Events
+Opcode,Info
+SourceModuleName,in
+SourceModuleType,im_msvistalog

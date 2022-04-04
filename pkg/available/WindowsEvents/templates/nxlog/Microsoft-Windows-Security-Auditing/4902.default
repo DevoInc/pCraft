@@ -1,0 +1,20 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,-9214364837600034816
+EventType,AUDIT_SUCCESS
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{54849625-5478-4994-A5BA-3E3B0328C30D}
+Version,0
+Task,13568
+OpcodeValue,0
+RecordNumber,1993
+ProcessID,708
+ThreadID,756
+Channel,Security
+Category,Audit Policy Change
+Opcode,Info
+PuaCount,0
+PuaPolicyId,0x820a
+SourceModuleName,in
+SourceModuleType,im_msvistalog
