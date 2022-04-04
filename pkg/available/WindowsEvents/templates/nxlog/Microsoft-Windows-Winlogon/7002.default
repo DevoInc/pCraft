@@ -1,0 +1,23 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,2305878193585782784
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{DBE9B383-7CF3-4331-91CC-A3CB16A3B538}
+Version,0
+Task,1102
+OpcodeValue,0
+RecordNumber,937
+ProcessID,4724
+ThreadID,4176
+Channel,System
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+Opcode,Info
+TSId,2
+UserSid,S-1-5-21-406643171-3527911121-3377784627-500
+SourceModuleName,in
+SourceModuleType,im_msvistalog
