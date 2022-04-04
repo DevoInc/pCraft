@@ -1,0 +1,35 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+  <Provider Name="Microsoft-Windows-Security-Auditing" Guid="{54849625-5478-4994-A5BA-3E3B0328C30D}" /> 
+  <EventID>4688</EventID> 
+  <Version>2</Version> 
+  <Level>0</Level> 
+  <Task>{{{SystemTask}}}</Task> 
+  <Opcode>{{{SystemOpcode}}}</Opcode> 
+  <Keywords>{{{SystemKeywords}}}</Keywords> 
+  <TimeCreated SystemTime="{{{SystemTimeCreated}}}" /> 
+  <EventRecordID>{{{SystemEventRecordID}}}</EventRecordID> 
+  <Correlation /> 
+  <Execution ProcessID="{{{SystemExecutionProcessID}}}" ThreadID="{{{SystemExecutionThreadID}}}" /> 
+  <Channel>Security</Channel> 
+  <Computer>{{{Win10ProDesktop}}}</Computer> 
+  <Security /> 
+ </System>
+ <EventData>
+  <Data Name="SubjectUserSid">{{{SubjectUserSid}}}</Data> 
+  <Data Name="SubjectUserName">{{{SubjectUserName}}}</Data> 
+  <Data Name="SubjectDomainName">{{{SubjectDomainName}}}</Data> 
+  <Data Name="SubjectLogonId">{{{SubjectLogonId}}}</Data> 
+  <Data Name="NewProcessId">{{{NewProcessId}}}</Data> 
+  <Data Name="NewProcessName">{{{NewProcessName}}}</Data> 
+  <Data Name="TokenElevationType">{{{TokenElevationType}}}</Data> 
+  <Data Name="ProcessId">{{{ProcessId}}}</Data> 
+  <Data Name="CommandLine" /> 
+  <Data Name="TargetUserSid">{{{TargetUserSid}}}</Data> 
+  <Data Name="TargetUserName">{{{TargetUserName}}}</Data> 
+  <Data Name="TargetDomainName">{{{TargetDomainName}}}</Data> 
+  <Data Name="TargetLogonId">{{{TargetLogonId}}}</Data> 
+  <Data Name="ParentProcessName">{{{ParentProcessName}}}</Data> 
+  <Data Name="MandatoryLabel">{{{MandatoryLabel}}}</Data> 
+ </EventData>
+</Event>
