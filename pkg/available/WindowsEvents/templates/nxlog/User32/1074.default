@@ -1,0 +1,28 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,-9187343239835811840
+EventType,INFO
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{B0AA8734-56F7-41CC-B2F4-DE228E98B946}
+Version,0
+Task,0
+OpcodeValue,0
+RecordNumber,936
+ProcessID,524
+ThreadID,536
+Channel,System
+Domain,NT AUTHORITY
+AccountName,SYSTEM
+UserID,S-1-5-18
+AccountType,User
+param1,C:\\Windows\\System32\\svchost.exe (Win10ProDesktop)
+param2,Win10ProDesktop
+param3,Other (Planned)
+param4,0x80000000
+param5,shutdown
+param6,Calling CleanShutdown by wvchelper
+Reason for shutdown: Stop call
+param7,NT AUTHORITY\\SYSTEM
+SourceModuleName,in
+SourceModuleType,im_msvistalog
