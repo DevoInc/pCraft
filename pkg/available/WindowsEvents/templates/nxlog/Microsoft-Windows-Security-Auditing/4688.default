@@ -25,6 +25,7 @@ TargetUserSid,S-1-0-0
 TargetUserName,-
 TargetDomainName,-
 TargetLogonId,0x0
+ParentProcessId,0x248
 ParentProcessName,C:\\Windows\\System32\\wininit.exe
 MandatoryLabel,S-1-16-16384
 SourceModuleName,in
