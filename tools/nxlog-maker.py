@@ -7,6 +7,9 @@ import re
 
 kvmsg = re.compile("([a-zA-Z]+): (.*)")
 
+# FIXME: We don't use this now
+integerfields = ["Keywords","SeverityValue","EventID","Version","Task","OpcodeValue","RecordNumber","ProcessID","ThreadID"]
+
 def message_handler(message):
    retmsg = ""
    seq = 0

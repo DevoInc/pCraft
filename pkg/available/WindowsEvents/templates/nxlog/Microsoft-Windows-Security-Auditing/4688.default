@@ -8,9 +8,9 @@ ProviderGuid,{54849625-5478-4994-A5BA-3E3B0328C30D}
 Version,2
 Task,13312
 OpcodeValue,0
-RecordNumber,1978
+RecordNumber,2365
 ProcessID,4
-ThreadID,92
+ThreadID,100
 Channel,Security
 Category,Process Creation
 Opcode,Info
@@ -18,13 +18,14 @@ SubjectUserSid,S-1-5-18
 SubjectUserName,-
 SubjectDomainName,-
 SubjectLogonId,0x3e7
-NewProcessId,0x48
-NewProcessName,Registry
+NewProcessId,0x2b4
+NewProcessName,C:\\Windows\\System32\\lsass.exe
 TokenElevationType,%%1936
 TargetUserSid,S-1-0-0
 TargetUserName,-
 TargetDomainName,-
 TargetLogonId,0x0
+ParentProcessName,C:\\Windows\\System32\\wininit.exe
 MandatoryLabel,S-1-16-16384
 SourceModuleName,in
 SourceModuleType,im_msvistalog
