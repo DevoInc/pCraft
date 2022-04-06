@@ -1,0 +1,43 @@
+key,default_value
+timestamp,%s000
+header_value_user_agent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+client_ip,192.168.0.42
+country,US
+host,example.com
+uri,/login
+server_ip,93.184.216.34
+organization,Spectre
+isp,Spectre
+asn,15133
+expert_rules_weight,0
+experimental_rules_weight,42
+expert_rules_info.rule_id,"[C280, C101, R202, R23]"
+header_value_referer,
+http_feature_vector,"[3, 6, 0, 4, 5, 1, 6, -1, -1, -1, -1, -1, 7, 9, 8, 0, 0, 10]"
+projected_browser,Desktop Firefox
+predicted_browser,5.0
+predicted_browser_index,-1
+projected_browser_major_version,-1
+username,ohergebel@deno.lan
+method,POST
+type,-
+client_ciphers,[]
+extractedData,"[{name=foo, value=True}, {name=count, value=4}]"
+query_params,
+header_value_accept,*/*
+header_value_accept_encoding,gzip
+header_value_accept_language,en_US
+header_value_cache_control,"no-cache, mac-age=0"
+header_value_connection,keep-alive
+header_value_date,-
+header_value_dnt,-
+header_value_keep_alive,-
+header_value_pragma,no-cache
+header_value_te,
+header_value_true_client_ip,192.168.0.42
+header_value_content_type,application/x-www-form-urlencoded
+header_value_accept_charset,-
+http_fingerprint,2303020501
+policy_id,AboToouQ
+policy_name,Export Successful
+policy_version,2
