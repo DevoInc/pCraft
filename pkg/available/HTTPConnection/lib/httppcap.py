@@ -70,8 +70,8 @@ class PcraftPcapWriter(LibraryContext):
                 contenttype=self.get_variable("$client-content-type"),
                 contentlen=len(self.get_variable("$client-content")),
                 content=self.get_variable("$client-content"))
-    
-            if self.get_variable("$client-headers") != "":
+
+            if self.get_variable("$client-headers") and self.get_variable("$client-headers") != "":
                 content = self.get_variable("$client-content")
                 contentlen = 0
                 if content != "":
