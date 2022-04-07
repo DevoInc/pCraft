@@ -1,0 +1,23 @@
+key,default_value
+Keywords,-9214364837600034816
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{54849625-5478-4994-A5BA-3E3B0328C30D}
+Version,0
+Task,12810
+OpcodeValue,0
+RecordNumber,105434
+ProcessID,4
+ThreadID,5072
+Channel,Security
+Category,Filtering Platform Connection
+Opcode,Info
+Application,"\\device\\harddiskvolume2\\program files\\openvpn connect\\openvpnconnect.exe"
+SourceAddress,::
+SourcePort,57911
+Protocol,17
+FilterRTID,0
+LayerName,"%%14608"
+LayerRTID,36
+SourceModuleName,in
+SourceModuleType,im_msvistalog
