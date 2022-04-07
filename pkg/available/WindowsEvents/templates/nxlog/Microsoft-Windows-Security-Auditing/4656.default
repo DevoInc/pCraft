@@ -1,0 +1,35 @@
+key,default_value
+Hostname,Win10ProDesktop
+Keywords,-9214364837600034816
+EventType,AUDIT_SUCCESS
+SeverityValue,2
+Severity,INFO
+ProviderGuid,{54849625-5478-4994-A5BA-3E3B0328C30D}
+Version,1
+Task,12800
+OpcodeValue,0
+RecordNumber,2907
+ProcessID,0x730
+ThreadID,212
+Category,File System
+Opcode,Info
+SubjectUserSid,S-1-5-21-406643171-3527911121-3377784627-500
+SubjectUserName,octavehergebel
+SubjectDomainName,Win10ProDesktop
+SubjectLogonId,0x696e6
+ObjectServer,Security
+ObjectType,File
+ObjectName,C:\\Windows\\WinSxS\\FileMaps\\_0000000000000000.cdf-ms
+HandleId,0xb3c
+TransactionId,{00000000-0000-0000-0000-000000000000}
+AccessList,"%%1537\r\n\t\t\t\t%%1538\r\n\t\t\t\t%%4432\r\n\t\t\t\t%%4433\r\n\t\t\t\t%%4434\r\n\t\t\t\t%%4435\r\n\t\t\t\t%%4436\r\n\t\t\t\t"
+AccessReason,-
+AccessMask,0x120089
+PrivilegeList,-
+RestrictedSidCount,0
+ProcessName,C:\\Program Files\\Mozilla Firefox\\firefox.exe
+ResourceAttributes,-
+SourceModuleName,in
+SourceModuleType,im_msvistalog
+Accesses,"DELETE\r\n\t\t\t\tREAD_CONTROL\r\n\t\t\t\tQuery key value\r\n\t\t\t\tSet key value\r\n\t\t\t\tCreate sub-key\r\n\t\t\t\tEnumerate sub-keys\r\n\t\t\t\tNotify about changes to keys"
+AccessReason,-
