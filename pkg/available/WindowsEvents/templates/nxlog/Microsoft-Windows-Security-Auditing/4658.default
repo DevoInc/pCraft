@@ -16,7 +16,7 @@ Channel,Security
 Category,File System
 Opcode,Info
 SubjectUserSid,S-1-5-21-406643171-3527911121-3377784627-500
-SubjectUserName,sebastientricaud
+SubjectUserName,octavehergebel
 SubjectDomainName,Win10ProDesktop
 SubjectLogonId,0x696e6
 ObjectServer,Security

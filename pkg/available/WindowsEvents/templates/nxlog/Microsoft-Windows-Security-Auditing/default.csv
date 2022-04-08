@@ -1,2 +1,4 @@
 key,default_value
 Hostname,Win10ProDesktop
+SourceModuleName,in
+SourceModuleType,im_msvistalog

@@ -1,0 +1,21 @@
+key,default_value
+Keywords,-9214364837600034816
+SeverityValue,2
+Version,0
+Task,12807
+OpcodeValue,0
+RecordNumber,105474
+ProcessID,4
+ThreadID,364
+ProviderGuid,{54849625-5478-4994-A5BA-3E3B0328C30D}
+Category,Handle Manipulation
+Opcode,Info
+SubjectUserSid,S-1-5-21-406643171-3527911121-3377784627-500
+SubjectUserName,octavehergebel
+SubjectLogonId,0x642a2
+SourceHandleId,0x4cc
+SourceProcessId,0x1cdc
+TargetHandleId,0x2ef8
+TargetProcessId,0x4
+SourceModuleName,in
+SourceModuleType,im_msvistalog
