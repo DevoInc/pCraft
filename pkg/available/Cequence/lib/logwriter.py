@@ -16,8 +16,11 @@ class PcraftLogWriter(LibraryContext):
         
         frame_time = datetime.fromtimestamp(event["time"])
 
-        if event["variables"]["$extractedData"] != "":
-            event["variables"]["$extractedData"] = base64.b64encode(bytes(event["variables"]["$extractedData"], "utf8"))
+        try:
+            if event["variables"]["$extractedData"] != "":
+                event["variables"]["$extractedData"] = base64.b64encode(bytes(event["variables"]["$extractedData"], "utf8"))
+        except KeyError:
+            event["variables"]["$extractedData"] = ""
         
         newevent = template_get_event(templates, event_name, event["variables"])
         newevent = frame_time.strftime(newevent)
