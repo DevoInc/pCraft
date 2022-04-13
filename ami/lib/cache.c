@@ -64,6 +64,9 @@ void _ami_cache_foreach_action(ami_action_t *action, void *u1, void *u2, void *u
   	  case AMI_VAR_INT:
   	    asprintf(&tmpstr, "%d", var->ival);
   	    break;
+	  case AMI_VAR_ARRAY:
+	    // Array aren't a variables, but a variable holder
+	    continue;
   	  default:
   	    fprintf(stderr, "Unable to read variable %s. Skipping.\n", key);
   	    continue;

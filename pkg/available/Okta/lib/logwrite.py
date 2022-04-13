@@ -17,7 +17,7 @@ class PcraftLogWriter(LibraryContext):
         # if "@" not in event["variables"]["$targets_0_login"]:
         #     event["variables"]["$actors_0_login"] += "@" + event["variables"]["$domain"]
             
-        logevent = template_get_event(templates, "events", event["variables"])
+        logevent = template_get_event(templates, event["variables"]["$event_id"], event["variables"])
         logevent = frame_time.strftime(logevent)
 
         yield bytes(logevent, "utf8")
