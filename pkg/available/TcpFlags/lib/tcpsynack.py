@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 from scapy.all import Ether, IP, TCP
 
+from pcraft import utils
 from pcraft import io as PcraftIO
 from pcraft.LibraryContext import *
+from pcraft.Packet import *
 
 class PcraftPcapWriter(LibraryContext):
     def __init__(self):
