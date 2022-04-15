@@ -456,6 +456,31 @@ static void walk_node(ami_t *ami, ami_node_t *node, int repeat_index, int right)
 	asprintf(&outstr, "%d", total);
 	
 	kv_push(char *, ami->values_stack, outstr);	
+      } else if (!strcmp("sub", n->strval)) {
+	char *left_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-2);
+	char *right_s = kv_A(ami->values_stack, kv_size(ami->values_stack)-1);	
+	ami_variable_t *left = ami_get_variable(ami, left_s);
+	int left_int;
+	int right_int;
+	int total;
+	char *outstr;
+
+	if (!left) {
+	  left_int = (int)strtod(left_s, NULL);
+	} else {
+	  left_int = ami_variable_to_int(left);
+	}
+	ami_variable_t *right = ami_get_variable(ami, right_s);
+	if (!right) {
+	  right_int = (int)strtod(right_s, NULL);
+	} else {
+	  right_int = ami_variable_to_int(right);
+	}
+
+	total = left_int - right_int;
+	asprintf(&outstr, "%d", total);
+	
+	kv_push(char *, ami->values_stack, outstr);	
       } else if (!strcmp("random.macaddr", n->strval)) {
 	char macchars[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 	char *randstr = malloc(18);
