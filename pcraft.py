@@ -27,6 +27,7 @@ class RunPcraft(object):
 
         self.ami = pyami.Ami()
         self.ami_cache = self.args["script"]
+        self.cachefile = None
         self.sleep_cursor = self.ami.GetGroupSleepCursor("_global")
         self.ami.DebugSleepCursor()
         self.count_tracker = 1
@@ -61,20 +62,20 @@ class RunPcraft(object):
             return cachefile
                 
     def build_cache(self, erase_cache=True):
-        cachefile = self.ami_cache
+        self.cachefile = self.ami_cache
         if not erase_cache:
-            cachefile = self.get_cache_filename(self.ami_cache)
+            self.cachefile = self.get_cache_filename(self.ami_cache)
             
-        debug("Building cache: %s" % cachefile)
-        self.ami.Cache(self.args["script"], cachefile)
+        debug("Building cache: %s" % self.cachefile)
+        self.ami.Cache(self.args["script"], self.cachefile)
         debug("Done building cache")
 
     def build_pcap(self, pcapfile):
-        pcap_builder = PcapBuilder(self.pkg, self.ami_cache)
+        pcap_builder = PcapBuilder(self.pkg, self.cachefile)
         pcap_builder.build(pcapfile)
 
     def build_logs(self, log_folder, force, triggers):
-        logs = LogsBuilder(self.pkg, self.ami_cache, log_folder, force, triggers)
+        logs = LogsBuilder(self.pkg, self.cachefile, log_folder, force, triggers)
         return logs.build()
 
         
