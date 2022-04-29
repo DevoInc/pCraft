@@ -29,12 +29,12 @@ class RunPcraft(object):
         self.ami_cache = self.args["script"]
         self.sleep_cursor = self.ami.GetGroupSleepCursor("_global")
         self.ami.DebugSleepCursor()
-        
+        self.count_tracker = 1
 #        print("Final Sleep Cursor: %d seconds; %d hours; %d days" % (int(self.sleep_cursor), int(self.sleep_cursor / 60 / 60), int(self.sleep_cursor / 60 / 60 / 24)))
         
         if not args["script"].endswith(".amic"):
-            self.ami_cache = os.path.join(os.path.dirname(self.args["script"]), "." + os.path.basename(self.args["script"]) + "c")            
-            self.build_cache()
+            self.ami_cache = os.path.join(os.path.dirname(self.args["script"]), "." + os.path.basename(self.args["script"]) + "c")
+            self.build_cache(erase_cache=self.args["erasecache"])
         else:
             print("Reading cache file %s" % self.ami_cache)
 
@@ -51,10 +51,22 @@ class RunPcraft(object):
                 bucket = target.split(":")[1]
                 print("Sending data to s3 bucket %s" % bucket)
                 push_to_s3(bucket, log_files)
+
+    def get_cache_filename(self, cachefile):
+        if os.path.exists(cachefile):
+            newcachefile = self.ami_cache + "_" + str(self.count_tracker)
+            self.count_tracker += 1
+            return self.get_cache_filename(newcachefile)
+        else:
+            return cachefile
+                
+    def build_cache(self, erase_cache=True):
+        cachefile = self.ami_cache
+        if not erase_cache:
+            cachefile = self.get_cache_filename(self.ami_cache)
             
-    def build_cache(self):
-        debug("Building cache: %s" % self.ami_cache)
-        self.ami.Cache(self.args["script"], self.ami_cache)
+        debug("Building cache: %s" % cachefile)
+        self.ami.Cache(self.args["script"], cachefile)
         debug("Done building cache")
 
     def build_pcap(self, pcapfile):
@@ -74,6 +86,7 @@ if __name__ == "__main__":
         parser = argparse.ArgumentParser()
         
     parser.add_argument("script", type=str, help="The script to run")
+    parser.add_argument("-c", "--erasecache", help="overwrite cache file (defaults to true)", action="store_false")
     parser.add_argument("-p", "--pcap", type=str, help="The pcap to build") 
     parser.add_argument("-l", "--log-folder", type=str, help="The log folder")
     parser.add_argument("-f", "--force", help="overwrite the log folder", action="store_true")
