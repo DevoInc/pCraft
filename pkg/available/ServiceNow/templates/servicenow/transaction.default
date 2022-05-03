@@ -1,0 +1,23 @@
+key,default_value
+type,List
+username,OHergebel
+remote_ip,93.184.216.34
+session,1F30640714D64E71A58745B3D066C3F9
+class_name1,incident
+class_name2,kb_submission
+url,"/task_list.do?sysparm_userpref_module=3ba48a6a2501421699d90aa62a9e&sysparm_query=active=true^assigned_to{{{username}}}{{{session}}}^sys_class_name!={{{class_name1}}}^sys_class_name!={{{class_name2}}}^NQref_kb_submission.statusINsubmitted,review^assigned_to{{{username}}}1270cf38d6a848c4b9cd1fd10f5aa902^sys_class_name=kb_submission^NQsys_class_name={{{class_name1}}}^active=true^assigned_to{{{username}}}{{{session}}}^ref_incident.u_ownership_transfer=false^state!=8^EQ&sysparm_clear_stack=true"
+user-agent,"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0"
+browser_time,123
+transaction_number,7371623
+transaction_processing_time,241
+client_network_time,4
+client_transaction,true
+cpu_time,132
+cpu_usage,0.02
+business_rule_count,3
+response_time,241
+sql_count,123
+sql_time,456
+render_size,"143,745"
+system_id,"myexample.service-now.com:ex007"
+view_id,"Default view"
