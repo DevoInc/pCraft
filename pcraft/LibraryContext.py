@@ -76,6 +76,9 @@ class LibraryContext(object):
 
     def gen_string(self, length):
         return ''.join(random.choices(string.ascii_lowercase + string.digits, k = length))
+
+    def gen_string_withuppercase(self, length):
+        return ''.join(random.choices(string.ascii_lowercase + string.ascii_uppercase + string.digits, k = length))
     
     def get_consistent_id(self, name, idlen):
         consistent_id = int(hashlib.sha256(bytes(name, "utf8")).hexdigest(), 16)

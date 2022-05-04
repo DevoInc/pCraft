@@ -1,0 +1,21 @@
+{
+    "pps": {
+	"agent": "{{{pps_agent}}}",
+	"cid": "{{{pps_cid}}}"
+    },
+    "ts": "%Y-%m-%dT%H:%M:%S.000000-%z",
+    "data": "{{{data}}}",
+    "sm": {	
+	"tls": { "verify": "{{{sm_tls_verify}}}" },
+	"stat": "{{{sm_stat}}}",
+	"qid": "{{{sm_qid}}}",
+	"dsn": "{{{sm_dsn}}}",
+	"mailer": "{{{sm_mailer}}}",
+	"to": ["{{{sm_to_0}}}"],
+	"ctladdr": "{{{sm_ctladdr}}}",
+	"delay": "{{{sm_delay}}}",
+	"xdelay": "{{{sm_xdelay}}}",
+	"pri": "{{{sm_pri}}}"
+    },
+    "id": "{{{id}}}"
+}
