@@ -1,10 +1,10 @@
 {
     "pps": {
-	"agent": "{{{pps_agent}}}",
+	"agent": "{{{hostname}}}.proofpoint.com",
 	"cid": "{{{pps_cid}}}"
     },
-    "ts": "%Y-%m-%dT%H:%M:%S.000000%z",
-    "data": "{{{data}}}",
+    "ts": "{{{ts}}}",
+    "data": "%Y-%m-%dT%H:%M:%S.000000-%z {{{hostname}}} sendmail[{{{sendmail_pid}}}]: {{{sm_qid}}}: to={{{sm_to_0}}}, ctladdr={{{sm_ctladdr}}}, delay={{{sm_delay}}}, xdelay={{{sm_xdelay}}}, mailer={{{sm_mailer}}}, tls_verify={{{sm_tls_verify}}}, pri={{{sm_pri}}}, dsn={{{sm_dsn}}}, stat={{{sm_stat}}}",
     "sm": {	
 	"tls": { "verify": "{{{sm_tls_verify}}}" },
 	"stat": "{{{sm_stat}}}",
