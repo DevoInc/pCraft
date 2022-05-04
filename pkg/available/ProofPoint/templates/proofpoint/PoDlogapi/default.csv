@@ -2,7 +2,7 @@ key,default_value
 hostname,example
 sendmail_pid,30641
 pps_cid,mmeng_uivm071
-ts,%Y-%m-%dT%H:%M:%S.000000%z
+ts,%Y-%m-%dT%H:%M:%S.000000-07:00
 sm_tls_verify,NONE
 sm_stat,Sent
 sm_qid,v7HLqYbx029423
