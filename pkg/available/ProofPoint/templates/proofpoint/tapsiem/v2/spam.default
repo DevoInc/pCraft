@@ -1,0 +1,17 @@
+key,default_value
+url,"https://disq.us/?url=https%3A%2F%2Fsyjgguskhjhsza-gikodit257911665.codeanyapp.com%2Fllalkskjasd%2F&key=4tdvqk48gsbna65sx9e_mg"
+classification,spam
+clickTime,%Y-%m-%dT%H:%M:%S.000Z
+threatTime,%Y-%m-%dT%H:%M:%S.000Z
+userAgent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+campaignId,null
+clickIP,20.229.172.147
+sender,somebuddy@example.com
+recipient,alfred.wallace@example.com
+senderIP,93.184.216.34
+GUID,ZeYGULpZmL5N0151HN1OyA
+threatID,56463891094f9078e3769d16fe4732891b7f7c5f42e271056b9f1a76a83d270b
+threatUrl_uuid,cd2b5703-331c-4312-90a4-69ea6b146aa7
+threat,59dc8bf08b93d57f4aa3de8e734a253794fed92b8d880dad97fe9d8e93d0d3ed
+threatStatus,active
+messageID,"<0e6c4dde3e3e0b3fb0b835ee1614118b@127.0.0.1>"
