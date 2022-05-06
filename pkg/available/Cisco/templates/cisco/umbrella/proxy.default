@@ -1,0 +1,23 @@
+key,default_value
+identities,"JDOUCHE,ADJDOUCHE3,Network"
+internalip,192.168.0.42
+externalip,93.184.216.34
+dstip,null
+contenttype,null
+verdict,ALLOWED
+url,http://slashdot.org/index.html
+referer,www.google.com
+useragent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+statuscode,200
+requestsize,234
+responsesize,1789
+responsebodysize,null
+sha,null
+categories,null
+avdetections,null
+puas,null
+ampdisposition,null
+ampmalwarename,null
+ampscore,null
+identitytype,Networks
+blockedcategories,null

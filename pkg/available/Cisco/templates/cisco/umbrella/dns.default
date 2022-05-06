@@ -1,0 +1,10 @@
+key,default_value
+mostgranularidentity,JDOUCHE
+identities,"JDOUCHE,ADJDOUCHE3,Network"
+internalip,192.168.0.42
+externalip,93.184.216.34
+action,Allowed
+querytype,"1 (A)"
+responsecode,NOERROR
+domaindot,example.com.
+categories,"Chat,Photo Sharing,Social Networking,Allow List"
