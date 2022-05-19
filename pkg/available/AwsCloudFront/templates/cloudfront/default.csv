@@ -1,0 +1,22 @@
+key,default_value
+edgelocation,DMC007
+responselen,806
+ip-src,192.168.0.42
+method,GET
+cloudfronthost,th1s15gr34t.cloudfront.net
+url,/u/index.php
+statuscode,200
+referer,https://www.leparisien.fr/politique/quand-lionel-jospin-refait-le-coup-de-la-demission-30-10-2000-2001728973.php
+useragent,Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:83.0) Gecko/20100101 Firefox/83.0
+urlquery,q=empty
+cookies,-
+edgeresulttype,Hit
+edgerequestid,_aGVsbG8gbXkgZnJpZW5kcywgaG93IGFyZSB5b3U/Cg==
+urlhost,www.example.com
+protocol,https
+requestlen,1243
+responsetime,0.042
+xforwardedfor,-
+sslprotocol,TLSv1.2
+sslcipher,ECDHE-RSA-AES128-SHA256
+edgeresponseresulttype,Hit
